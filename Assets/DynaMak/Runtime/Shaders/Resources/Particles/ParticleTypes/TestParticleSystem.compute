@@ -1,0 +1,108 @@
+#pragma kernel InitializeKernel
+#pragma kernel UpdateKernel
+#pragma kernel KillKernel
+#pragma kernel EmitKernel
+#pragma kernel RenderKernel
+
+#pragma multi_compile _ PARTICLE_PONG_BUFFER
+
+// Must contain a Particle definition, which must at least contain 'bool alive'
+#define PARTICLE_STRUCT Particle
+struct PARTICLE_STRUCT
+{
+    bool alive;
+    float3 position;
+    float3 oldPosition;
+    float3 color;
+    float3 normal;
+    float3 tangent;
+
+    float age;
+    float life;
+};
+
+#include "../ParticleTemplate.hlsl"
+#include "../ParticleUtility.hlsl"
+#include "../ParticleRenderUtility.hlsl"
+
+// Standard kernels to initialize and kill particles.
+INITIALIZE
+KILL
+
+float _KreisZahl;
+
+UPDATE
+{
+    const uint index = id.x;
+
+    PARTICLE_STRUCT p = _ParticleBuffer[index];
+
+    if(p.alive)
+    {
+        float3 velocity = (p.position - p.oldPosition) / _DeltaTime;
+
+        p.oldPosition = p.position;
+        p.position += velocity * _DeltaTime;
+
+        float seed = _time + (float) index / 10;
+
+        seed *= 0.6;
+
+        p.position.x = sin(seed * _KreisZahl) * 5;
+        p.position.z = cos(seed) * 5;
+        p.position.y = 5 * sin(seed * 5);
+
+       
+       }
+
+    SetParticle(index, p);
+}
+
+void Render_ChainStart(PARTICLE_STRUCT p, float size)
+{
+    RenderVertex startV = (RenderVertex)0;
+    startV.positionWS   = p.position;
+    startV.normalWS     = p.normal;
+    startV.tangentWS    = float4(p.tangent, 1);
+    startV.color        = float4(p.color, 1);
+    startV.uv           = 0;
+
+    RenderVertex endV   = startV;
+    endV.positionWS     += startV.normalWS;
+    endV.uv             = 1;
+
+    Add_Tube4Cap(startV, endV,size);
+}
+
+float _RenderSize;
+
+RENDER
+{
+    const uint index = id.x;
+
+    PARTICLE_STRUCT p = _ParticleBuffer[index];
+
+    if(!p.alive) return;
+    
+    Render_ChainStart(p, _RenderSize);
+}
+
+
+EMIT
+{
+    const uint index = _AliveIndexBuffer.Consume();
+    
+    PARTICLE_STRUCT p = (PARTICLE_STRUCT)0;
+
+    float randomSeed = Random( (float)(index * 2 + id.x + _time + _DeltaTime + dot(_WorldPosition, _WorldPositionOld + 3) * 13.4));
+    
+    p.alive = true;
+    p.position = _WorldPosition + GetInterpolatedLocation(_WorldPosition, _WorldPositionOld, randomSeed);
+    p.oldPosition = p.position - GetInheritedVelocity(_WorldPosition, _WorldPositionOld, 1, _DeltaTime, randomSeed);
+    p.normal = mul(_WorldMatrix, float4(0,1,0,0)).xyz;
+    p.tangent = mul(_WorldMatrix, float4(0,0,1,0)).xyz;
+    p.color = float3(0.5,0.5,1);
+
+    _ParticleBuffer[index] = p;
+}
+

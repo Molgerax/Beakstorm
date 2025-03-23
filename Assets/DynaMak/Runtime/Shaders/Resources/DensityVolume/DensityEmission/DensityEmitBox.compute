@@ -1,0 +1,23 @@
+#pragma kernel Emit
+
+#include "DensityEmit.hlsl"
+
+#define ThreadGroupSize 2
+
+float3 _BoxBounds;
+float3 _BoxAxisX;
+float3 _BoxAxisY;
+
+[numthreads(ThreadGroupSize,ThreadGroupSize,ThreadGroupSize)]
+void Emit (uint3 id : SV_DispatchThreadID)
+{
+    half density = _Volume[id];
+    float3 worldPos = WorldPosFromId(id, _VolumeResolution, _VolumeCenter, _VolumeBounds);
+    
+    float signedDistance = sdfBox(_WorldPos, _BoxBounds, _BoxAxisX, _BoxAxisY, worldPos);
+    float dist = step(signedDistance, 0);
+    
+    density = AddDensity(dist * _EmissionStrength, density, true);
+
+    _Volume[id] = density;
+}

@@ -1,0 +1,97 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Union
+#pragma kernel Subtraction
+#pragma kernel Intersection
+#pragma kernel CalculateNormals
+#pragma kernel Copy
+
+#include "../VolumeUtility.hlsl"
+#include "../SDFUtility.hlsl"
+
+#define ThreadBlockSize 2
+#define EPSILON 1e-3
+
+
+VOLUME(RWTexture3D<half4>, _Result)
+VOLUME(Texture3D<half4>, _First)
+VOLUME(Texture3D<half4>, _Second)
+
+float _Smoothness;
+
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Union (uint3 id : SV_DispatchThreadID)
+{
+    float3 worldPos = WorldPosFromVolumeUVs(_FirstCenter, _FirstBounds, VolumeUVsFromId(id, _FirstResolution));
+
+    half4 d = _FirstVolume[id.xyz];
+
+    if(WorldPosInsideVolume(_SecondCenter, _SecondBounds, worldPos))
+    {
+        half4 sample = Sample_Volume(_SecondVolume, _SecondCenter, _SecondBounds, worldPos);
+        d.w = opSmoothUnion(d.w, sample.w, _Smoothness);
+        
+    }
+  
+    _ResultVolume[id.xyz] = d;
+}
+
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Subtraction (uint3 id : SV_DispatchThreadID)
+{
+    float3 worldPos = WorldPosFromVolumeUVs(_FirstCenter, _FirstBounds, VolumeUVsFromId(id, _FirstResolution));
+
+    half4 d = _FirstVolume[id.xyz];
+    if(WorldPosInsideVolume(_SecondCenter, _SecondBounds, worldPos))
+    {
+        half4 sample = Sample_Volume(_SecondVolume, _SecondCenter, _SecondBounds, worldPos);
+    
+        d.w = opSmoothSubtraction(d.w, sample.w, _Smoothness);
+    }
+  
+    _ResultVolume[id.xyz] = d;
+}
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Intersection (uint3 id : SV_DispatchThreadID)
+{
+    float3 worldPos = WorldPosFromVolumeUVs(_FirstCenter, _FirstBounds, VolumeUVsFromId(id, _FirstResolution));
+
+    half4 d = _FirstVolume[id.xyz];
+    
+    if(WorldPosInsideVolume(_SecondCenter, _SecondBounds, worldPos))
+    {
+        half4 sample = Sample_Volume(_SecondVolume, _SecondCenter, _SecondBounds, worldPos);
+
+        d.w = opSmoothIntersection(d.w, sample.w, _Smoothness);
+    }
+    else
+    {
+        d.w = 10000;
+        d.xyz = half3(0,1,0);
+    }
+  
+    _ResultVolume[id.xyz] = d;
+}
+
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void CalculateNormals (uint3 id : SV_DispatchThreadID)
+{
+    half4 d = _ResultVolume[id.xyz];
+
+    half3 normal = GetGradient(_ResultVolume, 2, id.xyz).xyz;
+    if(length(normal) == 0) normal = half3(0, 1, 0);
+    
+    d.xyz = normalize(normal);
+    
+    _ResultVolume[id.xyz] = d;
+}
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Copy (uint3 id : SV_DispatchThreadID)
+{
+    half4 d = _FirstVolume[id.xyz];
+    _ResultVolume[id.xyz] = d;
+}

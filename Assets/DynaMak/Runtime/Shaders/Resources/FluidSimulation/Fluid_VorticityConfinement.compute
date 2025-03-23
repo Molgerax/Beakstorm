@@ -1,0 +1,41 @@
+#pragma kernel GetCurl
+#pragma kernel ConfineVorticity
+
+
+#include "FluidFieldOperator.hlsl"
+
+RWTexture3D<half4> _CurlField;
+float _ConfinementFactor;
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void GetCurl (uint3 id : SV_DispatchThreadID)
+{
+    half3 partialXYZ = 2.0;
+    half3 curl = GetCurl(_FluidVolume, id, partialXYZ);
+    _CurlField[id.xyz] = half4(curl.xyz, 0);
+}
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void ConfineVorticity (uint3 id : SV_DispatchThreadID)
+{
+    half4 f = _FluidVolume[id.xyz];
+
+    half3 partialXYZ = 2.0;
+    half3 curl = GetCurl(_FluidVolume, id, partialXYZ);
+
+    half left     = length(_CurlField[(id - uint3(1, 0, 0))].xyz);
+    half right    = length(_CurlField[(id + uint3(1, 0, 0))].xyz);
+    half bottom   = length(_CurlField[(id - uint3(0, 1, 0))].xyz);
+    half top      = length(_CurlField[(id + uint3(0, 1, 0))].xyz);
+    half back     = length(_CurlField[(id - uint3(0, 0, 1))].xyz);
+    half front    = length(_CurlField[(id + uint3(0, 0, 1))].xyz);
+
+    half3 vorticityGradient = half3(right - left, top - bottom, front - back) / partialXYZ;
+    
+
+    if(dot(vorticityGradient, vorticityGradient) == 0) return;
+    vorticityGradient = normalize(vorticityGradient);
+    
+    f.xyz += _dt * _ConfinementFactor * vorticityGradient * curl;
+    _FluidVolume[id.xyz] = f;
+}

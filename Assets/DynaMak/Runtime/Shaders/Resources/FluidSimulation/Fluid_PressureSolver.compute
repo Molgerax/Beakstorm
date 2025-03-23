@@ -1,0 +1,60 @@
+#pragma kernel GetDivergence
+#pragma kernel ClearPressure
+#pragma kernel JacobiSolve
+#pragma kernel Project
+
+#include "FluidFieldOperator.hlsl"
+
+RWTexture3D<half> _DivergenceField;
+
+Texture3D<half> _PressureField_Ping;
+RWTexture3D<half> _PressureField_Pong;
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void GetDivergence (uint3 id : SV_DispatchThreadID)
+{
+    half divergence = GetDivergence(_FluidVolume, id, _FluidResolution);    
+    _DivergenceField[id] = divergence;
+}
+
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void ClearPressure (uint3 id : SV_DispatchThreadID)
+{
+    _PressureField_Pong[id.xyz] = 0;
+}
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void JacobiSolve (uint3 id : SV_DispatchThreadID)
+{
+    half b_center = _DivergenceField[id.xyz];
+
+    half centerFactor = -1.0;
+    
+    half rDiagonal = 1.0 / 6.0;
+
+    if(id.x > 0 && id.y > 0 && id.z > 0 && id.x < _FluidResolution.x - 1 && id.y < _FluidResolution.y - 1 && id.z < _FluidResolution.z - 1)
+    {
+        half right     = _PressureField_Ping[id.xyz + uint3(1, 0, 0)];
+        half left      = _PressureField_Ping[id.xyz - uint3(1, 0, 0)];
+        half up        = _PressureField_Ping[id.xyz + uint3(0, 1, 0)];
+        half down      = _PressureField_Ping[id.xyz - uint3(0, 1, 0)];
+        half front     = _PressureField_Ping[id.xyz + uint3(0, 0, 1)];
+        half back      = _PressureField_Ping[id.xyz - uint3(0, 0, 1)];
+        
+        _PressureField_Pong[id.xyz] = (right + left + up + down + front + back + (b_center * centerFactor)) * rDiagonal;
+    }
+}
+
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Project (uint3 id : SV_DispatchThreadID)
+{
+    half partialXYZ = 2.0;
+
+    half3 deltaPressure = GetGradient(_PressureField_Ping, id, partialXYZ);    
+    
+    half4 f = _FluidVolume[id.xyz];
+    f.xyz -= deltaPressure;
+    _FluidVolume[id.xyz] = f;
+}

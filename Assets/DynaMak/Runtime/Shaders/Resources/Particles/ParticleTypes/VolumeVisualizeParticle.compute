@@ -1,0 +1,126 @@
+#pragma kernel InitializeKernel
+#pragma kernel UpdateKernel
+#pragma kernel RenderKernel
+#pragma kernel KillKernel
+#pragma kernel EmitKernel
+#pragma kernel EmissionCountKernel
+
+#pragma multi_compile _ PARTICLE_PONG_BUFFER
+
+// Must contain a Particle definition, which must at least contain 'bool alive'
+#define PARTICLE_STRUCT Particle
+struct PARTICLE_STRUCT
+{
+    bool alive;
+    float3 position;
+    float4 value;
+};
+
+#include "../ParticleTemplate.hlsl"
+#include "../ParticleUtility.hlsl"
+#include "../ParticleRenderUtility.hlsl"
+
+#include "../../VolumeUtility.hlsl"
+#include "../../ExternalLibraries/BitangentNoise.hlsl"
+
+float _Radius;
+float _Length;
+float _MinLength;
+float _MaxLength;
+
+VOLUME(Texture3D<half4>, _Volume)
+
+float _NoiseScale;
+float _NoiseStrength;
+float _NoiseSpeed;
+
+float4 SampleNoise(PARTICLE_STRUCT p)
+{
+    return BitangentNoise4D(float4(p.position.xyz * _NoiseScale, _time * _NoiseSpeed)).xyzx;
+}
+
+
+// Standard kernels to initialize and kill particles.
+INITIALIZE
+KILL
+
+UPDATE
+{
+    const uint index = id.x;
+
+    PARTICLE_STRUCT p = _ParticleBuffer[index];
+
+    if(p.alive)
+    {
+        uint3 volumeId = id1Dto3D(index, _VolumeResolution);
+        float3 worldPos = WorldPosFromId(volumeId, _VolumeResolution, _VolumeCenter, _VolumeBounds);
+        float4 sample = Sample_Volume(_VolumeVolume, _VolumeCenter, _VolumeBounds, worldPos);
+
+        if(_NoiseStrength > 0) sample = float4(SampleNoise(p).xyz * _NoiseStrength, 0);
+        
+        p.position = worldPos;
+        p.value = sample;
+    }
+
+    SetParticle(index, p);
+}
+
+RENDER
+{
+    const uint index = id.x;
+
+    PARTICLE_STRUCT p = _ParticleBuffer[index];
+
+    if(!p.alive) return;
+
+    float len = length(p.value.xyz);
+    if(len < _MinLength) return;
+
+    
+    float radius = _MinLength * _Length;
+    radius = min(len, radius);
+    
+    float3 tangent = cross(p.value.xyz, float3(0,1,0));
+    tangent = dot(tangent, tangent) == 0 ? float3(1,0,0) : tangent;
+    
+    RenderVertex front, center, back = (RenderVertex)0;
+
+    center.positionWS = p.position;
+    center.normalWS = p.value.xyz / len;
+    center.tangentWS = float4(-normalize(tangent), 1);
+    center.uv = 0;
+    center.color = max(0, len * _Length - _MinLength);
+    center.color = 0.5 + 0.5 * (p.value.rgba * _Length);
+    
+    front = center;
+    front.positionWS += front.normalWS * min(_Length * len, _MaxLength);
+
+    Add_Tube4Cap(center, front, radius);
+
+
+    center.normalWS *= -1;
+    back = center;
+    back.tangentWS.xyz *= 1;
+    back.positionWS += back.normalWS * radius;
+
+    Add_Tube4Cap(center, back, radius);
+}
+
+SET_EMISSION_TO_DEADCOUNT
+
+EMIT
+{
+    const uint index = _AliveIndexBuffer.Consume();
+    
+    PARTICLE_STRUCT p = (PARTICLE_STRUCT)0;
+
+    p.alive = true;
+
+    uint3 volumeId = id1Dto3D(index, _VolumeResolution);
+    float3 worldPos = WorldPosFromId(volumeId, _VolumeResolution, _VolumeCenter, _VolumeBounds);
+    p.position = worldPos;
+
+    
+    _ParticleBuffer[index] = p;
+}
+

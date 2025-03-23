@@ -1,0 +1,331 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel FlockingCS
+#pragma kernel Init
+
+#pragma kernel UpdateSpatialHash
+
+#include "Packages/com.kingart.dow.shaders/Public/HLSL/RandomFunctions.hlsl"
+#include "Packages/com.kingart.dow.shaders/Public/HLSL/SpatialHashGrids.hlsl"
+#include "Packages/com.unity.visualeffectgraph/Shaders/VFXNoise.hlsl"
+
+#include "BoidParameters.hlsl"
+
+#define THREAD_BLOCK_SIZE 256
+
+uint _NumBoids;
+
+float _Time;
+float _DeltaTime;
+
+RWStructuredBuffer<float3> _BoidPositionBuffer;
+RWStructuredBuffer<float3> _BoidVelocityBuffer;
+
+
+float _Speed;
+float3 _ForceWeights;       // alignment, cohesion, separation
+float3 _PerceptionRadius;   // alignment, cohesion, separation
+float _MaxSteerForce;
+
+// Targeting
+float3 _TargetPosition;
+float _TargetSeekStrength;
+float _TargetSeekClampDistance;
+
+// Floor Collision
+float _FloorYLevel;
+float _CollisionBounce;
+float _Gravity;
+
+// Noise
+float _NoiseStrength;
+float _NoiseScale;
+
+
+// Height Map
+Texture2D<half4> _HeightMapTexture;
+float3 _HeightMapCenter;
+float3 _HeightMapSize;
+SamplerState sampler_linear_clamp;
+
+float2 WorldPosToHeightMapUv(float3 worldPos)
+{
+    return (worldPos.xz - _HeightMapCenter.xz) / _HeightMapSize.xz + 0.5;
+}
+
+float ConvertHeight(half heightSample)
+{
+    float lowerBound = _HeightMapCenter.y - _HeightMapSize.y * 0.5;
+    float upperBound = _HeightMapCenter.y + _HeightMapSize.y * 0.5;
+    
+    return lerp(lowerBound, upperBound, heightSample);
+}
+
+float UvOutOfBounds(float2 uv)
+{
+    float2 q = step(1, uv) + (step(uv, 0));
+    return 1-step(dot(q, q), 0);
+}
+
+float SampleHeightMap( float3 worldPos )
+{
+    float2 uv = WorldPosToHeightMapUv(worldPos);
+    half heightSample = _HeightMapTexture.SampleLevel(sampler_linear_clamp, uv, 0).x;
+
+    heightSample = lerp(heightSample, _HeightMapCenter.y + _HeightMapSize.y * 0.5, UvOutOfBounds(uv));
+    
+    return ConvertHeight(heightSample);
+}
+
+float SampleHeightMap(float3 worldPos, float derivative, inout float2 slope)
+{
+    float2 dd = float2(derivative, 0);
+    float2 uv = WorldPosToHeightMapUv(worldPos);
+    
+    float heightX0 = SampleHeightMap(worldPos - dd.xyy);
+    float heightX1 = SampleHeightMap(worldPos + dd.xyy);
+    float heightY0 = SampleHeightMap(worldPos - dd.yyx);
+    float heightY1 = SampleHeightMap(worldPos + dd.yyx);
+    
+    slope = float2((heightX1 - heightX0) / (dd.x), (heightY1 - heightY0) / (dd.x));
+    
+    return SampleHeightMap(worldPos);
+}
+
+
+float3 domainRepetition(float3 pos, float3 bounds)
+{
+    return pos % bounds;
+}
+
+float3 safeNormalize(float3 value)
+{
+    if (dot(value, value) == 0)
+        return float3(0, 1, 0);
+    return normalize(value);
+
+}
+
+
+// Collision
+float3 collideGround(inout float3 pos, in float3 velocity)
+{
+    float height = SampleHeightMap(pos);
+    
+    if (pos.y > height)
+    {
+        velocity.y += _Gravity * _DeltaTime;
+        return velocity;
+    }
+    pos.y = height;
+    float rebound = lerp(0, abs(velocity.y), _CollisionBounce);
+    return float3(velocity.x, rebound, velocity.z);
+}
+
+
+float3 calcSteerFromForce(float3 forceSum, float3 velocity)
+{
+    float3 force = forceSum * _Speed - velocity;
+    return safeNormalize(force) * min(length(force), _MaxSteerForce);
+}
+
+float3 FlockingForce(uint index)
+{
+    int3 numFlockMates = 0;
+    float3 alignmentSum = 0;
+    float3 cohesionSum = 0;
+    float3 separationSum = 0;
+    
+    float3 flockCenter;
+    
+    float3 positionA = _BoidPositionBuffer[index];
+    float3 velocityA = _BoidVelocityBuffer[index];
+    
+    // Neighborhood Search using Spatial Hash Grids
+    float biggestRadius = max(_PerceptionRadius.x, max(_PerceptionRadius.y, _PerceptionRadius.z));
+    int3 originCell = GetCell3D(positionA, biggestRadius);
+    
+    for (int i = 0; i < 27; i++)
+    {
+        uint hashCell = HashCell3D(originCell + offsets3D[i]);
+        uint key = KeyFromHash(hashCell, _NumBoids);
+        uint currIndex = _SpatialOffsets[key];
+        
+        
+        while (currIndex < _NumBoids)
+        {
+            uint3 indexData = _SpatialIndices[currIndex];
+            currIndex++;
+            // Exit if no longer looking at correct bin
+            if (indexData[2] != key)
+                break;
+			// Skip if hash does not match
+            if (indexData[1] != hashCell)
+                continue;
+            
+            uint neighborIndex = indexData[0];
+        
+            if(neighborIndex == index)
+                continue;
+            
+            float3 positionB = _BoidPositionBuffer[neighborIndex];
+            float3 velocityB = _BoidVelocityBuffer[neighborIndex];
+            
+            float3 offset = positionB - positionA;
+            
+            if (dot(offset, offset) > biggestRadius * biggestRadius)
+                continue;
+            
+            float distance = length(offset);
+            
+            
+            // alignment
+            if(distance != 0 && distance < _PerceptionRadius.x)
+            {
+                numFlockMates.x++;
+                alignmentSum += velocityB;
+            }
+            
+            // cohesion
+            if (distance != 0 && distance < _PerceptionRadius.y)
+            {
+                numFlockMates.y++;
+                cohesionSum += offset;
+                flockCenter += positionB;
+            }
+            
+            // separation
+            if (distance != 0 && distance < _PerceptionRadius.z)
+            {
+                numFlockMates.z++;
+                separationSum -= offset / (distance * distance);
+            }
+        }
+    }
+    
+    float3 alignmentForce = 0;
+    float3 cohesionForce = 0;
+    float3 separationForce = 0;
+
+    if(numFlockMates.x != 0)
+    {
+        alignmentForce = calcSteerFromForce(normalize(alignmentSum), velocityA);
+    }
+    
+    if (numFlockMates.y != 0)
+    {
+        flockCenter /= numFlockMates.y;
+        float3 offsetToFlockCenter = flockCenter - positionA;
+        cohesionForce = calcSteerFromForce((offsetToFlockCenter), velocityA);
+    }
+    
+    if (numFlockMates.z != 0)
+    {
+        separationForce = calcSteerFromForce(normalize(separationSum), velocityA);
+    }
+    
+    float3 acceleration = 0;
+    acceleration += alignmentForce * _ForceWeights.x;
+    acceleration += cohesionForce* _ForceWeights.y;
+    acceleration += separationForce * _ForceWeights.z;
+    
+    return acceleration;
+}
+
+
+float3 ConstrainToRegionForce(uint index)
+{
+    float3 position = _BoidPositionBuffer[index];
+    float3 velocity = _BoidVelocityBuffer[index];
+    
+    float3 offset = _TargetPosition - position;
+    float distance = length(offset);
+    float force = clamp(distance, 0, _TargetSeekClampDistance) / _TargetSeekClampDistance;
+    
+    float3 seekForce = calcSteerFromForce(safeNormalize(offset) * force, velocity);
+    float3 acceleration = seekForce * _TargetSeekStrength;
+
+    return acceleration;
+}
+
+
+[numthreads(THREAD_BLOCK_SIZE,1,1)]
+void FlockingCS (uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    
+    uint randomSeed = index;
+    randomSeed = Hash(randomSeed);
+    
+    float3 currentPosition = _BoidPositionBuffer[index];
+    float3 currentVelocity = _BoidVelocityBuffer[index];
+    
+    float3 noiseInput = float3(currentPosition.x * _NoiseScale, _Time + randomSeed * 0.01f, currentPosition.z * _NoiseScale);
+    
+    float2 slope;
+    float height = SampleHeightMap(currentPosition, 0.1, slope);
+    
+    float3 acceleration = 0;
+    acceleration += FlockingForce(index);
+    acceleration += ConstrainToRegionForce(index);
+    
+    currentVelocity += acceleration * _DeltaTime;
+    
+    if (abs(height - currentPosition.y) < 0.1)
+    {
+        currentVelocity -= float3(slope.x, 0, slope.y) * _DeltaTime;
+    }
+    
+    currentVelocity = safeNormalize(currentVelocity) * clamp(length(currentVelocity), 0, _Speed);
+    
+    currentVelocity.xyz += (GeneratePerlinNoise3D(noiseInput).xyz) * _NoiseStrength.xxx * _DeltaTime.xxx;
+    currentVelocity = collideGround(currentPosition, currentVelocity);
+    
+    currentPosition += currentVelocity * _DeltaTime;
+    
+    //currentPosition = domainRepetition(currentPosition, 2);
+    
+    //currentPosition.y = height;
+    //currentVelocity.y = 0;
+    
+    _BoidPositionBuffer[index] = currentPosition;
+    _BoidVelocityBuffer[index] = currentVelocity;
+}
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void Init(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    
+    float3 currentPosition = 0;
+    float3 currentVelocity = 0;
+    
+    float3 randomVector = RandomVector(index);
+    currentPosition = randomVector * 2 - 1;
+    currentVelocity = randomVector * 2 - 1;
+    
+    currentPosition = index * 1.0 / _NumBoids;
+    currentVelocity = index * 1.0 / _NumBoids;
+    
+    _BoidPositionBuffer[index] = currentPosition + _WorldPos;
+    _BoidVelocityBuffer[index] = currentVelocity * _Speed;
+}
+
+float _HashCellSize;
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void UpdateSpatialHash(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    
+    if (index >= _NumBoids)
+        return;
+    
+    float3 position = _BoidPositionBuffer[index];
+    
+    // Reset offsets
+    _SpatialOffsets[index] = _NumBoids;
+    int3 cell = GetCell3D(position, _HashCellSize);
+    uint hashCell = HashCell3D(cell);
+    uint key = KeyFromHash(hashCell, _NumBoids);
+    _SpatialIndices[index] = uint3(index, hashCell, key);
+}

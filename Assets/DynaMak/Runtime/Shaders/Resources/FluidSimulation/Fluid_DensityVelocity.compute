@@ -1,0 +1,33 @@
+#pragma kernel Diffuse
+
+#include "FluidFieldOperator.hlsl"
+
+float _MinimumDensity;
+float _VelocityStrength;
+
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Diffuse (uint3 id : SV_DispatchThreadID)
+{
+    if( id.x * id.y * id.z != 0 && id.x != _FluidResolution.x - 1 && id.y != _FluidResolution.y - 1 && id.z != _FluidResolution.z - 1)
+    {
+        half4 f = _FluidVolume[id.xyz];
+        half d0 = max(f.w - _MinimumDensity, 0);
+        
+        half dx0  = d0 - max(_FluidVolume[id.xyz - uint3(1, 0, 0)].w - _MinimumDensity, 0);
+        half dx1  = d0 - max(_FluidVolume[id.xyz + uint3(1, 0, 0)].w - _MinimumDensity, 0);
+        half dy0  = d0 - max(_FluidVolume[id.xyz - uint3(0, 1, 0)].w - _MinimumDensity, 0);
+        half dy1  = d0 - max(_FluidVolume[id.xyz + uint3(0, 1, 0)].w - _MinimumDensity, 0);
+        half dz0  = d0 - max(_FluidVolume[id.xyz - uint3(0, 0, 1)].w - _MinimumDensity, 0);
+        half dz1  = d0 - max(_FluidVolume[id.xyz + uint3(0, 0, 1)].w - _MinimumDensity, 0);
+
+        float3 dir = 0;
+        dir.x = dx1 - dx0;
+        dir.y = dy1 - dy0;
+        dir.z = dz1 - dz0;
+
+        f.xyz += dir * _VelocityStrength * _dt;
+        
+        _FluidVolume[id.xyz] = f;
+    }
+}
