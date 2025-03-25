@@ -1,8 +1,6 @@
 #ifndef _INCLUDE_TENTACLE_UITLITY_
 #define _INCLUDE_TENTACLE_UTILITY_
 
-#include "Packages/com.kingart.dow.shaders/Public/HLSL/RandomFunctions.hlsl"
-
 float3 GetBezierPosition(float3 p0, float3 p1, float3 p2, float3 p3, float t)
 {
     float t_ = 1 - t;
@@ -22,10 +20,14 @@ float3 GetBezierDerivative(float3 p0, float3 p1, float3 p2, float3 p3, float t)
         (3 * t * t)     * (p3 - p2);
 }
 
+float rand2(float2 n)
+{
+    return frac(sin(dot(n, float2(12.9898, 4.1414))) * 43758.5453);
+}
 
 float Noise(float seed, float t)
 {
-    return GeneratePerlinNoise2D(float2(seed, t)).x;
+    return rand2(float2(seed, t));
 }
 
 float3 RandomOffset(float2 noiseSeed, float freq, float amp, float t)

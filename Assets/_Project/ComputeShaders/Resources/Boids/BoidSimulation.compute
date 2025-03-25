@@ -4,9 +4,8 @@
 
 #pragma kernel UpdateSpatialHash
 
-#include "Packages/com.kingart.dow.shaders/Public/HLSL/RandomFunctions.hlsl"
-#include "Packages/com.kingart.dow.shaders/Public/HLSL/SpatialHashGrids.hlsl"
-#include "Packages/com.unity.visualeffectgraph/Shaders/VFXNoise.hlsl"
+#include "../SpatialHashing/RandomFunctions.hlsl"
+#include "../SpatialHashing/SpatialHashGrids.hlsl"
 
 #include "BoidParameters.hlsl"
 
@@ -41,24 +40,7 @@ float _NoiseStrength;
 float _NoiseScale;
 
 
-// Height Map
-Texture2D<half4> _HeightMapTexture;
-float3 _HeightMapCenter;
-float3 _HeightMapSize;
 SamplerState sampler_linear_clamp;
-
-float2 WorldPosToHeightMapUv(float3 worldPos)
-{
-    return (worldPos.xz - _HeightMapCenter.xz) / _HeightMapSize.xz + 0.5;
-}
-
-float ConvertHeight(half heightSample)
-{
-    float lowerBound = _HeightMapCenter.y - _HeightMapSize.y * 0.5;
-    float upperBound = _HeightMapCenter.y + _HeightMapSize.y * 0.5;
-    
-    return lerp(lowerBound, upperBound, heightSample);
-}
 
 float UvOutOfBounds(float2 uv)
 {
@@ -66,30 +48,6 @@ float UvOutOfBounds(float2 uv)
     return 1-step(dot(q, q), 0);
 }
 
-float SampleHeightMap( float3 worldPos )
-{
-    float2 uv = WorldPosToHeightMapUv(worldPos);
-    half heightSample = _HeightMapTexture.SampleLevel(sampler_linear_clamp, uv, 0).x;
-
-    heightSample = lerp(heightSample, _HeightMapCenter.y + _HeightMapSize.y * 0.5, UvOutOfBounds(uv));
-    
-    return ConvertHeight(heightSample);
-}
-
-float SampleHeightMap(float3 worldPos, float derivative, inout float2 slope)
-{
-    float2 dd = float2(derivative, 0);
-    float2 uv = WorldPosToHeightMapUv(worldPos);
-    
-    float heightX0 = SampleHeightMap(worldPos - dd.xyy);
-    float heightX1 = SampleHeightMap(worldPos + dd.xyy);
-    float heightY0 = SampleHeightMap(worldPos - dd.yyx);
-    float heightY1 = SampleHeightMap(worldPos + dd.yyx);
-    
-    slope = float2((heightX1 - heightX0) / (dd.x), (heightY1 - heightY0) / (dd.x));
-    
-    return SampleHeightMap(worldPos);
-}
 
 
 float3 domainRepetition(float3 pos, float3 bounds)
@@ -109,7 +67,7 @@ float3 safeNormalize(float3 value)
 // Collision
 float3 collideGround(inout float3 pos, in float3 velocity)
 {
-    float height = SampleHeightMap(pos);
+    float height = -100;
     
     if (pos.y > height)
     {
@@ -253,16 +211,9 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
     
-    uint randomSeed = index;
-    randomSeed = Hash(randomSeed);
     
     float3 currentPosition = _BoidPositionBuffer[index];
     float3 currentVelocity = _BoidVelocityBuffer[index];
-    
-    float3 noiseInput = float3(currentPosition.x * _NoiseScale, _Time + randomSeed * 0.01f, currentPosition.z * _NoiseScale);
-    
-    float2 slope;
-    float height = SampleHeightMap(currentPosition, 0.1, slope);
     
     float3 acceleration = 0;
     acceleration += FlockingForce(index);
@@ -270,14 +221,8 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
     
     currentVelocity += acceleration * _DeltaTime;
     
-    if (abs(height - currentPosition.y) < 0.1)
-    {
-        currentVelocity -= float3(slope.x, 0, slope.y) * _DeltaTime;
-    }
-    
     currentVelocity = safeNormalize(currentVelocity) * clamp(length(currentVelocity), 0, _Speed);
     
-    currentVelocity.xyz += (GeneratePerlinNoise3D(noiseInput).xyz) * _NoiseStrength.xxx * _DeltaTime.xxx;
     currentVelocity = collideGround(currentPosition, currentVelocity);
     
     currentPosition += currentVelocity * _DeltaTime;
