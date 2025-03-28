@@ -1,0 +1,101 @@
+#pragma kernel FlockingCS
+#pragma kernel Init
+
+#pragma kernel UpdateSpatialHash
+
+#include "../SpatialHashing/RandomFunctions.hlsl"
+#include "../SpatialHashing/SpatialHashGrids.hlsl"
+
+#define THREAD_BLOCK_SIZE 256
+
+uint _NumBoids;
+
+float _Time;
+float _DeltaTime;
+
+float3      _WorldPos;
+float4x4    _WorldMatrix;
+
+RWStructuredBuffer<float3> _BoidPositionBuffer;
+RWStructuredBuffer<float3> _BoidVelocityBuffer;
+RWStructuredBuffer<float3> _BoidNormalBuffer;
+
+
+
+float _Speed;
+
+SamplerState sampler_linear_clamp;
+
+float UvOutOfBounds(float2 uv)
+{
+    float2 q = step(1, uv) + (step(uv, 0));
+    return 1-step(dot(q, q), 0);
+}
+
+
+float3 safeNormalize(float3 value)
+{
+    if (dot(value, value) == 0)
+        return float3(0, 1, 0);
+    return normalize(value);
+
+}
+
+
+
+[numthreads(THREAD_BLOCK_SIZE,1,1)]
+void FlockingCS (uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    
+    float3 currentPosition = _BoidPositionBuffer[index];
+    float3 currentVelocity = _BoidVelocityBuffer[index];
+    
+    float3 acceleration = 0;
+    
+    currentVelocity += acceleration * _DeltaTime;
+    
+    currentVelocity = safeNormalize(currentVelocity) * clamp(length(currentVelocity), 0, _Speed);
+    
+    currentPosition += currentVelocity * _DeltaTime;
+    
+    
+    _BoidPositionBuffer[index] = currentPosition;
+    _BoidVelocityBuffer[index] = currentVelocity;
+}
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void Init(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+
+    float stagger = index * 2.0;
+    
+    float3 currentPosition = - _WorldMatrix._m20_m21_m22 * stagger;
+    float3 currentNormal = _WorldMatrix._m10_m11_m12;
+    float3 currentVelocity = _WorldMatrix._m20_m21_m22;
+    
+    _BoidPositionBuffer[index] = currentPosition + _WorldPos;
+    _BoidVelocityBuffer[index] = currentVelocity * _Speed;
+    _BoidNormalBuffer[index] = currentNormal;
+}
+
+float _HashCellSize;
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void UpdateSpatialHash(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    
+    if (index >= _NumBoids)
+        return;
+    
+    float3 position = _BoidPositionBuffer[index];
+    
+    // Reset offsets
+    _SpatialOffsets[index] = _NumBoids;
+    int3 cell = GetCell3D(position, _HashCellSize);
+    uint hashCell = HashCell3D(cell);
+    uint key = KeyFromHash(hashCell, _NumBoids);
+    _SpatialIndices[index] = uint3(index, hashCell, key);
+}
