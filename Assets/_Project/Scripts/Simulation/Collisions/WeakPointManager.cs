@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Beakstorm.ComputeHelpers;
+using Beakstorm.Simulation.Particles;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -11,6 +13,8 @@ namespace Beakstorm.Simulation.Collisions
     {
         [SerializeField] private ComputeShader compute;
         [SerializeField] private Transform damageDealer;
+
+        [SerializeField] private BoidManager boidManager;
         
         public static WeakPointManager Instance;
 
@@ -37,6 +41,9 @@ namespace Beakstorm.Simulation.Collisions
         {
             WeakPointBuffer?.Dispose();
             DamageBuffer?.Dispose();
+
+            _request.WaitForCompletion();
+            _damageArray.Dispose();
         }
 
         private void Update()
@@ -45,7 +52,11 @@ namespace Beakstorm.Simulation.Collisions
             UpdatePositions();
             
             RequestDamageValues();
-            Collide(damageDealer.position);
+            
+            CollideBoids();
+            
+            if (damageDealer)
+                Collide(damageDealer.position);
         }
 
         private void UpdatePositions()
@@ -114,6 +125,26 @@ namespace Beakstorm.Simulation.Collisions
             compute.SetInt("_Count", WeakPoints.Count);
             
             compute.Dispatch(kernel, 1, 1, 1);
+        }
+
+        private void CollideBoids()
+        {
+            if (!boidManager)
+                return;
+            
+            int kernel = compute.FindKernel("CollideBoids");
+            
+            compute.SetBuffer(kernel, "_WeakPointPositions", WeakPointBuffer);
+            compute.SetBuffer(kernel, "_DamageBuffer", DamageBuffer);
+            compute.SetInt("_Count", WeakPoints.Count);
+
+            compute.SetBuffer(kernel, "_SpatialIndices", boidManager.SpatialIndicesBuffer);
+            compute.SetBuffer(kernel, "_SpatialOffsets", boidManager.SpatialOffsetsBuffer);
+            compute.SetBuffer(kernel, "_BoidPositionBuffer", boidManager.PositionBuffer);
+            compute.SetFloat("_HashCellSize", boidManager.HashCellSize);
+            compute.SetFloat("_NumBoids", boidManager.Capacity);
+            
+            compute.DispatchExact(kernel, _bufferSize);
         }
     }
 }

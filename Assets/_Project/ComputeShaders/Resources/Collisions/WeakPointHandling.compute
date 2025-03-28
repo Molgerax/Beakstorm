@@ -1,0 +1,88 @@
+#pragma kernel Collide
+#pragma kernel FlushDamage
+#pragma kernel CollideBoids
+
+#include "../SpatialHashing/SpatialHashGrids.hlsl"
+
+StructuredBuffer<float4> _WeakPointPositions;
+RWStructuredBuffer<int> _DamageBuffer;
+
+int _Count;
+float3 _Position;
+int _Index;
+int _DamageDealt;
+
+
+
+[numthreads(1,1,1)]
+void Collide (uint3 id : SV_DispatchThreadID)
+{
+    for (int i = 0; i < _Count; i++)
+    {
+        float4 posR = _WeakPointPositions.Load(i);
+        float3 diff = _Position - posR.xyz;
+        float len = length(diff);
+
+        if (len < posR.w)
+        {
+            _DamageBuffer[i] += 60;
+        }
+    }
+}
+
+[numthreads(1,1,1)]
+void FlushDamage (uint3 id : SV_DispatchThreadID)
+{
+    _DamageBuffer[_Index] -= _DamageDealt;
+}
+
+
+
+StructuredBuffer<float3> _BoidPositionBuffer;
+float _HashCellSize;
+uint _NumBoids;
+
+[numthreads(16,1,1)]
+void CollideBoids(uint3 id : SV_DispatchThreadID)
+{
+    int index = id.x;
+
+    if (index >= _Count)
+        return;
+    
+    float4 posR = _WeakPointPositions.Load(index);
+    float3 positionA = posR.xyz;
+    float radius = posR.w;
+    
+    // Neighborhood Search using Spatial Hash Grids
+    int3 originCell = GetCell3D(positionA, _HashCellSize);
+    
+    for (int i = 0; i < 27; i++)
+    {
+        uint hashCell = HashCell3D(originCell + offsets3D[i]);
+        uint key = KeyFromHash(hashCell, _NumBoids);
+        uint currIndex = _SpatialOffsets[key];
+        
+        while (currIndex < _NumBoids)
+        {
+            uint3 indexData = _SpatialIndices[currIndex];
+            currIndex++;
+            // Exit if no longer looking at correct bin
+            if (indexData[2] != key)
+                break;
+			// Skip if hash does not match
+            if (indexData[1] != hashCell)
+                continue;
+            
+            uint neighborIndex = indexData[0];
+            float3 positionB = _BoidPositionBuffer[neighborIndex]; 
+            float3 offset = positionB - positionA;
+            
+            if (dot(offset, offset) > (_HashCellSize + radius) * (_HashCellSize + radius))
+                continue;
+
+            if (dot(offset, offset) <= radius * radius)
+                _DamageBuffer[index] += 1;
+        }
+    }
+}
