@@ -17,10 +17,6 @@ Shader "DynaMak/Particles/Procedural URP"
     HLSLINCLUDE
 
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-
-    //#include "AutoLight.cginc"
-    //#include "Lighting.cginc"
-    
 	#include "ParticleRenderUtility.hlsl"
     
     
@@ -65,85 +61,6 @@ Shader "DynaMak/Particles/Procedural URP"
     StructuredBuffer<RenderTri> _TriangleBufferShader;
 
     CBUFFER_END
-    
-    // FUNCTIONS
-    inline float4 ProjectionToTextureSpace(float4 pos)
-	{
-		float4 textureSpacePos = pos;
-		#if defined(UNITY_HALF_TEXEL_OFFSET)
-			textureSpacePos.xy = float2(textureSpacePos.x, textureSpacePos.y * _ProjectionParams.x) + textureSpacePos.w * _ScreenParams.zw;
-		#else
-			textureSpacePos.xy = float2(textureSpacePos.x, textureSpacePos.y * _ProjectionParams.x) + textureSpacePos.w;
-		#endif
-			textureSpacePos.xy = float2(textureSpacePos.x / textureSpacePos.w, textureSpacePos.y / textureSpacePos.w) * 0.5;
-		return textureSpacePos;
-	}
-
-    
-/*
-    half4 fragAmbient(v2f i) : SV_TARGET
-    {
-	    float4 texSample = tex2D(_MainTex, i.uv * _MainTex_ST.xy + _MainTex_ST.zw);
-
-        half3 col = texSample.rgb * _Color.rgb * lerp(1, i.color.rgb, _VertexColorToBase);
-    	float alpha = texSample.a * i.color.a;
-
-    	float3 normalMap = normalize(UnpackNormal(tex2D(_NormalMap, i.uv * _MainTex_ST.xy + _MainTex_ST.zw)));
-		float3 normal = BlendNormals(i.normal, normalMap);
-    	
-	    float3 vertexToLight = _WorldSpaceLightPos0.xyz - i.worldPos;
-	    float vertexToLightDist = length(vertexToLight);
-	    float attenuation = lerp(1, 1 / vertexToLightDist, _WorldSpaceLightPos0.w);
-
-	    float3 lightDir = lerp(_WorldSpaceLightPos0.xyz, vertexToLight, _WorldSpaceLightPos0.w);
-    	
-    	UNITY_LIGHT_ATTENUATION(lightAttenuation, i, i.worldPos)
-
-	    float3 diffRefl = attenuation * _LightColor0.rgb * col.rgb * max(0, dot(normal, lightDir)) * lightAttenuation;
-	    float3 ambientLight = ShadeSH9(half4(normal, 1) ) * col.rgb;
-
-    	fixed3 emissiveMap = tex2D(_EmissiveMap, i.uv * _MainTex_ST.xy + _MainTex_ST.zw);
-    	float3 emissive = emissiveMap * _EmissiveColor * lerp(1, i.color, _VertexColorToEmissive);
-
-	    #if _SHADOWMODE_ON
-    	
-    		float closestDepth = tex2D(_ShadowMapTexture, i.shadowCoord).a;
-    	
-    		float bias = max(0.05 * (1.0 - dot(i.normal, lightDir)), 0.005);
-    		float shadow =  closestDepth;
-			diffRefl.rgb *= shadow;
-	    #endif
-    	
-	    return fixed4(ambientLight + diffRefl + emissive, alpha);
-    }
-
-    fixed4 fragAdd(v2f i) : SV_TARGET
-    {
-    	float4 texSample = tex2D(_MainTex, i.uv * _MainTex_ST.xy + _MainTex_ST.zw);
-
-        fixed3 col = texSample.rgb * _Color.rgb * lerp(1, i.color.rgb, _VertexColorToBase);
-    	float alpha = texSample.a * i.color.a;
-
-    	float3 normalMap = normalize(UnpackNormal(tex2D(_NormalMap, i.uv * _MainTex_ST.xy + _MainTex_ST.zw)));
-		float3 normal = BlendNormals(i.normal, normalMap);
-
-    	
-        float3 vertexToLight = _WorldSpaceLightPos0.xyz - i.worldPos.xyz;
-		float vertexToLightDist = length(vertexToLight);
-		float attenuation = lerp(1, 1 / vertexToLightDist, _WorldSpaceLightPos0.w);
-
-		float3 lightDir = lerp(_WorldSpaceLightPos0.xyz, vertexToLight, _WorldSpaceLightPos0.w);
-		
-
-		float3 diffRefl = attenuation * _LightColor0.rgb * col.rgb * max(0, dot(normal, lightDir)) * lightAttenuation;
-
-		#if _SHADOWMODE_ON
-			diffRefl.rgb *= tex2D(_ShadowMapTexture, i.shadowCoord).a;
-		#endif
-
-        return float4(diffRefl, alpha);
-    }
-*/
     ENDHLSL
   
     SubShader
@@ -163,12 +80,17 @@ Shader "DynaMak/Particles/Procedural URP"
 
         	#define _SPECULAR_COLOR
         	
-        	#pragma shader_feature_fragment _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            #pragma shader_feature_fragment _ _SHADOWS_SOFT
+        	#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile _ EVALUATE_SH_MIXED EVALUATE_SH_VERTEX
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
 
-            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+        	#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
             #pragma multi_compile_fragment _ _LIGHT_COOKIES
+        	#pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
             #pragma multi_compile _ _LIGHT_LAYERS
             #pragma multi_compile _ _FORWARD_PLUS
             #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
@@ -183,21 +105,6 @@ Shader "DynaMak/Particles/Procedural URP"
         	
         	ENDHLSL
 		}
-    	/*
-    	Pass //Base without Ambient Light
-    	{
-	        Tags { "LightMode" = "ForwardAdd" "RenderType"="Opaque" "Queue" = "Geometry"}
-        	Blend One One
-	
-        	
-        	HLSLPROGRAM
-	
-        	#pragma vertex vert
-			#pragma fragment fragAdd
-        	
-        	ENDHLSL
-		}
-    	*/
     	
     	
         Pass //Shadow Caster
