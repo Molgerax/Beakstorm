@@ -1,4 +1,4 @@
-using System;
+using UltEvents;
 using UnityEngine;
 
 namespace Beakstorm.Simulation.Collisions
@@ -9,7 +9,10 @@ namespace Beakstorm.Simulation.Collisions
         [SerializeField] private int currentHealth;
         [SerializeField] private float radius = 1;
 
+        [SerializeField] public UltEvent onHealthZero;
+
         public Vector4 PositionRadius => new(transform.position.x, transform.position.y, transform.position.z, radius);
+        public int MaxHealth => maxHealth;
         public int CurrentHealth => currentHealth;
         public float CurrentHealth01 => (float) currentHealth / maxHealth;
         public bool IsDestroyed => currentHealth <= 0;
@@ -47,6 +50,7 @@ namespace Beakstorm.Simulation.Collisions
         public void HealthZero()
         {
             currentHealth = 0;
+            onHealthZero?.Invoke();
             Unsubscribe();
         }
     }
