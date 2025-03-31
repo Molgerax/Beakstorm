@@ -46,7 +46,8 @@ namespace Beakstorm.Simulation.Particles
         private ComputeBuffer _spatialOffsetsBuffer;
         
 
-        private GraphicsBuffer _positionBuffer;
+        private GraphicsBuffer _positionBuffer;        
+        private GraphicsBuffer _oldPositionBuffer;
         private GraphicsBuffer _velocityBuffer;
         private GraphicsBuffer _normalBuffer;
         private GraphicsBuffer _dataBuffer;
@@ -59,6 +60,7 @@ namespace Beakstorm.Simulation.Particles
         public ComputeBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;
         public ComputeBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
         public GraphicsBuffer PositionBuffer => _positionBuffer;
+        public GraphicsBuffer OldPositionBuffer => _oldPositionBuffer;
         public int Capacity => _capacity;
         public float HashCellSize => _hashCellSize;
 
@@ -94,6 +96,7 @@ namespace Beakstorm.Simulation.Particles
             ReleaseBuffers();
 
             _positionBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(float));
+            _oldPositionBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(float));
             _velocityBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(float));
             _normalBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(float));
             _dataBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 1 * sizeof(uint));
@@ -112,6 +115,9 @@ namespace Beakstorm.Simulation.Particles
         {
             _positionBuffer?.Release();
             _positionBuffer = null;
+
+            _oldPositionBuffer?.Release();
+            _oldPositionBuffer = null;
 
             _velocityBuffer?.Release();
             _velocityBuffer = null;
@@ -157,6 +163,7 @@ namespace Beakstorm.Simulation.Particles
 
 
             _boidComputeShader.SetBuffer(kernelId, "_BoidPositionBuffer", _positionBuffer);
+            _boidComputeShader.SetBuffer(kernelId, "_BoidOldPositionBuffer", _oldPositionBuffer);
             _boidComputeShader.SetBuffer(kernelId, "_BoidVelocityBuffer", _velocityBuffer);
             _boidComputeShader.SetBuffer(kernelId, "_BoidNormalBuffer", _normalBuffer);
             _boidComputeShader.SetBuffer(kernelId, "_BoidDataBuffer", _dataBuffer);
@@ -190,6 +197,7 @@ namespace Beakstorm.Simulation.Particles
             
             _propertyBlock ??= new MaterialPropertyBlock();
             _propertyBlock.SetBuffer("_PositionBuffer", _positionBuffer);
+            _propertyBlock.SetBuffer("_OldPositionBuffer", _oldPositionBuffer);
             _propertyBlock.SetBuffer("_VelocityBuffer", _velocityBuffer);
             _propertyBlock.SetBuffer("_NormalBuffer", _normalBuffer);
             

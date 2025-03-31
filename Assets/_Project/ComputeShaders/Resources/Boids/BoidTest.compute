@@ -17,6 +17,7 @@ float3      _WorldPos;
 float4x4    _WorldMatrix;
 
 RWStructuredBuffer<float3> _BoidPositionBuffer;
+RWStructuredBuffer<float3> _BoidOldPositionBuffer;
 RWStructuredBuffer<float3> _BoidVelocityBuffer;
 RWStructuredBuffer<float3> _BoidNormalBuffer;
 
@@ -49,19 +50,18 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
     const uint index = id.x;
     
     float3 currentPosition = _BoidPositionBuffer[index];
-    float3 currentVelocity = _BoidVelocityBuffer[index];
-    
-    float3 acceleration = 0;
-    
-    currentVelocity += acceleration * _DeltaTime;
-    
-    currentVelocity = safeNormalize(currentVelocity) * clamp(length(currentVelocity), 0, _Speed);
-    
-    currentPosition += currentVelocity * _DeltaTime;
-    
+    float3 oldPosition = _BoidOldPositionBuffer[index];
+
+    float3 velocity = (currentPosition - oldPosition) / _DeltaTime;
+
+    oldPosition = currentPosition;
+    velocity = safeNormalize(velocity) * clamp(length(velocity), 0, _Speed);
+    currentPosition += velocity * _DeltaTime;
     
     _BoidPositionBuffer[index] = currentPosition;
-    _BoidVelocityBuffer[index] = currentVelocity;
+    _BoidOldPositionBuffer[index] = oldPosition;
+
+    _BoidVelocityBuffer[index] = velocity;
 }
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
@@ -71,12 +71,14 @@ void Init(uint3 id : SV_DispatchThreadID)
 
     float stagger = index * 2.0;
     
-    float3 currentPosition = - _WorldMatrix._m20_m21_m22 * stagger;
+    float3 currentPosition = - _WorldMatrix._m20_m21_m22 * stagger + _WorldPos;
     float3 currentNormal = _WorldMatrix._m10_m11_m12;
-    float3 currentVelocity = _WorldMatrix._m20_m21_m22;
+    float3 currentVelocity = _WorldMatrix._m20_m21_m22 * _Speed;
+    float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
     
-    _BoidPositionBuffer[index] = currentPosition + _WorldPos;
-    _BoidVelocityBuffer[index] = currentVelocity * _Speed;
+    _BoidPositionBuffer[index] = currentPosition;
+    _BoidOldPositionBuffer[index] = oldPosition;
+    _BoidVelocityBuffer[index] = currentVelocity;
     _BoidNormalBuffer[index] = currentNormal;
 }
 

@@ -141,6 +141,7 @@ namespace Beakstorm.Simulation.Collisions
             compute.SetBuffer(kernel, "_SpatialIndices", boidManager.SpatialIndicesBuffer);
             compute.SetBuffer(kernel, "_SpatialOffsets", boidManager.SpatialOffsetsBuffer);
             compute.SetBuffer(kernel, "_BoidPositionBuffer", boidManager.PositionBuffer);
+            compute.SetBuffer(kernel, "_BoidOldPositionBuffer", boidManager.OldPositionBuffer);
             compute.SetFloat("_HashCellSize", boidManager.HashCellSize);
             compute.SetFloat("_NumBoids", boidManager.Capacity);
             

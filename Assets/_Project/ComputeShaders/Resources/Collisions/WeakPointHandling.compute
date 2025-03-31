@@ -39,8 +39,18 @@ void FlushDamage (uint3 id : SV_DispatchThreadID)
 
 
 StructuredBuffer<float3> _BoidPositionBuffer;
+StructuredBuffer<float3> _BoidOldPositionBuffer;
 float _HashCellSize;
 uint _NumBoids;
+
+float lineSphereIntersection(float3 p1, float3 p2, float3 p3, float r)
+{
+    float3 d = p2 - p1;
+    float a = dot(d, d);
+    float b = 2 * dot(d, p1 - p3);
+    float c = dot(p3, p3) + dot(p1, p1) - 2 * dot(p3, p1) - r * r;
+    return b * b - 4 * a * c;
+}
 
 [numthreads(16,1,1)]
 void CollideBoids(uint3 id : SV_DispatchThreadID)
@@ -81,7 +91,12 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
             if (dot(offset, offset) > (_HashCellSize + radius) * (_HashCellSize + radius))
                 continue;
 
-            if (dot(offset, offset) <= radius * radius)
+            if (dot(offset, offset) > radius * radius)
+                continue;
+            
+            float3 oldPositionB = _BoidOldPositionBuffer[neighborIndex]; 
+            float3 oldOffset = oldPositionB - positionA;
+            if (dot(oldOffset, oldOffset) > radius * radius)
                 _DamageBuffer[index] += 1;
         }
     }
