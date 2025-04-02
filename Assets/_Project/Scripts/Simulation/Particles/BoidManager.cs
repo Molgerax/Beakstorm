@@ -24,6 +24,11 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField]
         private float _speed;
 
+        [SerializeField] 
+        private BoidStateSettings neutralState;
+        [SerializeField] 
+        private BoidStateSettings exposedState;
+
         [Header("Collision")]
         [SerializeField]
         private float _floorYLevel = 0f;
@@ -161,6 +166,8 @@ namespace Beakstorm.Simulation.Particles
 
             _boidComputeShader.SetFloat("_CollisionRadius", _collisionRadius);
 
+            _boidComputeShader.SetVector("_NeutralStateSettings", neutralState);
+            _boidComputeShader.SetVector("_ExposedStateSettings", exposedState);
 
             _boidComputeShader.SetBuffer(kernelId, "_BoidPositionBuffer", _positionBuffer);
             _boidComputeShader.SetBuffer(kernelId, "_BoidOldPositionBuffer", _oldPositionBuffer);
