@@ -7,11 +7,12 @@
 #include "../SpatialHashing/RandomFunctions.hlsl"
 #include "../SpatialHashing/SpatialHashGrids.hlsl"
 
-#include "BoidParameters.hlsl"
-
 #define THREAD_BLOCK_SIZE 256
 
 uint _NumBoids;
+
+float3      _WorldPos;
+float4x4    _WorldMatrix;
 
 float _Time;
 float _DeltaTime;
