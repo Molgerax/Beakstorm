@@ -48,6 +48,7 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 	float3 right = SafeNormalize(cross(up, forward));
 
 	float3x3 rotMatrix = float3x3(right, up, forward);
+	rotMatrix = transpose(rotMatrix);
 	
 	float3 worldPos = mul(rotMatrix, input.positionOS) + meshPositionWS;
 	
