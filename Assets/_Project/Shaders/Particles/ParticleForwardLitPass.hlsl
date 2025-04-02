@@ -35,6 +35,14 @@ struct Interpolators {
 	uint instanceID		: SV_InstanceID;
 };
 
+float3 hsv2rgb(float3 hsv)
+{
+	float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+	float3 p = abs(frac(hsv.xxx + K.xyz) * 6.0 - K.www);
+
+	return hsv.z * lerp(K.xxx, clamp(p - K.xxx, 0.0, 1.0), hsv.y);
+}
+
 Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 {
 	Interpolators output;
@@ -42,7 +50,8 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 	float3 meshPositionWS = _PositionBuffer[instance_id];
 	float3 meshNormalWS = _NormalBuffer[instance_id];
 	float3 meshVelocityWS = _VelocityBuffer[instance_id];
-
+	float4 data = _DataBuffer[instance_id];
+	
 	float3 forward = SafeNormalize(meshVelocityWS);
 	float3 up = meshNormalWS;
 	float3 right = SafeNormalize(cross(up, forward));
@@ -54,7 +63,7 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 	
 	output.positionCS = TransformWorldToHClip(worldPos);
 
-	output.color = 1;
+	output.color = float4(hsv2rgb(float3(data.w * 0.25, 1, 1)), 1);
 	output.normalWS = mul(rotMatrix, input.normalOS);
 	output.uv = input.uv;
 	output.positionWS = worldPos;
@@ -81,6 +90,7 @@ Interpolators DepthOnlyVertex(Attributes input, uint instance_id: SV_InstanceID)
 	float3 right = SafeNormalize(cross(up, forward));
 
 	float3x3 rotMatrix = float3x3(right, up, forward);
+	rotMatrix = transpose(rotMatrix);
 	
 	float3 worldPos = mul(rotMatrix, input.positionOS) + meshPositionWS;
 
@@ -115,7 +125,7 @@ float4 Fragment(Interpolators input) : SV_TARGET{
 	lightingInput.bakedGI = SAMPLE_GI(input.lightmapUV, input.vertexSH, input.normalWS);
 	lightingInput.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
 	SurfaceData surfaceInput = (SurfaceData)0;
-	surfaceInput.albedo = colorSample.rgb * _Color.rgb;
+	surfaceInput.albedo = colorSample.rgb * _Color.rgb * input.color.rgb;
 	surfaceInput.alpha = colorSample.a * _Color.a;
 	surfaceInput.specular = 1;
 	surfaceInput.smoothness = 0.5;

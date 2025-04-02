@@ -58,8 +58,10 @@ Shader "BeakStorm/Particles/Instanced URP"
 	float _VertexColorToEmissive;
     
     StructuredBuffer<float3> _PositionBuffer;
+    StructuredBuffer<float3> _OldPositionBuffer;
     StructuredBuffer<float3> _VelocityBuffer;
     StructuredBuffer<float3> _NormalBuffer;
+    StructuredBuffer<float4> _DataBuffer;
 
     CBUFFER_END
     ENDHLSL
