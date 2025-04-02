@@ -6,26 +6,10 @@
 #include "../SpatialHashing/RandomFunctions.hlsl"
 #include "../SpatialHashing/SpatialHashGrids.hlsl"
 
+#include "BoidParameters.hlsl"
+
 #define THREAD_BLOCK_SIZE 256
 
-uint _NumBoids;
-
-float _Time;
-float _DeltaTime;
-
-float3      _WorldPos;
-float4x4    _WorldMatrix;
-
-RWStructuredBuffer<float3> _BoidPositionBuffer;
-RWStructuredBuffer<float3> _BoidOldPositionBuffer;
-RWStructuredBuffer<float3> _BoidVelocityBuffer;
-RWStructuredBuffer<float3> _BoidNormalBuffer;
-
-
-
-float _Speed;
-
-SamplerState sampler_linear_clamp;
 
 float UvOutOfBounds(float2 uv)
 {
