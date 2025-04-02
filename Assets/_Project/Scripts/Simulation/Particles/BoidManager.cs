@@ -1,3 +1,4 @@
+using System;
 using Beakstorm.ComputeHelpers;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -21,15 +22,14 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField] private Material material;
         
         [Header("Boid Settings")]
-        [SerializeField]
-        private float _speed;
-
         [SerializeField] 
         private BoidStateSettings neutralState;
         [SerializeField] 
         private BoidStateSettings exposedState;
 
         [Header("Collision")]
+        [SerializeField]
+        private Vector3 simulationSpace = Vector3.one;
         [SerializeField]
         private float _floorYLevel = 0f;
         [SerializeField]
@@ -96,6 +96,7 @@ namespace Beakstorm.Simulation.Particles
         }
         
 
+        [ContextMenu("Re-Init")]
         private void InitializeBuffers()
         {
             ReleaseBuffers();
@@ -104,7 +105,7 @@ namespace Beakstorm.Simulation.Particles
             _oldPositionBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(float));
             _velocityBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(float));
             _normalBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(float));
-            _dataBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 1 * sizeof(uint));
+            _dataBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 4 * sizeof(uint));
 
             // Spatial Hash Buffers
             _spatialIndicesBuffer = new ComputeBuffer(_capacity, 3 * sizeof(int), ComputeBufferType.Structured);
@@ -154,11 +155,11 @@ namespace Beakstorm.Simulation.Particles
 
             _boidComputeShader.SetVector("_WorldPos", transform.position);
             _boidComputeShader.SetMatrix("_WorldMatrix", transform.localToWorldMatrix);
+            
+            _boidComputeShader.SetVector("_SimulationSpace", simulationSpace);
 
             _boidComputeShader.SetFloat("_Time", Time.time);
             _boidComputeShader.SetFloat("_DeltaTime", timeStep);
-
-            _boidComputeShader.SetFloat("_Speed", _speed);
 
             _boidComputeShader.SetFloat("_FloorYLevel", _floorYLevel);
             _boidComputeShader.SetFloat("_CollisionBounce", _collisionBounce);
@@ -166,8 +167,8 @@ namespace Beakstorm.Simulation.Particles
 
             _boidComputeShader.SetFloat("_CollisionRadius", _collisionRadius);
 
-            _boidComputeShader.SetVector("_NeutralStateSettings", neutralState);
-            _boidComputeShader.SetVector("_ExposedStateSettings", exposedState);
+            _boidComputeShader.SetBoidStateSettings("_Neutral", neutralState);
+            _boidComputeShader.SetBoidStateSettings("_Exposed", exposedState);
 
             _boidComputeShader.SetBuffer(kernelId, "_BoidPositionBuffer", _positionBuffer);
             _boidComputeShader.SetBuffer(kernelId, "_BoidOldPositionBuffer", _oldPositionBuffer);
@@ -207,6 +208,7 @@ namespace Beakstorm.Simulation.Particles
             _propertyBlock.SetBuffer("_OldPositionBuffer", _oldPositionBuffer);
             _propertyBlock.SetBuffer("_VelocityBuffer", _velocityBuffer);
             _propertyBlock.SetBuffer("_NormalBuffer", _normalBuffer);
+            _propertyBlock.SetBuffer("_DataBuffer", _dataBuffer);
             
             RenderParams rp = new RenderParams(material)
             {
@@ -223,6 +225,12 @@ namespace Beakstorm.Simulation.Particles
             
             
             Graphics.RenderMeshPrimitives(in rp, mesh, 0, _capacity);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(Vector3.zero, simulationSpace);
         }
     }
 }

@@ -7,6 +7,7 @@
 #include "../SpatialHashing/SpatialHashGrids.hlsl"
 
 #include "BoidParameters.hlsl"
+#include "BoidStateMachine.hlsl"
 
 #define THREAD_BLOCK_SIZE 256
 
@@ -26,6 +27,214 @@ float3 safeNormalize(float3 value)
 
 }
 
+float3 limitVector(float3 v, float maxLength)
+{
+    if (dot(v, v) == 0)
+        return 0;
+    float len = length(v);
+    return (v / len) * min(len, maxLength);
+}
+
+float3 clampVector(float3 v, float min, float max)
+{
+    if (dot(v, v) == 0)
+        return 0;
+    float len = length(v);
+    return (v / len) * clamp(len, min, max);
+}
+
+float3 calcSteerForce(float3 steer, float3 currentVelocity, float maxSpeed, float maxForce)
+{
+    float3 desiredVelocity = safeNormalize(steer) * maxSpeed;
+    return limitVector(desiredVelocity - currentVelocity, maxForce);
+}
+
+float sdfBox(float3 p, float3 c, float3 size)
+{
+    float3 q = abs(p - c) - size;
+    return length(max(q, 0)) + min(max(q.x, max(q.y, q.z)), 0);
+}
+inline float3 inverseLerp(float3 from, float3 to, float3 value)
+{
+    return (value -from) / (to - from);
+}
+
+float3 getLargest(float3 value)
+{
+    float3 firstTest = step(value.yzx, value);
+    float3 secondTest = step(value.zxy, value);
+    return firstTest * secondTest;
+}
+float3 ClosestPointOnBox(float3 center, float3 bounds, float3 p)
+{
+    float3 boxmin = center - bounds;
+    float3 boxmax = center + bounds;
+
+    
+    float3 relative = saturate(inverseLerp(boxmin, boxmax, p));
+    float3 snapped = step(0.5, relative);
+    float3 closest = getLargest(abs(relative - 0.5));
+    
+    
+    return lerp(boxmin, boxmax, snapped) * closest + (1 - closest) * p;
+}
+
+
+float3 forceFromBounds(float3 pos)
+{
+    float dist = step(0, sdfBox(pos, 0, _SimulationSpace));
+    float3 p = ClosestPointOnBox(0, _SimulationSpace * 0.5, pos);
+    float3 v = p - pos;
+    float3 force = clampVector(v, 10, GetMaxForce(0));
+    return force * dist;
+}
+
+// Collision
+void collideBounds(inout float3 pos, inout float3 oldPos)
+{
+    float dist = sdfBox(pos, 0, _SimulationSpace * 0.5);
+    
+    if (dist < 0)
+    {
+        return;
+    }
+    float3 p = ClosestPointOnBox(0, _SimulationSpace * 0.5, pos);
+    float3 diff = p - pos;
+    float3 normal = normalize(diff);
+
+    float3 flattenVelocity = dot(pos - oldPos - normal * abs(dist), -normal) * normal;
+    float3 mostBounceVelocity = dot(pos - oldPos, normal) * normal;
+           
+    oldPos = lerp(oldPos - flattenVelocity, oldPos + mostBounceVelocity, clamp(0, 0, 1));
+    pos += normal * dist;
+}
+
+float3 centerForce(float3 pos, uint index)
+{
+    float radius = 100;
+    float len = length(pos);
+    float3 force = -safeNormalize(pos) * max(0, len - radius);
+    return limitVector(force, 100);
+}
+
+float3 FlockingForce(uint index)
+{
+    float4 boidRadius = GetBoidRadius(index);
+    float maxSpeed = GetMaxSpeed(index);
+    float maxForce = GetMaxForce(index);
+    
+    float3 positionA = _BoidPositionBuffer[index];
+    float3 oldPositionA = _BoidOldPositionBuffer[index];
+    float3 velocityA = (positionA - oldPositionA) / _DeltaTime;
+
+    
+    int3 numFlockMates = 0;
+    float3 alignmentSum = 0;
+    float3 cohesionSum = 0;
+    float3 separationSum = 0;
+    
+    float3 flockCenter;
+
+    // Neighborhood Search using Spatial Hash Grids
+    float largestRadius = max(max(boidRadius.x, boidRadius.y), max(boidRadius.z, boidRadius.w));
+    int3 originCell = GetCell3D(positionA, _HashCellSize);
+
+
+    
+    for (int i = 0; i < 27; i++)
+    {
+        uint hashCell = HashCell3D(originCell + offsets3D[i]);
+        uint key = KeyFromHash(hashCell, _NumBoids);
+        uint currIndex = _SpatialOffsets[key];
+        
+        
+        while (currIndex < _NumBoids)
+        {
+            uint3 indexData = _SpatialIndices[currIndex];
+            currIndex++;
+            // Exit if no longer looking at correct bin
+            if (indexData[2] != key)
+                break;
+			// Skip if hash does not match
+            if (indexData[1] != hashCell)
+                continue;
+            
+            uint neighborIndex = indexData[0];
+        
+            if(neighborIndex == index)
+                continue;
+            
+            float3 positionB = _BoidPositionBuffer[neighborIndex];
+            float3 oldPositionB = _BoidOldPositionBuffer[neighborIndex];
+            float3 velocityB = (positionB - oldPositionB) / _DeltaTime;
+            
+            float3 offset = positionB - positionA;
+            
+            if (dot(offset, offset) > largestRadius * largestRadius)
+                continue;
+            
+            float distance = length(offset);
+            
+            
+            // separation
+            if (distance > 0 && distance < boidRadius.x)
+            {
+                numFlockMates.x++;
+                separationSum -= offset / (distance * distance);
+            }
+            
+            // alignment
+            if(distance > 0 && distance < boidRadius.y)
+            {
+                numFlockMates.y++;
+                alignmentSum += velocityB;
+            }
+            
+            // cohesion
+            if (distance > 0 && distance < boidRadius.z)
+            {
+                numFlockMates.z++;
+                cohesionSum += offset;
+                flockCenter += positionB;
+            }
+        }
+    }
+    
+    float3 alignmentForce = 0;
+    float3 cohesionForce = 0;
+    float3 separationForce = 0;
+
+    
+    if (numFlockMates.x != 0)
+    {
+        separationForce = calcSteerForce(separationSum, velocityA, maxSpeed, maxForce);
+    }
+    
+    if(numFlockMates.y != 0)
+    {
+        alignmentForce = calcSteerForce(alignmentSum, velocityA, maxSpeed, maxForce);
+    }
+    
+    if (numFlockMates.z != 0)
+    {
+        flockCenter /= numFlockMates.z;
+        float3 offsetToFlockCenter = flockCenter - positionA;
+        cohesionForce = calcSteerForce(offsetToFlockCenter, velocityA, maxSpeed, maxForce);
+    }
+
+    float4 factors = GetBoidSettings(index);
+    
+    float3 acceleration = 0;
+    acceleration += separationForce * factors.x;
+    acceleration += alignmentForce * factors.y;
+    acceleration += cohesionForce * factors.z;
+
+    float4 data = _BoidDataBuffer[index];
+    data.xyz = numFlockMates;
+    _BoidDataBuffer[index] = data;
+    
+    return acceleration;
+}
 
 
 [numthreads(THREAD_BLOCK_SIZE,1,1)]
@@ -35,17 +244,39 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
     
     float3 currentPosition = _BoidPositionBuffer[index];
     float3 oldPosition = _BoidOldPositionBuffer[index];
-
+    float3 normal = _BoidNormalBuffer[index];
+    
     float3 velocity = (currentPosition - oldPosition) / _DeltaTime;
-
     oldPosition = currentPosition;
-    velocity = safeNormalize(velocity) * clamp(length(velocity), 0, _Speed);
+    
+    float3 tangent = safeNormalize(cross(normal, velocity));
+    
+    float3 acceleration = 0;
+    acceleration += FlockingForce(index);
+    //acceleration += forceFromBounds(currentPosition);
+    acceleration += centerForce(currentPosition, index);
+    velocity += acceleration * _DeltaTime;
+    
+    velocity = clampVector(velocity, GetMinSpeed(index), GetMaxSpeed(index));
+
     currentPosition += velocity * _DeltaTime;
+    collideBounds(currentPosition, oldPosition);
+
+
     
     _BoidPositionBuffer[index] = currentPosition;
     _BoidOldPositionBuffer[index] = oldPosition;
 
-    _BoidVelocityBuffer[index] = velocity;
+    normal = safeNormalize(cross(velocity, tangent));
+    
+    _BoidVelocityBuffer[index] = normalize(currentPosition - oldPosition);
+    _BoidNormalBuffer[index] = normal;
+
+
+    float4 data = _BoidDataBuffer[index];
+    data.w = saturate(data.x / 16.0);
+    
+    _BoidDataBuffer[index] = data;
 }
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
@@ -53,20 +284,25 @@ void Init(uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
 
-    float stagger = index * 2.0;
+    float stagger = ((float)index / _NumBoids) * 2 - 1;
+    float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _NumBoids;
+    //offset = _WorldMatrix._m00_m01_m02 * stagger * 32;
+
+    offset = (RandomVector01(index) - 0.5) * _SimulationSpace;
     
-    float3 currentPosition = - _WorldMatrix._m20_m21_m22 * stagger + _WorldPos;
+    float3 currentPosition = offset + _WorldPos;
     float3 currentNormal = _WorldMatrix._m10_m11_m12;
-    float3 currentVelocity = _WorldMatrix._m20_m21_m22 * _Speed;
+    float3 currentVelocity = _WorldMatrix._m20_m21_m22 * GetMaxSpeed(index);
+
+    currentVelocity = RandomVector(index) * 0.001;
     float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
     
     _BoidPositionBuffer[index] = currentPosition;
     _BoidOldPositionBuffer[index] = oldPosition;
     _BoidVelocityBuffer[index] = currentVelocity;
     _BoidNormalBuffer[index] = currentNormal;
+    _BoidDataBuffer[index] = 0;
 }
-
-float _HashCellSize;
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
 void UpdateSpatialHash(uint3 id : SV_DispatchThreadID)
