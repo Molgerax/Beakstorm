@@ -83,7 +83,7 @@ namespace DynaMak.Editors.Utility
         {
             PropertyToPropertyTypeDatabase = new Dictionary<string, Type>();
             RetrievePropertyTypeDatabase();
-            LogDictionary<string, Type>(PropertyToPropertyTypeDatabase);
+            //LogDictionary<string, Type>(PropertyToPropertyTypeDatabase);
         }
 
 
