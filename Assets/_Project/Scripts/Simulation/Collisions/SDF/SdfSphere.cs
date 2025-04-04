@@ -16,6 +16,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
         }
 
+        private SdfSphereManager _manager;
+        
         private float AdjustedRadius()
         {
             Vector3 scale = T.localScale;
@@ -36,9 +38,13 @@ namespace Beakstorm.Simulation.Collisions.SDF
         private void Update()
         {
             float3 pos = T.position;
-            float r = AdjustedRadius();
+            
+            float sdfGrow = SdfSphereManager.Instance.SdfGrowBounds;
+            float r = AdjustedRadius() + sdfGrow;
+            
             _boundsMin = pos - new float3(r, r, r); 
             _boundsMax = pos + new float3(r, r, r);
+
             _sdfData = new float4(pos, r);
         }
 

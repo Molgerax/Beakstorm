@@ -14,7 +14,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
         public BVH(TBounds[] items, int length, ref BVHItem[] allItems, ref Node[] nodeList, ref TSdfData[] result)
         {
             BoundingBox bounds = new BoundingBox();
-
+            _nodeIndex = 0;
+            
             for (int i = 0; i < length; i++)
             {
                 float3 min = items[i].BoundsMin();
@@ -24,8 +25,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
                 bounds.GrowToInclude(min, max);
             }
 
-            AddToNodeList(nodeList, new Node(bounds));
-            Split(nodeList, allItems, 0, 0, allItems.Length);
+            AddToNodeList(ref nodeList, new Node(bounds));
+            Split(ref nodeList, allItems, 0, 0, allItems.Length);
 
             for (int i = 0; i < allItems.Length; i++)
             {
@@ -34,7 +35,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
         }
 
-        private void Split(Node[] nodeList, BVHItem[] allItems, int parentIndex, int globalStart, int itemNum, int depth = 0)
+        private void Split(ref Node[] nodeList, BVHItem[] allItems, int parentIndex, int globalStart, int itemNum, int depth = 0)
         {
             const int MaxDepth = 8;
             Node parent = nodeList[parentIndex];
@@ -70,14 +71,20 @@ namespace Beakstorm.Simulation.Collisions.SDF
                 int startLeft = globalStart + 0;
                 int startRight = globalStart + numLeft;
 
-                int childIndexLeft = AddToNodeList(nodeList, new(boundsLeft, startLeft, 0));
-                int childIndexRight = AddToNodeList(nodeList, new(boundsRight, startRight, 0));
+                int childIndexLeft = AddToNodeList(ref nodeList, new(boundsLeft, startLeft, 0));
+                int childIndexRight = AddToNodeList(ref nodeList, new(boundsRight, startRight, 0));
 
                 parent.StartIndex = childIndexLeft;
                 nodeList[parentIndex] = parent;
                 
-                Split(nodeList, allItems, childIndexLeft, globalStart, numLeft, depth + 1);
-                Split(nodeList, allItems, childIndexRight, globalStart + numLeft, numRight, depth + 1);
+                Split(ref nodeList, allItems, childIndexLeft, globalStart, numLeft, depth + 1);
+                Split(ref nodeList, allItems, childIndexRight, globalStart + numLeft, numRight, depth + 1);
+            }
+            else
+            {
+                parent.StartIndex = globalStart;
+                parent.ItemCount = itemNum;
+                nodeList[parentIndex] = parent;
             }
         }
 
@@ -108,7 +115,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
         }
 
-        private int AddToNodeList(Node[] nodeList, Node node)
+        private int AddToNodeList(ref Node[] nodeList, Node node)
         {
             if (_nodeIndex >= nodeList.Length)
             {
