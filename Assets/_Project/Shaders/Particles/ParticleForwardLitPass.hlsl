@@ -63,7 +63,10 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 	
 	output.positionCS = TransformWorldToHClip(worldPos);
 
-	output.color = float4(hsv2rgb(float3(data.w * 0.25, 1, 1)), 1);
+	float3 color = hsv2rgb(float3(data.w * 0.25, 1, 1));
+	color = saturate(data.www);
+	
+	output.color = float4(color, 1);
 	output.normalWS = mul(rotMatrix, input.normalOS);
 	output.uv = input.uv;
 	output.positionWS = worldPos;

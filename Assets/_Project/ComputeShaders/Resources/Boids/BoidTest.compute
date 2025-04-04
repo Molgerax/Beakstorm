@@ -9,6 +9,8 @@
 #include "BoidParameters.hlsl"
 #include "BoidStateMachine.hlsl"
 
+#include "../Collisions/SdfCollisions.hlsl"
+
 #define THREAD_BLOCK_SIZE 256
 
 
@@ -255,26 +257,34 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
     acceleration += FlockingForce(index);
     //acceleration += forceFromBounds(currentPosition);
     acceleration += centerForce(currentPosition, index);
-    velocity += acceleration * _DeltaTime;
+    //velocity += acceleration * _DeltaTime;
     
     velocity = clampVector(velocity, GetMinSpeed(index), GetMaxSpeed(index));
 
     currentPosition += velocity * _DeltaTime;
-    collideBounds(currentPosition, oldPosition);
+    //collideBounds(currentPosition, oldPosition);
 
 
+    SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0);
     
     _BoidPositionBuffer[index] = currentPosition;
     _BoidOldPositionBuffer[index] = oldPosition;
 
     normal = safeNormalize(cross(velocity, tangent));
+
+    float3 v = normalize(currentPosition - oldPosition);
+    if (dot(sdfInfo.normal, sdfInfo.normal) > 0)
+        v = sdfInfo.normal;
     
-    _BoidVelocityBuffer[index] = normalize(currentPosition - oldPosition);
+    _BoidVelocityBuffer[index] = v;
     _BoidNormalBuffer[index] = normal;
 
 
     float4 data = _BoidDataBuffer[index];
     data.w = saturate(data.x / 16.0);
+    
+    data.w = sdfInfo.dist;
+    data.w = frac(sdfInfo.dist);
     
     _BoidDataBuffer[index] = data;
 }
@@ -284,17 +294,16 @@ void Init(uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
 
-    float stagger = ((float)index / _NumBoids) * 2 - 1;
+    float stagger = ((float)index / _NumBoids) * 2;// - 1;
     float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _NumBoids;
     //offset = _WorldMatrix._m00_m01_m02 * stagger * 32;
-
-    offset = (RandomVector01(index) - 0.5) * _SimulationSpace;
+    //offset = (RandomVector01(index) - 0.5) * _SimulationSpace;
     
     float3 currentPosition = offset + _WorldPos;
     float3 currentNormal = _WorldMatrix._m10_m11_m12;
     float3 currentVelocity = _WorldMatrix._m20_m21_m22 * GetMaxSpeed(index);
 
-    currentVelocity = RandomVector(index) * 0.001;
+    //currentVelocity = RandomVector(index) * 0.001;
     float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
     
     _BoidPositionBuffer[index] = currentPosition;
