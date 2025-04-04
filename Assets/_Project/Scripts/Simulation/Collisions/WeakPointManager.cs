@@ -12,7 +12,6 @@ namespace Beakstorm.Simulation.Collisions
     public class WeakPointManager : MonoBehaviour
     {
         [SerializeField] private ComputeShader compute;
-        [SerializeField] private Transform damageDealer;
 
         [SerializeField] private BoidManager boidManager;
         
@@ -21,6 +20,7 @@ namespace Beakstorm.Simulation.Collisions
         public List<WeakPoint> WeakPoints = new List<WeakPoint>(16);
         public GraphicsBuffer WeakPointBuffer;
         public GraphicsBuffer DamageBuffer;
+        private GraphicsBuffer _flushDamageBuffer;
         
         private Vector4[] _weakPointPositions = new Vector4[16];
         private int _bufferSize = 16;
@@ -33,6 +33,7 @@ namespace Beakstorm.Simulation.Collisions
             Instance = this;
             WeakPointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 4);
             DamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
+            _flushDamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
             
             _damageArray = new NativeArray<int>(_bufferSize, Allocator.Persistent);
         }
@@ -41,6 +42,7 @@ namespace Beakstorm.Simulation.Collisions
         {
             WeakPointBuffer?.Dispose();
             DamageBuffer?.Dispose();
+            _flushDamageBuffer?.Dispose();
 
             _request.WaitForCompletion();
             _damageArray.Dispose();
@@ -54,9 +56,6 @@ namespace Beakstorm.Simulation.Collisions
             RequestDamageValues();
             
             CollideBoids();
-            
-            if (damageDealer)
-                Collide(damageDealer.position);
         }
 
         private void UpdatePositions()
@@ -75,15 +74,18 @@ namespace Beakstorm.Simulation.Collisions
             {
                 if (!_request.hasError)
                 {
+                    bool flush = false;
                     for (int i = 0; i < WeakPoints.Count; i++)
                     {
                         int damage = _damageArray[i];
                         if (damage > 0)
                         {
                             WeakPoints[i].ApplyDamage(damage);
-                            FlushDamage(i, damage);
+                            flush = true;
                         }
                     }
+                    if (flush)
+                        FlushDamage();
                 }
                 _request = AsyncGPUReadback.RequestIntoNativeArray(ref _damageArray, DamageBuffer);
             }
@@ -94,38 +96,35 @@ namespace Beakstorm.Simulation.Collisions
             if (WeakPoints.Count > _bufferSize)
             {
                 _bufferSize *= 2;
-                WeakPointBuffer.Dispose();
-                DamageBuffer.Dispose();
+                
+                WeakPointBuffer?.Dispose();
                 WeakPointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 4);
+                
+                DamageBuffer?.Dispose();
                 DamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
+                
+                _flushDamageBuffer?.Dispose();
+                _flushDamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
 
+                _damageArray.Dispose();
                 _damageArray = new NativeArray<int>(_bufferSize, Allocator.Persistent);
+                
                 _weakPointPositions = new Vector4[_bufferSize];
             }
         }
 
-        private void FlushDamage(int i, int damage)
+        private void FlushDamage()
         {
+            _flushDamageBuffer.SetData(_damageArray);
+            
             int kernel = compute.FindKernel("FlushDamage");
             compute.SetBuffer(kernel, "_DamageBuffer", DamageBuffer);
-            compute.SetInt("_Index", i);
-            compute.SetInt("_DamageDealt", damage);
-            
-            compute.Dispatch(kernel, 1, 1, 1);
-        }
-        
-        private void Collide(Vector3 pos)
-        {
-            int kernel = compute.FindKernel("Collide");
-            
-            compute.SetBuffer(kernel, "_WeakPointPositions", WeakPointBuffer);
-            compute.SetBuffer(kernel, "_DamageBuffer", DamageBuffer);
-
-            compute.SetVector("_Position", pos);
+            compute.SetBuffer(kernel, "_FlushDamageBuffer", _flushDamageBuffer);
             compute.SetInt("_Count", WeakPoints.Count);
             
             compute.Dispatch(kernel, 1, 1, 1);
         }
+        
 
         private void CollideBoids()
         {
