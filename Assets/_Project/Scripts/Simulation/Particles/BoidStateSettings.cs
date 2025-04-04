@@ -23,20 +23,39 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField] private float maxForce = 10;
         //[SerializeField, Range(0, 1)] private float minForce;
 
+        private string _cachedPrefix;
+
+        private int _weightPropertyId;
+        private int _radiusPropertyId;
+        private int _speedPropertyId; 
+        
         public Vector4 Weight => new(separation, alignment, cohesion, detection);
         public Vector4 Radius => new(separationRadius, alignmentRadius, cohesionRadius, detectionRadius);
         public Vector4 Speed => new(minSpeed * maxSpeed, maxSpeed, maxForce, 0);
+
+        public void SetComputeShaderProperties(ComputeShader cs, string prefix)
+        {
+            if (prefix != _cachedPrefix)
+            {
+                _cachedPrefix = prefix;
+                _weightPropertyId = Shader.PropertyToID($"{prefix}StateWeight");
+                _radiusPropertyId = Shader.PropertyToID($"{prefix}StateRadius");
+                _speedPropertyId = Shader.PropertyToID($"{prefix}StateSpeed");
+            }
+            cs.SetVector(_weightPropertyId, Weight);
+            cs.SetVector(_radiusPropertyId, Radius);
+            cs.SetVector(_speedPropertyId, Speed);
+        }
     }
 
     public static class BoidStateSettingsExtensionMethods
     {
         public static void SetBoidStateSettings(this ComputeShader cs, string name, BoidStateSettings settings)
         {
-            bool isNull = settings == false;
+            if (settings == false)
+                return;
             
-            cs.SetVector($"{name}StateWeight", isNull ? Vector4.zero : settings.Weight);
-            cs.SetVector($"{name}StateRadius", isNull ? Vector4.zero : settings.Radius);
-            cs.SetVector($"{name}StateSpeed", isNull ? Vector4.zero : settings.Speed);
+            settings.SetComputeShaderProperties(cs, name);
         }
     }
 }
