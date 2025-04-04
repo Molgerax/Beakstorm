@@ -62,6 +62,8 @@ namespace Beakstorm.Simulation.Particles
         private int _capacity;
         private bool _initialized;
 
+        public static BoidManager Instance;
+
         public ComputeBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;
         public ComputeBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
         public GraphicsBuffer PositionBuffer => _positionBuffer;
@@ -69,7 +71,11 @@ namespace Beakstorm.Simulation.Particles
         public int Capacity => _capacity;
         public float HashCellSize => _hashCellSize;
 
-        
+        private void Awake()
+        {
+            Instance = this;
+        }
+
         private void Start()
         {
             _capacity = maxCount;
