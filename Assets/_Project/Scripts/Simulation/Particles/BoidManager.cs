@@ -1,5 +1,6 @@
 using System;
 using Beakstorm.ComputeHelpers;
+using Beakstorm.Simulation.Collisions.SDF;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -182,6 +183,13 @@ namespace Beakstorm.Simulation.Particles
             _boidComputeShader.SetBuffer(kernelId, "_BoidNormalBuffer", _normalBuffer);
             _boidComputeShader.SetBuffer(kernelId, "_BoidDataBuffer", _dataBuffer);
 
+            if (SdfSphereManager.Instance)
+            {
+                _boidComputeShader.SetBuffer(kernelId, "_NodeBuffer", SdfSphereManager.Instance.NodeBuffer);
+                _boidComputeShader.SetBuffer(kernelId, "_SdfBuffer", SdfSphereManager.Instance.SdfBuffer);
+                _boidComputeShader.SetInt("_NodeCount", SdfSphereManager.Instance.NodeCount);
+            }
+            
             _boidComputeShader.SetBuffer(kernelId, "_SpatialIndices", _spatialIndicesBuffer);
             _boidComputeShader.SetBuffer(kernelId, "_SpatialOffsets", _spatialOffsetsBuffer);
 
