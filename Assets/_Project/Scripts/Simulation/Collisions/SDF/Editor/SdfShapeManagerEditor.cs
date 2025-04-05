@@ -1,4 +1,3 @@
-using Beakstorm.Simulation.Collisions.SDF;
 using UnityEditor;
 
 namespace Beakstorm.Simulation.Collisions.SDF.Editor

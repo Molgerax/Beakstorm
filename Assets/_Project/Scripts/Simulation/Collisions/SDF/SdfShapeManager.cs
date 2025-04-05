@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
     public class SdfShapeManager : MonoBehaviour
     {
         [SerializeField, Range(0, 10)] private float sdfGrowBounds = 1f;
+        [SerializeField, Range(0, 8)] private int visualizeBounds = 0;
         
         public static SdfShapeManager Instance;
 
@@ -139,6 +141,35 @@ namespace Beakstorm.Simulation.Collisions.SDF
             {
                 Shapes.Remove(shape);
                 _updateArray = true;
+            }
+        }
+
+
+        private void OnDrawGizmosSelected()
+        {
+            if (_nodeList == null || _nodeList.Length == 0)
+                return;
+            
+            DrawNodeGizmos(_nodeList[0], 0);
+        }
+
+        private void DrawNodeGizmos(Node node, int depth)
+        {
+            bool isLeaf = node.ItemCount > 0;
+
+            Color col = Color.HSVToRGB(depth / 8.0f, 1f, 1f);
+            col.a = visualizeBounds == depth ? 1f : 0.1f;
+            Gizmos.color = col;
+            
+            Gizmos.DrawWireCube(node.CalculateBoundsCenter(), node.CalculateBoundsSize());
+            if (isLeaf)
+            {
+                //Gizmos.DrawWireCube(node.CalculateBoundsCenter(), node.CalculateBoundsSize());
+            }
+            else
+            {
+                DrawNodeGizmos(_nodeList[node.StartIndex + 0], depth + 1);
+                DrawNodeGizmos(_nodeList[node.StartIndex + 1], depth + 1);
             }
         }
     }
