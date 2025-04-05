@@ -5,8 +5,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 {
     public class SdfSphere : AbstractSdfShape
     {
-        [SerializeField] private float radius = 1;
+        [SerializeField, Min(0)] private float radius = 1;
 
+        protected override SdfShapeType Type() => SdfShapeType.Sphere;
 
         private float AdjustedRadius()
         {
@@ -23,7 +24,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             _boundsMax = pos + new float3(r, r, r);
 
             float3 data = new float3(r, 0, 0);
-            _sdfData = new AbstractSdfData(pos, data, SdfShapeType.Sphere);
+            _sdfData = new AbstractSdfData(pos, data, GetTypeData());
         }
 
         public void OnDrawGizmos()

@@ -7,6 +7,8 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
     {
         [SerializeField] private float3 scale = new float3(1, 1, 1);
 
+        protected override SdfShapeType Type() => SdfShapeType.Box;
+        
         private float3 AdjustedScale()
         {
             float4x4 m = T.localToWorldMatrix;
@@ -29,7 +31,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             float3 y = math.normalize(s.c1);
             float3 z = math.normalize(s.c2);
 
-            _sdfData = new AbstractSdfData(x, y, z, pos, AdjustedScale() * 0.5f, SdfShapeType.Box);
+            _sdfData = new AbstractSdfData(x, y, z, pos, AdjustedScale() * 0.5f, GetTypeData());
         }
 
         private void CalculateBounds(float3 center)

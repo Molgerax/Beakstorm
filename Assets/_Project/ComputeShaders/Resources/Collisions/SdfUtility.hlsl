@@ -6,8 +6,8 @@
 #define SDF_SPHERE 0
 #define SDF_BOX 1
 #define SDF_LINE 2
-#define SDF_TORUS 3
-#define SDF_CONE 4
+#define SDF_CONE 3
+#define SDF_TORUS 4
 
 struct AbstractSdfData
 {
@@ -16,13 +16,14 @@ struct AbstractSdfData
     float3 ZAxis;
     float3 Translate;
     float3 Data;
-    int Type;
+    uint Type;
 };
 
 struct SdfQueryInfo
 {
     float dist;
     float3 normal;
+    uint matIndex;
 };
 
 // ------- FORWARD DECLARATION
@@ -32,8 +33,8 @@ SdfQueryInfo sdfGeneric(float3 p, AbstractSdfData data);
 SdfQueryInfo sdfSphere(float3 p, AbstractSdfData data);
 SdfQueryInfo sdfBox(float3 p, AbstractSdfData data);
 SdfQueryInfo sdfLine(float3 p, AbstractSdfData data);
-SdfQueryInfo sdfTorus(float3 p, AbstractSdfData data);
 SdfQueryInfo sdfCone(float3 p, AbstractSdfData data);
+SdfQueryInfo sdfTorus(float3 p, AbstractSdfData data);
 
 
 float3 getLargest(float3 value);
@@ -47,21 +48,24 @@ SdfQueryInfo sdfGeneric(float3 p, AbstractSdfData data)
     SdfQueryInfo result;
     result.dist = 1.#INF;
     result.normal = float3(0,1,0);
+    result.matIndex = (data.Type >> 4) & 0x0F;
     
-    if (data.Type == SDF_SPHERE)
+    const uint type = data.Type & 0x0F;
+    
+    if (type == SDF_SPHERE)
         return sdfSphere(p, data);
     
-    if (data.Type == SDF_BOX)
+    if (type == SDF_BOX)
         return sdfBox(p, data);
     
-    if (data.Type == SDF_LINE)
+    if (type == SDF_LINE)
         return sdfLine(p, data);
     
-    if (data.Type == SDF_TORUS)
-        return sdfTorus(p, data);
-    
-    if (data.Type == SDF_CONE)
+    if (type == SDF_CONE)
         return sdfCone(p, data);
+    
+    if (type == SDF_TORUS)
+        return sdfTorus(p, data);
 
     return result;
 }
@@ -84,6 +88,7 @@ SdfQueryInfo sdfSphere(float3 p, AbstractSdfData data)
     SdfQueryInfo result = (SdfQueryInfo)0;
     result.dist = -data.Data.x;
     result.normal.y = 1;
+    result.matIndex = (data.Type >> 4) & 0x0F;
 
     
     float3 diff = p - data.Translate;
@@ -132,6 +137,7 @@ SdfQueryInfo sdfBox(float3 p, AbstractSdfData data, float l)
 {
     SdfQueryInfo result = (SdfQueryInfo)0;
     result.normal.y = 1;
+    result.matIndex = (data.Type >> 4) & 0x0F;
     
     float3 q = p - data.Translate;
     float3 diff = abs( float3( dot(q, data.XAxis), dot(q, data.YAxis), dot(q, data.ZAxis) )) - data.Data;
@@ -147,6 +153,7 @@ SdfQueryInfo sdfBox(float3 p, AbstractSdfData data)
 {
     SdfQueryInfo result = (SdfQueryInfo)0;
     result.normal.y = 1;
+    result.matIndex = (data.Type >> 4) & 0x0F;
 
     float3x3 rot = float3x3(data.XAxis, data.YAxis, data.ZAxis);
     
@@ -207,6 +214,7 @@ SdfQueryInfo sdfLine(float3 p, AbstractSdfData data)
     SdfQueryInfo result = (SdfQueryInfo)0;
     result.dist = -data.Data.x;
     result.normal.y = 1;
+    result.matIndex = (data.Type >> 4) & 0x0F;
 
     float3 xAxis = cross(data.YAxis, data.ZAxis);
     
@@ -231,6 +239,33 @@ SdfQueryInfo sdfLine(float3 p, AbstractSdfData data)
     
     return result;
 }
+
+
+
+/// x: RadiusBase, y: RadiusTip, z: Height
+SdfQueryInfo sdfCone(float3 p, AbstractSdfData data)
+{
+    SdfQueryInfo result = (SdfQueryInfo)0;
+    result.dist = -data.Data.y;
+    result.normal.xz = 0.707;
+    result.matIndex = (data.Type >> 4) & 0x0F;
+
+    float3 xAxis = cross(data.YAxis, data.ZAxis);
+    float3x3 rot = float3x3(xAxis, data.YAxis, data.ZAxis);
+    float3 q = mul(rot, p - data.Translate);
+    
+    float b = (data.Data.x - data.Data.y) / data.Data.z;
+    float a = sqrt(1.0 - b*b);
+
+    float2 t = float2( length(q.xy), q.z);
+    float k = dot(t, float2(-b, a));
+    if (k < 0) result.dist = length(t) - data.Data.x;
+    else if (k > a * data.Data.z) result.dist = length(t - float2(0, data.Data.z)) - data.Data.y;
+    else result.dist = dot(t, float2(a, b)) - data.Data.x;
+    
+    return result;
+}
+
 
 
 
@@ -308,28 +343,10 @@ SdfQueryInfo sdfTorus(float3 p, AbstractSdfData data)
     SdfQueryInfo result = (SdfQueryInfo)0;
     result.dist = -data.Data.x;
     result.normal.y = 1;
+    result.matIndex = (data.Type >> 4) & 0x0F;
     
     result.dist = sdfTorus(data.Translate, data.YAxis, data.Data.x, data.Data.y, p);
     result.normal = normalize(sdfTorus_Vector(data.Translate, data.YAxis, data.Data.x, data.Data.y, p));
-    
-    return result;
-}
-
-
-
-SdfQueryInfo sdfCone(float3 p, AbstractSdfData data)
-{
-    SdfQueryInfo result = (SdfQueryInfo)0;
-    result.dist = -data.Data.y;
-    result.normal.y = 1;
-
-    float3 vec = sdfLine_Vector(data.Translate, data.Data.x * data.ZAxis, p);
-
-    if (dot(vec, vec) == 0)
-        return result;
-    float len = length(vec);
-    result.dist = len - data.Data.y;
-    result.normal = vec / len;
     
     return result;
 }
