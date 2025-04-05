@@ -149,7 +149,6 @@ SdfQueryInfo sdfBox(float3 p, AbstractSdfData data)
     result.normal.y = 1;
 
     float3x3 rot = float3x3(data.XAxis, data.YAxis, data.ZAxis);
-    //rot = transpose(rot);
     
     float3 q = mul(rot, p - data.Translate);
     float3 diff = abs(q) - data.Data;
@@ -206,16 +205,29 @@ float3 sdfLine_Vector(float3 pointA, float3 pointB, float3 p)
 SdfQueryInfo sdfLine(float3 p, AbstractSdfData data)
 {
     SdfQueryInfo result = (SdfQueryInfo)0;
-    result.dist = -data.Data.y;
+    result.dist = -data.Data.x;
     result.normal.y = 1;
 
-    float3 vec = sdfLine_Vector(data.Translate, data.Data.x * data.ZAxis, p);
+    float3 xAxis = cross(data.YAxis, data.ZAxis);
+    
+    float3x3 rot = float3x3(xAxis, data.YAxis, data.ZAxis);
+    float3 q = mul(rot, p - data.Translate);
+    q.z -= clamp (q.z, -data.Data.y * 0.5, data.Data.y * 0.5);
 
-    if (dot(vec, vec) == 0)
+    //q *= data.XAxis;
+    
+    if (dot(q, q) == 0)
         return result;
-    float len = length(vec);
-    result.dist = len - data.Data.y;
-    result.normal = vec / len;
+
+    q = mul(transpose(rot), q);
+    float len = length(q);
+
+    float average = (data.XAxis.x + data.XAxis.y + data.XAxis.z) / 3.0;
+    float m = max(data.XAxis.x, max(data.XAxis.y, data.XAxis.z));
+    
+    result.normal = q / len;
+    float f = dot(abs(result.normal), normalize(data.XAxis) * m);
+    result.dist = (len - data.Data.x);
     
     return result;
 }
