@@ -1,16 +1,7 @@
 #ifndef _INCLUDE_SDF_COLLISIONS_
 #define _INCLUDE_SDF_COLLISIONS_
 
-struct AbstractSdfData
-{
-    float3 XAxis;
-    float3 YAxis;
-    float3 ZAxis;
-    float3 Translate;
-    float3 Data;
-    int Type;
-};
-
+#include "SdfUtility.hlsl"
 
 struct BVHNode
 {
@@ -22,11 +13,6 @@ struct BVHNode
     int itemCount;
 };
 
-struct SdfQueryInfo
-{
-    float dist;
-    float3 normal;
-};
 
 StructuredBuffer<BVHNode> _NodeBuffer;
 StructuredBuffer<AbstractSdfData> _SdfBuffer;
@@ -35,12 +21,7 @@ int _NodeCount;
 
 SdfQueryInfo TestAgainstSdf(float3 pos, AbstractSdfData data)
 {
-    SdfQueryInfo result;
-    float3 p = data.Translate;
-    result.dist = length(pos - p) - data.Data.x;
-    result.normal = normalize(pos - p);
-    
-    return result;
+    return sdfGeneric(pos, data);
 }
 
 float distanceToBoundingBox(float3 pos, float3 bmin, float3 bmax)
