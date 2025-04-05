@@ -162,18 +162,17 @@ SdfQueryInfo sdfBox(float3 p, AbstractSdfData data)
 
     
     result.dist = length(max(diff, 0)) + min(max(diff.x, max(diff.y, diff.z)), 0);
-    result.normal = diff;
 
-    float3 boxmin = data.Translate - data.Data;
-    float3 boxmax = data.Translate + data.Data;
-    
-    float3 relative = saturate(inverseLerp(boxmin, boxmax, p));
+    float3 boxmin = - data.Data;
+    float3 boxmax = + data.Data;
+
+    float3 relative = saturate(inverseLerp(boxmin, boxmax, q));
     float3 snapped = step(0.5, relative);
     float3 closest = getLargest(abs(relative - 0.5));
-    float3 targetPoint = lerp(boxmin, boxmax, snapped) * closest + (1 - closest) * p;
-
-    float3 targetDiff = q - targetPoint;
-    result.normal = mul(transpose(rot), normalize(targetDiff));
+    
+    float3 poin = lerp(boxmin, boxmax, snapped) * closest + (1 - closest) * q;
+    
+    result.normal = mul(transpose(rot), normalize(q - poin * sign(result.dist)));
     
     return result;
 }
