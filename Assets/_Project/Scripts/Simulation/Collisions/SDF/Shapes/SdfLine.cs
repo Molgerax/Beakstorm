@@ -33,8 +33,6 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             float3 y = math.normalize(s.c1);
             float3 z = math.normalize(s.c2);
 
-            x = new float3(math.length(s.c0), math.length(s.c1), math.length(s.c2));
-            
             _pointA = pos - z * Height * 0.5f;
             _pointB = pos + z * Height * 0.5f;
 

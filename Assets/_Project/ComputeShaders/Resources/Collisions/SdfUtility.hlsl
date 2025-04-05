@@ -216,25 +216,17 @@ SdfQueryInfo sdfLine(float3 p, AbstractSdfData data)
     result.normal.y = 1;
     result.matIndex = (data.Type >> 4) & 0x0F;
 
-    float3 xAxis = cross(data.YAxis, data.ZAxis);
-    
-    float3x3 rot = float3x3(xAxis, data.YAxis, data.ZAxis);
+    float3x3 rot = float3x3(data.XAxis, data.YAxis, data.ZAxis);
     float3 q = mul(rot, p - data.Translate);
     q.z -= clamp (q.z, -data.Data.y * 0.5, data.Data.y * 0.5);
 
-    //q *= data.XAxis;
-    
     if (dot(q, q) == 0)
         return result;
 
     q = mul(transpose(rot), q);
     float len = length(q);
 
-    float average = (data.XAxis.x + data.XAxis.y + data.XAxis.z) / 3.0;
-    float m = max(data.XAxis.x, max(data.XAxis.y, data.XAxis.z));
-    
     result.normal = q / len;
-    float f = dot(abs(result.normal), normalize(data.XAxis) * m);
     result.dist = (len - data.Data.x);
     
     return result;
@@ -247,22 +239,36 @@ SdfQueryInfo sdfCone(float3 p, AbstractSdfData data)
 {
     SdfQueryInfo result = (SdfQueryInfo)0;
     result.dist = -data.Data.y;
-    result.normal.xz = 0.707;
+    result.normal.y = 0;
     result.matIndex = (data.Type >> 4) & 0x0F;
 
     float3 xAxis = cross(data.YAxis, data.ZAxis);
     float3x3 rot = float3x3(xAxis, data.YAxis, data.ZAxis);
     float3 q = mul(rot, p - data.Translate);
+    float3 qb = mul(rot, p - data.Translate - data.ZAxis * data.Data.z);
     
     float b = (data.Data.x - data.Data.y) / data.Data.z;
     float a = sqrt(1.0 - b*b);
-
     float2 t = float2( length(q.xy), q.z);
     float k = dot(t, float2(-b, a));
-    if (k < 0) result.dist = length(t) - data.Data.x;
-    else if (k > a * data.Data.z) result.dist = length(t - float2(0, data.Data.z)) - data.Data.y;
-    else result.dist = dot(t, float2(a, b)) - data.Data.x;
     
+    float3 ql = float3(q.x / t.x, q.y / t.x, b);
+    
+    if (k < 0)
+    {
+        result.dist = length(t) - data.Data.x;
+        result.normal = normalize(mul(transpose(rot), q));
+    }
+    else if (k > a * data.Data.z)
+    {
+        result.dist = length(t - float2(0, data.Data.z)) - data.Data.y;
+        result.normal = normalize(mul(transpose(rot), qb));
+    }
+    else
+    {
+        result.dist = dot(t, float2(a, b)) - data.Data.x;
+        result.normal = normalize(mul(transpose(rot), ql));
+    }
     return result;
 }
 
