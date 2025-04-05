@@ -1,15 +1,15 @@
 using Beakstorm.Simulation.Collisions.SDF;
 using UnityEditor;
 
-namespace Beakstorm._Project.Scripts.Simulation.Collisions.SDF.Editor
+namespace Beakstorm.Simulation.Collisions.SDF.Editor
 {
-    [CustomEditor(typeof(SdfSphereManager))]
-    public class SdfSphereManagerEditor : UnityEditor.Editor
+    [CustomEditor(typeof(SdfShapeManager))]
+    public class SdfShapeManagerEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            SdfSphereManager manager = (SdfSphereManager) target;
+            SdfShapeManager manager = (SdfShapeManager) target;
 
             EditorGUILayout.LabelField($"NodeCount: {manager.NodeCount}");
             EditorGUILayout.LabelField($"NodeList Length: {manager.NodeList?.Length}");
