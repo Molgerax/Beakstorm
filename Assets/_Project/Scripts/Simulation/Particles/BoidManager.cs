@@ -79,7 +79,6 @@ namespace Beakstorm.Simulation.Particles
 
         private void Start()
         {
-            _capacity = maxCount;
             InitializeBuffers();
         }
 
@@ -106,6 +105,7 @@ namespace Beakstorm.Simulation.Particles
         [ContextMenu("Re-Init")]
         private void InitializeBuffers()
         {
+            _capacity = maxCount;
             ReleaseBuffers();
 
             _positionBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(float));
@@ -183,11 +183,11 @@ namespace Beakstorm.Simulation.Particles
             _boidComputeShader.SetBuffer(kernelId, "_BoidNormalBuffer", _normalBuffer);
             _boidComputeShader.SetBuffer(kernelId, "_BoidDataBuffer", _dataBuffer);
 
-            if (SdfSphereManager.Instance)
+            if (SdfShapeManager.Instance)
             {
-                _boidComputeShader.SetBuffer(kernelId, "_NodeBuffer", SdfSphereManager.Instance.NodeBuffer);
-                _boidComputeShader.SetBuffer(kernelId, "_SdfBuffer", SdfSphereManager.Instance.SdfBuffer);
-                _boidComputeShader.SetInt("_NodeCount", SdfSphereManager.Instance.NodeCount);
+                _boidComputeShader.SetBuffer(kernelId, "_NodeBuffer", SdfShapeManager.Instance.NodeBuffer);
+                _boidComputeShader.SetBuffer(kernelId, "_SdfBuffer", SdfShapeManager.Instance.SdfBuffer);
+                _boidComputeShader.SetInt("_NodeCount", SdfShapeManager.Instance.NodeCount);
             }
             
             _boidComputeShader.SetBuffer(kernelId, "_SpatialIndices", _spatialIndicesBuffer);

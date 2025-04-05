@@ -1,34 +1,32 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Unity.Mathematics;
 using UnityEngine;
 
 namespace Beakstorm.Simulation.Collisions.SDF
 {
     [DefaultExecutionOrder(-100)]
-    public class SdfSphereManager : MonoBehaviour
+    public class SdfShapeManager : MonoBehaviour
     {
         [SerializeField, Range(0, 10)] private float sdfGrowBounds = 1f;
         
-        public static SdfSphereManager Instance;
+        public static SdfShapeManager Instance;
 
-        public List<SdfSphere> Spheres = new List<SdfSphere>(16);
-        private BVH<SdfSphere, float4> _bvh;
+        public List<AbstractSdfShape> Shapes = new List<AbstractSdfShape>(16);
+        private BVH<AbstractSdfShape, AbstractSdfData> _bvh;
 
-        private SdfSphere[] _spheres = new SdfSphere[16];
+        private AbstractSdfShape[] _shapes = new AbstractSdfShape[16];
         private Node[] _nodeList;
-        private float4[] _dataArray;
+        private AbstractSdfData[] _dataArray;
         private BVHItem[] _bvhItems;
         
         public GraphicsBuffer NodeBuffer;
         public GraphicsBuffer SdfBuffer;
 
-        public int NodeCount => _sphereCount;
+        public int NodeCount => _shapeCount;
         public float SdfGrowBounds => sdfGrowBounds;
         
         private int _bufferSize = 16;
-        private int _sphereCount;
+        private int _shapeCount;
         private bool _updateArray = false;
 
         public Node[] NodeList => _nodeList;
@@ -59,10 +57,10 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void ConstructBvh()
         {
-            if (_spheres.Length == 0 || SdfBuffer == null)
+            if (_shapes.Length == 0 || SdfBuffer == null)
                 return;
 
-            _bvh = new BVH<SdfSphere, float4>(_spheres, _sphereCount, ref _bvhItems, ref _nodeList, ref _dataArray);
+            _bvh = new BVH<AbstractSdfShape, AbstractSdfData>(_shapes, _shapeCount, ref _bvhItems, ref _nodeList, ref _dataArray);
 
             ResizeNodeBuffer();
             
@@ -72,12 +70,12 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void InitializeBuffers(bool node = false)
         {
-            _spheres = new SdfSphere[_bufferSize];
-            _dataArray = new float4[_bufferSize];
+            _shapes = new AbstractSdfShape[_bufferSize];
+            _dataArray = new AbstractSdfData[_bufferSize];
             _bvhItems = new BVHItem[_bufferSize];
 
             SdfBuffer?.Dispose();
-            SdfBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 4);
+            SdfBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 16);
 
             if (node)
             {
@@ -88,9 +86,9 @@ namespace Beakstorm.Simulation.Collisions.SDF
         
         private void ResizeBuffers()
         {
-            if (Spheres.Count > _bufferSize)
+            if (Shapes.Count > _bufferSize)
             {
-                _bufferSize = Mathf.NextPowerOfTwo(Spheres.Count);
+                _bufferSize = Mathf.NextPowerOfTwo(Shapes.Count);
                 InitializeBuffers();
             }
         }
@@ -115,31 +113,31 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void UpdateArray()
         {
-            _sphereCount = Spheres.Count;
+            _shapeCount = Shapes.Count;
             if (!_updateArray)
                 return;
             ResizeBuffers();
-            for (int i = 0; i < _sphereCount; i++)
+            for (int i = 0; i < _shapeCount; i++)
             {
-                _spheres[i] = Spheres[i];
+                _shapes[i] = Shapes[i];
             }
             _updateArray = false;
         }
         
-        public void AddSphere(SdfSphere sphere)
+        public void AddShape(AbstractSdfShape shape)
         {
-            if (!Spheres.Contains(sphere))
+            if (!Shapes.Contains(shape))
             {
-                Spheres.Add(sphere);
+                Shapes.Add(shape);
                 _updateArray = true;
             }
         }
 
-        public void RemoveSphere(SdfSphere sphere)
+        public void RemoveShape(AbstractSdfShape shape)
         {
-            if (Spheres.Contains(sphere))
+            if (Shapes.Contains(shape))
             {
-                Spheres.Remove(sphere);
+                Shapes.Remove(shape);
                 _updateArray = true;
             }
         }

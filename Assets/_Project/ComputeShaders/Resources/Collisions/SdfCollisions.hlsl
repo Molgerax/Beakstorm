@@ -1,11 +1,16 @@
 #ifndef _INCLUDE_SDF_COLLISIONS_
 #define _INCLUDE_SDF_COLLISIONS_
 
-#ifndef SDF_DATA
-#define SDF_DATA float4
-#endif
+struct AbstractSdfData
+{
+    float3 XAxis;
+    float3 YAxis;
+    float3 ZAxis;
+    float3 Translate;
+    float3 Data;
+    int Type;
+};
 
-#ifdef SDF_DATA
 
 struct BVHNode
 {
@@ -24,15 +29,15 @@ struct SdfQueryInfo
 };
 
 StructuredBuffer<BVHNode> _NodeBuffer;
-StructuredBuffer<SDF_DATA> _SdfBuffer;
+StructuredBuffer<AbstractSdfData> _SdfBuffer;
 int _NodeCount;
 
 
-SdfQueryInfo TestAgainstSdf(float3 pos, SDF_DATA data)
+SdfQueryInfo TestAgainstSdf(float3 pos, AbstractSdfData data)
 {
     SdfQueryInfo result;
-    float3 p = data.xyz;
-    result.dist = length(pos - p) - data.w;
+    float3 p = data.Translate;
+    result.dist = length(pos - p) - data.Data.x;
     result.normal = normalize(pos - p);
     
     return result;
@@ -71,7 +76,7 @@ SdfQueryInfo GetClosestDistance(float3 pos, int nodeOffset)
         {
             for (int i = 0; i < node.itemCount; i++)
             {
-                SDF_DATA data = _SdfBuffer[node.startIndex + i];
+                AbstractSdfData data = _SdfBuffer[node.startIndex + i];
                 SdfQueryInfo sdfInfo = TestAgainstSdf(pos, data);
 
                 if (sdfInfo.dist < result.dist)
@@ -105,7 +110,4 @@ SdfQueryInfo GetClosestDistance(float3 pos, int nodeOffset)
     return result;
 }
 
-#undef SDF_DATA
-
-#endif
 #endif
