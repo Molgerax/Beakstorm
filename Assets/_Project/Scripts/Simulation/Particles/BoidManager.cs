@@ -233,7 +233,7 @@ namespace Beakstorm.Simulation.Particles
                 lightProbeProxyVolume = null,
                 receiveShadows = true,
                 shadowCastingMode = ShadowCastingMode.On,
-                worldBounds = new Bounds(Vector3.zero, Vector3.one * 100), 
+                worldBounds = new Bounds(transform.position, simulationSpace), 
                 matProps = _propertyBlock,
             };
             
