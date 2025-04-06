@@ -43,6 +43,12 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void OnEnable()
         {
+            if (Instance)
+            {
+                this.enabled = false;
+                return;
+            }
+                
             Instance = this;
 
             _bufferSize = 16;
@@ -69,6 +75,11 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void OnDisable()
         {
+            if (!_initialized)
+                return;
+            
+            Instance = null;
+            
             ReleaseBuffers();
             _initialized = false;
         }
@@ -171,7 +182,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
         
         private void RenderPreview()
         {
-            if (!renderSdf)
+            if (!renderSdf || !_initialized)
                 return;
                 
             if (_nodeList == null || _nodeList.Length == 0)
@@ -203,7 +214,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void OnDrawGizmosSelected()
         {
-            if (_nodeList == null || _nodeList.Length == 0)
+            if (_nodeList == null || _nodeList.Length == 0 || !_initialized)
                 return;
             
             DrawNodeGizmos(_nodeList[0], 0);
