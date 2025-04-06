@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Beakstorm.Simulation.Collisions.SDF
 {
+    [ExecuteAlways]
     public abstract class AbstractSdfShape : MonoBehaviour,  IBounds, ISdfData<AbstractSdfData>
     {
         [SerializeField] private SdfMaterialType materialType = SdfMaterialType.Metal;
@@ -42,8 +43,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
         public float3 BoundsMax() => _boundsMax + GrowBounds;
         public AbstractSdfData SdfData() => _sdfData;
 
-        protected virtual void OnEnable() => SdfShapeManager.Instance.AddShape(this);
-        protected virtual void OnDisable() => SdfShapeManager.Instance.RemoveShape(this);
+        protected virtual void OnEnable() => SdfShapeManager.AddShape(this);
+        protected virtual void OnDisable() => SdfShapeManager.RemoveShape(this);
     }
 
 

@@ -7,12 +7,15 @@ namespace Beakstorm.Simulation.Collisions.SDF
     /// <summary>
     /// Heavily pulled from https://github.com/SebLague/Ray-Tracing/blob/main/Assets/Scripts/BVH.cs
     /// </summary>
-    public class BVH<TBounds, TSdfData> where TBounds : IBounds, ISdfData<TSdfData>
+    public static class BVH<TBounds, TSdfData> where TBounds : IBounds, ISdfData<TSdfData>
     {
-        private int _nodeIndex;
+        private static int _nodeIndex;
         
-        public BVH(TBounds[] items, int length, ref BVHItem[] allItems, ref Node[] nodeList, ref TSdfData[] result)
+        public static int ConstructBVH(TBounds[] items, int length, ref BVHItem[] allItems, ref Node[] nodeList, ref TSdfData[] result)
         {
+            if (items == null || items.Length == 0)
+                return 0;
+            
             BoundingBox bounds = new BoundingBox();
             _nodeIndex = 0;
             
@@ -26,16 +29,18 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
 
             AddToNodeList(ref nodeList, new Node(bounds));
-            Split(ref nodeList, allItems, 0, 0, allItems.Length);
+            Split(ref nodeList, allItems, 0, 0, length);
 
             for (int i = 0; i < allItems.Length; i++)
             {
                 BVHItem item = allItems[i];
                 result[i] = items[item.Index].SdfData();
             }
+
+            return _nodeIndex;
         }
 
-        private void Split(ref Node[] nodeList, BVHItem[] allItems, int parentIndex, int globalStart, int itemNum, int depth = 0)
+        private static void Split(ref Node[] nodeList, BVHItem[] allItems, int parentIndex, int globalStart, int itemNum, int depth = 0)
         {
             const int MaxDepth = 8;
             Node parent = nodeList[parentIndex];
@@ -88,7 +93,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
         }
 
-        private void ChooseSplit(BVHItem[] allItems, Node node, int start, int count, out int bestAxis, out float bestPos, out float bestCost)
+        private static void ChooseSplit(BVHItem[] allItems, Node node, int start, int count, out int bestAxis, out float bestPos, out float bestCost)
         { 
             const int numSplitTests = 5;
 
@@ -115,7 +120,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
         }
 
-        private int AddToNodeList(ref Node[] nodeList, Node node)
+        private static int AddToNodeList(ref Node[] nodeList, Node node)
         {
             if (_nodeIndex >= nodeList.Length)
             {
@@ -127,7 +132,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             return nodeIndex;
         }
         
-        private float EvaluateSplit(BVHItem[] allItems, int splitAxis, float splitPos, int start, int count)
+        private static float EvaluateSplit(BVHItem[] allItems, int splitAxis, float splitPos, int start, int count)
         {
             BoundingBox boundsLeft = new();
             BoundingBox boundsRight = new();

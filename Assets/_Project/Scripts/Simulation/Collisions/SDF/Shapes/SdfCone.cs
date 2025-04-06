@@ -63,10 +63,12 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         private void CalculateBounds(float3 pointA, float3 pointB)
         {
             float rb = RadiusBase;
+            float rt = RadiusTip;
             float3 r = new float3(rb, rb, rb);
+            float3 r2 = new float3(rt, rt, rt);
             
             BoundingBox bounds = new BoundingBox(pointA - r, pointA + r);
-            bounds.GrowToInclude(pointB - r, pointB + r);
+            bounds.GrowToInclude(pointB - r2, pointB + r2);
             
             _boundsMin = bounds.Min;
             _boundsMax = bounds.Max;

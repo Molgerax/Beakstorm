@@ -1,20 +1,24 @@
-using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Beakstorm.Simulation.Collisions.SDF
 {
     [DefaultExecutionOrder(-100)]
+    [ExecuteAlways]
     public class SdfShapeManager : MonoBehaviour
     {
         [SerializeField, Range(0, 10)] private float sdfGrowBounds = 1f;
         [SerializeField, Range(0, 8)] private int visualizeBounds = 0;
+
+        [SerializeField] private bool renderSdf = false;
+        [SerializeField] private Material material;
+        [SerializeField] private Mesh mesh;
+        
+        private MaterialPropertyBlock _propBlock;
         
         public static SdfShapeManager Instance;
 
-        public List<AbstractSdfShape> Shapes = new List<AbstractSdfShape>(16);
-        private BVH<AbstractSdfShape, AbstractSdfData> _bvh;
+        public static List<AbstractSdfShape> Shapes = new List<AbstractSdfShape>(16);
 
         private AbstractSdfShape[] _shapes = new AbstractSdfShape[16];
         private Node[] _nodeList;
@@ -24,18 +28,20 @@ namespace Beakstorm.Simulation.Collisions.SDF
         public GraphicsBuffer NodeBuffer;
         public GraphicsBuffer SdfBuffer;
 
-        public int NodeCount => _shapeCount;
+        private int _nodeCount;
+        public int NodeCount => _nodeCount;
         public float SdfGrowBounds => sdfGrowBounds;
         
         private int _bufferSize = 16;
         private int _shapeCount;
-        private bool _updateArray = false;
-
+        private static bool _updateArray = false;
+        private bool _initialized = false;
+        
         public Node[] NodeList => _nodeList;
         public BVHItem[] BvhItems => _bvhItems;
         public int BufferSize => _bufferSize;
 
-        private void Awake()
+        private void OnEnable()
         {
             Instance = this;
 
@@ -43,26 +49,39 @@ namespace Beakstorm.Simulation.Collisions.SDF
             _nodeList = new Node[4];
             
             InitializeBuffers(true);
+            ResizeBuffers();
+            FillArray();
+            
+            _initialized = true;
         }
 
         private void Update()
         {
+            if (!_initialized)
+                return;
+            
             UpdateArray();
             ResizeBuffers();
             ConstructBvh();
+
+            RenderPreview();
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             ReleaseBuffers();
+            _initialized = false;
         }
 
         private void ConstructBvh()
         {
-            if (_shapes.Length == 0 || SdfBuffer == null)
+            if (_shapes == null || _shapes.Length == 0 || SdfBuffer == null)
                 return;
 
-            _bvh = new BVH<AbstractSdfShape, AbstractSdfData>(_shapes, _shapeCount, ref _bvhItems, ref _nodeList, ref _dataArray);
+            if (Shapes.Count == 0)
+                return;
+            
+            _nodeCount = BVH<AbstractSdfShape, AbstractSdfData>.ConstructBVH(_shapes, _shapeCount, ref _bvhItems, ref _nodeList, ref _dataArray);
 
             ResizeNodeBuffer();
             
@@ -119,14 +138,19 @@ namespace Beakstorm.Simulation.Collisions.SDF
             if (!_updateArray)
                 return;
             ResizeBuffers();
-            for (int i = 0; i < _shapeCount; i++)
+            FillArray();
+            _updateArray = false;
+        }
+
+        private void FillArray()
+        {
+            for (int i = 0; i < Mathf.Min(_shapes.Length, Shapes.Count); i++)
             {
                 _shapes[i] = Shapes[i];
             }
-            _updateArray = false;
         }
         
-        public void AddShape(AbstractSdfShape shape)
+        public static void AddShape(AbstractSdfShape shape)
         {
             if (!Shapes.Contains(shape))
             {
@@ -135,7 +159,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
         }
 
-        public void RemoveShape(AbstractSdfShape shape)
+        public static void RemoveShape(AbstractSdfShape shape)
         {
             if (Shapes.Contains(shape))
             {
@@ -143,7 +167,39 @@ namespace Beakstorm.Simulation.Collisions.SDF
                 _updateArray = true;
             }
         }
+        
+        
+        private void RenderPreview()
+        {
+            if (!renderSdf)
+                return;
+                
+            if (_nodeList == null || _nodeList.Length == 0)
+                return;
+        
+            if (!material || !mesh)
+                return;
+            
+            _propBlock ??= new();
+            
+            _propBlock.SetBuffer("_NodeBuffer", NodeBuffer);
+            _propBlock.SetBuffer("_SdfBuffer", SdfBuffer);
+            _propBlock.SetInt("_NodeCount", NodeCount);
 
+            Bounds bounds = new Bounds();
+            bounds.Encapsulate(_nodeList[0].BoundsMin);
+            bounds.Encapsulate(_nodeList[0].BoundsMax);
+
+            RenderParams rp = new RenderParams(material)
+            {
+                worldBounds = bounds,
+                //instanceID = GetInstanceID(),
+                layer = gameObject.layer,
+                matProps = _propBlock,
+            };
+            
+            Graphics.RenderMesh(rp, mesh, 0, Matrix4x4.TRS(bounds.center, Quaternion.identity, bounds.size));
+        }
 
         private void OnDrawGizmosSelected()
         {
@@ -155,6 +211,9 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void DrawNodeGizmos(Node node, int depth)
         {
+            if (depth > 8)
+                return;
+            
             bool isLeaf = node.ItemCount > 0;
 
             Color col = Color.HSVToRGB(depth / 8.0f, 1f, 1f);
@@ -168,8 +227,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
             else
             {
-                DrawNodeGizmos(_nodeList[node.StartIndex + 0], depth + 1);
-                DrawNodeGizmos(_nodeList[node.StartIndex + 1], depth + 1);
+                if (node.StartIndex + 0 < _nodeCount) DrawNodeGizmos(_nodeList[node.StartIndex + 0], depth + 1);
+                if (node.StartIndex + 1 < _nodeCount) DrawNodeGizmos(_nodeList[node.StartIndex + 1], depth + 1);
             }
         }
     }
