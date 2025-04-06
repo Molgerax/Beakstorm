@@ -40,7 +40,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             float3x3 rot = new float3x3(m.c0.xyz, m.c1.xyz, m.c2.xyz);
 
             float3 adjustedScale = AdjustedScale() * 0.5f;
-            BoundingBox bounds = new BoundingBox(center - adjustedScale, center + adjustedScale);
+            BoundingBox bounds = new BoundingBox(center, center);
 
             for (int i = 0; i < 8; i++)
             {
