@@ -81,6 +81,22 @@ void collideBounds(inout float3 pos, inout float3 oldPos)
     pos += normal * dist;
 }
 
+void collideSdf(inout float3 pos, inout float3 oldPos, SdfQueryInfo sdf, float bounce)
+{
+    float dist = sdf.dist;
+    float3 normal = sdf.normal;
+    if (dist > 0)
+    {
+        return;
+    }
+    float3 vel = pos - oldPos;
+    float3 flattenVelocity = -dot(vel + normal * -dist, normal) * normal;
+    float3 mostBounceVelocity = -dot(vel, normal) * normal;
+           
+    oldPos = lerp(oldPos - flattenVelocity, oldPos - mostBounceVelocity, saturate(bounce));
+    pos -= normal * dist;
+}
+
 float3 centerForce(float3 pos, uint index)
 {
     float radius = 100;
@@ -236,14 +252,15 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
     acceleration += FlockingForce(index);
     //acceleration += forceFromBounds(currentPosition);
     acceleration += centerForce(currentPosition, index);
-    acceleration += sdfForce(sdfInfo);
+    //acceleration += sdfForce(sdfInfo);
     velocity += acceleration * _DeltaTime;
     velocity = clampVector(velocity, GetMinSpeed(index), GetMaxSpeed(index));
 
-    //currentPosition += velocity * _DeltaTime;
+    currentPosition += velocity * _DeltaTime;
     //collideBounds(currentPosition, oldPosition);
-
-    currentPosition.y = _WorldPos.y;
+    collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
+    
+    //currentPosition.y = _WorldPos.y;
     
     _BoidPositionBuffer[index] = currentPosition;
     _BoidOldPositionBuffer[index] = oldPosition;
@@ -251,12 +268,13 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
     normal = safeNormalize(cross(velocity, tangent));
 
     float3 v = normalize(currentPosition - oldPosition);
-    v = float3(0, 1, 0);
-    if (dot(sdfInfo.normal, sdfInfo.normal) > 0)
-        v = sdfInfo.normal;
+    //v = float3(0, 1, 0);
+    //if (dot(sdfInfo.normal, sdfInfo.normal) > 0)
+    //    v = sdfInfo.normal;
 
     //v = float3(0, 0, 1);
-    normal = float3(0, 1, 0);
+    //normal = float3(0, 1, 0);
+    //normal = safeNormalize(cross(v, float3(1, 0, 0)));
     _BoidVelocityBuffer[index] = v;
     _BoidNormalBuffer[index] = normal;
 
@@ -264,8 +282,7 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
     float4 data = _BoidDataBuffer[index];
     data.w = saturate(data.x / 16.0);
 
-    data.w = frac(sdfInfo.dist * 0.2) * 0.5 + sign(sdfInfo.dist) * 0.5;
-    
+    //data.w = frac(sdfInfo.dist * 0.2) * (sdfInfo.matIndex / 4.0);
     
     _BoidDataBuffer[index] = data;
 }
@@ -285,8 +302,8 @@ void Init(uint3 id : SV_DispatchThreadID)
     //offset = _WorldMatrix._m00_m01_m02 * stagger * 32;
     offset = (RandomVector01(index) - 0.5) * _SimulationSpace;
 
-    offset = 0;
-    offset.xz = ((float2)newId / sideLength - 0.5) * _SimulationSpace.xz; 
+    //offset = 0;
+    //offset.xz = ((float2)newId / sideLength - 0.5) * _SimulationSpace.xz; 
     
     float3 currentPosition = offset + _WorldPos;
     float3 currentNormal = _WorldMatrix._m10_m11_m12;
