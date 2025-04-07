@@ -167,6 +167,8 @@ float3 FlockingForce(uint index)
             
             if (dot(offset, offset) > largestRadius * largestRadius)
                 continue;
+
+            if (dot(velocityA, velocityB) < 0) continue;
             
             float distance = length(offset);
             
