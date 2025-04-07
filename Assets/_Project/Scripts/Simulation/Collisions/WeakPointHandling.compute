@@ -1,0 +1,32 @@
+#pragma kernel Collide
+#pragma kernel FlushDamage
+
+StructuredBuffer<float4> _WeakPointPositions;
+RWStructuredBuffer<int> _DamageBuffer;
+
+int _Count;
+float3 _Position;
+int _Index;
+int _DamageDealt;
+
+[numthreads(1,1,1)]
+void Collide (uint3 id : SV_DispatchThreadID)
+{
+    for (int i = 0; i < _Count; i++)
+    {
+        float4 posR = _WeakPointPositions.Load(i);
+        float3 diff = _Position - posR.xyz;
+        float len = length(diff);
+
+        if (len < posR.w)
+        {
+            _DamageBuffer[i] += 60;
+        }
+    }
+}
+
+[numthreads(1,1,1)]
+void FlushDamage (uint3 id : SV_DispatchThreadID)
+{
+    _DamageBuffer[_Index] -= _DamageDealt;
+}

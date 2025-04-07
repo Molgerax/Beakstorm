@@ -1,0 +1,35 @@
+#pragma kernel Emit
+
+#include "DensityEmit.hlsl"
+
+#define ThreadGroupSize 2
+
+Texture3D<half4> _SDFVolume;
+float3 _SDFCenter;
+float3 _SDFBounds;
+
+float _SurfaceLevel;
+bool _FillInside;
+
+[numthreads(ThreadGroupSize,ThreadGroupSize,ThreadGroupSize)]
+void Emit (uint3 id : SV_DispatchThreadID)
+{
+    half density = _Volume[id];
+    
+    float3 worldPos = WorldPosFromId(id, _VolumeResolution, _VolumeCenter, _VolumeBounds);
+    half sdfVal = Sample_Volume(_SDFVolume, _SDFCenter, _SDFBounds, worldPos).w;
+
+    if (sdfVal < _SurfaceLevel)
+    {
+        half distanceRamp;
+
+        if(_FillInside) distanceRamp = smoothstep(_SurfaceLevel, 0, sdfVal);
+        else distanceRamp = smoothstep(_SurfaceLevel, 0, sdfVal) * step(0, sdfVal);
+        
+        distanceRamp = saturate(distanceRamp);
+
+        density = SetDensity(distanceRamp * _EmissionStrength, density, true);
+    }
+
+    _Volume[id] = density;
+}

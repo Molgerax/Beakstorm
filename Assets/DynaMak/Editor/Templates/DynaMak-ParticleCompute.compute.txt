@@ -1,0 +1,61 @@
+#pragma kernel InitializeKernel
+#pragma kernel UpdateKernel
+#pragma kernel RenderKernel
+#pragma kernel KillKernel
+#pragma kernel EmitKernel
+#pragma kernel EmissionCountKernel
+
+// Must contain a Particle definition, which must at least contain 'bool alive'
+#define PARTICLE_STRUCT Particle
+struct PARTICLE_STRUCT
+{
+    bool alive;
+    float3 position;
+};
+
+#include "../ParticleTemplate.hlsl"
+#include "../ParticleUtility.hlsl"
+#include "../ParticleRenderUtility.hlsl"
+
+
+INITIALIZE
+KILL
+
+UPDATE
+{
+    const uint index = id.x;
+    PARTICLE_STRUCT p = _ParticleBuffer[index];
+
+    if(p.alive)
+    {
+        #NOTRIM#
+        // Update code goes here
+        #NOTRIM#
+    }
+    #NOTRIM#
+    _ParticleBuffer[index] = p;
+}
+
+
+RENDER
+{
+    const uint index = id.x;
+    PARTICLE_STRUCT p = _ParticleBuffer[index];
+    #NOTRIM#
+    if(!p.alive) return;
+    #NOTRIM#
+    // Rendering Code here
+}
+
+SET_EMISSION_TO_DEADCOUNT
+
+EMIT
+{
+    const uint index = _AliveIndexBuffer.Consume();    
+    PARTICLE_STRUCT p = (PARTICLE_STRUCT)0;
+    #NOTRIM#
+    p.alive = true;
+    p.position = float3(0,0,0);
+    #NOTRIM#
+    _ParticleBuffer[index] = p;
+}

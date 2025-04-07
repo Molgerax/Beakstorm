@@ -1,0 +1,30 @@
+#pragma kernel Relocate
+#pragma kernel Copy
+
+#include "FluidFieldOperator.hlsl"
+
+Texture3D<half4> _PingField;
+
+float3 _FluidCenterOld;
+float3 _FluidBoundsOld;
+
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Copy (uint3 id : SV_DispatchThreadID)
+{
+    _FluidVolume[id.xyz] = _PingField[id.xyz];
+}
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Relocate (uint3 id : SV_DispatchThreadID)
+{
+    float3 worldPos = WorldPosFromId(id, _FluidResolution, _FluidCenter, _FluidBounds);
+    float3 oldPos = WorldPosFromId(id, _FluidResolution, _FluidCenterOld, _FluidBoundsOld);
+    
+    half4 f = 0;
+
+    //if(WorldPosInsideVolume( _FluidCenterOld, _FluidBoundsOld, worldPos))
+        f = Sample_Volume(_PingField, _FluidCenterOld, _FluidBoundsOld, worldPos);
+    
+    _FluidVolume[id.xyz] = f;
+}

@@ -1,0 +1,33 @@
+#pragma kernel Relocate
+#pragma kernel Copy
+
+#include "FluidFieldOperator.hlsl"
+
+Texture3D<half4> _PingField;
+
+int3 _FieldShift;
+
+
+bool OutsideOfVolume(int3 id, int3 resolution)
+{
+    return ( id.x < 0 || id.y < 0 || id.z < 0 || id.x >= resolution.x || id.y >= resolution.y || id.z >= resolution.z); 
+}
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Copy (uint3 id : SV_DispatchThreadID)
+{
+    _FluidVolume[id.xyz] = _PingField[id.xyz];
+}
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Relocate (uint3 id : SV_DispatchThreadID)
+{
+    int3 newId = id.xyz + _FieldShift;
+    
+    half4 f = 0;
+    
+    if( !OutsideOfVolume(newId, _FluidResolution))
+        f = _PingField[(uint3) newId.xyz];
+    
+    _FluidVolume[id.xyz] = f;
+}

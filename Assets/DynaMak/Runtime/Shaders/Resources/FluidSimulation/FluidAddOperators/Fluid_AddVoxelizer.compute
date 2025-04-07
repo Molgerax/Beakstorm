@@ -1,0 +1,30 @@
+#pragma kernel Add
+
+#include "../FluidFieldOperator.hlsl"
+
+// Properties
+float3 _VoxelCenter;
+float3 _VoxelBounds;
+
+Texture3D<half> _VoxelVolume;
+
+float _AddDensity;
+
+
+[numthreads(ThreadBlockSize,ThreadBlockSize,ThreadBlockSize)]
+void Add (uint3 id : SV_DispatchThreadID)
+{
+    //if(dot(_AddDirection, _AddDirection) == 0) return;
+
+    float3 worldPos = WorldPosFromId(id, _FluidResolution, _FluidCenter, _FluidBounds);
+
+    half voxelSample = Sample_Volume(_VoxelVolume, _VoxelCenter, _VoxelBounds, worldPos);
+
+    float addDensity = voxelSample * _AddDensity * _dt;
+    
+    half4 f = _FluidVolume[id.xyz];
+
+    f.w += addDensity;
+    
+    _FluidVolume[id.xyz] = f;
+}
