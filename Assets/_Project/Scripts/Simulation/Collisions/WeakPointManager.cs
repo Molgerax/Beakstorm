@@ -123,9 +123,9 @@ namespace Beakstorm.Simulation.Collisions
             _flushDamageBuffer.SetData(_damageArray);
             
             int kernel = compute.FindKernel("FlushDamage");
-            compute.SetBuffer(kernel, "_DamageBuffer", DamageBuffer);
-            compute.SetBuffer(kernel, "_FlushDamageBuffer", _flushDamageBuffer);
-            compute.SetInt("_Count", WeakPoints.Count);
+            compute.SetBuffer(kernel, PropertyIDs.DamageBuffer, DamageBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.FlushDamageBuffer, _flushDamageBuffer);
+            compute.SetInt(PropertyIDs.WeakPointCount, WeakPoints.Count);
             
             compute.Dispatch(kernel, 1, 1, 1);
         }
@@ -138,18 +138,42 @@ namespace Beakstorm.Simulation.Collisions
             
             int kernel = compute.FindKernel("CollideBoids");
             
-            compute.SetBuffer(kernel, "_WeakPointPositions", WeakPointBuffer);
-            compute.SetBuffer(kernel, "_DamageBuffer", DamageBuffer);
-            compute.SetInt("_Count", WeakPoints.Count);
+            compute.SetBuffer(kernel, PropertyIDs.WeakPointBuffer, WeakPointBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.DamageBuffer, DamageBuffer);
+            compute.SetInt(PropertyIDs.WeakPointCount, WeakPoints.Count);
+            
+            compute.SetFloat(PropertyIDs.Time, Time.time);
+            compute.SetFloat(PropertyIDs.DeltaTime, Time.deltaTime);
 
-            compute.SetBuffer(kernel, "_SpatialIndices", _boidManager.SpatialIndicesBuffer);
-            compute.SetBuffer(kernel, "_SpatialOffsets", _boidManager.SpatialOffsetsBuffer);
-            compute.SetBuffer(kernel, "_BoidPositionBuffer", _boidManager.PositionBuffer);
-            compute.SetBuffer(kernel, "_BoidOldPositionBuffer", _boidManager.OldPositionBuffer);
-            compute.SetFloat("_HashCellSize", _boidManager.HashCellSize);
-            compute.SetFloat("_NumBoids", _boidManager.Capacity);
+            compute.SetBuffer(kernel, PropertyIDs.SpatialIndices, _boidManager.SpatialIndicesBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.SpatialOffsets, _boidManager.SpatialOffsetsBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.PositionBuffer, _boidManager.PositionBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.OldPositionBuffer, _boidManager.OldPositionBuffer);
+            
+            compute.SetFloat(PropertyIDs.HashCellSize, _boidManager.HashCellSize);
+            compute.SetFloat(PropertyIDs.TotalCount, _boidManager.Capacity);
             
             compute.DispatchExact(kernel, _bufferSize);
+        }
+        
+        
+        
+        public static class PropertyIDs
+        {
+            public static readonly int TotalCount              = Shader.PropertyToID("_TotalCount");
+            public static readonly int HashCellSize            = Shader.PropertyToID("_HashCellSize");
+            
+            public static readonly int Time                    = Shader.PropertyToID("_Time");
+            public static readonly int DeltaTime               = Shader.PropertyToID("_DeltaTime");
+            public static readonly int PositionBuffer          = Shader.PropertyToID("_PositionBuffer");
+            public static readonly int OldPositionBuffer       = Shader.PropertyToID("_OldPositionBuffer");
+            public static readonly int WeakPointBuffer          = Shader.PropertyToID("_WeakPointBuffer");
+            public static readonly int DamageBuffer            = Shader.PropertyToID("_DamageBuffer");
+            public static readonly int FlushDamageBuffer            = Shader.PropertyToID("_FlushDamageBuffer");
+            public static readonly int WeakPointCount              = Shader.PropertyToID("_WeakPointCount");
+            
+            public static readonly int SpatialIndices              = Shader.PropertyToID("_BoidSpatialIndices");
+            public static readonly int SpatialOffsets              = Shader.PropertyToID("_BoidSpatialOffsets");
         }
     }
 }

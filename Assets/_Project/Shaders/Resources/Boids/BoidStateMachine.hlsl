@@ -19,8 +19,8 @@ STATE_SETTINGS(_Exposed)
 
 float GetInterpolator(uint index)
 {
-    float3 pos = _BoidPositionBuffer[index];
-    float4 data = _BoidDataBuffer[index];
+    float3 pos = _PositionBuffer[index];
+    float4 data = _DataBuffer[index];
 
     return saturate(data.w);
     return 1;

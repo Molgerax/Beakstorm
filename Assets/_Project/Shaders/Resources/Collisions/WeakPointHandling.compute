@@ -1,35 +1,15 @@
-#pragma kernel Collide
 #pragma kernel FlushDamage
 #pragma kernel CollideBoids
 
 #include "../SpatialHashing/SpatialHashGrids.hlsl"
 
-StructuredBuffer<float4> _WeakPointPositions;
+StructuredBuffer<float4> _WeakPointBuffer;
 RWStructuredBuffer<int> _DamageBuffer;
 StructuredBuffer<int> _FlushDamageBuffer;
 
-int _Count;
-float3 _Position;
-int _Index;
-int _DamageDealt;
-
-
-
-[numthreads(1,1,1)]
-void Collide (uint3 id : SV_DispatchThreadID)
-{
-    for (int i = 0; i < _Count; i++)
-    {
-        float4 posR = _WeakPointPositions.Load(i);
-        float3 diff = _Position - posR.xyz;
-        float len = length(diff);
-
-        if (len < posR.w)
-        {
-            _DamageBuffer[i] += 60;
-        }
-    }
-}
+int _WeakPointCount;
+float _Time;
+float _DeltaTime;
 
 
 [numthreads(16,1,1)]
@@ -37,17 +17,20 @@ void FlushDamage(uint3 id : SV_DispatchThreadID)
 {
     int index = id.x;
 
-    if (index >= _Count)
+    if (index >= _WeakPointCount)
         return;
 
     _DamageBuffer[index] -= _FlushDamageBuffer[index];
 }
 
 
-StructuredBuffer<float3> _BoidPositionBuffer;
-StructuredBuffer<float3> _BoidOldPositionBuffer;
+StructuredBuffer<float3> _PositionBuffer;
+StructuredBuffer<float3> _OldPositionBuffer;
 float _HashCellSize;
-uint _NumBoids;
+uint _TotalCount;
+
+SPATIAL_HASH_BUFFERS(_Boid)
+
 
 float lineSphereIntersection(float3 p1, float3 p2, float3 p3, float r)
 {
@@ -63,10 +46,10 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
 {
     int index = id.x;
 
-    if (index >= _Count)
+    if (index >= _WeakPointCount)
         return;
     
-    float4 posR = _WeakPointPositions.Load(index);
+    float4 posR = _WeakPointBuffer.Load(index);
     float3 positionA = posR.xyz;
     float radius = posR.w;
     
@@ -76,12 +59,12 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
     for (int i = 0; i < 27; i++)
     {
         uint hashCell = HashCell3D(originCell + offsets3D[i]);
-        uint key = KeyFromHash(hashCell, _NumBoids);
-        uint currIndex = _SpatialOffsets[key];
+        uint key = KeyFromHash(hashCell, _TotalCount);
+        uint currIndex = _BoidSpatialOffsets[key];
         
-        while (currIndex < _NumBoids)
+        while (currIndex < _TotalCount)
         {
-            uint3 indexData = _SpatialIndices[currIndex];
+            uint3 indexData = _BoidSpatialIndices[currIndex];
             currIndex++;
             // Exit if no longer looking at correct bin
             if (indexData[2] != key)
@@ -91,7 +74,7 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
                 continue;
             
             uint neighborIndex = indexData[0];
-            float3 positionB = _BoidPositionBuffer[neighborIndex]; 
+            float3 positionB = _PositionBuffer[neighborIndex]; 
             float3 offset = positionB - positionA;
             
             if (dot(offset, offset) > (_HashCellSize + radius) * (_HashCellSize + radius))
@@ -100,7 +83,7 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
             if (dot(offset, offset) > radius * radius)
                 continue;
             
-            float3 oldPositionB = _BoidOldPositionBuffer[neighborIndex]; 
+            float3 oldPositionB = _OldPositionBuffer[neighborIndex]; 
             float3 oldOffset = oldPositionB - positionA;
             if (dot(oldOffset, oldOffset) > radius * radius)
                 _DamageBuffer[index] += 1;

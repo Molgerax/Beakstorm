@@ -3,11 +3,24 @@
 
 // --Parameters for Spatial Hash usage--
 
-RWStructuredBuffer<uint3> _SpatialIndices;
-RWStructuredBuffer<uint> _SpatialOffsets;
+//RWStructuredBuffer<uint3> _SpatialIndices;
+//RWStructuredBuffer<uint> _SpatialOffsets;
 
 // -------------------------------------
 
+#define SPATIAL_HASH_BUFFERS(name) \
+RWStructuredBuffer<uint3> name##SpatialIndices; \
+RWStructuredBuffer<uint> name##SpatialOffsets; \
+void SetSpatialHash##name(uint index, float3 position, uint totalCount, float cellSize)\
+{ \
+    if (index >= totalCount)\
+        return;\
+    name##SpatialOffsets[index] = totalCount;\
+    int3 cell = GetCell3D(position, cellSize);\
+    uint hashCell = HashCell3D(cell);\
+    uint key = KeyFromHash(hashCell, totalCount);\
+    name##SpatialIndices[index] = uint3(index, hashCell, key);\
+}\
 
 
 
@@ -73,12 +86,14 @@ void SetSpatialHash(uint index, float3 position, uint totalCount, float cellSize
         return;
 	
     // Reset offsets
-    _SpatialOffsets[index] = totalCount;
-    int3 cell = GetCell3D(position, cellSize);
-    uint hashCell = HashCell3D(cell);
-    uint key = KeyFromHash(hashCell, totalCount);
-    _SpatialIndices[index] = uint3(index, hashCell, key);
+//    _SpatialOffsets[index] = totalCount;
+//    int3 cell = GetCell3D(position, cellSize);
+//    uint hashCell = HashCell3D(cell);
+//    uint key = KeyFromHash(hashCell, totalCount);
+//    _SpatialIndices[index] = uint3(index, hashCell, key);
 }
+
+
 
 
 #endif

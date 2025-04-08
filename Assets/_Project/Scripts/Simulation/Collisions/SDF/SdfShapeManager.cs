@@ -193,9 +193,9 @@ namespace Beakstorm.Simulation.Collisions.SDF
             
             _propBlock ??= new();
             
-            _propBlock.SetBuffer("_NodeBuffer", NodeBuffer);
-            _propBlock.SetBuffer("_SdfBuffer", SdfBuffer);
-            _propBlock.SetInt("_NodeCount", NodeCount);
+            _propBlock.SetBuffer(PropertyIDs.NodeBuffer, NodeBuffer);
+            _propBlock.SetBuffer(PropertyIDs.SdfBuffer, SdfBuffer);
+            _propBlock.SetInt(PropertyIDs.NodeCount, NodeCount);
 
             Bounds bounds = new Bounds();
             bounds.Encapsulate(_nodeList[0].BoundsMin);
@@ -241,6 +241,13 @@ namespace Beakstorm.Simulation.Collisions.SDF
                 if (node.StartIndex + 0 < _nodeCount) DrawNodeGizmos(_nodeList[node.StartIndex + 0], depth + 1);
                 if (node.StartIndex + 1 < _nodeCount) DrawNodeGizmos(_nodeList[node.StartIndex + 1], depth + 1);
             }
+        }
+        
+        public static class PropertyIDs
+        {
+            public static readonly int NodeBuffer = Shader.PropertyToID("_NodeBuffer");
+            public static readonly int SdfBuffer = Shader.PropertyToID("_SdfBuffer");
+            public static readonly int NodeCount = Shader.PropertyToID("_NodeCount");
         }
     }
 }

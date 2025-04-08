@@ -1,4 +1,4 @@
-#pragma kernel FlockingCS
+#pragma kernel Update
 #pragma kernel Init
 
 #pragma kernel UpdateSpatialHash
@@ -12,6 +12,8 @@
 #include "../Collisions/SdfCollisions.hlsl"
 
 #define THREAD_BLOCK_SIZE 256
+
+SPATIAL_HASH_BUFFERS(_Boid)
 
 
 float UvOutOfBounds(float2 uv)
@@ -118,8 +120,8 @@ float3 FlockingForce(uint index)
     float maxSpeed = GetMaxSpeed(index);
     float maxForce = GetMaxForce(index);
     
-    float3 positionA = _BoidPositionBuffer[index];
-    float3 oldPositionA = _BoidOldPositionBuffer[index];
+    float3 positionA = _PositionBuffer[index];
+    float3 oldPositionA = _OldPositionBuffer[index];
     float3 velocityA = (positionA - oldPositionA) / _DeltaTime;
 
     
@@ -139,13 +141,13 @@ float3 FlockingForce(uint index)
     for (int i = 0; i < 27; i++)
     {
         uint hashCell = HashCell3D(originCell + offsets3D[i]);
-        uint key = KeyFromHash(hashCell, _NumBoids);
-        uint currIndex = _SpatialOffsets[key];
+        uint key = KeyFromHash(hashCell, _TotalCount);
+        uint currIndex = _BoidSpatialOffsets[key];
         
         
-        while (currIndex < _NumBoids)
+        while (currIndex < _TotalCount)
         {
-            uint3 indexData = _SpatialIndices[currIndex];
+            uint3 indexData = _BoidSpatialIndices[currIndex];
             currIndex++;
             // Exit if no longer looking at correct bin
             if (indexData[2] != key)
@@ -159,8 +161,8 @@ float3 FlockingForce(uint index)
             if(neighborIndex == index)
                 continue;
             
-            float3 positionB = _BoidPositionBuffer[neighborIndex];
-            float3 oldPositionB = _BoidOldPositionBuffer[neighborIndex];
+            float3 positionB = _PositionBuffer[neighborIndex];
+            float3 oldPositionB = _OldPositionBuffer[neighborIndex];
             float3 velocityB = (positionB - oldPositionB) / _DeltaTime;
             
             float3 offset = positionB - positionA;
@@ -226,22 +228,22 @@ float3 FlockingForce(uint index)
     acceleration += alignmentForce * factors.y;
     acceleration += cohesionForce * factors.z;
 
-    float4 data = _BoidDataBuffer[index];
+    float4 data = _DataBuffer[index];
     data.xyz = numFlockMates;
-    _BoidDataBuffer[index] = data;
+    _DataBuffer[index] = data;
     
     return acceleration;
 }
 
 
 [numthreads(THREAD_BLOCK_SIZE,1,1)]
-void FlockingCS (uint3 id : SV_DispatchThreadID)
+void Update (uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
     
-    float3 currentPosition = _BoidPositionBuffer[index];
-    float3 oldPosition = _BoidOldPositionBuffer[index];
-    float3 normal = _BoidNormalBuffer[index];
+    float3 currentPosition = _PositionBuffer[index];
+    float3 oldPosition = _OldPositionBuffer[index];
+    float3 normal = _NormalBuffer[index];
     
     float3 velocity = (currentPosition - oldPosition) / _DeltaTime;
     oldPosition = currentPosition;
@@ -264,8 +266,8 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
     
     //currentPosition.y = _WorldPos.y;
     
-    _BoidPositionBuffer[index] = currentPosition;
-    _BoidOldPositionBuffer[index] = oldPosition;
+    _PositionBuffer[index] = currentPosition;
+    _OldPositionBuffer[index] = oldPosition;
 
     normal = safeNormalize(cross(velocity, tangent));
 
@@ -277,16 +279,16 @@ void FlockingCS (uint3 id : SV_DispatchThreadID)
     //v = float3(0, 0, 1);
     //normal = float3(0, 1, 0);
     //normal = safeNormalize(cross(v, float3(1, 0, 0)));
-    _BoidVelocityBuffer[index] = v;
-    _BoidNormalBuffer[index] = normal;
+    _VelocityBuffer[index] = v;
+    _NormalBuffer[index] = normal;
 
 
-    float4 data = _BoidDataBuffer[index];
+    float4 data = _DataBuffer[index];
     data.w = saturate(data.x / 16.0);
 
     //data.w = frac(sdfInfo.dist * 0.2) * (sdfInfo.matIndex / 4.0);
     
-    _BoidDataBuffer[index] = data;
+    _DataBuffer[index] = data;
 }
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
@@ -294,12 +296,12 @@ void Init(uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
     
-    int sideLength = sqrt(_NumBoids);
+    int sideLength = sqrt(_TotalCount);
 
     int2 newId = int2(index / sideLength, index % sideLength);
     
-    float stagger = ((float)index / _NumBoids) * 2;// - 1;
-    float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _NumBoids;
+    float stagger = ((float)index / _TotalCount) * 2;// - 1;
+    float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _TotalCount;
 
     //offset = _WorldMatrix._m00_m01_m02 * stagger * 32;
     offset = (RandomVector01(index) - 0.5) * _SimulationSpace;
@@ -314,11 +316,11 @@ void Init(uint3 id : SV_DispatchThreadID)
     currentVelocity = RandomVector(index) * 0.001;
     float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
     
-    _BoidPositionBuffer[index] = currentPosition;
-    _BoidOldPositionBuffer[index] = oldPosition;
-    _BoidVelocityBuffer[index] = currentVelocity;
-    _BoidNormalBuffer[index] = currentNormal;
-    _BoidDataBuffer[index] = 0;
+    _PositionBuffer[index] = currentPosition;
+    _OldPositionBuffer[index] = oldPosition;
+    _VelocityBuffer[index] = currentVelocity;
+    _NormalBuffer[index] = currentNormal;
+    _DataBuffer[index] = 0;
 }
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
@@ -326,15 +328,10 @@ void UpdateSpatialHash(uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
     
-    if (index >= _NumBoids)
+    if (index >= _TotalCount)
         return;
     
-    float3 position = _BoidPositionBuffer[index];
-    
-    // Reset offsets
-    _SpatialOffsets[index] = _NumBoids;
-    int3 cell = GetCell3D(position, _HashCellSize);
-    uint hashCell = HashCell3D(cell);
-    uint key = KeyFromHash(hashCell, _NumBoids);
-    _SpatialIndices[index] = uint3(index, hashCell, key);
+    float3 position = _PositionBuffer[index];
+
+    SetSpatialHash_Boid(index, position, _TotalCount, _HashCellSize);
 }

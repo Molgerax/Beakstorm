@@ -89,7 +89,7 @@ namespace Beakstorm.Simulation.Particles
                 UpdateSpatialHash();
                 GPUBitonicMergeSort.SortAndCalculateOffsets(_sortShader, _spatialIndicesBuffer, _spatialOffsetsBuffer);
 
-                int updateKernel = _boidComputeShader.FindKernel("FlockingCS");
+                int updateKernel = _boidComputeShader.FindKernel("Update");
                 RunSimulation(updateKernel, Time.deltaTime);
                 
                 RenderMeshes();
@@ -157,41 +157,39 @@ namespace Beakstorm.Simulation.Particles
                 return;
             }
 
-            _boidComputeShader.SetInt("_NumBoids", _capacity);
-            _boidComputeShader.SetFloat("_HashCellSize", _hashCellSize);
+            _boidComputeShader.SetInt(PropertyIDs.TotalCount, _capacity);
+            _boidComputeShader.SetFloat(PropertyIDs.HashCellSize, _hashCellSize);
 
-            _boidComputeShader.SetVector("_WorldPos", transform.position);
-            _boidComputeShader.SetMatrix("_WorldMatrix", transform.localToWorldMatrix);
+            _boidComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
+            _boidComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
+            _boidComputeShader.SetVector(PropertyIDs.SimulationSpace, simulationSpace);
             
-            _boidComputeShader.SetVector("_SimulationSpace", simulationSpace);
-
-            _boidComputeShader.SetFloat("_Time", Time.time);
-            _boidComputeShader.SetFloat("_DeltaTime", timeStep);
-
-            _boidComputeShader.SetFloat("_FloorYLevel", _floorYLevel);
-            _boidComputeShader.SetFloat("_CollisionBounce", _collisionBounce);
-            _boidComputeShader.SetFloat("_Gravity", _gravity);
-
-            _boidComputeShader.SetFloat("_CollisionRadius", _collisionRadius);
+            _boidComputeShader.SetFloat(PropertyIDs.Time, Time.time);
+            _boidComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
+            
+            _boidComputeShader.SetFloat(PropertyIDs.FloorYLevel, _floorYLevel);
+            _boidComputeShader.SetFloat(PropertyIDs.CollisionBounce, _collisionBounce);
+            _boidComputeShader.SetFloat(PropertyIDs.Gravity, _gravity);
+            _boidComputeShader.SetFloat(PropertyIDs.CollisionRadius, _collisionRadius);
 
             _boidComputeShader.SetBoidStateSettings("_Neutral", neutralState);
             _boidComputeShader.SetBoidStateSettings("_Exposed", exposedState);
 
-            _boidComputeShader.SetBuffer(kernelId, "_BoidPositionBuffer", _positionBuffer);
-            _boidComputeShader.SetBuffer(kernelId, "_BoidOldPositionBuffer", _oldPositionBuffer);
-            _boidComputeShader.SetBuffer(kernelId, "_BoidVelocityBuffer", _velocityBuffer);
-            _boidComputeShader.SetBuffer(kernelId, "_BoidNormalBuffer", _normalBuffer);
-            _boidComputeShader.SetBuffer(kernelId, "_BoidDataBuffer", _dataBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PositionBuffer, _positionBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.OldPositionBuffer, _oldPositionBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.VelocityBuffer, _velocityBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.NormalBuffer, _normalBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.DataBuffer, _dataBuffer);
 
             if (SdfShapeManager.Instance)
             {
-                _boidComputeShader.SetBuffer(kernelId, "_NodeBuffer", SdfShapeManager.Instance.NodeBuffer);
-                _boidComputeShader.SetBuffer(kernelId, "_SdfBuffer", SdfShapeManager.Instance.SdfBuffer);
-                _boidComputeShader.SetInt("_NodeCount", SdfShapeManager.Instance.NodeCount);
+                _boidComputeShader.SetBuffer(kernelId, SdfShapeManager.PropertyIDs.NodeBuffer, SdfShapeManager.Instance.NodeBuffer);
+                _boidComputeShader.SetBuffer(kernelId, SdfShapeManager.PropertyIDs.SdfBuffer, SdfShapeManager.Instance.SdfBuffer);
+                _boidComputeShader.SetInt(SdfShapeManager.PropertyIDs.NodeCount, SdfShapeManager.Instance.NodeCount);
             }
             
-            _boidComputeShader.SetBuffer(kernelId, "_SpatialIndices", _spatialIndicesBuffer);
-            _boidComputeShader.SetBuffer(kernelId, "_SpatialOffsets", _spatialOffsetsBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialIndices, _spatialIndicesBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _spatialOffsetsBuffer);
 
             _boidComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
         }
@@ -201,12 +199,12 @@ namespace Beakstorm.Simulation.Particles
         {
             int kernelId = _boidComputeShader.FindKernel("UpdateSpatialHash");
 
-            _boidComputeShader.SetInt("_NumBoids", _capacity);
-            _boidComputeShader.SetFloat("_HashCellSize", _hashCellSize);
+            _boidComputeShader.SetInt(PropertyIDs.TotalCount, _capacity);
+            _boidComputeShader.SetFloat(PropertyIDs.HashCellSize, _hashCellSize);
 
-            _boidComputeShader.SetBuffer(kernelId, "_SpatialIndices", _spatialIndicesBuffer);
-            _boidComputeShader.SetBuffer(kernelId, "_SpatialOffsets", _spatialOffsetsBuffer);
-            _boidComputeShader.SetBuffer(kernelId, "_BoidPositionBuffer", _positionBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialIndices, _spatialIndicesBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _spatialOffsetsBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PositionBuffer, _positionBuffer);
 
             _boidComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
         }
@@ -218,11 +216,11 @@ namespace Beakstorm.Simulation.Particles
                 return;
             
             _propertyBlock ??= new MaterialPropertyBlock();
-            _propertyBlock.SetBuffer("_PositionBuffer", _positionBuffer);
-            _propertyBlock.SetBuffer("_OldPositionBuffer", _oldPositionBuffer);
-            _propertyBlock.SetBuffer("_VelocityBuffer", _velocityBuffer);
-            _propertyBlock.SetBuffer("_NormalBuffer", _normalBuffer);
-            _propertyBlock.SetBuffer("_DataBuffer", _dataBuffer);
+            _propertyBlock.SetBuffer(PropertyIDs.PositionBuffer, _positionBuffer);
+            _propertyBlock.SetBuffer(PropertyIDs.OldPositionBuffer, _oldPositionBuffer);
+            _propertyBlock.SetBuffer(PropertyIDs.VelocityBuffer, _velocityBuffer);
+            _propertyBlock.SetBuffer(PropertyIDs.NormalBuffer, _normalBuffer);
+            _propertyBlock.SetBuffer(PropertyIDs.DataBuffer, _dataBuffer);
             
             RenderParams rp = new RenderParams(material)
             {
@@ -245,6 +243,29 @@ namespace Beakstorm.Simulation.Particles
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(Vector3.zero, simulationSpace);
+        }
+
+        public static class PropertyIDs
+        {
+            public static readonly int TotalCount              = Shader.PropertyToID("_TotalCount");
+            public static readonly int HashCellSize            = Shader.PropertyToID("_HashCellSize");
+            public static readonly int WorldPos                = Shader.PropertyToID("_WorldPos");
+            public static readonly int WorldMatrix             = Shader.PropertyToID("_WorldMatrix");
+            public static readonly int SimulationSpace         = Shader.PropertyToID("_SimulationSpace");
+            public static readonly int Time                    = Shader.PropertyToID("_Time");
+            public static readonly int DeltaTime               = Shader.PropertyToID("_DeltaTime");
+            public static readonly int FloorYLevel             = Shader.PropertyToID("_FloorYLevel");
+            public static readonly int CollisionBounce         = Shader.PropertyToID("_CollisionBounce");
+            public static readonly int Gravity                 = Shader.PropertyToID("_Gravity");
+            public static readonly int CollisionRadius         = Shader.PropertyToID("_CollisionRadius");
+            public static readonly int PositionBuffer          = Shader.PropertyToID("_PositionBuffer");
+            public static readonly int OldPositionBuffer       = Shader.PropertyToID("_OldPositionBuffer");
+            public static readonly int VelocityBuffer          = Shader.PropertyToID("_VelocityBuffer");
+            public static readonly int NormalBuffer            = Shader.PropertyToID("_NormalBuffer");
+            public static readonly int DataBuffer              = Shader.PropertyToID("_DataBuffer");
+            
+            public static readonly int SpatialIndices              = Shader.PropertyToID("_BoidSpatialIndices");
+            public static readonly int SpatialOffsets              = Shader.PropertyToID("_BoidSpatialOffsets");
         }
     }
 }
