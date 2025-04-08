@@ -1,0 +1,249 @@
+#pragma kernel Update
+#pragma kernel Init
+
+#pragma kernel UpdateSpatialHash
+
+#include "../SpatialHashing/RandomFunctions.hlsl"
+#include "../SpatialHashing/SpatialHashGrids.hlsl"
+
+#include "PheromoneParameters.hlsl"
+
+#include "../Collisions/SdfCollisions.hlsl"
+
+#define THREAD_BLOCK_SIZE 256
+
+SPATIAL_HASH_BUFFERS(_Pheromone)
+
+
+float UvOutOfBounds(float2 uv)
+{
+    float2 q = step(1, uv) + (step(uv, 0));
+    return 1-step(dot(q, q), 0);
+}
+
+
+float3 safeNormalize(float3 value)
+{
+    if (dot(value, value) == 0)
+        return float3(0, 1, 0);
+    return normalize(value);
+
+}
+
+float3 limitVector(float3 v, float maxLength)
+{
+    if (dot(v, v) == 0)
+        return 0;
+    float len = length(v);
+    return (v / len) * min(len, maxLength);
+}
+
+float3 clampVector(float3 v, float min, float max)
+{
+    if (dot(v, v) == 0)
+        return 0;
+    float len = length(v);
+    return (v / len) * clamp(len, min, max);
+}
+
+float3 calcSteerForce(float3 steer, float3 currentVelocity, float maxSpeed, float maxForce)
+{
+    float3 desiredVelocity = safeNormalize(steer) * maxSpeed;
+    return limitVector(desiredVelocity - currentVelocity, maxForce);
+}
+
+
+float3 forceFromBounds(float3 pos)
+{
+    float dist = step(0, sdfBox(pos, 0, _SimulationSpace));
+    float3 p = ClosestPointOnBox(0, _SimulationSpace * 0.5, pos);
+    float3 v = p - pos;
+    float3 force = clampVector(v, 10, 1);
+    return force * dist;
+}
+
+// Collision
+void collideBounds(inout float3 pos, inout float3 oldPos)
+{
+    float dist = sdfBox(pos, 0, _SimulationSpace * 0.5);
+    
+    if (dist < 0)
+    {
+        return;
+    }
+    float3 p = ClosestPointOnBox(0, _SimulationSpace * 0.5, pos);
+    float3 diff = p - pos;
+    float3 normal = normalize(diff);
+
+    float3 flattenVelocity = dot(pos - oldPos - normal * abs(dist), -normal) * normal;
+    float3 mostBounceVelocity = dot(pos - oldPos, normal) * normal;
+           
+    oldPos = lerp(oldPos - flattenVelocity, oldPos + mostBounceVelocity, clamp(0, 0, 1));
+    pos += normal * dist;
+}
+
+void collideSdf(inout float3 pos, inout float3 oldPos, SdfQueryInfo sdf, float bounce)
+{
+    float dist = sdf.dist;
+    float3 normal = sdf.normal;
+    if (dist > 0)
+    {
+        return;
+    }
+    float3 vel = pos - oldPos;
+    float3 flattenVelocity = -dot(vel + normal * -dist, normal) * normal;
+    float3 mostBounceVelocity = -dot(vel, normal) * normal;
+           
+    oldPos = lerp(oldPos - flattenVelocity, oldPos - mostBounceVelocity, saturate(bounce));
+    pos -= normal * dist;
+}
+
+float3 centerForce(float3 pos, uint index)
+{
+    float radius = 100;
+    float len = length(pos);
+    float3 force = -safeNormalize(pos) * max(0, len - radius);
+    return limitVector(force, 100);
+}
+
+float3 sdfForce(SdfQueryInfo info)
+{
+    float3 f = info.normal;
+    float strength = -min(0, info.dist - 3);
+    return f * strength;
+}
+
+float3 FlockingForce(uint index)
+{
+    float3 positionA = _PositionBuffer[index];
+    float3 oldPositionA = _OldPositionBuffer[index];
+    float3 velocityA = (positionA - oldPositionA) / _DeltaTime;
+
+    
+    int numNeighbors = 0;
+    float3 flockCenter;
+
+    // Neighborhood Search using Spatial Hash Grids
+    int3 originCell = GetCell3D(positionA, _HashCellSize);
+
+
+    
+    for (int i = 0; i < 27; i++)
+    {
+        uint hashCell = HashCell3D(originCell + offsets3D[i]);
+        uint key = KeyFromHash(hashCell, _TotalCount);
+        uint currIndex = _PheromoneSpatialOffsets[key];
+        
+        
+        while (currIndex < _TotalCount)
+        {
+            uint3 indexData = _PheromoneSpatialIndices[currIndex];
+            currIndex++;
+            // Exit if no longer looking at correct bin
+            if (indexData[2] != key)
+                break;
+			// Skip if hash does not match
+            if (indexData[1] != hashCell)
+                continue;
+            
+            uint neighborIndex = indexData[0];
+        
+            if(neighborIndex == index)
+                continue;
+            
+            float3 positionB = _PositionBuffer[neighborIndex];
+            float3 oldPositionB = _OldPositionBuffer[neighborIndex];
+            float3 velocityB = (positionB - oldPositionB) / _DeltaTime;
+            
+            float3 offset = positionB - positionA;
+            
+            if (dot(offset, offset) > _HashCellSize * _HashCellSize)
+                continue;
+
+            float distance = length(offset);
+            numNeighbors++;
+            
+            
+        }
+    }
+    
+    float3 acceleration = 0;
+    return acceleration;
+}
+
+
+[numthreads(THREAD_BLOCK_SIZE,1,1)]
+void Update (uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    
+    float3 currentPosition = _PositionBuffer[index];
+    float3 oldPosition = _OldPositionBuffer[index];
+    
+    float3 velocity = (currentPosition - oldPosition) / _DeltaTime;
+    oldPosition = currentPosition;
+    
+    SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0);
+    
+    float3 acceleration = 0;
+    acceleration += FlockingForce(index);
+    //acceleration += forceFromBounds(currentPosition);
+    acceleration += centerForce(currentPosition, index);
+    //acceleration += sdfForce(sdfInfo);
+    velocity += acceleration * _DeltaTime;
+
+    currentPosition += velocity * _DeltaTime;
+    //collideBounds(currentPosition, oldPosition);
+    collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
+    
+    //currentPosition.y = _WorldPos.y;
+    
+    _PositionBuffer[index] = currentPosition;
+    _OldPositionBuffer[index] = oldPosition;
+
+
+    float4 data = _DataBuffer[index];
+    data.w = 1;
+
+    _DataBuffer[index] = data;
+}
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void Init(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    
+    int sideLength = sqrt(_TotalCount);
+
+    int2 newId = int2(index / sideLength, index % sideLength);
+    
+    float stagger = ((float)index / _TotalCount) * 2;// - 1;
+    float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _TotalCount;
+
+    //offset = _WorldMatrix._m00_m01_m02 * stagger * 32;
+    offset = (RandomVector01(index) - 0.5) * _SimulationSpace;
+
+    //offset = 0;
+    //offset.xz = ((float2)newId / sideLength - 0.5) * _SimulationSpace.xz; 
+    
+    float3 currentPosition = offset + _WorldPos;
+    float3 currentVelocity = RandomVector(index) * 0.001;
+    float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
+    
+    _PositionBuffer[index] = currentPosition;
+    _OldPositionBuffer[index] = oldPosition;
+    _DataBuffer[index] = 0;
+}
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void UpdateSpatialHash(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    
+    if (index >= _TotalCount)
+        return;
+    
+    float3 position = _PositionBuffer[index];
+
+    SetSpatialHash_Pheromone(index, position, _TotalCount, _HashCellSize);
+}
