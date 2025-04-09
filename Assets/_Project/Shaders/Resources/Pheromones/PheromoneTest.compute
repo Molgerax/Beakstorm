@@ -2,17 +2,17 @@
 #pragma kernel Init
 
 #pragma kernel UpdateSpatialHash
+#pragma kernel Emit
+#pragma kernel EmissionCountKernel
 
 #include "../SpatialHashing/RandomFunctions.hlsl"
-#include "../SpatialHashing/SpatialHashGrids.hlsl"
 
 #include "PheromoneParameters.hlsl"
+#include "PheromoneMath.hlsl"
 
 #include "../Collisions/SdfCollisions.hlsl"
 
 #define THREAD_BLOCK_SIZE 256
-
-SPATIAL_HASH_BUFFERS(_Pheromone)
 
 
 float UvOutOfBounds(float2 uv)
@@ -65,21 +65,25 @@ float3 forceFromBounds(float3 pos)
 // Collision
 void collideBounds(inout float3 pos, inout float3 oldPos)
 {
-    float dist = sdfBox(pos, 0, _SimulationSpace * 0.5);
+    float dist = sdfBox( 0, _SimulationSpace * 0.5, pos);
     
     if (dist < 0)
     {
         return;
     }
     float3 p = ClosestPointOnBox(0, _SimulationSpace * 0.5, pos);
-    float3 diff = p - pos;
-    float3 normal = normalize(diff);
+    float3 diff = pos - p;
 
-    float3 flattenVelocity = dot(pos - oldPos - normal * abs(dist), -normal) * normal;
-    float3 mostBounceVelocity = dot(pos - oldPos, normal) * normal;
+    float3 normal = safeNormalize(diff);
+
+    float3 vel = pos - oldPos;
+    float3 flattenVelocity = -dot(vel + normal * -dist, normal) * normal;
+    float3 mostBounceVelocity = -dot(vel, normal) * normal;
            
-    oldPos = lerp(oldPos - flattenVelocity, oldPos + mostBounceVelocity, clamp(0, 0, 1));
-    pos += normal * dist;
+    oldPos = lerp(oldPos - flattenVelocity, oldPos - mostBounceVelocity, saturate(0.5));
+    
+    oldPos = (oldPos - flattenVelocity);
+    pos -= normal * dist;
 }
 
 void collideSdf(inout float3 pos, inout float3 oldPos, SdfQueryInfo sdf, float bounce)
@@ -113,20 +117,16 @@ float3 sdfForce(SdfQueryInfo info)
     return f * strength;
 }
 
-float3 FlockingForce(uint index)
+float4 PressureForce(uint index)
 {
     float3 positionA = _PositionBuffer[index];
-    float3 oldPositionA = _OldPositionBuffer[index];
-    float3 velocityA = (positionA - oldPositionA) / _DeltaTime;
-
     
     int numNeighbors = 0;
-    float3 flockCenter;
-
+    float3 densityGradient = 0;
+    float density = 0;
+    
     // Neighborhood Search using Spatial Hash Grids
     int3 originCell = GetCell3D(positionA, _HashCellSize);
-
-
     
     for (int i = 0; i < 27; i++)
     {
@@ -147,28 +147,30 @@ float3 FlockingForce(uint index)
                 continue;
             
             uint neighborIndex = indexData[0];
-        
+
+            if (!IsAlive(neighborIndex))
+                continue;
+            
             if(neighborIndex == index)
                 continue;
             
             float3 positionB = _PositionBuffer[neighborIndex];
-            float3 oldPositionB = _OldPositionBuffer[neighborIndex];
-            float3 velocityB = (positionB - oldPositionB) / _DeltaTime;
-            
             float3 offset = positionB - positionA;
+            float distSquared = dot(offset, offset);
             
-            if (dot(offset, offset) > _HashCellSize * _HashCellSize)
+            if (distSquared > _HashCellSize * _HashCellSize)
                 continue;
-
-            float distance = length(offset);
             numNeighbors++;
+
+            float d = GetDensityFromParticle(positionA, positionB, _HashCellSize);
+            float3 g = GetDensityDerivativeFromParticle(positionA, positionB, _HashCellSize);
             
-            
+            density += d;
+            densityGradient += g;
         }
     }
     
-    float3 acceleration = 0;
-    return acceleration;
+    return float4(densityGradient, density);
 }
 
 
@@ -176,7 +178,10 @@ float3 FlockingForce(uint index)
 void Update (uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
-    
+
+    if (!IsAlive(index))
+        return;
+        
     float3 currentPosition = _PositionBuffer[index];
     float3 oldPosition = _OldPositionBuffer[index];
     
@@ -185,27 +190,36 @@ void Update (uint3 id : SV_DispatchThreadID)
     
     SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0);
     
+    float4 dense = PressureForce(index);
+    float3 densityGradient = dense.xyz;
+    float density = (dense.w);
+    
     float3 acceleration = 0;
-    acceleration += FlockingForce(index);
+    acceleration += densityGradient;
     //acceleration += forceFromBounds(currentPosition);
-    acceleration += centerForce(currentPosition, index);
+    //acceleration += centerForce(currentPosition, index);
     //acceleration += sdfForce(sdfInfo);
+
+    //acceleration -= velocity * 0.5;
+    
     velocity += acceleration * _DeltaTime;
+    velocity = acceleration;
 
     currentPosition += velocity * _DeltaTime;
-    //collideBounds(currentPosition, oldPosition);
-    collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
     
-    //currentPosition.y = _WorldPos.y;
+    collideBounds(currentPosition, oldPosition);
+    //collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
     
     _PositionBuffer[index] = currentPosition;
     _OldPositionBuffer[index] = oldPosition;
 
+    float life = DepleteLife(index, _DeltaTime);
 
     float4 data = _DataBuffer[index];
-    data.w = 1;
-
-    _DataBuffer[index] = data;
+    data.xyz = densityGradient;
+    data.w = density;
+    
+    _DataBuffer[index] = life;
 }
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
@@ -213,9 +227,12 @@ void Init(uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
     
-    int sideLength = sqrt(_TotalCount);
+    int sideLength = pow(_TotalCount, 1 / 3.0);
 
-    int2 newId = int2(index / sideLength, index % sideLength);
+    int3 newId = 0;
+    newId.x = index % sideLength;
+    newId.y = (index / sideLength) % sideLength;
+    newId.z = (index / sideLength) / sideLength;
     
     float stagger = ((float)index / _TotalCount) * 2;// - 1;
     float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _TotalCount;
@@ -224,11 +241,15 @@ void Init(uint3 id : SV_DispatchThreadID)
     offset = (RandomVector01(index) - 0.5) * _SimulationSpace;
 
     //offset = 0;
-    //offset.xz = ((float2)newId / sideLength - 0.5) * _SimulationSpace.xz; 
+    //offset.xyz = ((float3)newId / sideLength - 0.5) * _SimulationSpace.xyz; 
     
     float3 currentPosition = offset + _WorldPos;
-    float3 currentVelocity = RandomVector(index) * 0.001;
+    float3 currentVelocity = RandomVector(index) * 0.01;
     float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
+
+    
+    _AliveBuffer[index] = 0;
+    _DeadIndexBuffer.Append(index);
     
     _PositionBuffer[index] = currentPosition;
     _OldPositionBuffer[index] = oldPosition;
@@ -242,8 +263,40 @@ void UpdateSpatialHash(uint3 id : SV_DispatchThreadID)
     
     if (index >= _TotalCount)
         return;
+
+    //if (!IsAlive(index))
+    //    return;
     
     float3 position = _PositionBuffer[index];
 
     SetSpatialHash_Pheromone(index, position, _TotalCount, _HashCellSize);
+}
+
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
+{
+    if (CurrentEmissionCount() <= id.x + groupId.x * THREAD_BLOCK_SIZE)
+        return;
+    
+    const uint index = _AliveIndexBuffer.Consume();
+
+    float3 pos = _SpawnPos + RandomVector(index) * 0.01;
+    float3 oldPos = pos;
+
+    _AliveBuffer[index] = 10;
+    
+    _PositionBuffer[index] = pos;
+    _OldPositionBuffer[index] = oldPos;
+    _DataBuffer[index] = 0;
+}
+
+
+[numthreads(1, 1, 1)] 
+void EmissionCountKernel (uint3 id : SV_DispatchThreadID) 
+{ 
+    uint totalDead = _DeadCountBuffer[0]; 
+    uint finalEmit = min(_TargetEmitCount, floor(totalDead / _ParticlesPerEmit));
+    _DeadCountBuffer[0] = finalEmit;
+    _DeadCountBuffer[3] = totalDead;
 }

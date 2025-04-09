@@ -60,9 +60,21 @@ Shader "BeakStorm/Pheromones/Instanced URP"
     StructuredBuffer<float3> _PositionBuffer;
     StructuredBuffer<float3> _OldPositionBuffer;
     StructuredBuffer<float4> _DataBuffer;
+    StructuredBuffer<float> _AliveBuffer;
 
     CBUFFER_END
 
+    
+	uint IsAlive(uint index)
+	{
+    	return _AliveBuffer[index] > 0;
+    	
+	    uint id = index / 32;
+	    uint bit = index % 32;
+	    uint read = _AliveBuffer[id];
+	    return (read >> bit) & 1;
+	}
+    
 	
 	    // Pull in URP library functions and our own common functions
 	#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -106,16 +118,38 @@ Shader "BeakStorm/Pheromones/Instanced URP"
 	
 		return hsv.z * lerp(K.xxx, clamp(p - K.xxx, 0.0, 1.0), hsv.y);
 	}
+
+    
+
+    
+	float NumberToDots(float number, float2 uv)
+	{
+		int2 id = floor(uv * 16);
 	
+	
+		if (id.x % 2 == 0 || id.y % 2 == 0)
+			return 0;
+		
+		int count = (id.x / 2) + id.y / 2 * 16;
+	
+		if (count <= number * 16)
+			return 1;
+		return 0;
+	}
+
+    
 	Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 	{
-		Interpolators output;
-	
+		Interpolators output = (Interpolators)0;
+
+		if (IsAlive(instance_id) == 0)
+			return (Interpolators)(1.0 / 0.0);
+		
 		float3 meshPositionWS = _PositionBuffer[instance_id];
 		float4 data = _DataBuffer[instance_id];
 		
 
-		float3 vpos = input.positionOS.xyz * 5;
+		float3 vpos = input.positionOS.xyz * 0.5;
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
 
@@ -125,6 +159,13 @@ Shader "BeakStorm/Pheromones/Instanced URP"
 		
 		float3 color = hsv2rgb(float3(data.w * 0.25, 1, 1));
 		color = saturate(data.www);
+
+		color.x = frac(data.w);
+		color.y = saturate((data.w - frac(data.w)) / 4);
+		color.z = 0;
+
+		color = hsv2rgb(float3(data.w, 1, 1));
+		color = saturate(data.www / 64);
 		
 		output.color = float4(color, 1);
 		output.uv = input.uv;
@@ -142,7 +183,7 @@ Shader "BeakStorm/Pheromones/Instanced URP"
 	
 		float3 meshPositionWS = _PositionBuffer[instance_id];
 
-		float3 vpos = input.positionOS.xyz * 1;
+		float3 vpos = input.positionOS.xyz * 0.5;
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
 
@@ -162,7 +203,7 @@ Shader "BeakStorm/Pheromones/Instanced URP"
 		UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 		return input.positionCS.z;
 	}
-	
+    
 	// The fragment function. This runs once per fragment, which you can think of as a pixel on the screen
 	// It must output the final color of this pixel
 	float4 Fragment(Interpolators input) : SV_TARGET{
@@ -184,8 +225,18 @@ Shader "BeakStorm/Pheromones/Instanced URP"
 		float3 normalWS = TransformViewToWorldDir(normal);
 
 
-		return thickness;
+		float3 col = 0;
+		col.x = frac(input.color.x);
+		col.y = frac(input.color.x * 2);
+		col.z = frac(input.color.x * 4);
+
+		col = hsv2rgb(float3(input.color.x, 1, 1));
+		col = input.color;
+		//return thickness;
+
+		//col = NumberToDots(input.color, uv);
 		
+		return float4(col, 1);
 		return float4(normal * 0.5 + 0.5, 1);
 		
 		return input.color * colorSample;
@@ -240,15 +291,15 @@ Shader "BeakStorm/Pheromones/Instanced URP"
   
     SubShader
     {
-    	Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Transparent"}
+    	Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Geometry"}
     	
         Pass //Base with Ambient Light
     	{
     		Name "ForwardLit"
-	        Tags { "LightMode" = "UniversalForward" "RenderType"="Transparent"}
+	        Tags { "LightMode" = "UniversalForward" "RenderType"="Opaque"}
 	
-	        ZWrite Off
-    		Blend One One
+	        ZWrite On
+    		//Blend One One
     		Cull Back
 	
         	

@@ -80,17 +80,17 @@ uint KeyFromHash(uint hash, uint tableSize)
 
 
 /// Updates SpatialIndices buffer by storing the indices along with their new keys
-void SetSpatialHash(uint index, float3 position, uint totalCount, float cellSize)
+void SetSpatialHash(uint index, float3 position, uint totalCount, float cellSize, RWStructuredBuffer<uint3> indices, RWStructuredBuffer<uint> offsets)
 { 
     if (index >= totalCount)
         return;
 	
     // Reset offsets
-//    _SpatialOffsets[index] = totalCount;
-//    int3 cell = GetCell3D(position, cellSize);
-//    uint hashCell = HashCell3D(cell);
-//    uint key = KeyFromHash(hashCell, totalCount);
-//    _SpatialIndices[index] = uint3(index, hashCell, key);
+    offsets[index] = totalCount;
+    int3 cell = GetCell3D(position, cellSize);
+    uint hashCell = HashCell3D(cell);
+    uint key = KeyFromHash(hashCell, totalCount);
+    indices[index] = uint3(index, hashCell, key);
 }
 
 
