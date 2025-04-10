@@ -195,6 +195,7 @@ namespace Beakstorm.Simulation.Particles
                 _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialIndices, p.SpatialIndicesBuffer);
                 _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialOffsets, p.SpatialOffsetsBuffer);
                 _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromonePositionBuffer, p.PositionBuffer);
+                _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneDataBuffer, p.DataBuffer);
                 _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneAliveBuffer, p.AliveBuffer);
                 _boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.HashCellSize);
                 _boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.Capacity);
@@ -282,6 +283,7 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int PheromoneSpatialOffsets              = Shader.PropertyToID("_PheromoneSpatialOffsets");
             
             public static readonly int PheromonePositionBuffer              = Shader.PropertyToID("_PheromonePositionBuffer");
+            public static readonly int PheromoneDataBuffer              = Shader.PropertyToID("_PheromoneDataBuffer");
             public static readonly int PheromoneAliveBuffer              = Shader.PropertyToID("_PheromoneAliveBuffer");
             public static readonly int PheromoneHashCellSize              = Shader.PropertyToID("_PheromoneHashCellSize");
             public static readonly int PheromoneTotalCount              = Shader.PropertyToID("_PheromoneTotalCount");

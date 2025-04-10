@@ -218,8 +218,11 @@ void Update (uint3 id : SV_DispatchThreadID)
     float4 data = _DataBuffer[index];
     data.xyz = densityGradient;
     data.w = density;
+
+    data.x = density;
+    data.w = life / _LifeTime;
     
-    _DataBuffer[index] = life;
+    _DataBuffer[index] = data;
 }
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
@@ -282,13 +285,18 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     const uint index = _AliveIndexBuffer.Consume();
 
     float3 pos = _SpawnPos + RandomVector(index) * 0.01;
-    float3 oldPos = pos;
-
-    _AliveBuffer[index] = 5;
+    //pos.y = 0;
+    //pos = 0;
+    //pos.x = ((float)index / _TotalCount * 2 - 1) * _SimulationSpace.x;
+    
+    float3 oldPos = pos;// - RandomVector(index) * _DeltaTime * 5;
+    //oldPos.y = 0;
+    
+    _AliveBuffer[index] = _LifeTime;
     
     _PositionBuffer[index] = pos;
     _OldPositionBuffer[index] = oldPos;
-    _DataBuffer[index] = 10;
+    _DataBuffer[index] = _LifeTime;
 }
 
 

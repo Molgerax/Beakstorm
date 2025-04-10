@@ -124,11 +124,12 @@ float3 FlockingForce(uint index)
     float3 velocityA = (positionA - oldPositionA) / _DeltaTime;
 
     
-    int3 numFlockMates = 0;
+    int4 numFlockMates = 0;
     float3 alignmentSum = 0;
     float3 cohesionSum = 0;
     float3 separationSum = 0;
-    
+    float detectionSum = 0;
+    float highestDetection = 0;    
     float3 flockCenter;
 
     // Neighborhood Search using Spatial Hash Grids
@@ -163,6 +164,7 @@ float3 FlockingForce(uint index)
             float3 positionB = _PositionBuffer[neighborIndex];
             float3 oldPositionB = _OldPositionBuffer[neighborIndex];
             float3 velocityB = (positionB - oldPositionB) / _DeltaTime;
+            float4 dataB = _DataBuffer[neighborIndex];
             
             float3 offset = positionB - positionA;
             
@@ -195,6 +197,14 @@ float3 FlockingForce(uint index)
                 cohesionSum += offset;
                 flockCenter += positionB;
             }
+
+            // detection
+            if (distance > 0 && distance < boidRadius.w)
+            {
+                numFlockMates.w++;
+                detectionSum += dataB.w / (1);
+                highestDetection = max(detectionSum, highestDetection);
+            }
         }
     }
     
@@ -220,6 +230,13 @@ float3 FlockingForce(uint index)
         cohesionForce = calcSteerForce(offsetToFlockCenter, velocityA, maxSpeed, maxForce);
     }
 
+    if (numFlockMates.w != 0)
+    {
+        detectionSum /= numFlockMates.w;
+        //detectionSum = min(detectionSum, highestDetection);
+    }
+    
+
     float4 factors = GetBoidSettings(index);
     
     float3 acceleration = 0;
@@ -228,7 +245,7 @@ float3 FlockingForce(uint index)
     acceleration += cohesionForce * factors.z;
 
     float4 data = _DataBuffer[index];
-    data.xyz = numFlockMates;
+    data.y = detectionSum;
     _DataBuffer[index] = data;
     
     return acceleration;
@@ -251,7 +268,7 @@ float4 PheromoneDensity(float3 pos)
         uint currIndex = _PheromoneSpatialOffsets[key];
         
         
-        while (currIndex < _TotalCount)
+        while (currIndex < _PheromoneTotalCount)
         {
             uint3 indexData = _PheromoneSpatialIndices[currIndex];
             currIndex++;
@@ -269,6 +286,7 @@ float4 PheromoneDensity(float3 pos)
             
             
             float3 positionB = _PheromonePositionBuffer[neighborIndex];
+            float4 dataB = _PheromoneDataBuffer[neighborIndex];
             float3 offset = positionB - pos;
             float distSquared = dot(offset, offset);
             
@@ -280,7 +298,7 @@ float4 PheromoneDensity(float3 pos)
             float3 g = GetDensityDerivativeFromParticle(pos, positionB, _PheromoneHashCellSize, 1);
             
             density += d;
-            densityGradient += g * saturate(life / 2);
+            densityGradient += g * (dataB.w * dataB.w);// / dataB.x;
         }
     }
     
@@ -313,7 +331,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     float4 factors = GetBoidSettings(index);
     float maxSpeed = GetMaxSpeed(index);
     float maxForce = GetMaxForce(index);
-    float4 pheromoneSample = PheromoneDensity(currentPosition) * 100;
+    float4 pheromoneSample = PheromoneDensity(currentPosition + velocity * _DeltaTime * 1) * 1;
     float3 pheromoneForce = calcSteerForce(pheromoneSample.xyz, velocity, maxSpeed, maxForce);
 
     acceleration += pheromoneForce * factors.w * saturate(pheromoneSample.w);
@@ -337,6 +355,9 @@ void Update (uint3 id : SV_DispatchThreadID)
     //if (dot(sdfInfo.normal, sdfInfo.normal) > 0)
     //    v = sdfInfo.normal;
 
+    //if (dot(pheromoneSample.xyz, pheromoneSample.xyz) > 0)
+    //    v = pheromoneSample.xyz;
+    
     //v = float3(0, 0, 1);
     //normal = float3(0, 1, 0);
     //normal = safeNormalize(cross(v, float3(1, 0, 0)));
@@ -345,8 +366,9 @@ void Update (uint3 id : SV_DispatchThreadID)
 
 
     float4 data = _DataBuffer[index];
-    data.w = saturate(data.w - _DeltaTime * 5);
-    data.w = saturate(data.w + pheromoneSample.w);
+    //data.w = max(data.w, data.y);
+    data.w = saturate(data.w + pheromoneSample.w - _DeltaTime * 1);
+    //data.w = saturate(data.w + pheromoneSample.w);
     
     //data.w = frac(sdfInfo.dist * 0.2) * (sdfInfo.matIndex / 4.0);
     

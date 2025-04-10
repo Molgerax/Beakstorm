@@ -9,6 +9,7 @@ uint _TotalCount;
 float3 _SimulationSpace;
 float _HashCellSize;
 
+float _LifeTime;
 
 float _Time;
 float _DeltaTime;

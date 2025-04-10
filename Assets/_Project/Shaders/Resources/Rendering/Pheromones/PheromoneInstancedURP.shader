@@ -165,7 +165,7 @@ Shader "BeakStorm/Pheromones/Instanced URP"
 		color.z = 0;
 
 		color = hsv2rgb(float3(data.w, 1, 1));
-		color = saturate(data.www / 64);
+		color = saturate(data.www);
 		
 		output.color = float4(color, 1);
 		output.uv = input.uv;
@@ -236,8 +236,8 @@ Shader "BeakStorm/Pheromones/Instanced URP"
 
 		//col = NumberToDots(input.color, uv);
 		
+		return float4(normal * 0.5 + 0.5, input.color.x);
 		return float4(col, 1);
-		return float4(normal * 0.5 + 0.5, 1);
 		
 		return input.color * colorSample;
 	}
@@ -291,15 +291,15 @@ Shader "BeakStorm/Pheromones/Instanced URP"
   
     SubShader
     {
-    	Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Geometry"}
+    	Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Transparent"}
     	
         Pass //Base with Ambient Light
     	{
     		Name "ForwardLit"
-	        Tags { "LightMode" = "UniversalForward" "RenderType"="Opaque"}
+	        Tags { "LightMode" = "UniversalForward" "RenderType"="Transparent"}
 	
-	        ZWrite On
-    		//Blend One One
+	        ZWrite Off
+    		Blend SrcAlpha OneMinusSrcAlpha
     		Cull Back
 	
         	

@@ -20,11 +20,12 @@ namespace Beakstorm.Simulation.Particles
         [Header("Collision")] [SerializeField] private Vector3 simulationSpace = Vector3.one;
         [SerializeField] private float targetDensity = 1;
         [SerializeField] private float pressureMultiplier = 1;
+        [SerializeField, Range(0.1f, 10f)] private float lifeTime = 1;
 
         [Header("Bitonic Merge Sort")] [SerializeField]
-        private ComputeShader _sortShader;
+        private ComputeShader sortShader;
 
-        [SerializeField] [Range(0.1f, 10f)] private float _hashCellSize = 1f;
+        [SerializeField] [Range(0.1f, 10f)] private float hashCellSize = 1f;
 
         private ComputeBuffer _spatialIndicesBuffer;
         private ComputeBuffer _spatialOffsetsBuffer;
@@ -50,10 +51,11 @@ namespace Beakstorm.Simulation.Particles
         public ComputeBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;
         public ComputeBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
         public GraphicsBuffer PositionBuffer => _positionBuffer;
+        public GraphicsBuffer DataBuffer => _dataBuffer;
         public GraphicsBuffer AliveBuffer => _aliveBuffer;
         public GraphicsBuffer OldPositionBuffer => _oldPositionBuffer;
         public int Capacity => _capacity;
-        public float HashCellSize => _hashCellSize;
+        public float HashCellSize => hashCellSize;
 
         private void Awake()
         {
@@ -70,7 +72,7 @@ namespace Beakstorm.Simulation.Particles
             if (_initialized)
             {
                 UpdateSpatialHash();
-                GPUBitonicMergeSort.SortAndCalculateOffsets(_sortShader, _spatialIndicesBuffer, _spatialOffsetsBuffer);
+                GPUBitonicMergeSort.SortAndCalculateOffsets(sortShader, _spatialIndicesBuffer, _spatialOffsetsBuffer);
 
                 
                 int updateKernel = pheromoneComputeShader.FindKernel("Update");
@@ -151,7 +153,7 @@ namespace Beakstorm.Simulation.Particles
             }
 
             pheromoneComputeShader.SetInt(PropertyIDs.TotalCount, _capacity);
-            pheromoneComputeShader.SetFloat(PropertyIDs.HashCellSize, _hashCellSize);
+            pheromoneComputeShader.SetFloat(PropertyIDs.HashCellSize, hashCellSize);
             
             pheromoneComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
             pheromoneComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
@@ -159,7 +161,8 @@ namespace Beakstorm.Simulation.Particles
             
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
             pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
-            
+            pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, lifeTime);
+
             pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);
             pheromoneComputeShader.SetFloat(PropertyIDs.PressureMultiplier, pressureMultiplier);
             
@@ -195,6 +198,7 @@ namespace Beakstorm.Simulation.Particles
             
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
             pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, Time.deltaTime);
+            pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, lifeTime);
             
             pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);
             pheromoneComputeShader.SetFloat(PropertyIDs.PressureMultiplier, pressureMultiplier);
@@ -217,7 +221,7 @@ namespace Beakstorm.Simulation.Particles
             int kernelId = pheromoneComputeShader.FindKernel("UpdateSpatialHash");
 
             pheromoneComputeShader.SetInt(PropertyIDs.TotalCount, _capacity);
-            pheromoneComputeShader.SetFloat(PropertyIDs.HashCellSize, _hashCellSize);
+            pheromoneComputeShader.SetFloat(PropertyIDs.HashCellSize, hashCellSize);
             
             pheromoneComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialIndices, _spatialIndicesBuffer);
             pheromoneComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _spatialOffsetsBuffer);
@@ -292,6 +296,7 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int DeadIndexBuffer         = Shader.PropertyToID("_DeadIndexBuffer");
             public static readonly int AliveIndexBuffer        = Shader.PropertyToID("_AliveIndexBuffer");
             public static readonly int AliveBuffer        = Shader.PropertyToID("_AliveBuffer");
+            public static readonly int LifeTime        = Shader.PropertyToID("_LifeTime");
             
             public static readonly int SpawnPos        = Shader.PropertyToID("_SpawnPos");
             

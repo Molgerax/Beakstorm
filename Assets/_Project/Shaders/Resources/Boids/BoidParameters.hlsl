@@ -22,6 +22,7 @@ SPATIAL_HASH_BUFFERS(_Boid)
 SPATIAL_HASH_BUFFERS_READ(_Pheromone)
 
 StructuredBuffer<float3> _PheromonePositionBuffer;
+StructuredBuffer<float4> _PheromoneDataBuffer;
 StructuredBuffer<uint> _PheromoneAliveBuffer;
 float _PheromoneHashCellSize;
 uint _PheromoneTotalCount;
