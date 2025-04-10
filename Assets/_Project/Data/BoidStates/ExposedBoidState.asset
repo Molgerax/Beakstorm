@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a8f9cc2a194b249a35e01a7344b870, type: 3}
   m_Name: ExposedBoidState
   m_EditorClassIdentifier: 
-  separation: 1
+  separation: 0.462
   alignment: 1
-  cohesion: 0.219
-  detection: 0
-  separationRadius: 4.18
-  alignmentRadius: 10
+  cohesion: 0.054
+  detection: 1
+  separationRadius: 2
+  alignmentRadius: 5
   cohesionRadius: 2.45
   detectionRadius: 0
-  minSpeed: 1
-  maxSpeed: 8
-  maxForce: 25
+  minSpeed: 0
+  maxSpeed: 20
+  maxForce: 30

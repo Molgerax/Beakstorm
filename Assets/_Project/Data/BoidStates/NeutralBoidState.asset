@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a8f9cc2a194b249a35e01a7344b870, type: 3}
   m_Name: NeutralBoidState
   m_EditorClassIdentifier: 
-  separation: 0
-  alignment: 1
-  cohesion: 1
-  detection: 0
-  separationRadius: 6.88
-  alignmentRadius: 10
+  separation: 1
+  alignment: 0.516
+  cohesion: 0.518
+  detection: 0.525
+  separationRadius: 5
+  alignmentRadius: 5
   cohesionRadius: 3.38
   detectionRadius: 0
-  minSpeed: 0.903
-  maxSpeed: 80
-  maxForce: 130
+  minSpeed: 0.233
+  maxSpeed: 10
+  maxForce: 10
