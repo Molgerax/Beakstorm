@@ -22,6 +22,9 @@ void SetSpatialHash##name(uint index, float3 position, uint totalCount, float ce
     name##SpatialIndices[index] = uint3(index, hashCell, key);\
 }\
 
+#define SPATIAL_HASH_BUFFERS_READ(name) \
+StructuredBuffer<uint3> name##SpatialIndices; \
+StructuredBuffer<uint> name##SpatialOffsets; \
 
 
 static const int3 offsets3D[27] =

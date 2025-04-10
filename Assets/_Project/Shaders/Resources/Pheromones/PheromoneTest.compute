@@ -203,12 +203,12 @@ void Update (uint3 id : SV_DispatchThreadID)
     //acceleration -= velocity * 0.5;
     
     velocity += acceleration * _DeltaTime;
-    velocity = acceleration;
+    velocity = acceleration * 5;
 
     currentPosition += velocity * _DeltaTime;
     
-    collideBounds(currentPosition, oldPosition);
-    //collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
+    //collideBounds(currentPosition, oldPosition);
+    collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
     
     _PositionBuffer[index] = currentPosition;
     _OldPositionBuffer[index] = oldPosition;
@@ -284,11 +284,11 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     float3 pos = _SpawnPos + RandomVector(index) * 0.01;
     float3 oldPos = pos;
 
-    _AliveBuffer[index] = 10;
+    _AliveBuffer[index] = 5;
     
     _PositionBuffer[index] = pos;
     _OldPositionBuffer[index] = oldPos;
-    _DataBuffer[index] = 0;
+    _DataBuffer[index] = 10;
 }
 
 

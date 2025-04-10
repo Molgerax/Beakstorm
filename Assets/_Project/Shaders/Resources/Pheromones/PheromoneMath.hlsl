@@ -43,6 +43,14 @@ float DensityToPressure(float density)
     return pressure;
 }
 
+float DensityToPressure(float density, float target, float multiplier)
+{
+    float error = (density - target);
+    error = max(error, 0);
+    float pressure = error * multiplier;
+    return pressure;
+}
+
 float GetDensityFromParticle(float3 p, float3 particlePos, float smoothingRadius)
 {
     float3 diff = (p - particlePos);
@@ -68,6 +76,26 @@ float3 GetDensityDerivativeFromParticle(float3 p, float3 particlePos, float smoo
         return 0;
     
     return -DensityToPressure(density) * slope * direction / density;
+}
+
+float3 GetDensityDerivativeFromParticle(float3 p, float3 particlePos, float smoothingRadius, float multiplier)
+{
+    float3 diff = p - particlePos;
+    float distSquared = dot(diff, diff);
+
+    float dist = sqrt(distSquared);
+    float3 direction = float3(0, 1, 0);
+    
+    if (distSquared != 0)
+        direction = diff / dist;
+    
+    float slope = SmoothingKernelPow3Derivative(dist, smoothingRadius);
+    float density = SmoothingKernelPow3(dist, smoothingRadius);
+
+    if (density == 0)
+        return 0;
+    
+    return slope * direction;
 }
 
 

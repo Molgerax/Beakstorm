@@ -4,16 +4,15 @@
 #pragma kernel UpdateSpatialHash
 
 #include "../SpatialHashing/RandomFunctions.hlsl"
-#include "../SpatialHashing/SpatialHashGrids.hlsl"
 
 #include "BoidParameters.hlsl"
 #include "BoidStateMachine.hlsl"
 
 #include "../Collisions/SdfCollisions.hlsl"
+#include "../Pheromones/PheromoneMath.hlsl"
 
 #define THREAD_BLOCK_SIZE 256
 
-SPATIAL_HASH_BUFFERS(_Boid)
 
 
 float UvOutOfBounds(float2 uv)
@@ -236,6 +235,58 @@ float3 FlockingForce(uint index)
 }
 
 
+float4 PheromoneDensity(float3 pos)
+{
+    int numNeighbors = 0;
+    float3 densityGradient = 0;
+    float density = 0;
+    
+    // Neighborhood Search using Spatial Hash Grids
+    int3 originCell = GetCell3D(pos, _PheromoneHashCellSize);
+    
+    for (int i = 0; i < 27; i++)
+    {
+        uint hashCell = HashCell3D(originCell + offsets3D[i]);
+        uint key = KeyFromHash(hashCell, _PheromoneTotalCount);
+        uint currIndex = _PheromoneSpatialOffsets[key];
+        
+        
+        while (currIndex < _TotalCount)
+        {
+            uint3 indexData = _PheromoneSpatialIndices[currIndex];
+            currIndex++;
+            // Exit if no longer looking at correct bin
+            if (indexData[2] != key)
+                break;
+            // Skip if hash does not match
+            if (indexData[1] != hashCell)
+                continue;
+            
+            uint neighborIndex = indexData[0];
+            float life = _PheromoneAliveBuffer[neighborIndex];
+            if (life <= 0)
+                continue;
+            
+            
+            float3 positionB = _PheromonePositionBuffer[neighborIndex];
+            float3 offset = positionB - pos;
+            float distSquared = dot(offset, offset);
+            
+            if (distSquared > _PheromoneHashCellSize * _PheromoneHashCellSize)
+                continue;
+            numNeighbors++;
+
+            float d = GetDensityFromParticle(pos, positionB, _PheromoneHashCellSize);
+            float3 g = GetDensityDerivativeFromParticle(pos, positionB, _PheromoneHashCellSize, 1);
+            
+            density += d;
+            densityGradient += g * saturate(life / 2);
+        }
+    }
+    
+    return float4(densityGradient, density);
+}
+
 [numthreads(THREAD_BLOCK_SIZE,1,1)]
 void Update (uint3 id : SV_DispatchThreadID)
 {
@@ -257,6 +308,16 @@ void Update (uint3 id : SV_DispatchThreadID)
     //acceleration += forceFromBounds(currentPosition);
     acceleration += centerForce(currentPosition, index);
     //acceleration += sdfForce(sdfInfo);
+
+
+    float4 factors = GetBoidSettings(index);
+    float maxSpeed = GetMaxSpeed(index);
+    float maxForce = GetMaxForce(index);
+    float4 pheromoneSample = PheromoneDensity(currentPosition) * 100;
+    float3 pheromoneForce = calcSteerForce(pheromoneSample.xyz, velocity, maxSpeed, maxForce);
+
+    acceleration += pheromoneForce * factors.w * saturate(pheromoneSample.w);
+    
     velocity += acceleration * _DeltaTime;
     velocity = clampVector(velocity, GetMinSpeed(index), GetMaxSpeed(index));
 
@@ -284,8 +345,9 @@ void Update (uint3 id : SV_DispatchThreadID)
 
 
     float4 data = _DataBuffer[index];
-    data.w = saturate(data.x / 16.0);
-
+    data.w = saturate(data.w - _DeltaTime * 5);
+    data.w = saturate(data.w + pheromoneSample.w);
+    
     //data.w = frac(sdfInfo.dist * 0.2) * (sdfInfo.matIndex / 4.0);
     
     _DataBuffer[index] = data;

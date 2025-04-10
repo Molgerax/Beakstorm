@@ -187,6 +187,18 @@ namespace Beakstorm.Simulation.Particles
                 _boidComputeShader.SetBuffer(kernelId, SdfShapeManager.PropertyIDs.SdfBuffer, SdfShapeManager.Instance.SdfBuffer);
                 _boidComputeShader.SetInt(SdfShapeManager.PropertyIDs.NodeCount, SdfShapeManager.Instance.NodeCount);
             }
+
+            if (PheromoneManager.Instance)
+            {
+                PheromoneManager p = PheromoneManager.Instance;
+
+                _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialIndices, p.SpatialIndicesBuffer);
+                _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialOffsets, p.SpatialOffsetsBuffer);
+                _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromonePositionBuffer, p.PositionBuffer);
+                _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneAliveBuffer, p.AliveBuffer);
+                _boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.HashCellSize);
+                _boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.Capacity);
+            }
             
             _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialIndices, _spatialIndicesBuffer);
             _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _spatialOffsetsBuffer);
@@ -266,6 +278,13 @@ namespace Beakstorm.Simulation.Particles
             
             public static readonly int SpatialIndices              = Shader.PropertyToID("_BoidSpatialIndices");
             public static readonly int SpatialOffsets              = Shader.PropertyToID("_BoidSpatialOffsets");
+            public static readonly int PheromoneSpatialIndices              = Shader.PropertyToID("_PheromoneSpatialIndices");
+            public static readonly int PheromoneSpatialOffsets              = Shader.PropertyToID("_PheromoneSpatialOffsets");
+            
+            public static readonly int PheromonePositionBuffer              = Shader.PropertyToID("_PheromonePositionBuffer");
+            public static readonly int PheromoneAliveBuffer              = Shader.PropertyToID("_PheromoneAliveBuffer");
+            public static readonly int PheromoneHashCellSize              = Shader.PropertyToID("_PheromoneHashCellSize");
+            public static readonly int PheromoneTotalCount              = Shader.PropertyToID("_PheromoneTotalCount");
         }
     }
 }

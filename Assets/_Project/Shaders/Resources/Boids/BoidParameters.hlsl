@@ -1,6 +1,7 @@
 #ifndef _INCLUDE_BOID_PARAMETERS_
 #define _INCLUDE_BOID_PARAMETERS_
 
+#include "../SpatialHashing/SpatialHashGrids.hlsl"
 
 uint _TotalCount;
 
@@ -16,6 +17,14 @@ RWStructuredBuffer<float3> _VelocityBuffer;
 RWStructuredBuffer<float3> _NormalBuffer;
 RWStructuredBuffer<float4> _DataBuffer;
 
+SPATIAL_HASH_BUFFERS(_Boid)
+
+SPATIAL_HASH_BUFFERS_READ(_Pheromone)
+
+StructuredBuffer<float3> _PheromonePositionBuffer;
+StructuredBuffer<uint> _PheromoneAliveBuffer;
+float _PheromoneHashCellSize;
+uint _PheromoneTotalCount;
 
 float3 _SimulationSpace;
 float _HashCellSize;

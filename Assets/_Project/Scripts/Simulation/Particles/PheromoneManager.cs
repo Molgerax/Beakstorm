@@ -50,6 +50,7 @@ namespace Beakstorm.Simulation.Particles
         public ComputeBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;
         public ComputeBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
         public GraphicsBuffer PositionBuffer => _positionBuffer;
+        public GraphicsBuffer AliveBuffer => _aliveBuffer;
         public GraphicsBuffer OldPositionBuffer => _oldPositionBuffer;
         public int Capacity => _capacity;
         public float HashCellSize => _hashCellSize;
