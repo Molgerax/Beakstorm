@@ -298,7 +298,7 @@ float4 PheromoneDensity(float3 pos)
             float3 g = GetDensityDerivativeFromParticle(pos, positionB, _PheromoneHashCellSize, 1);
             
             density += d;
-            densityGradient += g * (dataB.w * dataB.w);// / dataB.x;
+            densityGradient += g * (dataB.w * dataB.w) / dataB.x;
         }
     }
     
@@ -324,14 +324,14 @@ void Update (uint3 id : SV_DispatchThreadID)
     float3 acceleration = 0;
     acceleration += FlockingForce(index);
     //acceleration += forceFromBounds(currentPosition);
-    acceleration += centerForce(currentPosition, index);
+    //acceleration += centerForce(currentPosition, index);
     //acceleration += sdfForce(sdfInfo);
 
 
     float4 factors = GetBoidSettings(index);
     float maxSpeed = GetMaxSpeed(index);
     float maxForce = GetMaxForce(index);
-    float4 pheromoneSample = PheromoneDensity(currentPosition + velocity * _DeltaTime * 1) * 1;
+    float4 pheromoneSample = PheromoneDensity(currentPosition + velocity * _DeltaTime * 1) * 100;
     float3 pheromoneForce = calcSteerForce(pheromoneSample.xyz, velocity, maxSpeed, maxForce);
 
     acceleration += pheromoneForce * factors.w * saturate(pheromoneSample.w);

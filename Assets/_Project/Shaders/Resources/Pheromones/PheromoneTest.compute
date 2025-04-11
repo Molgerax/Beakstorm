@@ -230,12 +230,12 @@ void Init(uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
     
-    int sideLength = pow(_TotalCount, 1 / 3.0);
+    int sideLength = pow(_TotalCount, 1 / 2.0);
 
     int3 newId = 0;
     newId.x = index % sideLength;
-    newId.y = (index / sideLength) % sideLength;
-    newId.z = (index / sideLength) / sideLength;
+    newId.y = (index / sideLength);
+    newId.z = (index / sideLength);
     
     float stagger = ((float)index / _TotalCount) * 2;// - 1;
     float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _TotalCount;
@@ -245,9 +245,11 @@ void Init(uint3 id : SV_DispatchThreadID)
 
     //offset = 0;
     //offset.xyz = ((float3)newId / sideLength - 0.5) * _SimulationSpace.xyz; 
+
+    //offset.y = 0;
     
     float3 currentPosition = offset + _WorldPos;
-    float3 currentVelocity = RandomVector(index) * 0.01;
+    float3 currentVelocity = RandomVector(index) * 0.0;
     float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
 
     
