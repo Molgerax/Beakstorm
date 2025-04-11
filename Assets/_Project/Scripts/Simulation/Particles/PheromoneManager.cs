@@ -187,7 +187,7 @@ namespace Beakstorm.Simulation.Particles
             pheromoneComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
         }
 
-        public void EmitParticles(int count, Vector3 pos)
+        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float deltaTime)
         {
             if (count <= 0)
                 return;
@@ -197,12 +197,13 @@ namespace Beakstorm.Simulation.Particles
             int emissionKernel = pheromoneComputeShader.FindKernel("Emit");
             
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
-            pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, Time.deltaTime);
+            pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, deltaTime);
             pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, lifeTime);
             
             pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);
             pheromoneComputeShader.SetFloat(PropertyIDs.PressureMultiplier, pressureMultiplier);
             pheromoneComputeShader.SetVector(PropertyIDs.SpawnPos, pos);
+            pheromoneComputeShader.SetVector(PropertyIDs.SpawnPosOld, oldPos);
             
             pheromoneComputeShader.SetBuffer(emissionKernel, PropertyIDs.PositionBuffer, _positionBuffer);
             pheromoneComputeShader.SetBuffer(emissionKernel, PropertyIDs.OldPositionBuffer, _oldPositionBuffer);
@@ -266,7 +267,7 @@ namespace Beakstorm.Simulation.Particles
                 lightProbeProxyVolume = null,
                 receiveShadows = true,
                 shadowCastingMode = ShadowCastingMode.Off,
-                worldBounds = new Bounds(transform.position, simulationSpace),
+                worldBounds = new Bounds(transform.position, simulationSpace * 100),
                 matProps = _propertyBlock,
             };
 
@@ -299,6 +300,7 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int LifeTime        = Shader.PropertyToID("_LifeTime");
             
             public static readonly int SpawnPos        = Shader.PropertyToID("_SpawnPos");
+            public static readonly int SpawnPosOld        = Shader.PropertyToID("_SpawnPosOld");
             
             
             public static readonly int DeadCountBuffer        = Shader.PropertyToID("_DeadCountBuffer");

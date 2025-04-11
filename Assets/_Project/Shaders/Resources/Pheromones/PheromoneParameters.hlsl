@@ -18,6 +18,7 @@ float3 _WorldPos;
 float4x4 _WorldMatrix;
 
 float3 _SpawnPos;
+float3 _SpawnPosOld;
 
 RWStructuredBuffer<float3> _PositionBuffer;
 RWStructuredBuffer<float3> _OldPositionBuffer;

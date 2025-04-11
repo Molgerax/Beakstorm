@@ -284,7 +284,9 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     
     const uint index = _AliveIndexBuffer.Consume();
 
-    float3 pos = _SpawnPos + RandomVector(index) * 0.01;
+    float randomOffset = Random(index) * 1.0;
+    
+    float3 pos = lerp(_SpawnPos, _SpawnPosOld, randomOffset) + RandomVector(index) * 0.01;
     //pos.y = 0;
     //pos = 0;
     //pos.x = ((float)index / _TotalCount * 2 - 1) * _SimulationSpace.x;
@@ -292,11 +294,11 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     float3 oldPos = pos;// - RandomVector(index) * _DeltaTime * 5;
     //oldPos.y = 0;
     
-    _AliveBuffer[index] = _LifeTime;
+    _AliveBuffer[index] = _LifeTime - _DeltaTime * randomOffset;
     
     _PositionBuffer[index] = pos;
     _OldPositionBuffer[index] = oldPos;
-    _DataBuffer[index] = _LifeTime;
+    _DataBuffer[index] = _LifeTime - _DeltaTime * randomOffset;
 }
 
 
