@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4485577773283016394}
   - component: {fileID: 3903295148314396189}
   - component: {fileID: 107753263765418574}
-  - component: {fileID: 3365685398423749420}
   m_Layer: 0
   m_Name: VisualModel
   m_TagString: Untagged
@@ -59,10 +58,13 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,29 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3365685398423749420
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1028093723032319575}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7264894178766051763
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,12 +96,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3643450096948898207}
   - component: {fileID: 5012512307083224738}
+  - component: {fileID: 2981456697708023891}
   - component: {fileID: 8417193104476582687}
   - component: {fileID: 238433144582504019}
   - component: {fileID: -5033398536401664210}
   - component: {fileID: 1407406865008997820}
-  - component: {fileID: 4682962442195406448}
-  - component: {fileID: 534445464188393291}
+  - component: {fileID: 6373692553685565216}
   m_Layer: 0
   m_Name: PheromoneCapsule
   m_TagString: Untagged
@@ -158,6 +137,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0b7016e3322134cbfaa7366833389a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2981456697708023891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7264894178766051763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b814bc75a31064bb2954c0a7c4b570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionRate: 384
 --- !u!114 &8417193104476582687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,11 +162,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3b0a907c5d89d4d861f66bb01a1108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 5
+  duration: 3
   resetOnDisable: 1
   onTimerElapsed:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2981456697708023891}
+        m_TargetAssemblyTypeName: Beakstorm.Simulation.Particles.PheromoneEmitter,
+          Assembly-CSharp
+        m_MethodName: Emit
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 5012512307083224738}
         m_TargetAssemblyTypeName: Pikmillion.Gameplay.Projectiles.Projectile, Assembly-CSharp
         m_MethodName: Deactivate
@@ -199,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cd18d6dbe9579f4cb19f774bf43fbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 9.81
+  gravity: 5
   drag: 0.005
 --- !u!54 &-5033398536401664210
 Rigidbody:
@@ -243,7 +248,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -251,7 +256,7 @@ CapsuleCollider:
   m_Height: 0.5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4682962442195406448
+--- !u!114 &6373692553685565216
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -260,25 +265,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7264894178766051763}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79c95b96710aee4f93ef3af01f7369f, type: 3}
+  m_Script: {fileID: 11500000, guid: f8e0c45775f1b8f4b9a24196038d1b93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fluidFieldAdd: {fileID: 534445464188393291}
---- !u!114 &534445464188393291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7264894178766051763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41d2799eb5bd7a04891e5b1770d8c2e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _computeShader: {fileID: 7200000, guid: b1a95451782bf1348a6ca17e0bc97bd6, type: 3}
-  fluidField: {fileID: 0}
-  target: {fileID: 3643450096948898207}
-  _radius: 1
-  _density: 3
-  _strength: 0
+  _TriggerEnterEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 8417193104476582687}
+      _MemberName: CompleteTimer
+      _PersistentArguments: []
+  _TriggerStayEvent:
+    _PersistentCalls: []
+  _TriggerExitEvent:
+    _PersistentCalls: []
