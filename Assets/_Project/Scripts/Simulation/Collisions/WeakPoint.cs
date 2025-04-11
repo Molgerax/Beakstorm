@@ -53,5 +53,11 @@ namespace Beakstorm.Simulation.Collisions
             onHealthZero?.Invoke();
             Unsubscribe();
         }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, radius);
+        }
     }
 }
