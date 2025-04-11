@@ -83,10 +83,13 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
             if (dot(offset, offset) > radius * radius)
                 continue;
             
-            float3 oldPositionB = _OldPositionBuffer[neighborIndex]; 
+            float3 oldPositionB = _OldPositionBuffer[neighborIndex];
+            float3 velocity = (positionB - oldPositionB) / _DeltaTime;
+            float sqrMag = dot(velocity, velocity);
+            
             float3 oldOffset = oldPositionB - positionA;
             if (dot(oldOffset, oldOffset) > radius * radius)
-                _DamageBuffer[index] += 1;
+                _DamageBuffer[index] += clamp(floor(sqrt(sqrMag) / 10), 0, 10);
         }
     }
 }
