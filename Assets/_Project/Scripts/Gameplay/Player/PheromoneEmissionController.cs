@@ -1,13 +1,14 @@
 ﻿using Beakstorm.Inputs;
-using DynaMak.Volumes.FluidSimulation;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Beakstorm.Gameplay.Player
 {
-    public class PheromoneEmitter : MonoBehaviour
+    public class PheromoneEmissionController : MonoBehaviour
     {
-        [SerializeField] private FluidFieldAddBase fluidAdd;
+        [SerializeField] private UnityEvent onEmitStart;
+        [SerializeField] private UnityEvent onEmitStop;
 
         private PlayerInputs _inputs;
 
@@ -18,17 +19,17 @@ namespace Beakstorm.Gameplay.Player
             _inputs.emitAction.performed += OnEmitActionPerformed;
             _inputs.emitAction.canceled += OnEmitActionCancelled;
 
-            fluidAdd.enabled = false;
+            onEmitStop?.Invoke();
         }
 
         private void OnEmitActionPerformed(InputAction.CallbackContext callback)
         {
-            fluidAdd.enabled = true;
+            onEmitStart?.Invoke();
         }
 
         private void OnEmitActionCancelled(InputAction.CallbackContext callback)
         {
-            fluidAdd.enabled = false;
+            onEmitStop?.Invoke();
         }
     }
 }
