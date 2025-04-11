@@ -3,7 +3,13 @@ guid: accb2f3f33d052949be5146d20c83dbe
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _boidComputeShader: {fileID: 7200000, guid: a71c79202ee047944b2c821c0f6b9b6d, type: 3}
+  - mesh: {instanceID: 0}
+  - material: {instanceID: 0}
+  - neutralState: {fileID: 11400000, guid: f1bb86f32dd7f7b408898680af8e3ea4, type: 2}
+  - exposedState: {fileID: 11400000, guid: e7aec695776c965488de5bf02150a3a0, type: 2}
+  - _sortShader: {fileID: 7200000, guid: b31ad9a788edaed4391c282e2fd46cff, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

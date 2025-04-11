@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: beb8d800e686f834cbb50b20864d26bf
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - pheromoneComputeShader: {fileID: 7200000, guid: d6ca223d4ec8bb54ba802374a8bbee18, type: 3}
+  - mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  - material: {instanceID: 0}
+  - sortShader: {fileID: 7200000, guid: b31ad9a788edaed4391c282e2fd46cff, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
