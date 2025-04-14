@@ -60,7 +60,8 @@ namespace Beakstorm.Inputs
             _inputs = new PlayerInputActions();
             _inputs.Enable();
 
-            _inputs.bindingMask = InputBinding.MaskByGroup(_inputs.ControllerScheme.bindingGroup);
+            if (InputSystem.GetDevice(typeof(Gamepad)) != null)
+                _inputs.bindingMask = InputBinding.MaskByGroup(_inputs.ControllerScheme.bindingGroup);
             
             moveAction = _inputs.Player.Move;
             lookAction = _inputs.Player.Look;
