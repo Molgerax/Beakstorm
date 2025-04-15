@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a8f9cc2a194b249a35e01a7344b870, type: 3}
   m_Name: NeutralBoidState
   m_EditorClassIdentifier: 
-  separation: 0.739
+  separation: 0.803
   alignment: 0.342
   cohesion: 0.739
   detection: 1
-  separationRadius: 2.5
+  separationRadius: 3.5
   alignmentRadius: 8
   cohesionRadius: 7
   detectionRadius: 5

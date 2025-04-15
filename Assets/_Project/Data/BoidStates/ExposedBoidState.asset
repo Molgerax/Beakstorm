@@ -16,7 +16,7 @@ MonoBehaviour:
   alignment: 0.2
   cohesion: 0
   detection: 1
-  separationRadius: 2.5
+  separationRadius: 3
   alignmentRadius: 3
   cohesionRadius: 0
   detectionRadius: 5
