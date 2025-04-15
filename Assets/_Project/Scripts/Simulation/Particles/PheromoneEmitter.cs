@@ -15,9 +15,7 @@ namespace Beakstorm.Simulation.Particles
         
         private void OnEnable()
         {
-            _position = transform.position;
-            _remainder = 0;
-            UpdatePositions();
+            ResetEmitter();
         }
 
         private void Update()
@@ -51,6 +49,13 @@ namespace Beakstorm.Simulation.Particles
         {
             if (PheromoneManager.Instance)
                 PheromoneManager.Instance.EmitParticles(count, _position, _oldPosition, _deltaTime);
+        }
+
+        public void ResetEmitter()
+        {
+            _position = transform.position;
+            _remainder = 0;
+            UpdatePositions();
         }
     }
 }

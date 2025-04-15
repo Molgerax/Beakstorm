@@ -1,5 +1,6 @@
 using Beakstorm.Gameplay.Projectiles;
 using Beakstorm.Inputs;
+using Beakstorm.Simulation.Particles;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -37,6 +38,9 @@ namespace Beakstorm.Gameplay.Player
 
             if (projectileInstance.TryGetComponent(out SimpleMovementHandler movementHandler))
                 movementHandler.SetVelocity(direction * initialVelocity);
+            
+            if (projectileInstance.TryGetComponent(out PheromoneEmitter emitter))
+                emitter.ResetEmitter();
         }
     }
 }
