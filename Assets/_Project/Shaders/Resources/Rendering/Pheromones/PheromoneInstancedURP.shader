@@ -149,7 +149,7 @@ Shader "BeakStorm/Pheromones/Instanced URP"
 		float4 data = _DataBuffer[instance_id];
 		
 
-		float3 vpos = input.positionOS.xyz * 0.5;
+		float3 vpos = input.positionOS.xyz * saturate(data.w) * 0.25;
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
 
