@@ -1245,6 +1245,7 @@ MonoBehaviour:
   maxAngles: {x: -80, y: 80}
   lookAngles: {x: 170, y: 90}
   mouseSensitivity: 1
+  inputFactor: 120
   lookAlpha: 0.069
   movementAlpha: 0.069
   yAlpha: 0.106
@@ -1566,9 +1567,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materialType: 0
-  radiusBase: 1.18
-  radiusTip: 0.22
-  height: 1.4
+  radiusBase: 2.24
+  radiusTip: 0.88
+  height: 3.12
 --- !u!1 &1982143473
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,6 +1621,7 @@ MonoBehaviour:
   maxSpeed: 40
   minSpeed: 20
   acceleration: 200
+  steerSpeed: 120
   _speed: 0
 --- !u!114 &1982143477
 MonoBehaviour:

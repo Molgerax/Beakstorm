@@ -9,6 +9,8 @@ namespace Beakstorm.Gameplay.Player
         [SerializeField] private float maxSpeed = 20f;
         [SerializeField] private float minSpeed = 10f;
         [SerializeField] private float acceleration = 5f;
+
+        [SerializeField] private float steerSpeed = 60;
         
         private PlayerInputs _inputs;
         private Vector3 _eulerAngles;
@@ -48,7 +50,7 @@ namespace Beakstorm.Gameplay.Player
 
             _eulerAngles = t.localEulerAngles;
 
-            _eulerAngles.x -= inputVector.y;
+            _eulerAngles.x -= inputVector.y * Time.deltaTime * steerSpeed;
 
             if (_eulerAngles.x > 180)
                 _eulerAngles.x -= 360;
@@ -56,13 +58,13 @@ namespace Beakstorm.Gameplay.Player
             _eulerAngles.x = Mathf.Max(_eulerAngles.x, maxAngles.x);
             _eulerAngles.x = Mathf.Min(_eulerAngles.x, maxAngles.y);
 
-            _roll = Mathf.Lerp(_roll, -inputVector.x * 30f, 0.01f);
+            _roll = Mathf.Lerp(_roll, -inputVector.x * 30f * Time.deltaTime * steerSpeed, 0.01f);
             
             _eulerAngles.z = _roll;
 
             t.localEulerAngles = _eulerAngles;
             
-            t.Rotate(0.0f, inputVector.x, 0.0f, Space.World);
+            t.Rotate(0.0f, inputVector.x * Time.deltaTime * steerSpeed, 0.0f, Space.World);
         }
 
         private void HandleAcceleration()

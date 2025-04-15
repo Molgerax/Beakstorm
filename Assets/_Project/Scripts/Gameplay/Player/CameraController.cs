@@ -19,6 +19,8 @@ namespace Beakstorm.Gameplay.Player
         [SerializeField]
         [Range(0.1f, 1f)] private float mouseSensitivity = 1;
         
+        [SerializeField] private float inputFactor = 60;
+
         [SerializeField]
         [Range(0f, 1f)] private float lookAlpha = 1;
         [SerializeField]
@@ -125,11 +127,11 @@ namespace Beakstorm.Gameplay.Player
             
             Quaternion rotation = Quaternion.Euler(-_lookAverage.y, _lookAverage.x, 0);
 
-            _pitch -= inputVector.y * mouseSensitivity;
+            _pitch -= inputVector.y * mouseSensitivity * Time.deltaTime * inputFactor;
             _pitch = Mathf.Clamp(_pitch, maxAngles.x, maxAngles.y);
             _eulerAngles = cameraHead.localEulerAngles;
 
-            cameraHead.localEulerAngles = new Vector3(_pitch, _eulerAngles.y + inputVector.x * mouseSensitivity, 0);
+            cameraHead.localEulerAngles = new Vector3(_pitch, _eulerAngles.y + inputVector.x * mouseSensitivity * Time.deltaTime * inputFactor, 0);
             //cameraHead.Rotate(0.0f, inputVector.x * mouseSensitivity, 0.0f, Space.World);
         }
     }
