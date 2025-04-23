@@ -21,5 +21,5 @@ MonoBehaviour:
   cohesionRadius: 7
   detectionRadius: 5
   minSpeed: 0.25
-  maxSpeed: 10
+  maxSpeed: 25
   maxForce: 30
