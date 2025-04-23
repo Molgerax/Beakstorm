@@ -30,6 +30,8 @@ uint _PheromoneTotalCount;
 float3 _SimulationSpace;
 float _HashCellSize;
 
+float4 _WhistleSource;
+
 SamplerState sampler_linear_clamp;
 
 #endif

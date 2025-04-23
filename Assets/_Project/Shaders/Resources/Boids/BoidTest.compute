@@ -106,6 +106,14 @@ float3 centerForce(float3 pos, uint index)
     return limitVector(force, 100);
 }
 
+float3 whistleForce(float3 pos)
+{
+    float radius = 100;
+    float3 diff = (_WhistleSource.xyz - pos);
+    float3 force = safeNormalize(diff) * max(0, length(diff) - radius) * _WhistleSource.w;
+    return limitVector(force, 1000);
+}
+
 float3 sdfForce(SdfQueryInfo info)
 {
     float3 f = info.normal;
@@ -326,6 +334,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     //acceleration += forceFromBounds(currentPosition);
     //acceleration += centerForce(currentPosition, index);
     //acceleration += sdfForce(sdfInfo);
+    acceleration += whistleForce(currentPosition);
 
 
     float4 factors = GetBoidSettings(index);

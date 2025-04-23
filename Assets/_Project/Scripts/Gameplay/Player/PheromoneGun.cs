@@ -1,3 +1,4 @@
+using System;
 using Beakstorm.Gameplay.Projectiles;
 using Beakstorm.Inputs;
 using Beakstorm.Simulation.Particles;
@@ -18,6 +19,14 @@ namespace Beakstorm.Gameplay.Player
             _inputs = PlayerInputs.Instance;
 
             _inputs.shootAction.performed += OnShootActionPerformed;
+        }
+
+        private void Update()
+        {
+            if (_inputs.whistleAction.IsPressed())
+            {
+                BoidManager.Instance.RefreshWhistle(transform.position, 1f);
+            }
         }
 
         private void OnShootActionPerformed(InputAction.CallbackContext callback)

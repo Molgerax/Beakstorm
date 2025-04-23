@@ -72,6 +72,8 @@ namespace Beakstorm.Simulation.Particles
         public int Capacity => _capacity;
         public float HashCellSize => _hashCellSize;
 
+        private Vector4 _whistleSource;
+        
         private void Awake()
         {
             Instance = this;
@@ -89,6 +91,8 @@ namespace Beakstorm.Simulation.Particles
                 UpdateSpatialHash();
                 GPUBitonicMergeSort.SortAndCalculateOffsets(_sortShader, _spatialIndicesBuffer, _spatialOffsetsBuffer);
 
+                DecayWhistle(Time.deltaTime);
+             
                 int updateKernel = _boidComputeShader.FindKernel("Update");
                 RunSimulation(updateKernel, Time.deltaTime);
                 
@@ -101,10 +105,23 @@ namespace Beakstorm.Simulation.Particles
             ReleaseBuffers();
         }
         
+        
+        public void RefreshWhistle(Vector3 position, float duration)
+        {
+            _whistleSource = position;
+            _whistleSource.w = duration;
+        }
+
+        private void DecayWhistle(float deltaTime)
+        {
+            _whistleSource.w = Mathf.Max(0, _whistleSource.w - deltaTime);
+        }
+        
 
         [ContextMenu("Re-Init")]
         private void InitializeBuffers()
         {
+            _whistleSource = Vector4.zero;
             _capacity = maxCount;
             ReleaseBuffers();
 
@@ -163,7 +180,8 @@ namespace Beakstorm.Simulation.Particles
             _boidComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
             _boidComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
             _boidComputeShader.SetVector(PropertyIDs.SimulationSpace, simulationSpace);
-            
+            _boidComputeShader.SetVector(PropertyIDs.WhistleSource, _whistleSource);
+
             _boidComputeShader.SetFloat(PropertyIDs.Time, Time.time);
             _boidComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
             
@@ -276,6 +294,8 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int VelocityBuffer          = Shader.PropertyToID("_VelocityBuffer");
             public static readonly int NormalBuffer            = Shader.PropertyToID("_NormalBuffer");
             public static readonly int DataBuffer              = Shader.PropertyToID("_DataBuffer");
+            
+            public static readonly int WhistleSource         = Shader.PropertyToID("_WhistleSource");
             
             public static readonly int SpatialIndices              = Shader.PropertyToID("_BoidSpatialIndices");
             public static readonly int SpatialOffsets              = Shader.PropertyToID("_BoidSpatialOffsets");
