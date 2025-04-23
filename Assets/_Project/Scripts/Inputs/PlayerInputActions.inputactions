@@ -24,24 +24,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Confirm",
-                    "type": "Button",
-                    "id": "ca54ca56-3ae9-4126-a5d4-7be5501e5b49",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Cancel",
-                    "type": "Button",
-                    "id": "537ed305-bed8-4625-b776-fd6e9b9e3c41",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Shoot",
                     "type": "Button",
                     "id": "d318677a-1ea2-4193-95e4-ed103d890cb2",
@@ -72,6 +54,51 @@
                     "name": "SwitchCameraHandling",
                     "type": "Button",
                     "id": "cf1a9b75-b0b3-42d1-8d6a-3345c44c91fc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Accelerate",
+                    "type": "Button",
+                    "id": "76c7bdcf-89e6-4ef9-8c6a-fb9ef02fc84e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Brake",
+                    "type": "Button",
+                    "id": "23bf454e-85c5-4dda-8a94-c97c550968a7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Confirm",
+                    "type": "Button",
+                    "id": "ca54ca56-3ae9-4126-a5d4-7be5501e5b49",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "537ed305-bed8-4625-b776-fd6e9b9e3c41",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Whistle",
+                    "type": "Button",
+                    "id": "07d71152-d080-4203-8afa-e49f7a52131e",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -191,6 +218,28 @@
                 },
                 {
                     "name": "",
+                    "id": "ef99a9f2-4cff-41e7-8a79-001b4cc3f919",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dedf0db3-342c-4011-bc5b-5daba771bbe9",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c4f6646d-bc6f-4023-84d2-15b29e1bce88",
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
@@ -208,6 +257,28 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Confirm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7106bd8f-a6f0-4ad6-bba9-48c36efe8b07",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Accelerate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a1efb69-3c99-4de7-b007-8a2688e8ec2f",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Accelerate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -318,6 +389,28 @@
                     "processors": "",
                     "groups": ";KeyboardMouse",
                     "action": "Emit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8bca8963-b3f1-4bda-ac41-8bac7958b13f",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "Whistle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46b9de18-9af8-4d52-8a25-bcc9f391b570",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "Whistle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

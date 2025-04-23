@@ -74,8 +74,13 @@ namespace Beakstorm.Gameplay.Player
             flatForward.y = 0f;
             
             float angle = Vector3.SignedAngle(t.forward, flatForward, t.right);
-            float strength = angle / 360f;
-            _speed -= strength * Mathf.Abs(strength) * acceleration * Time.deltaTime;
+            float angleStrength = -angle / 360f;
+            
+            float inputStrength = 0;
+            inputStrength += _inputs.accelerateAction.IsPressed() ? 1 : 0;
+            inputStrength -= _inputs.brakeAction.IsPressed() ? 1 : 0;
+            
+            _speed += (inputStrength * 0.05f + angleStrength * Mathf.Abs(angleStrength)) * acceleration * Time.deltaTime;
             _speed = Mathf.Clamp(_speed, minSpeed, maxSpeed);
         }
         

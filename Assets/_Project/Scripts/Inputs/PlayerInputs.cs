@@ -25,6 +25,10 @@ namespace Beakstorm.Inputs
         public InputAction shootAction;
         public InputAction emitAction;
         public InputAction switchCameraAction;
+        
+        public InputAction accelerateAction;
+        public InputAction brakeAction;
+        public InputAction whistleAction;
 
         #endregion
 
@@ -70,6 +74,10 @@ namespace Beakstorm.Inputs
             shootAction = _inputs.Player.Shoot;
             emitAction = _inputs.Player.Emit;
             switchCameraAction = _inputs.Player.SwitchCameraHandling;
+            
+            accelerateAction = _inputs.Player.Accelerate;
+            brakeAction = _inputs.Player.Brake;
+            whistleAction = _inputs.Player.Whistle;
 
             _confirmBuffered = new InputBuffered(inputGrace);
             _cancelBuffered = new InputBuffered(inputGrace);
