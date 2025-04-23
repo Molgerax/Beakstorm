@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Beakstorm.Gameplay.Player
 {
+    [DefaultExecutionOrder(-20)]
     public class CameraController : MonoBehaviour
     {
         #region SerializeFields
@@ -55,12 +56,12 @@ namespace Beakstorm.Gameplay.Player
         private void Update()
         {
             transform.position = playerTarget.position;
+            OnLookInput();
         }
 
         private void LateUpdate()
         {
             //transform.position = playerTarget.position;
-            OnLookInput();
         }
 
         #endregion

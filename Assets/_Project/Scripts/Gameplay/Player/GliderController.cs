@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player
 {
+    [DefaultExecutionOrder(-40)]
     public class GliderController : MonoBehaviour
     {
         [SerializeField] private Vector2 maxAngles = new Vector2(0f, 90f);
