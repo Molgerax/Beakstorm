@@ -1,4 +1,5 @@
 ﻿using Beakstorm.Inputs;
+using Beakstorm.Pausing;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -55,6 +56,9 @@ namespace Beakstorm.Gameplay.Player
 
         private void Update()
         {
+            if (PauseManager.IsPaused)
+                return;
+            
             transform.position = playerTarget.position;
             OnLookInput();
         }

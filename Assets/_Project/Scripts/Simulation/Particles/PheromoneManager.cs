@@ -1,4 +1,5 @@
 using Beakstorm.ComputeHelpers;
+using Beakstorm.Pausing;
 using Beakstorm.Simulation.Collisions.SDF;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -146,6 +147,11 @@ namespace Beakstorm.Simulation.Particles
 
         private void RunSimulation(int kernelId, float timeStep)
         {
+            if (PauseManager.IsPaused)
+                return;
+            if (timeStep == 0)
+                return;
+            
             if (kernelId < 0)
             {
                 Debug.LogError($"Kernel for ComputeShader {pheromoneComputeShader} is invalid", this);
@@ -189,6 +195,9 @@ namespace Beakstorm.Simulation.Particles
 
         public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float deltaTime)
         {
+            if (PauseManager.IsPaused)
+                return;
+            
             if (count <= 0)
                 return;
         

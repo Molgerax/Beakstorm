@@ -1,4 +1,5 @@
 using Beakstorm.Inputs;
+using Beakstorm.Pausing;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player
@@ -37,6 +38,9 @@ namespace Beakstorm.Gameplay.Player
 
         private void Update()
         {
+            if (PauseManager.IsPaused)
+                return;
+            
             SteerInput();
             HandleAcceleration();
             Move();

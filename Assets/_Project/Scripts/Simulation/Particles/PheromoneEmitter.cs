@@ -1,3 +1,4 @@
+using Beakstorm.Pausing;
 using UnityEngine;
 
 namespace Beakstorm.Simulation.Particles
@@ -20,6 +21,9 @@ namespace Beakstorm.Simulation.Particles
 
         private void Update()
         {
+            if (PauseManager.IsPaused)
+                return;
+         
             UpdatePositions();
             EmitOverTime();
         }

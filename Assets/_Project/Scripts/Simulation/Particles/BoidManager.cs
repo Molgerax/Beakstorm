@@ -1,5 +1,6 @@
 using System;
 using Beakstorm.ComputeHelpers;
+using Beakstorm.Pausing;
 using Beakstorm.Simulation.Collisions.SDF;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -168,6 +169,11 @@ namespace Beakstorm.Simulation.Particles
 
         private void RunSimulation(int kernelId, float timeStep)
         {
+            if (PauseManager.IsPaused)
+                return;
+            if (timeStep == 0)
+                return;
+            
             if (kernelId < 0)
             {
                 Debug.LogError($"Kernel for ComputeShader {_boidComputeShader} is invalid", this);

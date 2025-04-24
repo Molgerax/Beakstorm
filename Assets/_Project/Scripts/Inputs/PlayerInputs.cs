@@ -1,3 +1,4 @@
+using System;
 using Beakstorm.Utility;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -30,6 +31,8 @@ namespace Beakstorm.Inputs
         public InputAction brakeAction;
         public InputAction whistleAction;
 
+        public Action PauseAction;
+        
         #endregion
 
         #region Private Fields
@@ -50,7 +53,8 @@ namespace Beakstorm.Inputs
         public bool ConfirmBuffered => _confirmBuffered;
         public bool CancelBuffered => _cancelBuffered;
         public bool ShootBuffered => _shootBuffered;
-        
+
+        public PlayerInputActions InputActions => _inputs;
 
         #endregion
 
@@ -89,10 +93,25 @@ namespace Beakstorm.Inputs
             confirmAction.AddListener(OnConfirmButton);
             cancelAction.AddListener(OnCancelButton);
             shootAction.AddListener(OnShootButton);
+            
+            _inputs.Player.Pause.AddListener(OnPauseButton);
+            _inputs.UI.Pause.AddListener(OnPauseButton);
         }
 
         #endregion
 
+
+        public void EnablePlayerInputs()
+        {
+            InputActions.Player.Enable();
+            InputActions.UI.Disable();
+        }
+        
+        public void EnableUiInputs()
+        {
+            InputActions.Player.Disable();
+            InputActions.UI.Enable();
+        }
 
 
 
@@ -111,6 +130,13 @@ namespace Beakstorm.Inputs
         public void OnShootButton(InputAction.CallbackContext context)
         {
             if (!context.performed) return;
+        }
+        
+        public void OnPauseButton(InputAction.CallbackContext context)
+        {
+            if (!context.performed) return;
+            
+            PauseAction?.Invoke();
         }
 
         #endregion

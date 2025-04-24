@@ -1,6 +1,7 @@
 using System;
 using Beakstorm.Gameplay.Player;
 using Beakstorm.Gameplay.Projectiles;
+using Beakstorm.Pausing;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Enemies
@@ -26,6 +27,9 @@ namespace Beakstorm.Gameplay.Enemies
 
         private void Update()
         {
+            if (PauseManager.IsPaused)
+                return;
+         
             Tick(Time.deltaTime);
             AdjustPivot();
         }
