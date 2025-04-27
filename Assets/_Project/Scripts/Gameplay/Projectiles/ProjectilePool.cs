@@ -1,14 +1,13 @@
 using System;
 using UnityEngine;
 using UnityEngine.Pool;
+using Object = UnityEngine.Object;
 
 namespace Beakstorm.Gameplay.Projectiles
 {
     public class ProjectilePool : IDisposable
     {
         private readonly Projectile _prefab;
-        private readonly int _defaultCapacity;
-        private readonly int _maxCapacity;
 
         private readonly ObjectPool<Projectile> _objectPool;
         private readonly Transform _poolParentTransform;
@@ -16,29 +15,32 @@ namespace Beakstorm.Gameplay.Projectiles
         public Projectile GetProjectile() => _objectPool.Get();
 
 
-        public ProjectilePool(Projectile prefab, int defaultCapacity = 16, int maxCapacity = 128)
+        public ProjectilePool(Projectile prefab)
         {
             _prefab = prefab;
-            _defaultCapacity = defaultCapacity;
-            _maxCapacity = maxCapacity;
+            var defaultCapacity = prefab.DefaultCapacity;
+            var maxCapacity = prefab.MaximumCapacity;
             
             
             var poolParent = new GameObject($"{_prefab.gameObject.name}_Pool");
             _poolParentTransform = poolParent.transform;
 
             _objectPool = new ObjectPool<Projectile>(CreateProjectile, OnGetFromPool, OnReleaseToPool,
-                OnDestroyPooledObject, false, _defaultCapacity, _maxCapacity);
+                OnDestroyPooledObject, false, defaultCapacity, maxCapacity);
 
         }
         
         public void Dispose()
         {
+            if (_poolParentTransform)
+                Object.Destroy(_poolParentTransform.gameObject);
+                
             _objectPool.Dispose();
         }
 
         private Projectile CreateProjectile()
         {
-            var projectileInstance = UnityEngine.Object.Instantiate(_prefab, _poolParentTransform, true);
+            var projectileInstance = Object.Instantiate(_prefab, _poolParentTransform, true);
             projectileInstance.ObjectPool = _objectPool;
             return projectileInstance;
         }
@@ -46,6 +48,7 @@ namespace Beakstorm.Gameplay.Projectiles
         private void OnGetFromPool(Projectile projectile)
         {
             projectile.gameObject.SetActive(true);
+            projectile.Spawn();
         }
 
         private void OnReleaseToPool(Projectile projectile)
@@ -56,7 +59,7 @@ namespace Beakstorm.Gameplay.Projectiles
         private void OnDestroyPooledObject(Projectile projectile)
         {
             if (projectile)
-                UnityEngine.Object.Destroy(projectile.gameObject);
+                Object.Destroy(projectile.gameObject);
         }
     }
 }
