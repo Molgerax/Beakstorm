@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1028093723032319575}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3643450096948898207}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &3903295148314396189
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -99,7 +99,8 @@ GameObject:
   - component: {fileID: 8417193104476582687}
   - component: {fileID: 238433144582504019}
   - component: {fileID: -5033398536401664210}
-  - component: {fileID: 1407406865008997820}
+  - component: {fileID: 7700093933226150954}
+  - component: {fileID: 8536611468480561016}
   m_Layer: 0
   m_Name: EnemyShell
   m_TagString: Untagged
@@ -135,6 +136,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0b7016e3322134cbfaa7366833389a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultCapacity: 16
+  maximumCapacity: 16
+  onSpawn:
+    _PersistentCalls: []
 --- !u!114 &8417193104476582687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,20 +155,10 @@ MonoBehaviour:
   duration: 3
   resetOnDisable: 1
   onTimerElapsed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5012512307083224738}
-        m_TargetAssemblyTypeName: Pikmillion.Gameplay.Projectiles.Projectile, Assembly-CSharp
-        m_MethodName: Deactivate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+    _PersistentCalls:
+    - _Target: {fileID: 5012512307083224738}
+      _MemberName: Deactivate
+      _PersistentArguments: []
 --- !u!114 &238433144582504019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,8 +200,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &1407406865008997820
-CapsuleCollider:
+--- !u!135 &7700093933226150954
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -223,8 +218,19 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.125
-  m_Height: 0.5
-  m_Direction: 1
+  serializedVersion: 3
+  m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8536611468480561016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7264894178766051763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a82fcd1f75b693419005793a8804cc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageValue: 1
