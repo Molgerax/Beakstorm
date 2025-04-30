@@ -1,12 +1,17 @@
+using Beakstorm.Gameplay.Damaging;
 using Beakstorm.Pausing;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IDamageable
     {
         public static PlayerController Instance;
 
+        [SerializeField] private int maxHealth = 100;
+
+        private int _health;
+        
         private Vector3 _oldPosition;
         private Vector3 _position;
 
@@ -20,6 +25,7 @@ namespace Beakstorm.Gameplay.Player
         private void Awake()
         {
             Instance = this;
+            _health = maxHealth;
         }
 
         private void Update()
@@ -36,6 +42,17 @@ namespace Beakstorm.Gameplay.Player
             _position = transform.position;
 
             _velocity = (_position - _oldPosition) / Time.deltaTime;
+        }
+
+        public bool CanTakeDamage()
+        {
+            return _health > 0;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            _health -= damage;
+            transform.position += Vector3.up * damage;
         }
     }
 }

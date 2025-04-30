@@ -4,13 +4,15 @@ using UnityEngine;
 
 namespace Beakstorm.Gameplay.Enemies
 {
-    public class Enemy : MonoBehaviour
+    public class EnemyController : MonoBehaviour
     {
         [SerializeField] private WeakPoint[] weakPoints;
         [SerializeField] private UltEvent onHealthZero;
         
         private int _maxHealth;
         private int _currentHealth;
+
+        private EnemySpawner _spawner;
         
         public int CurrentHealth()
         {
@@ -41,6 +43,11 @@ namespace Beakstorm.Gameplay.Enemies
             }
         }
 
+        public void Spawn(EnemySpawner spawner)
+        {
+            _spawner = spawner;
+        }
+        
         public void CheckHealth()
         {
             if (CurrentHealth() <= 0)
@@ -51,6 +58,9 @@ namespace Beakstorm.Gameplay.Enemies
 
         private void HealthZero()
         {
+            if (_spawner)
+                _spawner.OnDefeat();
+            
             onHealthZero?.Invoke();
         }
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,15 +12,15 @@ namespace Beakstorm.Gameplay.Damaging
 
         private void OnEnable()
         {
-            _damagedObjects = new();
+            if (_damagedObjects != null)
+                _damagedObjects.Clear();
+            else
+                _damagedObjects = new(4);
         }
 
 
-        private void OnTriggerStay(Collider other)
+        private void Collide(IDamageable damageable)
         {
-            if (!other.TryGetComponent(out IDamageable damageable))
-                return;
-            
             if (!damageable.CanTakeDamage())
                 return;
             if (_damagedObjects.Contains(damageable))
@@ -29,6 +28,18 @@ namespace Beakstorm.Gameplay.Damaging
             
             damageable.TakeDamage(damageValue);
             _damagedObjects.Add(damageable);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out IDamageable damageable))
+                Collide(damageable);
+        }
+        
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.TryGetComponent(out IDamageable damageable))
+                Collide(damageable);
         }
     }
 }

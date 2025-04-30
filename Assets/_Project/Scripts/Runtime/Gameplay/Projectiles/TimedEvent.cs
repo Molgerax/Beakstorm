@@ -1,5 +1,5 @@
+using UltEvents;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Beakstorm.Gameplay.Projectiles
 {
@@ -8,7 +8,7 @@ namespace Beakstorm.Gameplay.Projectiles
         [SerializeField] private float duration;
         [SerializeField] private bool resetOnDisable = true;
 
-        [SerializeField] private UnityEvent onTimerElapsed;
+        [SerializeField] private UltEvent onTimerElapsed;
 
         private float _elapsedTime;
         private bool _hasFired;
