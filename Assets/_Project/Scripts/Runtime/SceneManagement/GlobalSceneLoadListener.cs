@@ -29,7 +29,7 @@ namespace Beakstorm.SceneManagement
         private AsyncOperation _loadingScreenAsyncOperation;
         
         //List of scenes to unload
-        private List<Scene> _ScenesToUnload = new List<Scene>();
+        private List<Scene> _scenesToUnload = new List<Scene>();
         //Keep track of the scene we want to set as active (for lighting/skybox)
         private SceneReference _activeScene;
 
@@ -66,20 +66,20 @@ namespace Beakstorm.SceneManagement
 
             StartCoroutine(TrackLoadingProgress(showLoadingScreen, !loadAdditively, scenesToLoad, loadAdditively, setFirstSceneActive));
         }
-        
+
         private void UnloadScenes()
         {
-            if (_ScenesToUnload != null)
+            if (_scenesToUnload != null)
             {
-                for (int i = 0; i < _ScenesToUnload.Count; ++i)
+                for (int i = 0; i < _scenesToUnload.Count; ++i)
                 {
                     //Unload the scene asynchronously in the background
-                    SceneManager.UnloadSceneAsync(_ScenesToUnload[i], UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+                    SceneManager.UnloadSceneAsync(_scenesToUnload[i], UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
                 }
+                _scenesToUnload.Clear();
             }
-            _ScenesToUnload.Clear();
         }
-        
+
         private IEnumerator TrackLoadingProgress(bool showLoadingScreen, bool unloadScenes, SceneReference[] scenesToLoad, bool loadAdditively, bool setFirstSceneActive)
         {
             _loadingScreenAsyncOperation =
@@ -148,7 +148,7 @@ namespace Beakstorm.SceneManagement
                 {
                     Debug.Log("Added scene to unload = " + scene.name);
                     //Add the scene to the list of the scenes to unload
-                    _ScenesToUnload.Add(scene);
+                    _scenesToUnload.Add(scene);
                 }
             }
         }
