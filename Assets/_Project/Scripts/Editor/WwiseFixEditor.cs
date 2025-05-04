@@ -68,6 +68,8 @@ public class WwiseFixEditor : MonoBehaviour
     // Windows
     new WwiseReplacement("#if (UNITY_STANDALONE_WIN && !UNITY_EDITOR) || UNITY_EDITOR_WIN",
       "#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_WSA"),
+    new WwiseReplacement("#if UNITY_EDITOR_WIN || (UNITY_STANDALONE_WIN && !UNITY_EDITOR)",
+      "#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_WSA"),
     //Linux
     new WwiseReplacement("#if UNITY_STANDALONE_LINUX && ! UNITY_EDITOR", "#if UNITY_EDITOR_LINUX || (UNITY_STANDALONE_LINUX && !UNITY_EDITOR)"),
     new WwiseReplacement("#if UNITY_STANDALONE_LINUX && !UNITY_EDITOR", "#if UNITY_EDITOR_LINUX || (UNITY_STANDALONE_LINUX && !UNITY_EDITOR)"),
