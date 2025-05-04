@@ -169,8 +169,15 @@ public class WwiseFixEditor : MonoBehaviour
     }
   }
 
+  [MenuItem("Tools/WwiseFixer/Set Release Setting/True")]
   public static void SetReleaseSetting()
   {
     AkPluginActivator.ActivatePluginsForDeployment(BuildTarget.StandaloneWindows64, true);
+  }
+  
+  [MenuItem("Tools/WwiseFixer/Set Release Setting/False")]
+  public static void SetReleaseSettingFalse()
+  {
+    AkPluginActivator.ActivatePluginsForDeployment(BuildTarget.StandaloneWindows64, false);
   }
 }
