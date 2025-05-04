@@ -5,9 +5,7 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
@@ -18,12 +16,10 @@ Copyright (c) 2025 Audiokinetic Inc.
 public class WwiseEventRefArray
 {
     private global::System.IntPtr ownerPtr;
-
     public WwiseEventRefArray(global::System.IntPtr cPtr)
     {
         ownerPtr = cPtr;
     }
-
     public WwiseEventRef this[int index]
     {
         get { return new WwiseEventRef(WwiseProjectDatabase.GetSoundBankEvent(ownerPtr, index), false); }

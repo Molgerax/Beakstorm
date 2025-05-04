@@ -5,17 +5,13 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
-
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -33,14 +29,12 @@ public class WwiseEventReference : WwiseObjectReference
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 	[UnityEngine.SerializeField, AkShowOnly]
 	public WwiseAddressableSoundBank AutoBank;
-
 #endif
 	public override WwiseObjectType WwiseObjectType { get { return WwiseObjectType.Event; } }
 	public bool IsInUserDefinedSoundBank = false;
 	private uint m_BankID = AkUnitySoundEngine.AK_INVALID_UNIQUE_ID;
 	[System.NonSerialized]
 	public bool IsAutoBankLoaded = false;
-	
 	private AkBankTypeEnum BankType
 	{
 		get
@@ -59,21 +53,18 @@ public class WwiseEventReference : WwiseObjectReference
 			}
 		}
 	}
-
 	protected void PostLoadAutoBank(uint bankId)
 	{
 		if (bankId == AkUnitySoundEngine.AK_INVALID_UNIQUE_ID)
 		{
 			return;
 		}
-
 		var result = AkUnitySoundEngine.PrepareEvent(AkPreparationType.Preparation_Load, new string[] { DisplayName }, 1);
 		if (result != AKRESULT.AK_Success)
 		{
 			UnityEngine.Debug.LogError("PrepareEvent for " + DisplayName + " failed with result: " + result + ". If the event is in a User Defined Soundbank, make sure" + " to check the \"Is In User-Defined SoundBank\" box in the editor.");
 		}
 	}
-
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 	public async Task CompleteLoadBank()
 	{
@@ -82,9 +73,7 @@ public class WwiseEventReference : WwiseObjectReference
 			await Task.Yield();
 		}
 	}
-	
 #if UNITY_EDITOR
-	
 	public override void CompleteData()
 	{
 #if WWISE_ADDRESSABLES_24_1_OR_LATER
@@ -93,13 +82,10 @@ public class WwiseEventReference : WwiseObjectReference
 		SetAddressableBank(AkAssetUtilities.GetAddressableBankAsset(DisplayName));
 #endif
 	}
-
 	public override bool IsComplete()
 	{
 		return (AutoBank != null && IsInUserDefinedSoundBank == false) || (AutoBank == null && IsInUserDefinedSoundBank == true);
 	}
-
-
 	public void SetAddressableBank(WwiseAddressableSoundBank asset)
 	{
 		AutoBank = asset;
@@ -152,7 +138,6 @@ public class WwiseEventReference : WwiseObjectReference
 		IsAutoBankLoaded = true;
 	}
 #endif
-	
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 #if WWISE_ADDRESSABLES_24_1_OR_LATER
 	public void OnAutoBankLoaded()
@@ -164,7 +149,6 @@ public class WwiseEventReference : WwiseObjectReference
 	}
 #endif
 #endif
-
 	public void LoadAutoBank()
 	{
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
@@ -175,7 +159,6 @@ public class WwiseEventReference : WwiseObjectReference
 		}
 #endif
 #endif
-		
 		if (IsInUserDefinedSoundBank || !AkWwiseInitializationSettings.Instance.IsAutoBankEnabled)
 		{
 			return;
@@ -192,7 +175,6 @@ public class WwiseEventReference : WwiseObjectReference
 		LoadAutoBankAsync();
 #endif
 	}
-
 	public void ReloadAutoBank()
 	{
 		UnloadAutoBank();
@@ -204,7 +186,6 @@ public class WwiseEventReference : WwiseObjectReference
 #endif
 		LoadAutoBank();
 	}
-
 	private void OnEnable()
 	{
 		if (AkUnitySoundEngine.IsInitialized())
@@ -221,7 +202,6 @@ public class WwiseEventReference : WwiseObjectReference
 		WwiseProjectDatabase.SoundBankDirectoryUpdated += UpdateIsUserDefinedSoundBank;
 #endif
 	}
-
 #if UNITY_EDITOR
 	public void UpdateIsUserDefinedSoundBank()
 	{
@@ -240,7 +220,6 @@ public class WwiseEventReference : WwiseObjectReference
 				}
 			}
 #endif
-			
 			IsInUserDefinedSoundBank = !soundBankRef.IsValid;
 			UnityEditor.EditorUtility.SetDirty(this);
 			if (IsAutoBankLoaded)
@@ -251,7 +230,6 @@ public class WwiseEventReference : WwiseObjectReference
 		}
 	}
 #endif
-
 	public void UnloadAutoBank()
 	{
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
@@ -275,7 +253,6 @@ public class WwiseEventReference : WwiseObjectReference
 		WwiseEventReferencesManager.Instance.RemoveReference(this);
 		IsAutoBankLoaded = false;
 	}
-
 	public void OnDisable()
 	{
 		UnloadAutoBank();
@@ -286,9 +263,7 @@ public class WwiseEventReference : WwiseObjectReference
 		WwiseProjectDatabase.SoundBankDirectoryUpdated -= UpdateIsUserDefinedSoundBank;
 #endif
 	}
-	
 #region Migration
-
 #if UNITY_EDITOR
 	bool AK.Wwise.IMigratable.Migrate(UnityEditor.SerializedObject serializedObject)
 	{

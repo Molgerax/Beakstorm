@@ -1,5 +1,4 @@
 #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
-
 /*******************************************************************************
 The content of this file includes portions of the proprietary AUDIOKINETIC Wwise
 Technology released in source code form as part of the game integration package.
@@ -7,25 +6,19 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
-
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 using AK.Wwise.Unity.WwiseAddressables;
 #endif
-
 public class AkSoundEngineController
 {
 	private static AkSoundEngineController ms_Instance;
-
 	public static AkSoundEngineController Instance
 	{
 		get
@@ -34,11 +27,9 @@ public class AkSoundEngineController
 			{
 				ms_Instance = new AkSoundEngineController();
 			}
-
 			return ms_Instance;
 		}
 	}
-
 	private AkSoundEngineController()
 	{
 #if UNITY_EDITOR
@@ -48,7 +39,6 @@ public class AkSoundEngineController
 		AkUnitySoundEngineInitialization.Instance.initializationDelegate += OnEnableEditorListener;
 #endif
 	}
-
 	~AkSoundEngineController()
 	{
 		if (ms_Instance == this)
@@ -63,19 +53,16 @@ public class AkSoundEngineController
 			ms_Instance = null;
 		}
 	}
-
 #if UNITY_EDITOR
 	public void EnableEditorLateUpdate()
 	{
 		UnityEditor.EditorApplication.update += LateUpdate;
 	}
-
 	public void DisableEditorLateUpdate()
 	{
 		UnityEditor.EditorApplication.update -= LateUpdate;
 	}
 #endif
-
 	public void LateUpdate()
 	{
 		//Execute callbacks that occurred in last frame (not the current update)
@@ -92,7 +79,6 @@ public class AkSoundEngineController
 #endif
 		AkUnitySoundEngine.RenderAudio();
 	}
-
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 	private AkWwiseAddressablesInitializationSettings GetInitSettingsInstance()
 	{
@@ -104,7 +90,6 @@ public class AkSoundEngineController
 		return AkWwiseInitializationSettings.Instance;
 	}
 #endif
-
 	public void Init(AkInitializer akInitializer)
 	{
 #if UNITY_EDITOR
@@ -115,7 +100,6 @@ public class AkSoundEngineController
 			return;
 		}
 #endif
-
 		// Only initialize the room manager during play.
 		bool initRoomManager = true;
 #if UNITY_EDITOR
@@ -128,17 +112,13 @@ public class AkSoundEngineController
 		{
 			AkRoomManager.Init();
 		}
-
 		if (akInitializer == null)
 		{
 			UnityEngine.Debug.LogError("WwiseUnity: AkInitializer must not be null. Sound engine will not be initialized.");
 			return;
 		}
-
 		var isInitialized = AkUnitySoundEngine.IsInitialized();
-
 		AkLogger.Instance.Init();
-
 		if (isInitialized)
 		{
 #if UNITY_EDITOR
@@ -150,7 +130,6 @@ public class AkSoundEngineController
 			{
 				EnableEditorLateUpdate();
 			}
-
 			if (UnityEditor.EditorApplication.isPaused && UnityEngine.Application.isPlaying)
 			{
 				AkUnitySoundEngine.Suspend(true);
@@ -160,7 +139,6 @@ public class AkSoundEngineController
 #endif
 			return;
 		}
-
 #if UNITY_EDITOR
 		if (UnityEditor.BuildPipeline.isBuildingPlayer)
 		{
@@ -179,7 +157,6 @@ public class AkSoundEngineController
 		EnableEditorLateUpdate();
 #endif
 	}
-
 	public void OnDisable()
 	{
 #if UNITY_EDITOR
@@ -193,20 +170,17 @@ public class AkSoundEngineController
 		}
 #endif
 	}
-
 	public void Terminate()
 	{
 		AkUnitySoundEngineInitialization.Instance.TerminateSoundEngine();
 		AkRoomManager.Terminate();
 	}
-
 	// In the Editor, the sound needs to keep playing when switching windows (remote debugging in Wwise, for example).
 	// On iOS, application interruptions are handled in the sound engine already.
 #if UNITY_EDITOR || UNITY_IOS
 	public void OnApplicationPause(bool pauseStatus)
 	{
 	}
-
 	public void OnApplicationFocus(bool focus)
 	{
 	}
@@ -231,7 +205,6 @@ public class AkSoundEngineController
 	{
 		ActivateAudio(!pauseStatus);
 	}
-
 	public void OnApplicationFocus(bool focus)
 	{
 #if !UNITY_ANDROID
@@ -239,7 +212,6 @@ public class AkSoundEngineController
 #endif
 	}
 #endif
-
 #if UNITY_EDITOR
 	// Enable/Disable the audio when pressing play/pause in the editor.
 	private void OnPauseStateChanged(UnityEditor.PauseState pauseState)
@@ -249,7 +221,6 @@ public class AkSoundEngineController
 			ActivateAudio(pauseState != UnityEditor.PauseState.Paused);
 		}
 	}
-
 	private void OnPlayModeStateChanged(UnityEditor.PlayModeStateChange state)
     {
 		if(state.HasFlag(UnityEditor.PlayModeStateChange.ExitingEditMode) || state.HasFlag(UnityEditor.PlayModeStateChange.ExitingPlayMode))
@@ -258,7 +229,6 @@ public class AkSoundEngineController
 		}
     }
 #endif
-
 #if UNITY_EDITOR || !UNITY_IOS
 	private void ActivateAudio(bool activate, bool renderAnyway = false)
 	{
@@ -272,108 +242,87 @@ public class AkSoundEngineController
 			{
 				AkUnitySoundEngine.Suspend(renderAnyway);
 			}
-
 			AkUnitySoundEngine.RenderAudio();
 		}
 	}
 #endif
-
 #if UNITY_EDITOR
 #region Editor Listener
 	private UnityEngine.GameObject editorListenerGameObject;
-
 	private bool IsPlayingOrIsNotInitialized
 	{
 		get { return UnityEngine.Application.isPlaying || !AkUnitySoundEngine.IsInitialized(); }
 	}
-
 	public bool EditorListenerIsInitialized()
 	{
 		return editorListenerGameObject != null;
 	}
-
 	private void OnEnableEditorListener()
 	{
 		OnEnableEditorListener(AkInitializer.GetAkInitializerGameObject());
 	}
-
 	private void OnEnableEditorListener(UnityEngine.GameObject gameObject)
 	{
 		if (editorListenerGameObject != null || IsPlayingOrIsNotInitialized)
 		{
 			return;
 		}
-
 		if(gameObject == null)
 		{
 			return;
 		}
-
 		editorListenerGameObject = gameObject;
 		AkUnitySoundEngine.RegisterGameObj(editorListenerGameObject, editorListenerGameObject.name);
-
 		// Do not create AkGameObj component when adding this listener
 		var id = AkUnitySoundEngine.GetAkGameObjectID(editorListenerGameObject);
 		AkUnitySoundEngine.AddDefaultListener(id);
 		UnityEditor.EditorApplication.update += UpdateEditorListenerPosition;
 	}
-
 	private void OnDisableEditorListener()
 	{
 		if (IsPlayingOrIsNotInitialized || editorListenerGameObject == null)
 		{
 			return;
 		}
-
 		UnityEditor.EditorApplication.update -= UpdateEditorListenerPosition;
-
 		var id = AkUnitySoundEngine.GetAkGameObjectID(editorListenerGameObject);
 		AkUnitySoundEngine.RemoveDefaultListener(id);
-
 		AkUnitySoundEngine.UnregisterGameObj(editorListenerGameObject);
 		editorListenerGameObject = null;
 		editorListenerForward = UnityEngine.Vector3.zero;
 		editorListenerPosition = UnityEngine.Vector3.zero;
 		editorListenerUp = UnityEngine.Vector3.zero;
 	}
-
 	private UnityEngine.Vector3 editorListenerPosition = UnityEngine.Vector3.zero;
 	private UnityEngine.Vector3 editorListenerForward = UnityEngine.Vector3.zero;
 	private UnityEngine.Vector3 editorListenerUp = UnityEngine.Vector3.zero;
-
 	private void UpdateEditorListenerPosition()
 	{
 		if (IsPlayingOrIsNotInitialized || editorListenerGameObject == null)
 		{
 			return;
 		}
-
 		if (UnityEditor.SceneView.lastActiveSceneView == null)
 		{
 			return;
 		}
-
 		var sceneViewCamera = UnityEditor.SceneView.lastActiveSceneView.camera;
 		if (sceneViewCamera == null)
 		{
 			return;
 		}
-
 		var sceneViewTransform = sceneViewCamera.transform;
 		if (sceneViewTransform == null)
 		{
 			return;
 		}
-
 		if (editorListenerPosition == sceneViewTransform.position &&
 			editorListenerForward == sceneViewTransform.forward &&
 			editorListenerUp == sceneViewTransform.up)
 		{
 			return;
 		}
-
 		AkUnitySoundEngine.SetObjectPosition(editorListenerGameObject, sceneViewTransform);
-
 		editorListenerPosition = sceneViewTransform.position;
 		editorListenerForward = sceneViewTransform.forward;
 		editorListenerUp = sceneViewTransform.up;

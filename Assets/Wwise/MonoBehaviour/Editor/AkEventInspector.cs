@@ -6,16 +6,13 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 [UnityEditor.CanEditMultipleObjects]
 [UnityEditor.CustomEditor(typeof(AkEvent), true)]
 public class AkEventInspector : AkBaseInspector
@@ -28,11 +25,9 @@ public class AkEventInspector : AkBaseInspector
 	private UnityEditor.SerializedProperty transitionDuration;
 	private UnityEditor.SerializedProperty useCallbacks;
 	private UnityEditor.SerializedProperty stopSoundOnDestroy;
-
 	public void OnEnable()
 	{
 		m_UnityEventHandlerInspector.Init(serializedObject);
-
 		enableActionOnEvent = serializedObject.FindProperty("enableActionOnEvent");
 		actionOnEventType = serializedObject.FindProperty("actionOnEventType");
 		curveInterpolation = serializedObject.FindProperty("curveInterpolation");
@@ -40,84 +35,66 @@ public class AkEventInspector : AkBaseInspector
 		useCallbacks = serializedObject.FindProperty("useCallbacks");
 		callbackData = serializedObject.FindProperty("Callbacks");
 		stopSoundOnDestroy = serializedObject.FindProperty("stopSoundOnDestroy");
-
 		AkEditorEventPlayer.RefreshGUI += Repaint;
 	}
-
 	public void OnDisable()
 	{
 		AkEditorEventPlayer.RefreshGUI -= Repaint;
 	}
-
 	private void DisplayActionOnEvent()
 	{
 		if (useCallbacks.boolValue)
 			return;
-
 		UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 		using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
 		{
 			UnityEditor.EditorGUILayout.PropertyField(enableActionOnEvent, new UnityEngine.GUIContent("Action On Event: "));
 			if (!enableActionOnEvent.boolValue)
 				return;
-
 			UnityEditor.EditorGUILayout.PropertyField(actionOnEventType, new UnityEngine.GUIContent("Action On EventType: "));
 			UnityEditor.EditorGUILayout.PropertyField(curveInterpolation, new UnityEngine.GUIContent("Curve Interpolation: "));
 			UnityEditor.EditorGUILayout.Slider(transitionDuration, 0.0f, 60.0f, new UnityEngine.GUIContent("Fade Time (secs): "));
 		}
 	}
-
 	private void DisplayCallbackInformation()
 	{
 		if (enableActionOnEvent.boolValue)
 			return;
-
 		UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 		using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
 		{
 			UnityEditor.EditorGUILayout.PropertyField(useCallbacks, new UnityEngine.GUIContent("Use Callback: "));
-
 			if (useCallbacks.boolValue)
 			{
 				var emptyContent = new UnityEngine.GUIContent("");
-
 				// ensure that there is always at least one entry since we are "using" callbacks
 				if (callbackData.arraySize == 0)
 					callbackData.arraySize = 1;
-
 				const float callbackSpacerWidth = 4;
 				const float removeButtonWidth = 20;
 				var rect = UnityEditor.EditorGUILayout.GetControlRect();
 				var callbackFieldWidth = (rect.width - removeButtonWidth) / 3;
 				rect.width = callbackFieldWidth - callbackSpacerWidth;
-
 				UnityEngine.GUI.Label(rect, "Game Object");
-
 				rect.x += callbackFieldWidth;
 				UnityEngine.GUI.Label(rect, "Callback Function");
-
 				rect.x += callbackFieldWidth;
 				UnityEngine.GUI.Label(rect, "Callback Flags");
-
 				for (var i = 0; i < callbackData.arraySize; ++i)
 				{
 					var data = callbackData.GetArrayElementAtIndex(i);
 					rect = UnityEditor.EditorGUILayout.GetControlRect();
 					rect.width = callbackFieldWidth - callbackSpacerWidth;
 					UnityEditor.EditorGUI.PropertyField(rect, data.FindPropertyRelative("GameObject"), emptyContent);
-
 					rect.x += callbackFieldWidth;
 					UnityEditor.EditorGUI.PropertyField(rect, data.FindPropertyRelative("FunctionName"), emptyContent);
-
 					rect.x += callbackFieldWidth;
 					UnityEditor.EditorGUI.PropertyField(rect, data.FindPropertyRelative("Flags"), emptyContent);
-
 					rect.x += callbackFieldWidth;
 					rect.width = removeButtonWidth;
 					if (UnityEngine.GUI.Button(rect, "X"))
 						callbackData.DeleteArrayElementAtIndex(i);
 				}
-
 				if (UnityEngine.GUI.Button(UnityEditor.EditorGUILayout.GetControlRect(), "Add"))
 				{
 					var i = callbackData.arraySize++;
@@ -137,7 +114,6 @@ public class AkEventInspector : AkBaseInspector
 			}
 		}
 	}
-
 	private void DisplayStopSoundOnDestroy()
 	{
 		using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
@@ -145,15 +121,12 @@ public class AkEventInspector : AkBaseInspector
 			UnityEditor.EditorGUILayout.PropertyField(stopSoundOnDestroy, new UnityEngine.GUIContent("Stop Sound On Destroy: "));
 		}
 	}
-
 	public override void OnChildInspectorGUI()
 	{
 		m_UnityEventHandlerInspector.OnGUI();
-
 		DisplayActionOnEvent();
 		DisplayCallbackInformation();
 		DisplayStopSoundOnDestroy();
-
 		UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 		using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
 		{
@@ -178,14 +151,12 @@ public class AkEventInspector : AkBaseInspector
 						{
 							stoppedEventsSelected = true;
 						}
-
 						if (playingEventsSelected && stoppedEventsSelected)
 						{
 							break;
 						}
 					}
 				}
-
 				if (stoppedEventsSelected &&
 				    UnityEngine.GUILayout.Button("Play Multiple"))
 				{
@@ -198,7 +169,6 @@ public class AkEventInspector : AkBaseInspector
 						}
 					}
 				}
-
 				if (playingEventsSelected &&
 				    UnityEngine.GUILayout.Button("Stop Multiple"))
 				{
@@ -212,7 +182,6 @@ public class AkEventInspector : AkBaseInspector
 					}
 				}
 			}
-
 			if (UnityEngine.GUILayout.Button("Stop All"))
 			{
 				UnityEngine.GUIUtility.hotControl = 0;
@@ -220,17 +189,14 @@ public class AkEventInspector : AkBaseInspector
 			}
 		}
 	}
-
 	public void PlayEvent()
 	{
 		AkEditorEventPlayer.PlayEvent((AkEvent)target);
 	}
-
 	public void StopEvent()
 	{
 		AkEditorEventPlayer.StopEvent((AkEvent)target);
 	}
-
 	private void PlayOrStopEvent()
 	{
 		var akEvent = (AkEvent)target;
@@ -252,19 +218,15 @@ public class AkEventInspector : AkBaseInspector
 			}
 		}
 	}
-
 	private static class AkEditorEventPlayer
 	{
 		private static readonly System.Collections.Generic.List<AkEvent> akEvents = new System.Collections.Generic.List<AkEvent>();
-
 		public static event System.Action RefreshGUI;
-
 		private static void CallbackHandler(object in_cookie, AkCallbackType in_type, AkCallbackInfo in_info)
 		{
 			if (in_type == AkCallbackType.AK_EndOfEvent)
 			{
 				akEvents.Remove(in_cookie as AkEvent);
-
 				var refreshGUI = RefreshGUI;
 				if (refreshGUI != null)
 				{
@@ -272,7 +234,6 @@ public class AkEventInspector : AkBaseInspector
 				}
 			}
 		}
-
 		public static void PlayEvent(AkEvent akEvent)
 		{
 			if (!AkUnitySoundEngine.IsInitialized())
@@ -289,17 +250,14 @@ public class AkEventInspector : AkBaseInspector
 			{
 				return;
 			}
-
 			var playingID = akEvent.data.Post(akEvent.gameObject, (uint)AkCallbackType.AK_EndOfEvent, CallbackHandler, akEvent);
 			if (playingID != AkUnitySoundEngine.AK_INVALID_PLAYING_ID)
 			{
 				akEvents.Add(akEvent);
-
 				// In the case where objects are being placed in edit mode and then previewed, their positions won't yet be updated so we ensure they're updated here.
 				AkUnitySoundEngine.SetObjectPosition(akEvent.gameObject, akEvent.transform);
 			}
 		}
-
 		public static void StopEvent(AkEvent akEvent)
 		{
 			if (akEvents.Remove(akEvent))
@@ -307,12 +265,10 @@ public class AkEventInspector : AkBaseInspector
 				akEvent.data.Stop(akEvent.gameObject);
 			}
 		}
-
 		public static bool IsEventPlaying(AkEvent akEvent)
 		{
 			return akEvents.Contains(akEvent);
 		}
-
 		public static void StopAll()
 		{
 			akEvents.Clear();

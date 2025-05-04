@@ -5,20 +5,16 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 ﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
-
 public partial class AkBuildPreprocessor
 {
 	/// <summary>
@@ -27,38 +23,29 @@ public partial class AkBuildPreprocessor
 	/// </summary>
 	/// <param name="platformName">The custom platform name.</param>
 	public delegate void CustomPlatformNameGetter(ref string platformName, UnityEditor.BuildTarget target);
-
 	public static CustomPlatformNameGetter GetCustomPlatformName;
-
 	public delegate void OnBuildCallback(string path);
-
 	public static void BuildCallbackNoOp(string path)
 	{
 		// No-op
 	}
-
 	public class PlatformConfiguration
 	{
 		public string WwisePlatformName;
 		public OnBuildCallback OnPreprocessBuild = BuildCallbackNoOp;
 		public OnBuildCallback OnPostprocessBuild = BuildCallbackNoOp;
 	}
-
 	private static Dictionary<UnityEditor.BuildTarget, PlatformConfiguration> PlatformConfigurations = new Dictionary<UnityEditor.BuildTarget, PlatformConfiguration>();
-
 	public static void RegisterBuildTarget(UnityEditor.BuildTarget target, PlatformConfiguration config)
 	{
 		PlatformConfigurations.Add(target, config);
 	}
-
 	public static string GetPlatformName(UnityEditor.BuildTarget target)
 	{
 		var platformSubDir = string.Empty;
 		GetCustomPlatformName?.Invoke(ref platformSubDir, target);
-
 		if (!string.IsNullOrEmpty(platformSubDir))
 			return platformSubDir;
-
 		if (PlatformConfigurations.ContainsKey(target))
 		{
 			return PlatformConfigurations[target].WwisePlatformName;
@@ -66,8 +53,6 @@ public partial class AkBuildPreprocessor
 		return target.ToString();
 	}
 }
-
-
 #if UNITY_2018_1_OR_NEWER
 public partial class AkBuildPreprocessor : UnityEditor.Build.IPreprocessBuildWithReport, UnityEditor.Build.IPostprocessBuildWithReport
 #else
@@ -78,9 +63,7 @@ public partial class AkBuildPreprocessor : UnityEditor.Build.IPreprocessBuild, U
 	{
 		get { return 0; }
 	}
-
 	private string destinationSoundBankFolder = string.Empty;
-
 	public static bool CopySoundbanks(bool generate, string platformName, ref string destinationFolder)
 	{
 		if (string.IsNullOrEmpty(platformName))
@@ -88,38 +71,30 @@ public partial class AkBuildPreprocessor : UnityEditor.Build.IPreprocessBuild, U
 			UnityEngine.Debug.LogErrorFormat("WwiseUnity: Could not determine platform name for <{0}> platform", platformName);
 			return false;
 		}
-
 		if (generate)
 		{
 			var platforms = new System.Collections.Generic.List<string> { platformName };
 			AkUtilities.GenerateSoundbanks(platforms);
 		}
-
 		string sourceFolder;
 		if (!AkBasePathGetter.GetSoundBankPaths(platformName, out sourceFolder, out destinationFolder))
 			return false;
-
 		if (!AkUtilities.DirectoryCopy(sourceFolder, destinationFolder, true))
 		{
 			destinationFolder = null;
 			UnityEngine.Debug.LogErrorFormat("WwiseUnity: Could not copy SoundBank folder for <{0}> platform", platformName);
 			return false;
 		}
-
 		UnityEngine.Debug.LogFormat("WwiseUnity: Copied SoundBank folder to streaming assets folder <{0}> for <{1}> platform build", destinationFolder, platformName);
 		return true;
 	}
-
-
 	public static void DeleteSoundbanks(string destinationFolder)
 	{
 		if (string.IsNullOrEmpty(destinationFolder))
 			return;
-
 		System.IO.Directory.Delete(destinationFolder, true);
 		UnityEngine.Debug.LogFormat("WwiseUnity: Deleting streaming assets folder <{0}>", destinationFolder);
 	}
-
 	public void OnPreprocessBuildInternal(UnityEditor.BuildTarget target, string path)
 	{
 		var platformName = GetPlatformName(target);
@@ -136,13 +111,11 @@ public partial class AkBuildPreprocessor : UnityEditor.Build.IPreprocessBuild, U
 		{
 			config.OnPreprocessBuild(path);
 		}
-		
 		// Init ProjectDB for platform being built
 		WwiseProjectDatabase.Init(AkUtilities.GetRootOutputPath(AkWwiseEditorSettings.WwiseProjectAbsolutePath), platformName);
 		AkPluginActivator.ForceUpdate();
 		AkPluginActivator.ActivatePluginsForDeployment(target, true);
 	}
-
 	public void OnPostprocessBuildInternal(UnityEditor.BuildTarget target, string path)
 	{
 		AkPluginActivator.ActivatePluginsForDeployment(target, false);
@@ -154,17 +127,14 @@ public partial class AkBuildPreprocessor : UnityEditor.Build.IPreprocessBuild, U
 		DeleteSoundbanks(destinationSoundBankFolder);
 #endif
 		destinationSoundBankFolder = string.Empty;
-		
 		// Point the ProjectDB back on the current editor platform
 		WwiseProjectDatabase.Init(AkUtilities.GetRootOutputPath(AkWwiseEditorSettings.WwiseProjectAbsolutePath), AkBasePathGetter.GetPlatformName());
 	}
-
 #if UNITY_2018_1_OR_NEWER
 	public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
 	{
 		OnPreprocessBuildInternal(report.summary.platform, report.summary.outputPath);
 	}
-
 	public void OnPostprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
 	{
 		OnPostprocessBuildInternal(report.summary.platform, report.summary.outputPath);
@@ -174,7 +144,6 @@ public partial class AkBuildPreprocessor : UnityEditor.Build.IPreprocessBuild, U
 	{
 		OnPreprocessBuildInternal(target, path);
 	}
-
 	public void OnPostprocessBuild(UnityEditor.BuildTarget target, string path)
 	{
 		OnPostprocessBuildInternal(target, path);

@@ -5,69 +5,55 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 {
 	[UnityEngine.HideInInspector]
 	public System.Collections.Generic.List<string> PlatformSettingsNameList
 		= new System.Collections.Generic.List<string>();
-
 	[UnityEngine.HideInInspector]
 	public System.Collections.Generic.List<PlatformSettings> PlatformSettingsList
 		= new System.Collections.Generic.List<PlatformSettings>();
-
 	[UnityEngine.HideInInspector]
 	public System.Collections.Generic.List<string> InvalidReferencePlatforms
 		= new System.Collections.Generic.List<string>();
-
 	public bool IsValid
 	{
 		get { return PlatformSettingsNameList.Count == PlatformSettingsList.Count; }
 	}
-
 	public int Count
 	{
 		get { return PlatformSettingsList.Count; }
 	}
-
-
 	[UnityEngine.HideInInspector]
 	public AkCommonUserSettings UserSettings = new AkCommonUserSettings();
 	[UnityEngine.HideInInspector]
 	public AkCommonAdvancedSettings AdvancedSettings = new AkCommonAdvancedSettings();
 	[UnityEngine.HideInInspector]
 	public AkCommonCommSettings CommsSettings = new AkCommonCommSettings();
-
 	protected override AkCommonUserSettings GetUserSettings()
 	{
 		return UserSettings;
 	}
-
 	protected override AkCommonAdvancedSettings GetAdvancedSettings()
 	{
 		return AdvancedSettings;
 	}
-
 	protected override AkCommonCommSettings GetCommsSettings()
 	{
 		return CommsSettings;
 	}
-	
 	//Deprecated
 	public void ResetSoundEngine(bool _)
 	{
 		AkUnitySoundEngineInitialization.Instance.ResetSoundEngine();
 	}
-
 	private static readonly string[] AllGlobalValues = new[]
 	{
 		"UserSettings.m_BasePath",
@@ -131,7 +117,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 		"AdvancedSettings.m_MemoryMediaAllocSizeHuge",
 		"AdvancedSettings.m_MemoryDebugLevel"
 	};
-
 	public abstract class PlatformSettings : AkCommonPlatformSettings
 	{
 		#region Ignore property list management
@@ -139,46 +124,37 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 		[UnityEngine.HideInInspector]
 		private System.Collections.Generic.List<string> IgnorePropertyNameList =
 			new System.Collections.Generic.List<string>();
-
 		public void IgnorePropertyValue(string propertyPath)
 		{
 			if (IsPropertyIgnored(propertyPath))
 				return;
-
 			IgnorePropertyNameList.Add(propertyPath);
 			SetUseGlobalPropertyValue(propertyPath, false);
 		}
-
 		public bool IsPropertyIgnored(string propertyPath)
 		{
 			return IgnorePropertyNameList.Contains(propertyPath);
 		}
 		#endregion
-
 		#region Global property list management
 		[UnityEngine.SerializeField]
 		[UnityEngine.HideInInspector]
 		private System.Collections.Generic.List<string> GlobalPropertyNameList =
 			new System.Collections.Generic.List<string>();
-
 		protected PlatformSettings()
 		{
 			SetGlobalPropertyValues(AllGlobalValues);
 		}
-
 		public void SetUseGlobalPropertyValue(string propertyPath, bool use)
 		{
 			if (IsUsingGlobalPropertyValue(propertyPath) == use)
 				return;
-
 			if (use)
 				GlobalPropertyNameList.Add(propertyPath);
 			else
 				GlobalPropertyNameList.Remove(propertyPath);
-
 			_GlobalPropertyHashSet = null;
 		}
-
 		public void SetGlobalPropertyValues(System.Collections.IEnumerable enumerable)
 		{
 			foreach (var item in enumerable)
@@ -188,14 +164,11 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 					GlobalPropertyNameList.Add(propertyPath);
 			}
 		}
-
 		private bool IsUsingGlobalPropertyValue(string propertyPath)
 		{
 			return GlobalPropertyNameList.Contains(propertyPath);
 		}
-
 		private System.Collections.Generic.HashSet<string> _GlobalPropertyHashSet = null;
-
 		public System.Collections.Generic.HashSet<string> GlobalPropertyHashSet
 		{
 			get
@@ -207,7 +180,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 			set { _GlobalPropertyHashSet = value; }
 		}
 		#endregion
-
 #if UNITY_EDITOR
 		protected static void RegisterPlatformSettingsClass<T>(string platformName) where T : PlatformSettings
 		{
@@ -218,35 +190,28 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				UnityEngine.Debug.LogWarning("WwiseUnity: The class <" + currentClassName + "> is being replaced by <" + className + "> for the reference platform: " + platformName);
 				return;
 			}
-
 			m_PlatformSettingsClassNames[platformName] = className;
 		}
-
 		public static bool IsDistinctPlatform(string platformName)
 		{
 			return m_PlatformSettingsClassNames.ContainsKey(platformName);
 		}
-
 #endif
 	}
-
 	public class CommonPlatformSettings : PlatformSettings
 	{
 		protected override AkCommonUserSettings GetUserSettings()
 		{
 			return UserSettings;
 		}
-
 		protected override AkCommonAdvancedSettings GetAdvancedSettings()
 		{
 			return AdvancedSettings;
 		}
-
 		protected override AkCommonCommSettings GetCommsSettings()
 		{
 			return CommsSettings;
 		}
-
 		[UnityEngine.HideInInspector]
 		public AkCommonUserSettings UserSettings;
 		[UnityEngine.HideInInspector]
@@ -254,19 +219,15 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 		[UnityEngine.HideInInspector]
 		public AkCommonCommSettings CommsSettings;
 	}
-
 	#region Singleton management
 	private static AkWwiseInitializationSettings m_Instance = null;
 	private static AkBasePlatformSettings m_ActivePlatformSettings = null;
-
-
 #if UNITY_EDITOR
 	public void SetActiveSettings()
 	{
 		Instance.ActiveSettingsHash = GetHashOfActiveSettings();
 	}
 #endif
-
 	public static AkWwiseInitializationSettings Instance
 	{
 		get
@@ -282,39 +243,32 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				UnityEngine.Debug.LogWarning("WwiseUnity: No platform specific settings were created. Default initialization settings will be used.");
 #endif
 			}
-
 			return m_Instance;
 		}
 	}
-
 	private static AkBasePlatformSettings GetPlatformSettings(string platformName)
 	{
 		var instance = Instance;
 		if (!instance.IsValid)
 			return instance;
-
 		for (var i = 0; i < instance.Count; ++i)
 		{
 			var platformSettings = instance.PlatformSettingsList[i];
 			if (platformSettings && (string.Equals(platformName, instance.PlatformSettingsNameList[i], System.StringComparison.OrdinalIgnoreCase)))
 				return platformSettings;
 		}
-
 		UnityEngine.Debug.LogWarning("WwiseUnity: Platform specific settings cannot be found for <" + platformName + ">. Using global settings.");
 		return instance;
 	}
-
 	public static AkBasePlatformSettings ActivePlatformSettings
 	{
 		get
 		{
 			if (m_ActivePlatformSettings == null)
 				m_ActivePlatformSettings = GetPlatformSettings(AkBasePathGetter.GetPlatformName());
-
 			return m_ActivePlatformSettings;
 		}
 	}
-
 	private void OnEnable()
 	{
 		if (m_Instance == null)
@@ -329,7 +283,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 			UnityEngine.Debug.LogWarning("WwiseUnity: There are multiple AkWwiseInitializationSettings objects instantiated; only one will be used.");
 		}
 	}
-
 #if UNITY_EDITOR
 	private void OnDisable()
 	{
@@ -337,7 +290,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 	}
 #endif
 #endregion
-
 #if UNITY_EDITOR
 	public static T GetOrCreateAsset<T>(string className, string fileName) where T : AkCommonPlatformSettings
 	{
@@ -347,7 +299,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 		{
 			return asset;
 		}
-
 		var guids = UnityEditor.AssetDatabase.FindAssets("t:" + typeof(T).Name);
 		foreach (var assetGuid in guids)
 		{
@@ -358,7 +309,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				return asset;
 			}
 		}
-
 		asset = CreateInstance(className) as T;
 		if (!AkUtilities.IsMigrating)
 		{
@@ -367,13 +317,10 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 		}
 		return asset;
 	}
-
 	private static System.Collections.Generic.Dictionary<string, string> m_PlatformSettingsClassNames
 		= new System.Collections.Generic.Dictionary<string, string>();
-
 	private const System.Reflection.BindingFlags BindingFlags 
 		= System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
-
 	private static string GetHashOfActiveSettingsField(string name, object obj)
 	{
 		var type = obj.GetType();
@@ -381,14 +328,12 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 		{
 			return name + ": " + obj.ToString() + "\n";
 		}
-
 		string ret = string.Empty;
 		foreach (var subFieldInfo in type.GetFields(BindingFlags))
 		{
 			var subObject = subFieldInfo.GetValue(obj);
 			var subType = subFieldInfo.FieldType;
 			var fields = subType.GetFields(BindingFlags);
-
 			if (fields.Length == 0)
 			{
 				ret += subFieldInfo.Name + ": " + subObject.ToString() + "\n";
@@ -398,10 +343,8 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				ret += GetHashOfActiveSettingsField(subFieldInfo.Name, subObject);
 			}
 		}
-
 		return ret;
 	}
-
 	public static string GetHashOfActiveSettings()
 	{
 		try
@@ -413,10 +356,8 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 			return string.Empty;
 		}
 	}
-
 	[UnityEngine.HideInInspector]
 	private bool ActiveSettingsHaveChanged = true;
-
 	[UnityEngine.HideInInspector]
 	private string ActiveSettingsHash;
 	public static void UpdatePlatforms()
@@ -425,7 +366,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 		{
 			return;
 		}
-
 		var customPlatformSettingsMap = new System.Collections.Generic.Dictionary<string, PlatformSettings>();
 		var instance = Instance;
 		if (instance.IsValid)
@@ -440,14 +380,12 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				}
 			}
 		}
-
 		var updated = false;
 		var allCustomPlatforms = new System.Collections.Generic.List<string>();
 		foreach (var pair in AkUtilities.PlatformMapping)
 		{
 			var referencePlatform = pair.Key;
 			var customPlatformList = pair.Value;
-
 			string className, customClassName;
 			if (!m_PlatformSettingsClassNames.TryGetValue(referencePlatform, out className))
 			{
@@ -458,7 +396,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				}
 				continue;
 			}
-
 			foreach (var customWwisePlatform in customPlatformList)
 			{
 				allCustomPlatforms.Add(customWwisePlatform);
@@ -466,7 +403,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				{
 					continue;
 				}
-
 				PlatformSettings settings;
 				if (m_PlatformSettingsClassNames.TryGetValue(customWwisePlatform, out customClassName))
 				{
@@ -480,7 +416,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				updated = true;
 			}
 		}
-
 		var customPlatformSettingsToRemoveMap = new System.Collections.Generic.Dictionary<string, PlatformSettings>();
 		foreach (var pair in customPlatformSettingsMap)
 		{
@@ -490,41 +425,33 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				customPlatformSettingsToRemoveMap.Add(instantiatedCustomPlatform, pair.Value);
 			}
 		}
-
 		foreach (var pair in customPlatformSettingsToRemoveMap)
 		{
 			var instantiatedCustomPlatform = pair.Key;
 			customPlatformSettingsMap.Remove(instantiatedCustomPlatform);
-
 			var parentPath = System.IO.Path.Combine("Assets", AkWwiseEditorSettings.WwiseScriptableObjectRelativePath);
 			var assetPath = System.IO.Path.Combine(parentPath, instantiatedCustomPlatform + ".asset");
 			UnityEditor.AssetDatabase.DeleteAsset(assetPath);
 			updated = true;
 		}
-
 		if (updated)
 		{
 			instance.PlatformSettingsNameList.Clear();
 			instance.PlatformSettingsList.Clear();
-
 			AkUtilities.RepaintInspector();
-
 			var keys = System.Linq.Enumerable.ToList(customPlatformSettingsMap.Keys);
 			keys.Sort();
-
 			foreach (var key in keys)
 			{
 				instance.PlatformSettingsNameList.Add(key);
 				instance.PlatformSettingsList.Add(customPlatformSettingsMap[key]);
 			}
-
 			WwiseProjectDatabase.SetCurrentLanguage(AkWwiseInitializationSettings.ActivePlatformSettings.InitialLanguage);
 			UnityEditor.EditorUtility.SetDirty(instance);
 			UnityEditor.AssetDatabase.SaveAssets();
 			AkUtilities.RepaintInspector();
 		}
 	}
-
 #region Custom Editor
 #if UNITY_2018_3_OR_NEWER
 	class SettingsProvider : UnityEditor.SettingsProvider
@@ -534,39 +461,30 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 	{
 		UnityEditor.Selection.activeObject = Instance;
 	}
-
 	[UnityEditor.CustomEditor(typeof(AkWwiseInitializationSettings))]
 	public class Editor : UnityEditor.Editor
 #endif
 	{
 #if UNITY_2018_3_OR_NEWER
 		private SettingsProvider(string path) : base(path, UnityEditor.SettingsScope.Project) { }
-
 		[UnityEditor.SettingsProvider]
 		public static UnityEditor.SettingsProvider CreateMyCustomSettingsProvider()
 		{
 			return new SettingsProvider("Project/Wwise Initialization");
 		}
-
 		private UnityEditor.SerializedObject serializedObject;
 #endif
-
 		private const string UserSettings = "UserSettings";
 		private const string AdvancedSettings = "AdvancedSettings";
 		private const string CommsSettings = "CommsSettings";
-
 		private System.Collections.Generic.List<PlatformSettings> PreviousPlatformSettingsList
 			= new System.Collections.Generic.List<PlatformSettings>();
-
 		private System.Collections.Generic.List<GlobalSettingsGroupData> GlobalSettingsGroups
 			= new System.Collections.Generic.List<GlobalSettingsGroupData>();
-
 		private System.Collections.Generic.Dictionary<string, System.Collections.Generic.HashSet<string>> GlobalGroupSettingsMap
 			= new System.Collections.Generic.Dictionary<string, System.Collections.Generic.HashSet<string>>();
-
 		private System.Collections.Generic.List<PlatformSpecificSettingsData> PlatformSpecificSettingsGroups
 			= new System.Collections.Generic.List<PlatformSpecificSettingsData>();
-
 #if UNITY_2019_1_OR_NEWER
 		public override void OnActivate(string searchContext, UnityEngine.UIElements.VisualElement rootElement)
 #elif UNITY_2018_3_OR_NEWER
@@ -576,11 +494,9 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 #endif
 		{
 			UpdateRequired = true;
-
 #if UNITY_2018_3_OR_NEWER
 			serializedObject = new UnityEditor.SerializedObject(Instance);
 #endif
-
 			GlobalGroupSettingsMap.Clear();
 			foreach (var settingsGroup in new[] { UserSettings, AdvancedSettings, CommsSettings })
 			{
@@ -589,31 +505,26 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				{
 					return;
 				}
-
 				var type = System.Type.GetType(property.type);
 				foreach (var field in type.GetFields())
 				{
 					var childProperty = property.FindPropertyRelative(field.Name);
 					if (childProperty == null)
 						continue;
-
 					System.Collections.Generic.HashSet<string> hashSet = null;
 					if (!GlobalGroupSettingsMap.TryGetValue(settingsGroup, out hashSet))
 					{
 						hashSet = new System.Collections.Generic.HashSet<string>();
 						GlobalGroupSettingsMap.Add(settingsGroup, hashSet);
 					}
-
 					hashSet.Add(childProperty.propertyPath);
 				}
 			}
-
 			GlobalSettingsGroups.Clear();
 			GlobalSettingsGroups.Add(new GlobalSettingsGroupData(UserSettings, serializedObject, "", GlobalGroupSettingsMap[UserSettings]));
 			GlobalSettingsGroups.Add(new GlobalSettingsGroupData(AdvancedSettings, serializedObject, "", GlobalGroupSettingsMap[AdvancedSettings]));
 			GlobalSettingsGroups.Add(new GlobalSettingsGroupData(CommsSettings, serializedObject, "Wwise Communication Settings", GlobalGroupSettingsMap[CommsSettings]));
 		}
-
 #if UNITY_2018_3_OR_NEWER
 		public override void OnGUI(string searchContext)
 #else
@@ -625,15 +536,11 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				UnityEditor.EditorGUILayout.HelpBox("Platform names do not correspond with their associated settings data.", UnityEditor.MessageType.Error);
 				return;
 			}
-
 			var labelWidth = UnityEditor.EditorGUIUtility.labelWidth;
 			UnityEditor.EditorGUIUtility.labelWidth += 100;
-
 			UpdatePlatformData();
 			DrawHelpBox();
-
 			UnityEditor.EditorGUILayout.Space();
-
 			if (PreviousPlatformSettingsList.Count == 0)
 			{
 				if (!AkUtilities.IsWwiseProjectAvailable)
@@ -641,37 +548,27 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 					UnityEditor.EditorGUILayout.HelpBox("The Wwise project is not available. Please specify its location within the Wwise Settings.", UnityEditor.MessageType.Warning);
 					return;
 				}
-
 				UnityEditor.EditorGUILayout.HelpBox("No Wwise platforms have been added. Editing global settings.", UnityEditor.MessageType.Warning);
 				UnityEditor.EditorGUILayout.Space();
 			}
-
 			UnityEditor.EditorGUI.BeginChangeCheck();
-
 			serializedObject.Update();
-
 			foreach (var setting in GlobalSettingsGroups)
 			{
 				setting.Draw();
 			}
-
 			serializedObject.ApplyModifiedProperties();
-
 			UnityEditor.EditorGUILayout.Space();
-
 			foreach (var setting in PlatformSpecificSettingsGroups)
 			{
 				setting.Draw();
 			}
-
 			if (UnityEditor.EditorGUI.EndChangeCheck())
 			{
 				Instance.ActiveSettingsHaveChanged = true;
 			}
-
 			UnityEditor.EditorGUIUtility.labelWidth = labelWidth;
 		}
-
 		public override void OnDeactivate()
 		{
 			base.OnDeactivate();
@@ -688,9 +585,7 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				}
 			}
 		}
-
 		private bool UpdateRequired = false;
-
 		private void UpdatePlatformData()
 		{
 			if (!UpdateRequired)
@@ -708,7 +603,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 							break;
 						}
 					}
-
 					if (!refreshRequired)
 						return;
 				}
@@ -717,54 +611,42 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 			{
 				UpdateRequired = false;
 			}
-
 			PreviousPlatformSettingsList.Clear();
 			PlatformSpecificSettingsGroups.Clear();
-
 			var platformNames = new System.Collections.Generic.HashSet<string>();
-
 			foreach (var setting in GlobalSettingsGroups)
 				setting.ClearPlatformData();
-
 			for (var i = 0; i < Instance.Count; ++i)
 			{
 				var platformSettings = Instance.PlatformSettingsList[i];
 				if (!platformSettings)
 					continue;
-
 				var platformName = Instance.PlatformSettingsNameList[i];
 				if (string.IsNullOrEmpty(platformName))
 					continue;
-
 				if (!platformNames.Contains(platformName))
 				{
 					platformNames.Add(platformName);
 					PreviousPlatformSettingsList.Add(platformSettings);
-
 					var platform = new PlatformData
 					{
 						Settings = platformSettings,
 						Name = platformName,
 						SerializedObject = new UnityEditor.SerializedObject(platformSettings)
 					};
-
 					foreach (var setting in GlobalSettingsGroups)
 						setting.SetupPlatform(platform);
-
 					foreach (var settingsGroup in new[] { UserSettings, AdvancedSettings, CommsSettings })
 						PlatformSpecificSettingsGroups.Add(new PlatformSpecificSettingsData(platform, settingsGroup, GlobalGroupSettingsMap[settingsGroup]));
 				}
 			}
 		}
-
 		private static void DrawHelpBox()
 		{
 			var hash = GetHashOfActiveSettings();
 			Instance.ActiveSettingsHaveChanged = string.IsNullOrEmpty(hash) || hash != Instance.ActiveSettingsHash;
-
 			var helpBoxText = "No changes have been made. Please be advised that changes will take effect once the Editor exits play mode.";
 			var messageType = UnityEditor.MessageType.Info;
-
 			if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode || UnityEditor.EditorApplication.isPlaying || UnityEditor.BuildPipeline.isBuildingPlayer)
 			{
 				helpBoxText = "Changes will take effect once the Editor exits play mode.";
@@ -775,10 +657,8 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				helpBoxText = "Changes have been made and will take effect once the Editor exits play mode.";
 				messageType = UnityEditor.MessageType.Warning;
 			}
-
 			UnityEditor.EditorGUILayout.HelpBox(helpBoxText, messageType);
 		}
-
 		private static System.Collections.Generic.IEnumerable<UnityEditor.SerializedProperty> GetChildren(UnityEditor.SerializedProperty property)
 		{
 			property = property.Copy();
@@ -786,19 +666,15 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 			bool hasNextElement = nextElement.Next(false);
 			if (!hasNextElement)
 				nextElement = null;
-
 			if (!property.Next(true))
 				yield break;
-
 			while (!UnityEditor.SerializedProperty.EqualContents(property, nextElement))
 			{
 				yield return property.Copy();
-
 				if (!property.Next(false))
 					break;
 			}
 		}
-
 		private static bool DrawFoldout(UnityEditor.SerializedProperty property, UnityEngine.GUIContent label, UnityEngine.FontStyle fontStyle)
 		{
 			var settingsFoldoutStyle = new UnityEngine.GUIStyle(UnityEditor.EditorStyles.foldout) { fontStyle = fontStyle };
@@ -806,79 +682,65 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 			property.isExpanded = value;
 			return value;
 		}
-
 		private class PlatformData
 		{
 			public PlatformSettings Settings;
 			public UnityEditor.SerializedObject SerializedObject;
 			public string Name;
 		}
-
 		private class GlobalSettingsGroupData
 		{
 			string ToolTip;
 			string DisplayName;
 			UnityEditor.SerializedProperty Property;
 			System.Collections.Generic.List<GlobalSettingData> SettingsList;
-
 			public GlobalSettingsGroupData(string settingsGroup, UnityEditor.SerializedObject serializedObject, string displayName, System.Collections.Generic.HashSet<string> propertyHashSet)
 			{
 				Property = serializedObject.FindProperty(settingsGroup);
 				if (Property == null)
 					return;
-
 				ToolTip = AkUtilities.GetTooltip(Property);
 				DisplayName = string.IsNullOrEmpty(displayName) ? ("Common " + Property.displayName) : displayName;
 				SettingsList = new System.Collections.Generic.List<GlobalSettingData>();
-
 				foreach (var childPropertyPath in propertyHashSet)
 				{
 					var childProperty = serializedObject.FindProperty(childPropertyPath);
 					if (childProperty == null)
 						continue;
-
 					SettingsList.Add(new GlobalSettingData(childProperty, childPropertyPath));
 				}
 			}
-
 			public void SetupPlatform(PlatformData platform)
 			{
 				if (SettingsList == null || SettingsList.Count == 0)
 					return;
-
 				foreach (var settings in SettingsList)
 					settings.SetupPlatform(platform);
 			}
-
 			public void ClearPlatformData()
 			{
 				if (SettingsList != null)
 					foreach (var setting in SettingsList)
 						setting.ClearPlatformData();
 			}
-
 			public void Draw()
 			{
 				if (SettingsList == null || SettingsList.Count == 0)
 					return;
-
 				using (var verticalScope = new UnityEditor.EditorGUILayout.VerticalScope("box"))
 				{
 #if !UNITY_2018_3_OR_NEWER
 					++UnityEditor.EditorGUI.indentLevel;
 #endif
-
 					var label = new UnityEngine.GUIContent { text = DisplayName, tooltip = ToolTip };
 					if (DrawFoldout(Property, label, UnityEngine.FontStyle.Bold))
 						foreach (var settings in SettingsList)
 							settings.Draw();
-
 #if !UNITY_2018_3_OR_NEWER
 					--UnityEditor.EditorGUI.indentLevel;
 #endif
 				}
 			}
-
 			public class GlobalSettingData
 			{
 				string ToolTip;
@@ -889,9 +751,7 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				readonly UnityEditor.SerializedPropertyType PropertyType;
 				System.Collections.Generic.List<PlatformSettingData> SettingsList;
 				System.Collections.Generic.List<GlobalSettingData> Children;
-
 				bool HasChildren { get { return Children != null && Children.Count > 0; } }
-
 				public GlobalSettingData(UnityEditor.SerializedProperty property, string propertyPath)
 				{
 					Property = property;
@@ -899,7 +759,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 					PropertyPath = propertyPath;
 					DisplayName = property.displayName;
 					ToolTip = AkUtilities.GetTooltip(property);
-
 					if (property.type == "string")
 					{
 						IsStringValue = true;
@@ -911,7 +770,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 							Children.Add(new GlobalSettingData(child, child.propertyPath));
 					}
 				}
-
 				public void SetupPlatform(PlatformData platform)
 				{
 					if (HasChildren)
@@ -923,23 +781,18 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 					{
 						if (platform.Settings.IsPropertyIgnored(PropertyPath))
 							return;
-
 						if (SettingsList == null)
 							SettingsList = new System.Collections.Generic.List<PlatformSettingData>();
-
 						SettingsList.Add(new PlatformSettingData(platform, PropertyPath, ToolTip));
 					}
 				}
-
 				public void ClearPlatformData()
 				{
 					SettingsList = null;
-
 					if (HasChildren)
 						foreach (var child in Children)
 							child.ClearPlatformData();
 				}
-
 				private bool AnyChildUsesGlobalValue
 				{
 					get
@@ -949,21 +802,16 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 							foreach (var child in Children)
 								if (child.AnyChildUsesGlobalValue)
 									return true;
-
 							return false;
 						}
-
 						if (SettingsList == null || SettingsList.Count == 0)
 							return true;
-
 						foreach (var settings in SettingsList)
 							if (settings.Platform.Settings.GlobalPropertyHashSet.Contains(PropertyPath))
 								return true;
-
 						return false;
 					}
 				}
-
 				private bool AllChildrenAreEqual
 				{
 					get
@@ -973,13 +821,10 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 							foreach (var child in Children)
 								if (!child.AllChildrenAreEqual)
 									return false;
-
 							return true;
 						}
-
 						if (SettingsList == null)
 							return true;
-
 						switch (PropertyType)
 						{
 							case UnityEditor.SerializedPropertyType.Boolean:
@@ -988,28 +833,24 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 									if (boolValue != settings.Property.boolValue)
 										return false;
 								return true;
-
 							case UnityEditor.SerializedPropertyType.Enum:
 								var enumValueIndex = Property.enumValueIndex;
 								foreach (var settings in SettingsList)
 									if (enumValueIndex != settings.Property.enumValueIndex)
 										return false;
 								return true;
-
 							case UnityEditor.SerializedPropertyType.Float:
 								var floatValue = Property.floatValue;
 								foreach (var settings in SettingsList)
 									if (floatValue != settings.Property.floatValue)
 										return false;
 								return true;
-
 							case UnityEditor.SerializedPropertyType.Integer:
 								var longValue = Property.longValue;
 								foreach (var settings in SettingsList)
 									if (longValue != settings.Property.longValue)
 										return false;
 								return true;
-
 							case UnityEditor.SerializedPropertyType.String:
 								var stringValue = Property.stringValue;
 								foreach (var settings in SettingsList)
@@ -1017,27 +858,21 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 										return false;
 								return true;
 						}
-
 						return true;
 					}
 				}
-
 				public void Draw()
 				{
 					var hasChanged = false;
-
 					var isString = IsStringValue;
 					var hasChildren = HasChildren;
-
 					if (!hasChildren && (SettingsList == null || SettingsList.Count == 0))
 						return;
-
 					using (var verticalScope = new UnityEditor.EditorGUILayout.VerticalScope())
 					{
 						var indentLevel = UnityEditor.EditorGUI.indentLevel++;
 						var forceExpand = !AnyChildUsesGlobalValue;
 						var label = new UnityEngine.GUIContent(DisplayName, ToolTip);
-
 						if (hasChildren)
 						{
 							DrawFoldout(Property, label, AllChildrenAreEqual ? UnityEngine.FontStyle.Normal : UnityEngine.FontStyle.Italic);
@@ -1045,7 +880,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 						else if (!forceExpand)
 						{
 							DrawFoldout(Property, label, AllChildrenAreEqual ? UnityEngine.FontStyle.Normal : UnityEngine.FontStyle.Italic);
-
 							UnityEditor.EditorGUI.BeginChangeCheck();
 							var labelWithTooltipOnly = new UnityEngine.GUIContent { tooltip = ToolTip };
 							if (isString)
@@ -1058,7 +892,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 						{
 							UnityEditor.EditorGUILayout.LabelField(label);
 						}
-
 						if (hasChildren)
 						{
 							if (Property.isExpanded)
@@ -1076,45 +909,36 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 								if (settings.Platform.Settings.GlobalPropertyHashSet.Contains(PropertyPath))
 									settings.UpdateValue(Property);
 						}
-
 						UnityEditor.EditorGUI.indentLevel = indentLevel;
 					}
 				}
-
 				public class PlatformSettingData
 				{
 					public UnityEditor.SerializedProperty Property;
 					public PlatformData Platform;
-
 					public PlatformSettingData(PlatformData platform, string propertyPath, string tooltip)
 					{
 						Platform = platform;
 						Property = Platform.SerializedObject.FindProperty(propertyPath);
 					}
-
 					public void UpdateValue(UnityEditor.SerializedProperty globalProperty)
 					{
 						if (Property == null)
 							return;
-
 						Platform.SerializedObject.Update();
 						PropagateValue(Property, globalProperty);
 						Platform.SerializedObject.ApplyModifiedProperties();
 					}
-
 					public void Draw(UnityEditor.SerializedProperty globalProperty, string propertyPath, bool forceExpand, string tooltip)
 					{
 						if (Property == null)
 							return;
-
 						var indentLevel = UnityEditor.EditorGUI.indentLevel++;
 						var position = UnityEngine.GUILayoutUtility.GetRect(UnityEngine.GUIContent.none, UnityEngine.GUIStyle.none, UnityEngine.GUILayout.Height(UnityEditor.EditorGUIUtility.singleLineHeight));
-
 						var wasUsingGlobalValue = Platform.Settings.GlobalPropertyHashSet.Contains(propertyPath);
 						var width = position.width;
 						if (!wasUsingGlobalValue)
 							position.width = UnityEditor.EditorGUIUtility.labelWidth;
-
 						var OverrideTooltip = "Enable to use global value.";
 						if (wasUsingGlobalValue)
 						{
@@ -1122,10 +946,8 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 						}
 						var isUsingGlobalValue = UnityEditor.EditorGUI.ToggleLeft(position, new UnityEngine.GUIContent(Platform.Name, OverrideTooltip), wasUsingGlobalValue);
 						position.width = width;
-
 						if (wasUsingGlobalValue != isUsingGlobalValue)
 							Platform.Settings.SetUseGlobalPropertyValue(propertyPath, isUsingGlobalValue);
-
 						if (!isUsingGlobalValue)
 						{
 							Platform.SerializedObject.Update();
@@ -1138,51 +960,40 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 						{
 							UpdateValue(globalProperty);
 						}
-
 						// Draw the PropertyField in the correct place
 						position.x += UnityEditor.EditorGUIUtility.labelWidth;
 						position.width -= UnityEditor.EditorGUIUtility.labelWidth;
 						UnityEditor.EditorGUI.indentLevel = 1; // Not zero, so that a control handle is available
 						UnityEngine.GUI.enabled = !isUsingGlobalValue; // If using Global value, draw the PropertyField, but greyed out.
 						UnityEditor.EditorGUI.PropertyField(position, Property, new UnityEngine.GUIContent { tooltip = tooltip });
-
-
 						if (!isUsingGlobalValue)
 						{
 							Platform.SerializedObject.ApplyModifiedProperties();
 						}
 						UnityEngine.GUI.enabled = true;
-
 						UnityEditor.EditorGUI.indentLevel = indentLevel;
 					}
-
 					private static void PropagateValue(UnityEditor.SerializedProperty x, UnityEditor.SerializedProperty y)
 					{
 						//if (x.propertyType != y.propertyType)
 						//	return;
-
 						switch (x.propertyType)
 						{
 							case UnityEditor.SerializedPropertyType.Boolean:
 								x.boolValue = y.boolValue;
 								break;
-
 							case UnityEditor.SerializedPropertyType.Enum:
 								x.longValue = y.longValue;
 								break;
-
 							case UnityEditor.SerializedPropertyType.Float:
 								x.floatValue = y.floatValue;
 								break;
-
 							case UnityEditor.SerializedPropertyType.Integer:
 								x.longValue = y.longValue;
 								break;
-
 							case UnityEditor.SerializedPropertyType.String:
 								x.stringValue = y.stringValue;
 								break;
-
 							case UnityEditor.SerializedPropertyType.Generic:
 								if (x.type == y.type)
 								{
@@ -1192,7 +1003,6 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 									var YEndProperty = y.Copy();
 									XEndProperty = XEndProperty.Next(false) ? XEndProperty : null;
 									YEndProperty = YEndProperty.Next(false) ? YEndProperty : null;
-
 									while (XProperty.Next(true) && YProperty.Next(true) && !UnityEditor.SerializedProperty.EqualContents(XProperty, XEndProperty) && !UnityEditor.SerializedProperty.EqualContents(YProperty, YEndProperty))
 										PropagateValue(XProperty, YProperty);
 								}
@@ -1202,31 +1012,25 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 				}
 			}
 		}
-
 		private class PlatformSpecificSettingsData
 		{
 			public string ToolTip;
 			public UnityEditor.SerializedProperty Property;
 			public System.Collections.Generic.List<UnityEditor.SerializedProperty> SettingsList;
 			public PlatformData Platform;
-
 			public PlatformSpecificSettingsData(PlatformData platform, string propertyPath, System.Collections.Generic.HashSet<string> globalPropertyHashSet)
 			{
 				Platform = platform;
 				Property = Platform.SerializedObject.FindProperty(propertyPath);
 				if (Property == null)
 					return;
-
 				ToolTip = AkUtilities.GetTooltip(Property);
-
 				System.Collections.Generic.HashSet<string> hashSet = new System.Collections.Generic.HashSet<string>();
 				foreach (var childProperty in GetChildren(Property))
 					hashSet.Add(childProperty.propertyPath);
-
 				var remainder = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Except(hashSet, globalPropertyHashSet));
 				if (remainder.Length > 0)
 					SettingsList = new System.Collections.Generic.List<UnityEditor.SerializedProperty>();
-
 				foreach (var childPropertyPath in remainder)
 				{
 					var childProperty = Platform.SerializedObject.FindProperty(childPropertyPath);
@@ -1234,36 +1038,28 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 						SettingsList.Add(childProperty);
 				}
 			}
-
 			public void Draw()
 			{
 				if (SettingsList == null || SettingsList.Count == 0)
 					return;
-
 				Platform.SerializedObject.Update();
-
 				using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
 				{
 #if !UNITY_2018_3_OR_NEWER
 					++UnityEditor.EditorGUI.indentLevel;
 #endif
-
 					var label = new UnityEngine.GUIContent(Platform.Name + " Specific " + Property.displayName, ToolTip);
 					if (DrawFoldout(Property, label, UnityEngine.FontStyle.Bold))
 					{
 						++UnityEditor.EditorGUI.indentLevel;
-
 						foreach (var child in SettingsList)
 							UnityEditor.EditorGUILayout.PropertyField(child, true);
-
 						--UnityEditor.EditorGUI.indentLevel;
 					}
-
 #if !UNITY_2018_3_OR_NEWER
 					--UnityEditor.EditorGUI.indentLevel;
 #endif
 				}
-
 				Platform.SerializedObject.ApplyModifiedProperties();
 			}
 		}
@@ -1271,4 +1067,3 @@ public class AkWwiseInitializationSettings : AkCommonPlatformSettings
 #endregion
 #endif
 }
-

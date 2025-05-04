@@ -6,16 +6,13 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 [UnityEngine.AddComponentMenu("Wwise/Spatial Audio/AkSpatialAudioListener")]
 [UnityEngine.RequireComponent(typeof(AkAudioListener))]
 [UnityEngine.RequireComponent(typeof(AkRoomAwareObject))]
@@ -31,7 +28,6 @@ public class AkSpatialAudioListener : UnityEngine.MonoBehaviour
 	private static AkSpatialAudioListener s_SpatialAudioListener;
 	private static readonly SpatialAudioListenerList spatialAudioListeners = new SpatialAudioListenerList();
 	private AkAudioListener AkAudioListener;
-
 	/// <summary>
 	///     Returns the "single" spatial audio listener.
 	/// </summary>
@@ -39,7 +35,6 @@ public class AkSpatialAudioListener : UnityEngine.MonoBehaviour
 	{
 		get { return s_SpatialAudioListener != null ? s_SpatialAudioListener.AkAudioListener : null; }
 	}
-
 	/// <summary>
 	///     Returns the list of active Unity Game Objects that are designated to be spatial audio listeners.
 	/// </summary>
@@ -47,22 +42,18 @@ public class AkSpatialAudioListener : UnityEngine.MonoBehaviour
 	{
 		get { return spatialAudioListeners; }
 	}
-
 	private void Awake()
 	{
 		AkAudioListener = GetComponent<AkAudioListener>();
 	}
-
 	private void OnEnable()
 	{
 		spatialAudioListeners.Add(this);
 	}
-
 	private void OnDisable()
 	{
 		spatialAudioListeners.Remove(this);
 	}
-
 	/// <summary>
 	///     This class represents the list of active Unity Game Objects that are designated to be spatial audio listeners.
 	///     Currently, only one spatial audio listener can be active at a time.
@@ -71,12 +62,10 @@ public class AkSpatialAudioListener : UnityEngine.MonoBehaviour
 	{
 		private readonly System.Collections.Generic.List<AkSpatialAudioListener> listenerList =
 			new System.Collections.Generic.List<AkSpatialAudioListener>();
-
 		public System.Collections.Generic.List<AkSpatialAudioListener> ListenerList
 		{
 			get { return listenerList; }
 		}
-
 		/// <summary>
 		///     Uniquely adds listeners to the list
 		/// </summary>
@@ -88,17 +77,14 @@ public class AkSpatialAudioListener : UnityEngine.MonoBehaviour
 			{
 				return false;
 			}
-
 			if (listenerList.Contains(listener))
 			{
 				return false;
 			}
-
 			listenerList.Add(listener);
 			Refresh();
 			return true;
 		}
-
 		/// <summary>
 		///     Removes listeners from the list
 		/// </summary>
@@ -110,16 +96,13 @@ public class AkSpatialAudioListener : UnityEngine.MonoBehaviour
 			{
 				return false;
 			}
-
 			if (!listenerList.Remove(listener))
 			{
 				return false;
 			}
-
 			Refresh();
 			return true;
 		}
-
 		private void Refresh()
 		{
 			if (ListenerList.Count == 1)
@@ -128,9 +111,7 @@ public class AkSpatialAudioListener : UnityEngine.MonoBehaviour
 				{
 					AkUnitySoundEngine.UnregisterSpatialAudioListener(s_SpatialAudioListener.gameObject);
 				}
-
 				s_SpatialAudioListener = ListenerList[0];
-
 				AkUnitySoundEngine.RegisterSpatialAudioListener(s_SpatialAudioListener.gameObject);
 			}
 			else if (ListenerList.Count == 0 && s_SpatialAudioListener != null)
@@ -140,16 +121,13 @@ public class AkSpatialAudioListener : UnityEngine.MonoBehaviour
 			}
 		}
 	}
-
 #if UNITY_EDITOR
 	#region WwiseMigration
 	bool AK.Wwise.IMigratable.Migrate(UnityEditor.SerializedObject obj)
 	{
 		if (!AkUtilities.IsMigrationRequired(AkUtilities.MigrationStep.NewScriptableObjectFolder_v2019_2_0))
 			return false;
-
 		UnityEditor.Undo.AddComponent<AkRoomAwareObject>(gameObject);
-
 		return true;
 	}
 	#endregion

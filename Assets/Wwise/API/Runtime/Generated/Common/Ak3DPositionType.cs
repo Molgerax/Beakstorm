@@ -8,8 +8,6 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
-
-
 public enum Ak3DPositionType : byte {
   AK_3DPositionType_Emitter = 0,
   AK_3DPositionType_EmitterWithAutomation = 1,

@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-
 using System.Collections.Generic;
 /*******************************************************************************
 The content of this file includes portions of the proprietary AUDIOKINETIC Wwise
@@ -8,47 +7,37 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 #pragma warning disable 0168
 [UnityEditor.InitializeOnLoad]
 public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 {
 	private const string s_progTitle = "Populating Wwise Picker";
 	private const int s_SecondsBetweenChecks = 3;
-
 	private static string s_wwiseProjectPath = System.IO.Path.GetDirectoryName(AkWwiseEditorSettings.WwiseProjectAbsolutePath);
-
 	private static System.DateTime s_lastFileCheck = System.DateTime.Now.AddSeconds(-s_SecondsBetweenChecks);
 	private static readonly FileInfo_CompareByPath s_FileInfo_CompareByPath = new FileInfo_CompareByPath();
-
 	private readonly HashSet<string> m_WwuToProcess = new HashSet<string>();
-
 	private int m_currentWwuCnt;
 	private int m_totWwuCnt = 1;
-
 	static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
 	{
 		if (UnityEditor.AssetDatabase.IsAssetImportWorkerProcess())
 		{
 			return;
 		}
-
 		if (didDomainReload)
 		{
 			// This method gets called from InitializeOnLoad and uses the AkWwiseProjectInfo later on so it needs to check if it can run right now
 			InitializeWwiseProjectData();
 		}
 	}
-	
 	static AkWwiseWWUBuilder()
 	{
 		UnityEditor.EditorApplication.playModeStateChanged += (UnityEditor.PlayModeStateChange playMode) =>
@@ -59,34 +48,28 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			}
 		};
 	}
-
 	private static void Tick()
 	{
 		if (System.DateTime.Now.Subtract(s_lastFileCheck).Seconds < s_SecondsBetweenChecks)
 		{
 			return;
 		}
-
 		if (AkWwiseProjectInfo.GetData() == null)
 		{
 			return;
 		}
-
 		if (UnityEditor.EditorApplication.isCompiling)
 		{
 			return;
 		}
-
 		if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
 		{
 			return;
 		}
-
 		if (!AkWwiseProjectInfo.GetData().autoPopulateEnabled)
 		{
 			return;
 		}
-
 		if (Populate())
 		{
 			AkWwiseJSONBuilder.Populate();
@@ -95,11 +78,9 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			//Make sure that the Wwise picker and the inspector are updated
 			AkUtilities.RepaintInspector();
 		}
-
 		AkUtilities.WwiseProjectUpdated(AkWwiseEditorSettings.WwiseProjectAbsolutePath);
 		s_lastFileCheck = System.DateTime.Now;
 	}
-
 	public static void InitializeWwiseProjectData()
 	{
 		try
@@ -109,15 +90,12 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 				UnityEngine.Debug.LogError("WwiseUnity: Wwise project needed to populate from Work Units. Aborting.");
 				return;
 			}
-
 			var fullWwiseProjectPath = AkWwiseEditorSettings.WwiseProjectAbsolutePath;
 			s_wwiseProjectPath = System.IO.Path.GetDirectoryName(fullWwiseProjectPath);
-
 			AkUtilities.IsWwiseProjectAvailable = System.IO.File.Exists(fullWwiseProjectPath);
 			if (!AkUtilities.IsWwiseProjectAvailable || UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode || string.IsNullOrEmpty(s_wwiseProjectPath) ||
 				UnityEditor.EditorApplication.isCompiling)
 				return;
-
 			var builder = new AkWwiseWWUBuilder();
 			builder.GatherModifiedFiles();
 			builder.UpdateFiles();
@@ -127,7 +105,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			UnityEngine.Debug.LogError("Exception occured while initializing project data : \n" + exception.Message);
 		}
 	}
-
 	public static bool Populate()
 	{
 		try
@@ -137,21 +114,16 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 				UnityEngine.Debug.LogError("WwiseUnity: Wwise project needed to populate from Work Units. Aborting.");
 				return false;
 			}
-
 			var fullWwiseProjectPath = AkWwiseEditorSettings.WwiseProjectAbsolutePath;
 			s_wwiseProjectPath = System.IO.Path.GetDirectoryName(fullWwiseProjectPath);
-
 			AkUtilities.IsWwiseProjectAvailable = System.IO.File.Exists(fullWwiseProjectPath);
 			if (!AkUtilities.IsWwiseProjectAvailable || UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode || string.IsNullOrEmpty(s_wwiseProjectPath) ||
 				(UnityEditor.EditorApplication.isCompiling && !AkUtilities.IsMigrating))
 				return false;
-
 			AkPluginActivator.Update();
-
 			var builder = new AkWwiseWWUBuilder();
 			if (!builder.GatherModifiedFiles())
 				return false;
-
 			builder.UpdateFiles();
 			return true;
 		}
@@ -162,11 +134,9 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			return true;
 		}
 	}
-
 	public static void UpdateWwiseObjectReferenceData()
 	{
 		UnityEngine.Debug.Log("WwiseUnity: Updating Wwise Object References");
-
 		WwiseObjectReference.ClearWwiseObjectDataMap();
 		UpdateWwiseObjectReference(WwiseObjectType.AuxBus, AkWwiseProjectInfo.GetData().AuxBusWwu);
 		UpdateWwiseObjectReference(WwiseObjectType.Event, AkWwiseProjectInfo.GetData().EventWwu);
@@ -177,7 +147,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 		UpdateWwiseObjectReference(WwiseObjectType.StateGroup, WwiseObjectType.State, AkWwiseProjectInfo.GetData().StateWwu);
 		UpdateWwiseObjectReference(WwiseObjectType.SwitchGroup, WwiseObjectType.Switch, AkWwiseProjectInfo.GetData().SwitchWwu);
 	}
-
 	private int RecurseWorkUnit(AssetType in_type, System.IO.FileInfo in_workUnit, string in_currentPathInProj,
 		string in_currentPhysicalPath, LinkedList<AkWwiseProjectData.PathElement> in_pathAndIcons,
 		string in_parentPath = "")
@@ -190,24 +159,18 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			var msg = "Parsing Work Unit " + in_workUnit.Name;
 			UnityEditor.EditorUtility.DisplayProgressBar(s_progTitle, msg, m_currentWwuCnt / (float)m_totWwuCnt);
 			m_currentWwuCnt++;
-
 			in_currentPathInProj =
 				System.IO.Path.Combine(in_currentPathInProj, System.IO.Path.GetFileNameWithoutExtension(in_workUnit.Name));
-
 			var WwuPhysicalPath = System.IO.Path.Combine(in_currentPhysicalPath, in_workUnit.Name);
-
 			var wwu = ReplaceWwuEntry(WwuPhysicalPath, in_type, out wwuIndex);
-
 			wwu.ParentPath = in_currentPathInProj;
 			wwu.PhysicalPath = WwuPhysicalPath;
 			wwu.Guid = System.Guid.Empty;
 			wwu.LastTime = System.IO.File.GetLastWriteTime(in_workUnit.FullName);
-
 			using (var reader = System.Xml.XmlReader.Create(in_workUnit.FullName))
 			{
 				reader.MoveToContent();
 				reader.Read();
-
 				while (!reader.EOF && reader.ReadState == System.Xml.ReadState.Interactive)
 				{
 					if (reader.NodeType == System.Xml.XmlNodeType.Element && reader.Name.Equals("WorkUnit"))
@@ -221,7 +184,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 								in_pathAndIcons.AddLast(new AkWwiseProjectData.PathElement(
 									System.IO.Path.GetFileNameWithoutExtension(in_workUnit.Name), WwiseObjectType.WorkUnit, wwu.Guid));
 								wwu.PathAndIcons = new List<AkWwiseProjectData.PathElement>(in_pathAndIcons);
-
 							}
 							catch
 							{
@@ -229,7 +191,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 								throw;
 							}
 						}
-
 						var persistMode = reader.GetAttribute("PersistMode");
 						if (persistMode == "Reference")
 						{
@@ -238,7 +199,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 							var newWorkUnitPath =
 								System.IO.Path.Combine(in_workUnit.Directory.FullName, matchedElement.Attribute("Name").Value + ".wwu");
 							var newWorkUnit = new System.IO.FileInfo(newWorkUnitPath);
-
 							if (m_WwuToProcess.Contains(newWorkUnit.FullName))
 							{
 								// Parse the referenced Work Unit
@@ -261,11 +221,9 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 							case "AuxBus":
 								objType = WwiseObjectType.AuxBus;
 								break;
-
 							case "Bus":
 								objType = WwiseObjectType.Bus;
 								break;
-
 							case "Folder":
 							default:
 								objType = WwiseObjectType.Folder;
@@ -304,7 +262,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 					}
 				}
 			}
-
 			// Sort the newly populated Wwu alphabetically
 			SortWwu(in_type, wwuIndex);
 		}
@@ -315,28 +272,22 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			UnityEngine.Debug.LogError(e.ToString());
 			wwuIndex = -1;
 		}
-
 		in_pathAndIcons.RemoveLast();
 		return wwuIndex;
 	}
-
 	private static bool isTicking = false;
-
 	public static void StartWWUWatcher()
 	{
 		if (isTicking)
 			return;
-
 		if (!AkWwiseProjectInfo.GetData().autoPopulateEnabled || !AkUtilities.IsWwiseProjectAvailable)
 		{
 			return;
 		}
-
 		isTicking = true;
 		Tick();
 		UnityEditor.EditorApplication.update += Tick;
 	}
-
 	public static void StopWWUWatcher()
 	{
 		if (!isTicking)
@@ -346,7 +297,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 		UnityEditor.EditorApplication.update -= Tick;
 		isTicking = false; 
 	}
-
 	private static void RestartWWUWatcher()
 	{
 		if (AkWwiseProjectInfo.GetData().autoPopulateEnabled)
@@ -354,13 +304,10 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			StartWWUWatcher();
 		}
 	}
-
 	private static Dictionary<WwiseObjectType, Dictionary<System.Guid, AkWwiseProjectData.AkBaseInformation>> _WwiseObjectsToRemove
 		= new Dictionary<WwiseObjectType, Dictionary<System.Guid, AkWwiseProjectData.AkBaseInformation>>();
-
 	private static Dictionary<WwiseObjectType, List<System.Guid>> _WwiseObjectsToKeep = new Dictionary<WwiseObjectType, List<System.Guid>>();
 	private static HashSet<System.Guid> _ParsedWwiseObjects = new HashSet<System.Guid>();
-
 	private static void FlagForRemoval(WwiseObjectType type, int wwuIndex)
 	{
 		switch (type)
@@ -369,77 +316,63 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 				foreach (var wwobject in AkWwiseProjectInfo.GetData().AuxBusWwu[wwuIndex].List)
 					FlagForRemoval(wwobject, type);
 				break;
-
 			case WwiseObjectType.Event:
 				foreach (var wwobject in AkWwiseProjectInfo.GetData().EventWwu[wwuIndex].List)
 					FlagForRemoval(wwobject, type);
 				break;
-
 			case WwiseObjectType.Soundbank:
 				foreach (var wwobject in AkWwiseProjectInfo.GetData().BankWwu[wwuIndex].List)
 					FlagForRemoval(wwobject, type);
 				break;
-
 			case WwiseObjectType.GameParameter:
 				foreach (var wwobject in AkWwiseProjectInfo.GetData().RtpcWwu[wwuIndex].List)
 					FlagForRemoval(wwobject, type);
 				break;
-
 			case WwiseObjectType.Trigger:
 				foreach (var wwobject in AkWwiseProjectInfo.GetData().TriggerWwu[wwuIndex].List)
 					FlagForRemoval(wwobject, type);
 				break;
-
 			case WwiseObjectType.AcousticTexture:
 				foreach (var wwobject in AkWwiseProjectInfo.GetData().AcousticTextureWwu[wwuIndex].List)
 					FlagForRemoval(wwobject, type);
 				break;
-
 			case WwiseObjectType.StateGroup:
 				foreach (var wwobject in AkWwiseProjectInfo.GetData().StateWwu[wwuIndex].List)
 					FlagForRemoval(wwobject, type);
 				break;
-
 			case WwiseObjectType.SwitchGroup:
 				foreach (var wwobject in AkWwiseProjectInfo.GetData().SwitchWwu[wwuIndex].List)
 					FlagForRemoval(wwobject, type);
 				break;
 		}
 	}
-
 	private static void FlagForInsertion(AkWwiseProjectData.AkBaseInformation info, WwiseObjectType type)
 	{
 		if (!_WwiseObjectsToKeep.ContainsKey(type))
 		{
 			_WwiseObjectsToKeep.Add(type, new List<System.Guid>());
 		}
-
 		_WwiseObjectsToKeep[type].Add(info.Guid);
-
 		if (!AkUtilities.IsMigrating)
 		{
 			WwiseObjectReference.UpdateWwiseObject(type, info.Name, info.Guid);
 		}
 	}
-
 	private static void FlagForRemoval(AkWwiseProjectData.AkBaseInformation info, WwiseObjectType type)
 	{
 		if (!_WwiseObjectsToRemove.ContainsKey(type))
 		{
 			_WwiseObjectsToRemove.Add(type, new Dictionary<System.Guid, AkWwiseProjectData.AkBaseInformation>());
 		}
-
 		if(!_WwiseObjectsToRemove[type].ContainsKey(info.Guid))
 		{
 			_WwiseObjectsToRemove[type].Add(info.Guid, info);
 		}
 	}
-
 	private bool GatherModifiedFiles()
 	{
 		_WwiseObjectsToRemove.Clear();
 		_WwiseObjectsToKeep.Clear();
-
 		var bChanged = false;
 		var iBasePathLen = s_wwiseProjectPath.Length + 1;
 		foreach (var scannedAsset in AssetType.ScannedAssets)
@@ -448,18 +381,15 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			var deleted = new List<int>();
 			var knownFiles = AkWwiseProjectInfo.GetData().GetWwuListByString(dir);
 			var cKnownBefore = knownFiles.Count;
-
 			try
 			{
 				//Get all Wwus in this folder.
 				var di = new System.IO.DirectoryInfo(System.IO.Path.Combine(s_wwiseProjectPath, dir));
 				var files = di.GetFiles("*.wwu", System.IO.SearchOption.AllDirectories);
 				System.Array.Sort(files, s_FileInfo_CompareByPath);
-
 				//Walk both arrays
 				var iKnown = 0;
 				var iFound = 0;
-
 				while (iFound < files.Length && iKnown < knownFiles.Count)
 				{
 					var workunit = knownFiles[iKnown] as AkWwiseProjectData.WorkUnit;
@@ -484,16 +414,13 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 								//Access denied probably (file does exists since it was picked up by GetFiles).
 								//Just ignore this file.
 							}
-
 							iFound++;
 							iKnown++;
 							break;
-
 						case 1:
 							m_WwuToProcess.Add(files[iFound].FullName);
 							iFound++;
 							break;
-
 						case -1:
 							//A file was deleted.  Can't process it now, it would change the array indices.                                
 							deleted.Add(iKnown);
@@ -501,11 +428,9 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 							break;
 					}
 				}
-
 				//The remainder from the files found on disk are all new files.
 				for (; iFound < files.Length; iFound++)
 					m_WwuToProcess.Add(files[iFound].FullName);
-
 				//All the remainder is deleted.  From the end, of course.
 				if (iKnown < knownFiles.Count)
 				{
@@ -513,17 +438,14 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 					{
 						FlagForRemoval(scannedAsset.Type, i);
 					}
-
 					knownFiles.RemoveRange(iKnown, knownFiles.Count - iKnown);
 				}
-
 				//Delete those tagged.
 				for (var i = deleted.Count - 1; i >= 0; i--)
 				{
 					FlagForRemoval(scannedAsset.Type, deleted[i]);
 					knownFiles.RemoveAt(deleted[i]);
 				}
-
 				bChanged |= cKnownBefore != knownFiles.Count;
 			}
 			catch (System.Exception exception)
@@ -534,16 +456,12 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 				return false;
 			}
 		}
-
 		return bChanged || m_WwuToProcess.Count > 0;
 	}
-
 	private void UpdateFiles()
 	{
 		_ParsedWwiseObjects.Clear();
-
 		m_totWwuCnt = m_WwuToProcess.Count;
-
 		var iBasePathLen = s_wwiseProjectPath.Length + 1;
 		var iUnprocessed = 0;
 		while (m_WwuToProcess.Count - iUnprocessed > 0)
@@ -551,19 +469,16 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			System.Collections.IEnumerator e = m_WwuToProcess.GetEnumerator();
 			for (var i = 0; i < iUnprocessed + 1; i++)
 				e.MoveNext();
-
 			var fullPath = e.Current as string;
 			var relPath = fullPath.Substring(iBasePathLen);
 			var typeStr = relPath.Remove(relPath.IndexOf(System.IO.Path.DirectorySeparatorChar));
 			if (!CreateWorkUnit(relPath, typeStr, fullPath))
 				iUnprocessed++;
 		}
-
 		//Add the unprocessed directly.  This can happen if we don't find the parent WorkUnit.  
 		//Normally, it should never happen, this is just a safe guard.
 		while (m_WwuToProcess.Count > 0)
 		{
-
 			System.Collections.IEnumerator e = m_WwuToProcess.GetEnumerator();
 			e.MoveNext();
 			var fullPath = e.Current as string;
@@ -571,7 +486,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			var typeStr = relPath.Remove(relPath.IndexOf(System.IO.Path.DirectorySeparatorChar));
 			UpdateWorkUnit(fullPath, typeStr, relPath);
 		}
-
 		if (AkWwiseEditorSettings.Instance.ObjectReferenceAutoCleanup)
 		{
 			foreach (KeyValuePair<WwiseObjectType, List<System.Guid>> pair in _WwiseObjectsToKeep)
@@ -579,13 +493,11 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 				Dictionary<System.Guid, AkWwiseProjectData.AkBaseInformation> removeDict = null;
 				if (!_WwiseObjectsToRemove.TryGetValue(pair.Key, out removeDict))
 					continue;
-
 				foreach (System.Guid wwiseObjectGuid in pair.Value)
 				{
 					removeDict.Remove(wwiseObjectGuid);
 				}
 			}
-
 			foreach (KeyValuePair<WwiseObjectType, Dictionary<System.Guid, AkWwiseProjectData.AkBaseInformation>> wwiseObjectTypeDictPair in _WwiseObjectsToRemove)
 			{
 				var type = wwiseObjectTypeDictPair.Key;
@@ -600,33 +512,28 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 							WwiseObjectReference.DeleteWwiseObject(childType, childObject.Guid);
 						}
 					}
-
 					WwiseObjectReference.DeleteWwiseObject(type, wwiseObjectInfoPair.Key);
 				}
 			}
 		}
-
 		_ParsedWwiseObjects.Clear();
 		_WwiseObjectsToRemove.Clear();
 		_WwiseObjectsToKeep.Clear();
 		UnityEditor.EditorUtility.SetDirty(AkWwiseProjectInfo.GetData());
 		UnityEditor.EditorUtility.ClearProgressBar();
 	}
-
 	private static void UpdateWwiseObjectReference(WwiseObjectType type, List<AkWwiseProjectData.AkInfoWorkUnit> infoWwus)
 	{
 		foreach (var infoWwu in infoWwus)
 			foreach (var info in infoWwu.List)
 				WwiseObjectReference.UpdateWwiseObjectDataMap(type, info.Name, info.Guid);
 	}
-
 	private static void UpdateWwiseObjectReference(WwiseObjectType type, List<AkWwiseProjectData.EventWorkUnit> infoWwus)
 	{
 		foreach (var infoWwu in infoWwus)
 			foreach (var info in infoWwu.List)
 				WwiseObjectReference.UpdateWwiseObjectDataMap(type, info.Name, info.Guid);
 	}
-
 	private static void UpdateWwiseObjectReference(WwiseObjectType groupType, WwiseObjectType type, List<AkWwiseProjectData.GroupValWorkUnit> infoWwus)
 	{
 		foreach (var infoWwu in infoWwus)
@@ -639,7 +546,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			}
 		}
 	}
-
 	private static void SortWwu(AssetType in_type, int in_wwuIndex)
 	{
 		switch (in_type.Type)
@@ -647,27 +553,21 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			case WwiseObjectType.AuxBus:
 				AkWwiseProjectInfo.GetData().AuxBusWwu[in_wwuIndex].List.Sort();
 				break;
-
 			case WwiseObjectType.Event:
 				AkWwiseProjectInfo.GetData().EventWwu[in_wwuIndex].List.Sort();
 				break;
-
 			case WwiseObjectType.Soundbank:
 				AkWwiseProjectInfo.GetData().BankWwu[in_wwuIndex].List.Sort();
 				break;
-
 			case WwiseObjectType.GameParameter:
 				AkWwiseProjectInfo.GetData().RtpcWwu[in_wwuIndex].List.Sort();
 				break;
-
 			case WwiseObjectType.Trigger:
 				AkWwiseProjectInfo.GetData().TriggerWwu[in_wwuIndex].List.Sort();
 				break;
-
 			case WwiseObjectType.AcousticTexture:
 				AkWwiseProjectInfo.GetData().AcousticTextureWwu[in_wwuIndex].List.Sort();
 				break;
-
 			case WwiseObjectType.StateGroup:
 				var stateList = AkWwiseProjectInfo.GetData().StateWwu[in_wwuIndex].List;
 				stateList.Sort();
@@ -675,7 +575,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 					if (group.values.Count > 0)
 						group.values.Sort();
 				break;
-
 			case WwiseObjectType.SwitchGroup:
 				var switchList = AkWwiseProjectInfo.GetData().SwitchWwu[in_wwuIndex].List;
 				switchList.Sort();
@@ -685,24 +584,20 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 				break;
 		}
 	}
-
 	private static AkWwiseProjectData.WorkUnit ReplaceWwuEntry(string in_currentPhysicalPath, AssetType in_type, out int out_wwuIndex)
 	{
 		var list = AkWwiseProjectInfo.GetData().GetWwuListByString(in_type.RootDirectoryName);
 		out_wwuIndex = list.BinarySearch(new AkWwiseProjectData.WorkUnit { PhysicalPath = in_currentPhysicalPath });
 		AkWwiseProjectData.WorkUnit out_wwu = null;
-
 		switch (in_type.Type)
 		{
 			case WwiseObjectType.Event:
 				out_wwu = new AkWwiseProjectData.EventWorkUnit();
 				break;
-
 			case WwiseObjectType.StateGroup:
 			case WwiseObjectType.SwitchGroup:
 				out_wwu = new AkWwiseProjectData.GroupValWorkUnit();
 				break;
-
 			case WwiseObjectType.AuxBus:
 			case WwiseObjectType.Soundbank:
 			case WwiseObjectType.GameParameter:
@@ -711,7 +606,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 				out_wwu = new AkWwiseProjectData.AkInfoWorkUnit();
 				break;
 		}
-
 		if (out_wwuIndex < 0)
 		{
 			out_wwuIndex = ~out_wwuIndex;
@@ -719,10 +613,8 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 		}
 		else
 			list[out_wwuIndex] = out_wwu;
-
 		return out_wwu;
 	}
-
 	private static void AddElementToList(string in_currentPathInProj, System.Xml.XmlReader in_reader, AssetType in_type,
 		LinkedList<AkWwiseProjectData.PathElement> in_pathAndIcons,string in_wwuPath, int in_wwuIndex, WwiseObjectType in_LeafType = WwiseObjectType.None)
 	{
@@ -743,9 +635,7 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 					valueToAdd.Name = name;
 					valueToAdd.Guid = new System.Guid(in_reader.GetAttribute("ID"));
 					valueToAdd.PathAndIcons = new List<AkWwiseProjectData.PathElement>(in_pathAndIcons);
-
 					FlagForInsertion(valueToAdd, in_type.Type);
-
 					switch (LeafType)
 					{
 						case WwiseObjectType.AuxBus:
@@ -753,19 +643,15 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 						case WwiseObjectType.Folder:
 							valueToAdd.Path = in_currentPathInProj;
 							break;
-
 						default:
 							valueToAdd.Path = System.IO.Path.Combine(in_currentPathInProj, name);
 							valueToAdd.PathAndIcons.Add(new AkWwiseProjectData.PathElement(name, in_type.Type, valueToAdd.Guid));
 							break;
 					}
-
 					AddWwiseObjectToProjectData(in_type, in_wwuIndex, valueToAdd, in_wwuPath);
 				}
-
 				in_reader.Read();
 				break;
-
 			case WwiseObjectType.StateGroup:
 			case WwiseObjectType.SwitchGroup:
 				{
@@ -776,7 +662,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 						valueToAdd.Guid = new System.Guid(in_reader.GetAttribute("ID"));
 						valueToAdd.PathAndIcons = new List<AkWwiseProjectData.PathElement>(in_pathAndIcons);
 						valueToAdd.Path = in_currentPathInProj;
-
 						FlagForInsertion(valueToAdd, in_type.Type);
 						in_reader.Read();
 					}
@@ -793,15 +678,12 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 							valueToAdd.Path = System.IO.Path.Combine(in_currentPathInProj, name);
 							valueToAdd.PathAndIcons = new List<AkWwiseProjectData.PathElement>(in_pathAndIcons);
 							valueToAdd.PathAndIcons.Add(new AkWwiseProjectData.PathElement(name, in_type.Type, valueToAdd.Guid));
-
 							FlagForInsertion(valueToAdd, in_type.Type);
-
 							var ChildElem = System.Xml.Linq.XName.Get(in_type.ChildElementName);
 							foreach (var element in ChildrenElement.Elements(ChildElem))
 							{
 								if (element.Name != in_type.ChildElementName)
 									continue;
-
 								var elementName = element.Attribute("Name").Value;
 								var childValue = new AkWwiseProjectData.AkBaseInformation
 								{
@@ -811,7 +693,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 								childValue.PathAndIcons = new List<AkWwiseProjectData.PathElement>(valueToAdd.PathAndIcons);
 								childValue.PathAndIcons.Add(new AkWwiseProjectData.PathElement(elementName, in_type.ChildType, childValue.Guid));
 								valueToAdd.values.Add(childValue);
-
 								FlagForInsertion(childValue, in_type.ChildType);
 							}
 						}
@@ -820,20 +701,17 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 							valueToAdd = null;
 						}
 					}
-
 					if (valueToAdd != null)
 					{
 						AddWwiseObjectToProjectData(in_type, in_wwuIndex, valueToAdd, in_wwuPath);
 					}
 				}
 				break;
-
 			default:
 				UnityEngine.Debug.LogError("WwiseUnity: Unknown asset type in WWU parser");
 				break;
 		}
 	}
-
 	private static void AddWwiseObjectToProjectData(AssetType in_type, int in_wwuIndex, AkWwiseProjectData.AkInformation valueToAdd, string in_wwuPath)
 	{
 		if (!_ParsedWwiseObjects.Add(valueToAdd.Guid))
@@ -841,43 +719,34 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			UnityEngine.Debug.LogWarning("While parsing " + in_wwuPath + ", an already parsed Wwise Object with name: " + valueToAdd.Name + " GUID: " + valueToAdd.Guid + " was found. Are all work units up to date?");
 			return;
 		}
-
 		switch (in_type.Type)
 		{
 			case WwiseObjectType.AuxBus:
 				AkWwiseProjectInfo.GetData().AuxBusWwu[in_wwuIndex].List.Add(valueToAdd);
 				break;
-
 			case WwiseObjectType.Event:
 				AkWwiseProjectInfo.GetData().EventWwu[in_wwuIndex].List.Add(valueToAdd as AkWwiseProjectData.Event);
 				break;
-
 			case WwiseObjectType.Soundbank:
 				AkWwiseProjectInfo.GetData().BankWwu[in_wwuIndex].List.Add(valueToAdd);
 				break;
-
 			case WwiseObjectType.GameParameter:
 				AkWwiseProjectInfo.GetData().RtpcWwu[in_wwuIndex].List.Add(valueToAdd);
 				break;
-
 			case WwiseObjectType.Trigger:
 				AkWwiseProjectInfo.GetData().TriggerWwu[in_wwuIndex].List.Add(valueToAdd);
 				break;
-
 			case WwiseObjectType.AcousticTexture:
 				AkWwiseProjectInfo.GetData().AcousticTextureWwu[in_wwuIndex].List.Add(valueToAdd);
 				break;
-
 			case WwiseObjectType.StateGroup:
 				AkWwiseProjectInfo.GetData().StateWwu[in_wwuIndex].List.Add(valueToAdd as AkWwiseProjectData.GroupValue);
 				break;
-
 			case WwiseObjectType.SwitchGroup:
 				AkWwiseProjectInfo.GetData().SwitchWwu[in_wwuIndex].List.Add(valueToAdd as AkWwiseProjectData.GroupValue);
 				break;
 		}
 	}
-
 	private bool CreateWorkUnit(string in_relativePath, string in_wwuType, string in_fullPath)
 	{
 		var ParentID = string.Empty;
@@ -886,7 +755,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			using (var reader = System.Xml.XmlReader.Create(in_fullPath))
 			{
 				reader.MoveToContent();
-
 				//We check if the current work unit has a parent and save its guid if its the case
 				while (!reader.EOF && reader.ReadState == System.Xml.ReadState.Interactive)
 				{
@@ -896,7 +764,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 							ParentID = reader.GetAttribute("OwnerID");
 						break;
 					}
-
 					reader.Read();
 				}
 			}
@@ -906,11 +773,9 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			UnityEngine.Debug.Log("WwiseUnity: A changed Work unit wasn't found. It must have been deleted " + in_fullPath);
 			return false;
 		}
-
 		if (!string.IsNullOrEmpty(ParentID))
 		{
 			var parentGuid = System.Guid.Empty;
-
 			try
 			{
 				parentGuid = new System.Guid(ParentID);
@@ -920,12 +785,10 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 				UnityEngine.Debug.LogWarning("WwiseUnity: \"OwnerID\" in <" + in_fullPath + "> cannot be converted to a GUID (" + ParentID + ")");
 				return false;
 			}
-
 			var list = AkWwiseProjectInfo.GetData().GetWwuListByString(in_wwuType);
 			var PathAndIcons = new LinkedList<AkWwiseProjectData.PathElement>();
 			string PathInProj = string.Empty;
 			AkWwiseProjectData.WorkUnit wwu = null;
-
 			if (parentGuid != System.Guid.Empty)
 			{
 				for (var i = 0; i < list.Count; i++)
@@ -959,22 +822,17 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 					wwu.PhysicalPath);
 				return true;
 			}
-
 			//Not found. Wait for it to load
 			return false;
 		}
-
 		//Root Wwu
 		UpdateWorkUnit(in_fullPath, in_wwuType, in_relativePath);
 		return true;
 	}
-
 	private void UpdateWorkUnit(string in_wwuFullPath, string in_wwuType, string in_relativePath)
 	{
 		var PathAndIcons = new LinkedList<AkWwiseProjectData.PathElement>();
 		var currentPathInProj = string.Empty;
-
-
 		//Add physical folders to the hierarchy if the work unit isn't in the root folder
 		var physicalPath = in_relativePath.Split(System.IO.Path.DirectorySeparatorChar);
 		for (var i = 0; i < physicalPath.Length -1; i++)
@@ -983,12 +841,10 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 				new AkWwiseProjectData.PathElement(physicalPath[i], WwiseObjectType.PhysicalFolder, System.Guid.Empty));
 			currentPathInProj = System.IO.Path.Combine(currentPathInProj,physicalPath[i]);
 		}
-
 		//Parse the work unit file
 		RecurseWorkUnit(AssetType.Create(in_wwuType), new System.IO.FileInfo(in_wwuFullPath), currentPathInProj,
 			in_relativePath.Remove(in_relativePath.LastIndexOf(System.IO.Path.DirectorySeparatorChar)), PathAndIcons);
 	}
-
 	public class AssetType
 	{
 		public string RootDirectoryName { get; set; }
@@ -996,28 +852,23 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 		public string ChildElementName;
 		public WwiseObjectType Type = WwiseObjectType.None;
 		public WwiseObjectType ChildType = WwiseObjectType.None;
-
 		public static AssetType[] ScannedAssets
 		{
 			get { return _ScannedAssets; }
 		}
-
 		public static AssetType Create(string rootDirectoryName)
 		{
 			foreach (var asset in ScannedAssets)
 				if (string.Equals(rootDirectoryName, asset.RootDirectoryName, System.StringComparison.OrdinalIgnoreCase))
 					return asset;
-
 			return null;
 		}
-
 		private AssetType(string RootFolder, string XmlElemName, WwiseObjectType type)
 		{
 			RootDirectoryName = RootFolder;
 			XmlElementName = XmlElemName;
 			Type = type;
 		}
-
 		private static readonly AssetType[] _ScannedAssets = new AssetType[]
 		{
 			new AssetType("Master-Mixer Hierarchy", "AuxBus", WwiseObjectType.AuxBus),
@@ -1030,7 +881,6 @@ public class AkWwiseWWUBuilder : UnityEditor.AssetPostprocessor
 			new AssetType("Virtual Acoustics", "AcousticTexture", WwiseObjectType.AcousticTexture),
 		};
 	}
-
 	private class FileInfo_CompareByPath : IComparer<System.IO.FileInfo>
 	{
 		int IComparer<System.IO.FileInfo>.Compare(System.IO.FileInfo wwuA, System.IO.FileInfo wwuB)

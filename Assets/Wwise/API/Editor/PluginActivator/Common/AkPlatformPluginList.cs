@@ -5,55 +5,44 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 internal class AkPlatformPluginList
 {
 	private static readonly Dictionary<string, System.DateTime> s_LastParsed = new Dictionary<string, System.DateTime>();
-
 	private static readonly Dictionary<string, HashSet<AkPluginInfo>> s_PerPlatformPlugins = new Dictionary<string, HashSet<AkPluginInfo>>();
-	
 	internal static void GetPluginsUsedForPlatform(string deploymentTargetName, out HashSet<AkPluginInfo> UsedPlugins)
 	{
 		s_PerPlatformPlugins.TryGetValue(deploymentTargetName, out UsedPlugins);
 	}
-
 	internal static bool ContainsPlatform(string platform)
 	{
 		return s_PerPlatformPlugins.ContainsKey(platform);
 	}
-
 	public static bool IsPluginUsed(AkPlatformPluginActivator in_config, string in_UnityPlatform, string in_PluginName)
 	{
 		var pluginDSPPlatform = in_config.WwisePlatformName;
-
 		if (!s_PerPlatformPlugins.ContainsKey(pluginDSPPlatform))
 		{
 			return false; //XML not parsed, don't touch anything.
 		}
-
 		if (in_PluginName.Contains("AkUnitySoundEngine"))
 		{
 			return true;
 		}
-
 		var pluginName = in_PluginName;
 		if (in_PluginName.StartsWith("lib"))
 		{
 			pluginName = in_PluginName.Substring(3);
 		}
-
 		const string factory = "Factory";
 		int indexOfFactory = in_PluginName.IndexOf(factory);
 		// Ensure the plugin name ends with "Factory.h"
@@ -61,7 +50,6 @@ internal class AkPlatformPluginList
 		{
 			pluginName = in_PluginName.Substring(0, indexOfFactory);
 		}
-
 		System.Collections.Generic.HashSet<AkPluginInfo> plugins;
 		if (s_PerPlatformPlugins.TryGetValue(pluginDSPPlatform, out plugins))
 		{
@@ -75,13 +63,11 @@ internal class AkPlatformPluginList
 					}
 				}
 			}
-
 			//Exceptions
 			if (!string.IsNullOrEmpty(in_config.StaticPluginRegistrationName) && pluginName.Contains(in_config.StaticPluginRegistrationName))
 			{
 				return true;
 			}
-
 			//WebGL, iOS, tvOS, visionOS, and Switch deal with the static libs directly, unlike all other platforms.
 			//Luckily the DLL name is always a subset of the lib name.
 			foreach (var pluginInfo in plugins)
@@ -92,10 +78,8 @@ internal class AkPlatformPluginList
 				}
 			}
 		}
-
 		return false;
 	}
-
 	public static void ExecuteParse()
 	{
 		Update();
@@ -107,9 +91,7 @@ internal class AkPlatformPluginList
 		var bNeedRefresh = false;
 		var projectDir = AkBasePathGetter.GetWwiseProjectDirectory();
 		var baseSoundBankPath = AkBasePathGetter.GetFullSoundBankPathEditor();
-
 		AkWwiseInitializationSettings.UpdatePlatforms();
-
 		//make a copy of the platform map and handle "special" custom platforms
 		var platformMap = new Dictionary<string, List<string>>();
 		foreach (var key in AkUtilities.PlatformMapping.Keys)
@@ -128,8 +110,6 @@ internal class AkPlatformPluginList
 				platformMap.Remove(key);
 			}
 		}
-
-
 		//Go through all BasePlatforms 
 		foreach (var pairPF in platformMap)
 		{
@@ -141,7 +121,6 @@ internal class AkPlatformPluginList
 				string bankPath;
 				if (!allPaths.TryGetValue(customPF, out bankPath))
 					continue;
-
 				var pluginFile = "";
 				try
 				{
@@ -154,9 +133,7 @@ internal class AkPlatformPluginList
 						if (!System.IO.File.Exists(pluginFile))
 							continue;
 					}
-
 					fullPaths.Add(pluginFile);
-
 					var t = System.IO.File.GetLastWriteTime(pluginFile);
 					var lastTime = System.DateTime.MinValue;
 					bool bParsedBefore = s_LastParsed.TryGetValue(customPF, out lastTime);
@@ -171,17 +148,13 @@ internal class AkPlatformPluginList
 					UnityEngine.Debug.LogError("WwiseUnity: " + pluginFile + " could not be parsed. " + ex.Message);
 				}
 			}
-
 			if (bParse)
 			{
 				var platform = pairPF.Key;
-
 				var newDlls = ParsePlugins(platform);
 				System.Collections.Generic.HashSet<AkPluginInfo> oldDlls = null;
-
 				s_PerPlatformPlugins.TryGetValue(platform, out oldDlls);
 				s_PerPlatformPlugins[platform] = newDlls;
-
 				//Check if there was any change.
 				if (!bNeedRefresh && oldDlls != null)
 				{
@@ -189,7 +162,6 @@ internal class AkPlatformPluginList
 					{
 						oldDlls.IntersectWith(newDlls);
 					}
-
 					bNeedRefresh |= oldDlls.Count != newDlls.Count;
 				}
 				else
@@ -198,13 +170,11 @@ internal class AkPlatformPluginList
 				}
 			}
 		}
-
 		if (bNeedRefresh)
 		{
 			AkPluginActivator.ActivatePluginsForEditor();
 		}
 	}
-
 	private static HashSet<AkPluginInfo> ParsePlugins(string platform)
 	{
 		var newPlugins = new System.Collections.Generic.HashSet<AkPluginInfo>();
@@ -220,14 +190,11 @@ internal class AkPlatformPluginList
 					continue;
 				}
 				AkPluginActivatorConstants.PluginID pluginID = (AkPluginActivatorConstants.PluginID)rawPluginID;
-
 				if (AkPluginActivatorConstants.alwaysSkipPluginsIDs.Contains(pluginID))
 				{
 					continue;
 				}
-
 				var dll = string.Empty;
-
 				if (platform == "Switch" || platform == "Web")
 				{
 					if (pluginID == AkPluginActivatorConstants.PluginID.AkMeter)
@@ -239,24 +206,19 @@ internal class AkPlatformPluginList
 				{
 					continue;
 				}
-
 				if (string.IsNullOrEmpty(dll))
 				{
 					dll = pluginRef.DLL;
 				}
-
 				var staticLibName = pluginRef.StaticLib;
-
 				AkPluginInfo newPluginInfo = new AkPluginInfo();
 				newPluginInfo.PluginID = rawPluginID;
 				newPluginInfo.DllName = dll;
 				newPluginInfo.StaticLibName = staticLibName;
-
 				if (string.IsNullOrEmpty(newPluginInfo.StaticLibName) && !AkPluginActivatorConstants.PluginIDToStaticLibName.TryGetValue(pluginID, out newPluginInfo.StaticLibName))
 				{
 					newPluginInfo.StaticLibName = dll;
 				}
-
 				newPlugins.Add(newPluginInfo);
 			}
 		}
@@ -264,7 +226,6 @@ internal class AkPlatformPluginList
 		{
 			UnityEngine.Debug.LogError("WwiseUnity: plugins could not be parsed. " + ex.Message);
 		}
-
 		return newPlugins;
 	}
 }

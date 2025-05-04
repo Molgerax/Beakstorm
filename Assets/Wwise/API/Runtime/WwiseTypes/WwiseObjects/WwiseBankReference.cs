@@ -5,23 +5,18 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 using System.IO;
 using UnityEditor;
-
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 using AK.Wwise.Unity.WwiseAddressables;
 #endif
-
 /// @brief Represents Wwise banks as Unity assets.
 /// 
 public class WwiseBankReference : WwiseObjectReference
@@ -29,12 +24,8 @@ public class WwiseBankReference : WwiseObjectReference
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 	[UnityEngine.SerializeField, AkShowOnly]
 	private WwiseAddressableSoundBank bank;
-	
 	public WwiseAddressableSoundBank AddressableBank => bank;
-
-
 #if UNITY_EDITOR
-
 	public override void CompleteData()
 	{
 #if WWISE_ADDRESSABLES_24_1_OR_LATER
@@ -43,12 +34,10 @@ public class WwiseBankReference : WwiseObjectReference
 		SetAddressableBank(AkAssetUtilities.GetAddressableBankAsset(DisplayName));
 #endif
 	}
-
 	public override bool IsComplete()
 	{
 		return bank != null;
 	}
-
 	public void SetAddressableBank(WwiseAddressableSoundBank asset)
 	{
 		bank = asset;
@@ -56,7 +45,6 @@ public class WwiseBankReference : WwiseObjectReference
 		AssetDatabase.SaveAssets();
 		AssetDatabase.Refresh();
 	}
-
 	public bool UpdateAddressableBankReference(WwiseAddressableSoundBank asset, string name)
 	{
 		if (name == ObjectName)
@@ -66,7 +54,6 @@ public class WwiseBankReference : WwiseObjectReference
 		}
 		return false;
 	}
-
 	public static bool FindBankReferenceAndSetAddressableBank(WwiseAddressableSoundBank addressableAsset, string name)
 	{
 		var guids = UnityEditor.AssetDatabase.FindAssets("t:" + typeof(WwiseBankReference).Name);
@@ -83,9 +70,7 @@ public class WwiseBankReference : WwiseObjectReference
 		}
 		return false;
 	}
-
 #endif
 #endif
-
 	public override WwiseObjectType WwiseObjectType { get { return WwiseObjectType.Soundbank; } }
 }

@@ -6,16 +6,13 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 /// <summary>
 ///     Event callback information.
 ///     Event callback functions can receive this structure as a parameter
@@ -24,14 +21,11 @@ public class AkEventCallbackMsg
 {
 	///For more information about the event callback, see the classes derived from AkCallbackInfo.
 	public AkCallbackInfo info;
-
 	/// GameObject from whom the callback function was called
 	public UnityEngine.GameObject sender;
-
 	///AkUnitySoundEngine.PostEvent callback flags. See the AkCallbackType enumeration for a list of all callbacks
 	public AkCallbackType type;
 }
-
 [UnityEngine.AddComponentMenu("Wwise/AkEvent")]
 [UnityEngine.ExecuteInEditMode]
 [UnityEngine.RequireComponent(typeof(AkGameObj))]
@@ -48,45 +42,34 @@ public class AkEvent : AkDragDropTriggerHandler
 {
 	/// Replacement action.  See AK::SoundEngine::ExecuteEventOnAction()
 	public AkActionOnEventType actionOnEventType = AkActionOnEventType.AkActionOnEventType_Stop;
-
 	/// Fade curve to use with the new Action.  See AK::SoundEngine::ExecuteEventOnAction()
 	public AkCurveInterpolation curveInterpolation = AkCurveInterpolation.AkCurveInterpolation_Linear;
-
 	/// Enables additional options to reuse existing events.  Use it to transform a Play event into a Stop event without having to define one in the Wwise Project.
 	public bool enableActionOnEvent = false;
-
 	public AK.Wwise.Event data = new AK.Wwise.Event();
 	protected override AK.Wwise.BaseType WwiseType { get { return data; } }
-
 	[System.Serializable]
 	public class CallbackData
 	{
 		public AK.Wwise.CallbackFlags Flags;
 		public string FunctionName;
 		public UnityEngine.GameObject GameObject;
-
 		public void CallFunction(AkEventCallbackMsg eventCallbackMsg)
 		{
 			if (((uint)eventCallbackMsg.type & Flags.value) != 0 && GameObject)
 				GameObject.SendMessage(FunctionName, eventCallbackMsg);
 		}
 	}
-	
 	private UnityEngine.GameObject otherGameObject;
 	public bool useCallbacks = false;
 	public bool stopSoundOnDestroy = true;
 	public System.Collections.Generic.List<CallbackData> Callbacks = new System.Collections.Generic.List<CallbackData>();
-
 	public uint playingId => data.PlayingId;
-
 	/// Game object onto which the Event will be posted.  By default, when empty, it is posted on the same object on which the component was added.
 	public UnityEngine.GameObject soundEmitterObject;
-
 	/// Duration of the fade, in milliseconds. See <a href="https://www.audiokinetic.com/library/edge/?source=SDK&id=namespace_a_k_1_1_sound_engine_ac55e3d6ac464b0579a8487c88a755d8c.html" target="_blank">AK::SoundEngine::ExecuteEventOnAction()</a>.
 	public float transitionDuration = 0.0f;
-
 	private AkEventCallbackMsg EventCallbackMsg = null;
-	
 	protected override void Awake()
 	{
 		base.Awake();
@@ -100,35 +83,28 @@ public class AkEvent : AkDragDropTriggerHandler
 		}
 #endif
 	}
-
 	protected override void Start()
 	{
 #if UNITY_EDITOR
 		if (UnityEditor.BuildPipeline.isBuildingPlayer || AkUtilities.IsMigrating || !UnityEditor.EditorApplication.isPlaying)
 			return;
 #endif
-
 		if (useCallbacks)
 		{
 			EventCallbackMsg = new AkEventCallbackMsg { sender = gameObject };
 		}
-
 		soundEmitterObject = gameObject;
-
 		base.Start();
 	}
-
 	private void Callback(object in_cookie, AkCallbackType in_type, AkCallbackInfo in_info)
 	{
 		EventCallbackMsg.type = in_type;
 		EventCallbackMsg.info = in_info;
-
 		for (var i = 0; i < Callbacks.Count; ++i)
 		{
 			Callbacks[i].CallFunction(EventCallbackMsg);
 		}
 	}
-
 	public override void HandleEvent(UnityEngine.GameObject in_gameObject)
 	{
 		var gameObj = useOtherObject && in_gameObject != null ? in_gameObject : gameObject;
@@ -137,13 +113,11 @@ public class AkEvent : AkDragDropTriggerHandler
 		{
 			otherGameObject = in_gameObject;
 		}
-
 		if (enableActionOnEvent)
 		{
 			data.ExecuteAction(gameObj, actionOnEventType, (int)transitionDuration * 1000, curveInterpolation);
 			return;
 		}
-
 		if (useCallbacks)
 		{
 			uint flags = 0;
@@ -154,17 +128,14 @@ public class AkEvent : AkDragDropTriggerHandler
 					flags |= Callbacks[i].Flags.value;
 				}
 			}
-
 			if (flags != 0)
 			{
 				data.Post(gameObj, flags, Callback);
 				return;
 			}
 		}
-
 		data.Post(gameObj);
 	}
-
 	protected new void OnDestroy()
 	{
 		var akGameObj = gameObject.GetComponent<AkGameObj>();
@@ -174,21 +145,17 @@ public class AkEvent : AkDragDropTriggerHandler
 			data.ExecuteAction(gameObj, AkActionOnEventType.AkActionOnEventType_Stop, (int)transitionDuration * 1000, curveInterpolation);
 		}
 	}
-
 	public void Stop(int _transitionDuration)
 	{
 		Stop(_transitionDuration, AkCurveInterpolation.AkCurveInterpolation_Linear);
 	}
-
 	public void Stop(int _transitionDuration, AkCurveInterpolation _curveInterpolation)
 	{
 		data.Stop(soundEmitterObject ? soundEmitterObject : gameObject, _transitionDuration, _curveInterpolation);
 	}
-
 	#region Obsolete
 	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_2)]
 	public int eventID { get { return (int)(data == null ? AkUnitySoundEngine.AK_INVALID_UNIQUE_ID : data.Id); } }
-
 	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_6)]
 	public byte[] valueGuid
 	{
@@ -196,16 +163,13 @@ public class AkEvent : AkDragDropTriggerHandler
 		{
 			if (data == null)
 				return null;
-
 			var objRef = data.ObjectReference;
 			return !objRef ? null : objRef.Guid.ToByteArray();
 		}
 	}
-
 	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_6)]
 	public AkEventCallbackData m_callbackData { get { return m_callbackDataInternal; } }
 	#endregion
-
 	#region WwiseMigration
 #pragma warning disable 0414 // private field assigned but not used.
 	[UnityEngine.HideInInspector]
@@ -221,7 +185,6 @@ public class AkEvent : AkDragDropTriggerHandler
 	[UnityEngine.Serialization.FormerlySerializedAs("m_callbackData")]
 	private AkEventCallbackData m_callbackDataInternal = null;
 #pragma warning restore 0414 // private field assigned but not used.
-
 #if UNITY_EDITOR
 	public virtual bool Migrate(UnityEditor.SerializedObject obj)
 	{
@@ -231,26 +194,21 @@ public class AkEvent : AkDragDropTriggerHandler
 			hasMigrated = AK.Wwise.TypeMigration.ProcessSingleGuidType(obj.FindProperty("data.WwiseObjectReference"), WwiseObjectType.Event,
 				obj.FindProperty("valueGuidInternal"), obj.FindProperty("eventIdInternal"));
 		}
-
 		if (!AkUtilities.IsMigrationRequired(AkUtilities.MigrationStep.AkEventCallback_v2018_1_6))
 			return hasMigrated;
-
 		var oldCallbackDataProperty = obj.FindProperty("m_callbackDataInternal");
 		var oldCallbackData = oldCallbackDataProperty.objectReferenceValue as AkEventCallbackData;
 		if (!oldCallbackData)
 			return hasMigrated;
-
 		var count = oldCallbackData.callbackFlags.Count;
 		if (count != oldCallbackData.callbackFunc.Count || count != oldCallbackData.callbackGameObj.Count)
 		{
 			UnityEngine.Debug.LogWarning("WwiseUnity: Inconsistent callback data!");
 			return hasMigrated;
 		}
-
 		var newCallbackData = obj.FindProperty("Callbacks");
 		newCallbackData.arraySize = count;
 		obj.FindProperty("useCallbacks").boolValue = true;
-
 		for (var i = 0; i < count; ++i)
 		{
 			var data = newCallbackData.GetArrayElementAtIndex(i);
@@ -259,7 +217,6 @@ public class AkEvent : AkDragDropTriggerHandler
 			data.FindPropertyRelative("Flags.value").intValue = oldCallbackData.callbackFlags[i];
 			UnityEngine.Debug.Log("WwiseUnity: Migrated Callback for function \"" + oldCallbackData.callbackFunc[i] + "\" on <" + oldCallbackData.callbackGameObj[i] + "> with flags <" + (AkCallbackType)oldCallbackData.callbackFlags[i] + ">.");
 		}
-
 		return true;
 	}
 #endif

@@ -6,16 +6,13 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 /// @brief This class is an example of how to load banks in Wwise, if the bank data was preloaded in memory.  
 /// This would be useful for situations where you use the WWW class
 public class AkMemBankLoader : UnityEngine.MonoBehaviour
@@ -23,42 +20,32 @@ public class AkMemBankLoader : UnityEngine.MonoBehaviour
 	private const int WaitMs = 50;
 	private const long AK_BANK_PLATFORM_DATA_ALIGNMENT = AkUnitySoundEngine.AK_BANK_PLATFORM_DATA_ALIGNMENT;
 	private const long AK_BANK_PLATFORM_DATA_ALIGNMENT_MASK = AK_BANK_PLATFORM_DATA_ALIGNMENT - 1;
-
 	/// Name of the bank to load
 	public string bankName = "";
-
 	/// Is the bank localized (situated in the language-specific folders)
 	public bool isLocalizedBank = false;
-
 	private string m_bankPath;
-
 	[UnityEngine.HideInInspector] public uint ms_bankID = AkUnitySoundEngine.AK_INVALID_BANK_ID;
-
 	private System.IntPtr ms_pInMemoryBankPtr = System.IntPtr.Zero;
 	private System.Runtime.InteropServices.GCHandle ms_pinnedArray;
-
 #if UNITY_2018_3_OR_NEWER
     private UnityEngine.Networking.UnityWebRequest ms_www;
 #else
     private UnityEngine.WWW ms_www;
 #endif
-
 	private void Start()
 	{
-        
 		if (isLocalizedBank)
 			LoadLocalizedBank(bankName);
 		else
 			LoadNonLocalizedBank(bankName);
 	}
-
 	/// Load a SoundBank from WWW object
 	public void LoadNonLocalizedBank(string in_bankFilename)
 	{
 		var bankPath = "file://" + System.IO.Path.Combine(AkBasePathGetter.Get().SoundBankBasePath, in_bankFilename);
 		DoLoadBank(bankPath);
 	}
-
 	/// Load a language-specific bank from WWW object
 	public void LoadLocalizedBank(string in_bankFilename)
 	{
@@ -67,11 +54,9 @@ public class AkMemBankLoader : UnityEngine.MonoBehaviour
 			               in_bankFilename);
 		DoLoadBank(bankPath);
 	}
-
     private uint AllocateAlignedBuffer(byte[] data)
     {
         uint uInMemoryBankSize = 0;
-
         // Allocate an aligned buffer
         try
         {
@@ -79,7 +64,6 @@ public class AkMemBankLoader : UnityEngine.MonoBehaviour
                 System.Runtime.InteropServices.GCHandle.Alloc(data, System.Runtime.InteropServices.GCHandleType.Pinned);
             ms_pInMemoryBankPtr = ms_pinnedArray.AddrOfPinnedObject();
             uInMemoryBankSize = (uint)data.Length;
-
             // Array inside the WWW object is not aligned. Allocate a new array for which we can guarantee the alignment.
             if ((ms_pInMemoryBankPtr.ToInt64() & AK_BANK_PLATFORM_DATA_ALIGNMENT_MASK) != 0)
             {
@@ -88,7 +72,6 @@ public class AkMemBankLoader : UnityEngine.MonoBehaviour
                     System.Runtime.InteropServices.GCHandle.Alloc(alignedBytes, System.Runtime.InteropServices.GCHandleType.Pinned);
                 var new_pInMemoryBankPtr = new_pinnedArray.AddrOfPinnedObject();
                 var alignedOffset = 0;
-
                 // New array is not aligned, so we will need to use an offset inside it to align our data.
                 if ((new_pInMemoryBankPtr.ToInt64() & AK_BANK_PLATFORM_DATA_ALIGNMENT_MASK) != 0)
                 {
@@ -97,10 +80,8 @@ public class AkMemBankLoader : UnityEngine.MonoBehaviour
                     alignedOffset = (int)(alignedPtr - new_pInMemoryBankPtr.ToInt64());
                     new_pInMemoryBankPtr = new System.IntPtr(alignedPtr);
                 }
-
                 // Copy the bank's bytes in our new array, at the correct aligned offset.
                 System.Array.Copy(data, 0, alignedBytes, alignedOffset, data.Length);
-
                 ms_pInMemoryBankPtr = new_pInMemoryBankPtr;
                 ms_pinnedArray.Free();
                 ms_pinnedArray = new_pinnedArray;
@@ -111,7 +92,6 @@ public class AkMemBankLoader : UnityEngine.MonoBehaviour
         }
         return uInMemoryBankSize;
     }
-
     private System.Collections.IEnumerator LoadFile()
 	{
 #if UNITY_2018_3_OR_NEWER
@@ -128,13 +108,11 @@ public class AkMemBankLoader : UnityEngine.MonoBehaviour
 		if (result != AKRESULT.AK_Success)
 			UnityEngine.Debug.LogError("WwiseUnity: AkMemBankLoader: bank loading failed with result " + result);
 	}
-
 	private void DoLoadBank(string in_bankPath)
 	{
 		m_bankPath = in_bankPath;
 		StartCoroutine(LoadFile());
 	}
-
 	private void OnDestroy()
 	{
 		if (ms_pInMemoryBankPtr != System.IntPtr.Zero)
