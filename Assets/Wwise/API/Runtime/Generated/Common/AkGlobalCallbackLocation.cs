@@ -8,8 +8,6 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
-
-
 public enum AkGlobalCallbackLocation {
   AkGlobalCallbackLocation_Register = (1 << 0),
   AkGlobalCallbackLocation_Begin = (1 << 1),

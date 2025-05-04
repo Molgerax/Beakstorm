@@ -6,9 +6,7 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
@@ -18,7 +16,6 @@ Copyright (c) 2025 Audiokinetic Inc.
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEditor;
-
 public static class AkWwiseProjectInfo
 {
 	private const string _dataFileName = "AkWwiseProjectData.asset";
@@ -26,17 +23,14 @@ public static class AkWwiseProjectInfo
 	private static string s_dataRelativeDirectory = System.IO.Path.Combine(s_wwiseEditorDirectory, "ProjectData").Replace('\\','/');
 	private static string s_dataRelativePath = System.IO.Path.Combine(s_dataRelativeDirectory, _dataFileName).Replace('\\','/');
 	private static string s_dataAssetPath = System.IO.Path.Combine("Assets", s_dataRelativePath).Replace('\\','/');
-
 	public static AkWwiseProjectData ProjectData;
 	private static AkWwiseTreeWAAPIDataSource _waapiPickerData = new AkWwiseTreeWAAPIDataSource();
 	private static AkWwiseTreeProjectDataSource _projectPickerData = new AkWwiseTreeProjectDataSource();
-
 	public enum DataSourceType
 	{
 		WwiseAuthoring,
 		FileSystem
 	}
-
 	public static AkWwiseTreeWAAPIDataSource WaapiPickerData
 	{
 		get
@@ -44,7 +38,6 @@ public static class AkWwiseProjectInfo
 			return _waapiPickerData;
 		}
 	}
-
 	public static AkWwiseTreeProjectDataSource ProjectPickerData
 	{
 		get
@@ -52,7 +45,6 @@ public static class AkWwiseProjectInfo
 			return _projectPickerData;
 		}
 	}
-
 	public static AkWwiseTreeDataSource GetTreeData()
 	{
 		AkWwiseTreeDataSource treeData;
@@ -66,12 +58,10 @@ public static class AkWwiseProjectInfo
 		}
 		return treeData;
 	}
-
 	private static bool WwiseFolderExists()
 	{
 		return System.IO.Directory.Exists(System.IO.Path.Combine(UnityEngine.Application.dataPath, "Wwise"));
 	}
-
 	public static AkWwiseProjectData GetData()
 	{
 		if (ProjectData == null && WwiseFolderExists())
@@ -79,12 +69,10 @@ public static class AkWwiseProjectInfo
 			try
 			{
 				ProjectData = UnityEditor.AssetDatabase.LoadAssetAtPath<AkWwiseProjectData>(s_dataAssetPath);
-
 				if (ProjectData == null)
 				{
 					var dataAbsolutePath = System.IO.Path.Combine(UnityEngine.Application.dataPath, s_dataRelativePath);
 					var dataExists = System.IO.File.Exists(dataAbsolutePath);
-					
 					if (dataExists)
 					{
 						UnityEngine.Debug.LogWarning("WwiseUnity: Unable to load asset at <" + dataAbsolutePath + ">.");
@@ -95,7 +83,6 @@ public static class AkWwiseProjectInfo
 						if (!System.IO.Directory.Exists(dataAbsoluteDirectory))
 							System.IO.Directory.CreateDirectory(dataAbsoluteDirectory);
 					}
-
 					CreateWwiseProjectData();
 				}
 			}
@@ -104,10 +91,8 @@ public static class AkWwiseProjectInfo
 				UnityEngine.Debug.LogError("WwiseUnity: Unable to load Wwise Data: " + e);
 			}
 		}
-
 		return ProjectData;
 	}
-
 	private static void CreateWwiseProjectData()
 	{
 		ProjectData = UnityEngine.ScriptableObject.CreateInstance<AkWwiseProjectData>();
@@ -127,7 +112,6 @@ public static class AkWwiseProjectInfo
 			Debug.Log("WwiseUnity : Can't create AkWwiseProjectData asset because it is null");
 		}
 	}
-
 	public static bool Populate()
 	{
 		var bDirty = false;
@@ -142,7 +126,6 @@ public static class AkWwiseProjectInfo
 				UnityEditor.AssetDatabase.Refresh();
 			}
 		}
-
 		return bDirty;
 	}
 }

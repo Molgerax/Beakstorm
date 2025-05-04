@@ -6,16 +6,13 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 [UnityEngine.AddComponentMenu("Wwise/AkState")]
 [UnityEngine.ExecuteInEditMode]
 [UnityEngine.DefaultExecutionOrder(-20)]
@@ -29,7 +26,6 @@ public class AkState : AkDragDropTriggerHandler
 {
 	public AK.Wwise.State data = new AK.Wwise.State();
 	protected override AK.Wwise.BaseType WwiseType { get { return data; } }
-	
 	protected override void Awake()
 	{
 		base.Awake();
@@ -43,19 +39,15 @@ public class AkState : AkDragDropTriggerHandler
 		}
 #endif
 	}
-
 	public override void HandleEvent(UnityEngine.GameObject in_gameObject)
 	{
 		data.SetValue();
 	}
-
 	#region Obsolete
 	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_6)]
 	public int valueID { get { return (int)(data == null ? AkUnitySoundEngine.AK_INVALID_UNIQUE_ID : data.Id); } }
-
 	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_6)]
 	public int groupID { get { return (int)(data == null ? AkUnitySoundEngine.AK_INVALID_UNIQUE_ID : data.GroupId); } }
-
 	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_6)]
 	public byte[] valueGuid
 	{
@@ -63,12 +55,10 @@ public class AkState : AkDragDropTriggerHandler
 		{
 			if (data == null)
 				return null;
-
 			var objRef = data.ObjectReference;
 			return !objRef ? null : objRef.Guid.ToByteArray();
 		}
 	}
-
 	[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_6)]
 	public byte[] groupGuid
 	{
@@ -76,13 +66,11 @@ public class AkState : AkDragDropTriggerHandler
 		{
 			if (data == null)
 				return null;
-
 			var objRef = data.GroupWwiseObjectReference;
 			return !objRef ? null : objRef.Guid.ToByteArray();
 		}
 	}
 	#endregion
-
 	#region WwiseMigration
 #pragma warning disable 0414 // private field assigned but not used.
 	[UnityEngine.HideInInspector]
@@ -102,19 +90,16 @@ public class AkState : AkDragDropTriggerHandler
 	[UnityEngine.Serialization.FormerlySerializedAs("groupGuid")]
 	private byte[] groupGuidInternal;
 #pragma warning restore 0414 // private field assigned but not used.
-
 #if UNITY_EDITOR
 	bool AK.Wwise.IMigratable.Migrate(UnityEditor.SerializedObject obj)
 	{
 		if (!AkUtilities.IsMigrationRequired(AkUtilities.MigrationStep.WwiseTypes_v2018_1_6))
 			return false;
-
 		return AK.Wwise.TypeMigration.ProcessDoubleGuidType(obj.FindProperty("data.WwiseObjectReference"), WwiseObjectType.State,
 			obj.FindProperty("valueGuidInternal"), obj.FindProperty("valueIdInternal"),
 			obj.FindProperty("groupGuidInternal"), obj.FindProperty("groupIdInternal"));
 	}
 #endif
-
 	#endregion
 }
 #endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.

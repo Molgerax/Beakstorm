@@ -5,39 +5,30 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 #if !(UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
 #if UNITY_EDITOR
-
 using UnityEditor;
 using System.Linq;
-
 [System.Serializable]
 public class WwiseSettings
 {
 	public const string Filename = "WwiseSettings.xml";
-
 	public static string Path
 	{
 		get { return System.IO.Path.Combine(UnityEngine.Application.dataPath, Filename); }
 	}
-
 	public static bool Exists { get { return System.IO.File.Exists(Path); } }
-
 	public bool CopySoundBanksAsPreBuildStep = true;
 	public bool GenerateSoundBanksAsPreBuildStep = false;
 	public string SoundbankPath;
 	public string GeneratedSoundbanksPath;
-
 	public bool CreatedPicker = false;
 	public bool CreateWwiseGlobal = true;
 	public bool CreateWwiseListener = true;
@@ -48,15 +39,11 @@ public class WwiseSettings
 	public string WwiseInstallationPathMac;
 	public string WwiseInstallationPathWindows;
 	public string WwiseProjectPath;
-
 	public bool UseWaapi = true;
 	public string WaapiPort = "8080";
 	public string WaapiIP = "127.0.0.1";
-
 	public string XMLTranslatorTimeout = "0";	//Timeout (in ms) for error translator through SoundBanksInfo.xml. Set to 0 to disable.
 	public string WaapiTranslatorTimeout = "0"; //Timeout (in ms) for error translator through WAAPI. Set to 0 to disable.
-
-
 	[System.Xml.Serialization.XmlIgnore]
 	public string WwiseInstallationPath
 	{
@@ -68,11 +55,9 @@ public class WwiseSettings
 		set { WwiseInstallationPathWindows = value; }
 #endif
 	}
-
 	internal static WwiseSettings LoadSettings()
 	{
 		var settings = new WwiseSettings();
-
 		try
 		{
 			var path = Path;
@@ -90,14 +75,12 @@ public class WwiseSettings
 					settings.WwiseProjectPath = AkUtilities.MakeRelativePath(UnityEngine.Application.dataPath, foundWwiseProjects[0]);
 				else
 					settings.WwiseProjectPath = string.Empty;
-
 				settings.SoundbankPath = AkBasePathGetter.DefaultBasePath;
 			}
 		}
 		catch
 		{
 		}
-
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 		if (string.IsNullOrEmpty(settings.GeneratedSoundbanksPath))
 		{
@@ -118,21 +101,17 @@ public class WwiseSettings
 #endif
 		return settings;
 	}
-
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 	public void CheckGeneratedBanksPath()
 	{
 			var fullGeneratedSoundbanksPath = AkUtilities.GetFullPath(UnityEngine.Application.dataPath, GeneratedSoundbanksPath);
 			var appDataPath = UnityEngine.Application.dataPath.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
-
 			if (!fullGeneratedSoundbanksPath.Contains(appDataPath))
 			{
 				UnityEngine.Debug.LogWarning("GeneratedSoundbanksPath is currently set to a path outside of the Assets folder. Generated SoundBanks will not be properly imported for Addressables. Please change this in Project Settings > Wwise Integration.");
 			}
 	}
 #endif
-
-
 	public void SaveSettings()
 	{
 		try
@@ -154,11 +133,9 @@ public class WwiseSettings
 		}
 	}
 }
-
 public class AkWwiseEditorSettings
 {
 	private static WwiseSettings s_Instance;
-
 	public static WwiseSettings Instance
 	{
 		get
@@ -168,22 +145,18 @@ public class AkWwiseEditorSettings
 			return s_Instance;
 		}
 	}
-
 	public static void Reload()
 	{
 		s_Instance = WwiseSettings.LoadSettings();
 	}
-
 	public static string WwiseProjectAbsolutePath
 	{
 		get { return AkUtilities.GetFullPath(UnityEngine.Application.dataPath, Instance.WwiseProjectPath); }
 	}
-
 	public static string WwiseScriptableObjectRelativePath
 	{
 		get { return System.IO.Path.Combine(System.IO.Path.Combine("Assets", "Wwise"), "ScriptableObjects"); }
 	}
-
 #region GUI
 #if UNITY_2018_3_OR_NEWER
 	class SettingsProvider : UnityEditor.SettingsProvider
@@ -195,37 +168,29 @@ public class AkWwiseEditorSettings
 		{
 			public static string WwiseProject = "Wwise Project";
 			public static UnityEngine.GUIContent WwiseProjectPath = new UnityEngine.GUIContent("Wwise Project", "Location of the Wwise project associated with this game. It is recommended to put it in the Unity Project root folder, outside the Assets folder.");
-
 			public static string WwiseApplicationPath = "Wwise Application Path";
 			public static UnityEngine.GUIContent WwiseInstallationPath = new UnityEngine.GUIContent("Wwise Application Path", "Location of the Wwise application. This is required to generate the SoundBanks in Unity.");
-
 			public static string AssetManagement = "Asset Management";
 			public static UnityEngine.GUIContent SoundbankPath = new UnityEngine.GUIContent("SoundBanks Path", "Location of the SoundBanks relative to (and within) the StreamingAssets folder.");
 			public static UnityEngine.GUIContent CopySoundBanksAsPreBuildStep = new UnityEngine.GUIContent("Copy SoundBanks at pre-Build step", "Copies the SoundBanks in the appropriate location for building and deployment. It is recommended to leave this box checked.");
 			public static UnityEngine.GUIContent GenerateSoundBanksAsPreBuildStep = new UnityEngine.GUIContent("Generate SoundBanks at pre-Build step", "Generates the SoundBanks before copying them during pre-Build step. It is recommended to leave this box unchecked if SoundBanks are generated on a specific build machine.");
-
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 			public static UnityEngine.GUIContent GeneratedSoundbankPath = new UnityEngine.GUIContent("Generated SoundBanks Path", "Destination folder for generated SoundBanks. Changing this will update your Wwise project settings");
 #endif
-
 			public static string GlobalSettings = "Global Settings";
 			public static UnityEngine.GUIContent CreateWwiseGlobal = new UnityEngine.GUIContent("Create WwiseGlobal GameObject", "The WwiseGlobal object is a GameObject that contains the Initializing and Terminating scripts for the Wwise Sound Engine. In the Editor workflow, it is added to every scene, so that it can be properly previewed in the Editor. In the game, only one instance is created, in the first scene, and it is persisted throughout the game. It is recommended to leave this box checked.");
 			public static UnityEngine.GUIContent CreateWwiseListener = new UnityEngine.GUIContent("Add Listener to Main Camera", "In order for positioning to work, the AkAudioListener script needs to be attached to the main camera in every scene. If you wish for your listener to be attached to another GameObject, uncheck this box.");
 			public static UnityEngine.GUIContent ObjectReferenceAutoCleanup = new UnityEngine.GUIContent("Auto-delete WwiseObjectReferences", "Components that reference Wwise objects such as Events, Banks, and Busses track these references using WwiseObjectReference assets that are created in the Wwise/ScriptableObjects folder. If this option is checked and a Wwise Object has been removed from the Wwise Project, when parsing the Wwise project structure, the corresponding asset in the Wwise/ScriptableObjects folder will be deleted.");
 			public static UnityEngine.GUIContent LoadSoundEngineInEditMode = new UnityEngine.GUIContent("Load Sound Engine in Edit Mode", "Load the Sound Engine in Edit Mode. Disable this setting to verify the Sound Engine is properly enabled in-game.");
-
 			public static string InEditorWarnings = "In Editor Warnings";
 			public static UnityEngine.GUIContent ShowSpatialAudioWarningMsg = new UnityEngine.GUIContent("Show Spatial Audio Warnings", "Warnings will be displayed on Wwise components that are not configured for Spatial Audio to function properly. It is recommended to leave this box checked.");
-
 			public static string WaapiSection = "Wwise Authoring API (WAAPI)";
 			public static UnityEngine.GUIContent UseWaapi = new UnityEngine.GUIContent("Connect to Wwise");
 			public static UnityEngine.GUIContent WaapiIP = new UnityEngine.GUIContent("WAAPI IP address");
 			public static UnityEngine.GUIContent WaapiPort = new UnityEngine.GUIContent("WAAPI port");
-
 			public static string TranslatorSection = "Wwise Error Message Translator";
 			public static UnityEngine.GUIContent XMLTranslatorTimeout = new UnityEngine.GUIContent("XML Translator Timeout", "Maximum time (ms) taken to convert numeric ID in errors through SoundBankInfo.xml. Set to 0 to disable. Change will be applied next time play mode is entered.");
 			public static UnityEngine.GUIContent WaapiTranslatorTimeout = new UnityEngine.GUIContent("WAAPI Translator Timeout", "Maximum time (ms) taken to convert numeric ID in errors through WAAPI. Set to 0 to disable. Change will be applied next time play mode is entered.");
-
 			private static UnityEngine.GUIStyle version;
 			public static UnityEngine.GUIStyle Version
 			{
@@ -233,7 +198,6 @@ public class AkWwiseEditorSettings
 				{
 					if (version != null)
 						return version;
-
 					version = new UnityEngine.GUIStyle(UnityEditor.EditorStyles.whiteLargeLabel);
 					if (!UnityEngine.Application.HasProLicense())
 					{
@@ -245,7 +209,6 @@ public class AkWwiseEditorSettings
 					return version;
 				}
 			}
-
 			private static UnityEngine.GUIStyle textField;
 			public static UnityEngine.GUIStyle TextField
 			{
@@ -257,21 +220,17 @@ public class AkWwiseEditorSettings
 				}
 			}
 		}
-
 		private static bool Ellipsis()
 		{
 			return UnityEngine.GUILayout.Button("...", UnityEngine.GUILayout.Width(30));
 		}
-
 #if UNITY_2018_3_OR_NEWER
 		private SettingsProvider(string path) : base(path, UnityEditor.SettingsScope.Project) { }
-
 		[UnityEditor.SettingsProvider]
 		public static UnityEditor.SettingsProvider CreateMyCustomSettingsProvider()
 		{
 			return new SettingsProvider("Project/Wwise Integration") { keywords = GetSearchKeywordsFromGUIContentProperties<Styles>() };
 		}
-
 		public override void OnDeactivate()
 		{
 			base.OnDeactivate();
@@ -284,7 +243,6 @@ public class AkWwiseEditorSettings
 				AkUnitySoundEngineInitialization.Instance.TerminateSoundEngine();
 			}
 		}
-
 		public override void OnGUI(string searchContext)
 #else
 		[UnityEditor.MenuItem("Edit/Wwise Settings...", false, (int)AkWwiseWindowOrder.WwiseSettings)]
@@ -295,25 +253,19 @@ public class AkWwiseEditorSettings
 			window.position = new UnityEngine.Rect(100, 100, 850, 360);
 			window.titleContent = new UnityEngine.GUIContent("Wwise Settings");
 		}
-
 		private void OnGUI()
 #endif
 		{
 			bool changed = false;
-
 			var labelWidth = UnityEditor.EditorGUIUtility.labelWidth;
 			UnityEditor.EditorGUIUtility.labelWidth += 100;
-
 			var settings = Instance;
-
 			UnityEngine.GUILayout.Label(string.Format("Wwise v{0} Settings.", AkUnitySoundEngine.WwiseVersion), Styles.Version);
 			UnityEngine.GUILayout.Label(Styles.WwiseProject, UnityEditor.EditorStyles.boldLabel);
-
 			using (new UnityEngine.GUILayout.HorizontalScope("box"))
 			{
 				UnityEditor.EditorGUILayout.PrefixLabel(Styles.WwiseProjectPath);
 				UnityEditor.EditorGUILayout.SelectableLabel(settings.WwiseProjectPath, Styles.TextField, UnityEngine.GUILayout.Height(17));
-
 				if (Ellipsis())
 				{
 					var OpenInPath = System.IO.Path.GetDirectoryName(AkUtilities.GetFullPath(UnityEngine.Application.dataPath, settings.WwiseProjectPath));
@@ -332,15 +284,12 @@ public class AkWwiseEditorSettings
 					}
 				}
 			}
-
 			UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 			UnityEngine.GUILayout.Label(Styles.WwiseApplicationPath, UnityEditor.EditorStyles.boldLabel);
-
 			using (new UnityEngine.GUILayout.HorizontalScope("box"))
 			{
 				UnityEditor.EditorGUILayout.PrefixLabel(Styles.WwiseInstallationPath);
 				UnityEditor.EditorGUILayout.SelectableLabel(settings.WwiseInstallationPath, Styles.TextField, UnityEngine.GUILayout.Height(17));
-
 				if (Ellipsis())
 				{
 #if UNITY_EDITOR_OSX
@@ -355,11 +304,8 @@ public class AkWwiseEditorSettings
 					}
 				}
 			}
-
 			UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 			UnityEngine.GUILayout.Label(Styles.AssetManagement, UnityEditor.EditorStyles.boldLabel);
-
-
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 			using (new UnityEngine.GUILayout.VerticalScope("box"))
 			{
@@ -367,7 +313,6 @@ public class AkWwiseEditorSettings
 				{
 					UnityEditor.EditorGUILayout.PrefixLabel(Styles.GeneratedSoundbankPath);
 					UnityEditor.EditorGUILayout.SelectableLabel(settings.GeneratedSoundbanksPath, Styles.TextField, UnityEngine.GUILayout.Height(17));
-
 					if (Ellipsis())
 					{
 						var FullPath = AkUtilities.GetFullPath(UnityEngine.Application.dataPath, settings.GeneratedSoundbanksPath);
@@ -393,10 +338,8 @@ public class AkWwiseEditorSettings
 									var projectPath = AkUtilities.GetFullPath(UnityEngine.Application.dataPath, settings.WwiseProjectPath);
 									var relPath = AkUtilities.MakeRelativePath(System.IO.Path.GetDirectoryName(projectPath), path);
 									AkUtilities.SetSoundbanksDestinationFoldersInWproj(projectPath, relPath);
-
 									var fullPreviousPath = AkUtilities.GetFullPath(UnityEngine.Application.dataPath, previousPath);
 									var appDataPath = UnityEngine.Application.dataPath.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
-
 									if (!string.IsNullOrEmpty(previousPath) && System.IO.Directory.Exists(fullPreviousPath)) 
 									{
 										UnityEditor.AssetDatabase.Refresh();
@@ -419,14 +362,12 @@ public class AkWwiseEditorSettings
 				}
 			}
 #else
-
 			using (new UnityEngine.GUILayout.VerticalScope("box"))
 			{
 				using (new UnityEngine.GUILayout.HorizontalScope())
 				{
 					UnityEditor.EditorGUILayout.PrefixLabel(Styles.SoundbankPath);
 					UnityEditor.EditorGUILayout.SelectableLabel(settings.SoundbankPath, Styles.TextField, UnityEngine.GUILayout.Height(17));
-
 					if (Ellipsis())
 					{
 						var FullPath = AkUtilities.GetFullPath(UnityEngine.Application.streamingAssetsPath, settings.SoundbankPath);
@@ -436,7 +377,6 @@ public class AkWwiseEditorSettings
 						{
 							var stremingAssetsIndex = UnityEngine.Application.dataPath.Split('/').Length;
 							var folders = path.Split('/');
-
 							if (folders.Length - 1 < stremingAssetsIndex || !string.Equals(folders[stremingAssetsIndex], "StreamingAssets", System.StringComparison.OrdinalIgnoreCase))
 							{
 								UnityEditor.EditorUtility.DisplayDialog("Error", "The SoundBank destination folder must be located within the Unity project 'StreamingAssets' folder.", "Ok");
@@ -445,7 +385,6 @@ public class AkWwiseEditorSettings
 							{
 								var previousPath = settings.SoundbankPath;
 								var newPath = AkUtilities.MakeRelativePath(UnityEngine.Application.streamingAssetsPath, path);
-
 								if (previousPath != newPath)
 								{
 									settings.SoundbankPath = newPath;
@@ -456,7 +395,6 @@ public class AkWwiseEditorSettings
 						}
 					}
 				}
-
 				UnityEditor.EditorGUI.BeginChangeCheck();
 				settings.CopySoundBanksAsPreBuildStep = UnityEditor.EditorGUILayout.Toggle(Styles.CopySoundBanksAsPreBuildStep, settings.CopySoundBanksAsPreBuildStep);
 				UnityEngine.GUI.enabled = settings.CopySoundBanksAsPreBuildStep;
@@ -466,10 +404,8 @@ public class AkWwiseEditorSettings
 					changed = true;
 			}
 #endif
-
 			UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 			UnityEngine.GUILayout.Label(Styles.GlobalSettings, UnityEditor.EditorStyles.boldLabel);
-
 			UnityEditor.EditorGUI.BeginChangeCheck();
 			using (new UnityEngine.GUILayout.VerticalScope("box"))
 			{
@@ -478,15 +414,12 @@ public class AkWwiseEditorSettings
 				settings.ObjectReferenceAutoCleanup = UnityEditor.EditorGUILayout.Toggle(Styles.ObjectReferenceAutoCleanup, settings.ObjectReferenceAutoCleanup);
 				settings.LoadSoundEngineInEditMode = UnityEditor.EditorGUILayout.Toggle(Styles.LoadSoundEngineInEditMode, settings.LoadSoundEngineInEditMode);
 			}
-
 			UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 			UnityEngine.GUILayout.Label(Styles.InEditorWarnings, UnityEditor.EditorStyles.boldLabel);
-
 			using (new UnityEngine.GUILayout.VerticalScope("box"))
 			{
 				settings.ShowSpatialAudioWarningMsg = UnityEditor.EditorGUILayout.Toggle(Styles.ShowSpatialAudioWarningMsg, settings.ShowSpatialAudioWarningMsg);
 			}
-
 			UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 			UnityEngine.GUILayout.Label(Styles.WaapiSection, UnityEditor.EditorStyles.boldLabel);
 			using (new UnityEngine.GUILayout.VerticalScope("box"))
@@ -495,7 +428,6 @@ public class AkWwiseEditorSettings
 				settings.WaapiPort = UnityEditor.EditorGUILayout.TextField(Styles.WaapiPort, settings.WaapiPort);
 				settings.WaapiIP = UnityEditor.EditorGUILayout.TextField(Styles.WaapiIP, settings.WaapiIP);
 			}
-
 			UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
 			UnityEngine.GUILayout.Label(Styles.TranslatorSection, UnityEditor.EditorStyles.boldLabel);
 			using (new UnityEngine.GUILayout.VerticalScope("box"))
@@ -503,14 +435,10 @@ public class AkWwiseEditorSettings
 				settings.XMLTranslatorTimeout = UnityEditor.EditorGUILayout.TextField(Styles.XMLTranslatorTimeout, settings.XMLTranslatorTimeout);
 				settings.WaapiTranslatorTimeout = UnityEditor.EditorGUILayout.TextField(Styles.WaapiTranslatorTimeout, settings.WaapiTranslatorTimeout);
 			}
-
 			if (UnityEditor.EditorGUI.EndChangeCheck())
 				changed = true;
-
 			UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
-
 			UnityEditor.EditorGUIUtility.labelWidth = labelWidth;
-
 			if (changed)
 			{
 				settings.SaveSettings();

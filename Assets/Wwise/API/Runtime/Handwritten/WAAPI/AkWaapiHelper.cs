@@ -5,19 +5,15 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
 /// <summary>
 /// Base class for Json serializable objects. 
 /// Implements implicit cast to string using UnityEngine.JsonUtility.ToJson.
@@ -27,7 +23,6 @@ public class JsonSerializable
 {
 	public static implicit operator string(JsonSerializable o) => UnityEngine.JsonUtility.ToJson(o);
 }
-
 /// <summary>
 /// Abstract base class for WAAPI command arguments.
 /// </summary>
@@ -35,7 +30,6 @@ public class JsonSerializable
 public abstract class Args : JsonSerializable
 {
 }
-
 /// <summary>
 /// WAAPI arguments containing a WAQL string.
 /// </summary>
@@ -48,7 +42,6 @@ public class WaqlArgs : Args
 		waql = query;
 	}
 }
-
 /// <summary>
 /// WAAPI arguments containing an object identfier.
 /// </summary>
@@ -56,14 +49,11 @@ public class WaqlArgs : Args
 public class ArgsObject : Args
 {
 	public string @object;
-
 	public ArgsObject(string objectId)
 	{
 		@object = objectId;
 	}
 }
-
-
 /// <summary>
 /// WAAPI arguments containing an object identfier and new value used when renaming an object.
 /// </summary>
@@ -72,14 +62,12 @@ public class ArgsRename : Args
 {
 	public string @object;
 	public string value;
-
 	public ArgsRename(string objectId, string value)
 	{
 		@object = objectId;
 		this.value = value;
 	}
 }
-
 /// <summary>
 /// WAAPI arguments containing an object identfier and name used when deleting an object.
 /// </summary>
@@ -87,13 +75,11 @@ public class ArgsRename : Args
 public class ArgsDisplayName : Args
 {
 	public string displayName;
-
 	public ArgsDisplayName(string displayName)
 	{
 		this.displayName = displayName;
 	}
 }
-
 /// <summary>
 /// WAAPI arguments containing an object identfier and command field.
 /// Used by AkWaapiUtilities.SelectObjectInAuthoringAsync().
@@ -109,7 +95,6 @@ public class ArgsCommand : Args
 		objects = objectIds;
 	}
 }
-
 /// <summary>
 /// WAAPI arguments containing an Event identfier and transport ID.
 /// Used to toggle Event playback.
@@ -121,7 +106,6 @@ public class ArgsPlay : Args
 	public int transport;
 	public ArgsPlay(string a, int t) { action = a; transport = t; }
 }
-
 /// <summary>
 /// WAAPI arguments containing a transport ID.
 /// Used to specify transports in transport-specific commands.
@@ -132,16 +116,13 @@ public class ArgsTransport : Args
 	public int transport;
 	public ArgsTransport(int t) { transport = t; }
 }
-
 /// <summary>
 /// Abstract base class for WAAPI command options.
 /// </summary>
 [System.Serializable]
 public class Options : JsonSerializable
 {
-
 }
-
 /// <summary>
 /// WAAPI options to specify the names of fields to return in a WAAPI request returning WwiseObjects.
 /// </summary>
@@ -149,13 +130,11 @@ public class Options : JsonSerializable
 public class ReturnOptions : Options
 {
 	public string[] @return;
-
 	public ReturnOptions(string [] infokeys)
 	{
 		@return = infokeys;
 	}
 }
-
 /// <summary>
 /// WAAPI options used to specify the transport ID when subscribing.
 /// </summary>
@@ -168,7 +147,6 @@ public class TransportOptions : Options
 		transport = id;
 	}
 }
-
 /// <summary>
 /// Used to deserialize the response from an ak.wwise.core.transport.create command. 
 /// Contains the transport ID.
@@ -178,7 +156,6 @@ public class ReturnTransport : JsonSerializable
 {
 	public int transport;
 }
-
 /// <summary>
 /// Used to deserialize transport-state information receieved from the transport.stateChanged topic.
 /// </summary>
@@ -190,7 +167,6 @@ public class TransportState : JsonSerializable
 	public string @object;
 	public int transport;
 }
-
 /// <summary>
 /// Used to deserialize WAAPI error messages.
 /// </summary>
@@ -200,7 +176,6 @@ public class ErrorMessage : JsonSerializable
 	public string message;
 	public ErrorDetails details;
 }
-
 /// <summary>
 /// Used to deserialize details in WAAPI error messages.
 /// </summary>
@@ -210,7 +185,6 @@ public class ErrorDetails : JsonSerializable
 	public string [] reasons;
 	public string procedureUri;
 }
-
 /// <summary>
 /// Class used to deserialize a WAAPI response containing Wwise objects.
 /// </summary>
@@ -219,7 +193,6 @@ public class ReturnWwiseObjects : JsonSerializable
 {
 	public List<WwiseObjectInfoJsonObject> @return;
 }
-
 /// <summary>
 /// Generic class to deserialize a WAAPI response containing Wwise objects with custom return options.
 /// </summary>
@@ -228,7 +201,6 @@ public class ReturnWwiseObjects<T> : JsonSerializable
 {
 	public List<T> @return;
 }
-
 /// <summary>
 /// Class used to deserialize selected Wwise objects published on the ak.wwise.ui.selectionChanged topic.
 /// </summary>
@@ -237,7 +209,6 @@ public class SelectedWwiseObjects : JsonSerializable
 {
 	public List<WwiseObjectInfoJsonObject> objects;
 }
-
 /// <summary>
 /// Used to deserialize information published on the ak.wwise.core.@object.nameChanged topic.
 /// </summary>
@@ -247,15 +218,12 @@ public class WwiseRenameInfo : JsonSerializable
 	public WwiseObjectInfoJsonObject @object;
 	public string newName;
 	public string oldName;
-
 	public WwiseObjectInfo objectInfo;
 	public void ParseInfo()
 	{
 		objectInfo = @object;
 	}
 }
-
-
 /// <summary>
 /// Used to deserialize information published on the ak.wwise.core.@object.childAdded and ak.wwise.core.@object.childRemoved topics.
 /// </summary>
@@ -264,17 +232,14 @@ public class WwiseChildModifiedInfo : JsonSerializable
 {
 	public WwiseObjectInfoJsonObject parent;
 	public WwiseObjectInfoJsonObject child;
-
 	public WwiseObjectInfo parentInfo;
 	public WwiseObjectInfo childInfo;
-
 	public void ParseInfo()
 	{
 		parentInfo = parent;
 		childInfo = child;
 	}
 }
-
 /// <summary>
 /// Used to deserialize information from a request for a Wwise object.
 /// Implements an implicit cast to WwiseObjectInfo.
@@ -291,12 +256,10 @@ public class WwiseObjectInfoJsonObject
 	public string filePath;
 	public string workunitType;
 	public string soundbankBnkFilePath;
-
 	public static implicit operator WwiseObjectInfo(WwiseObjectInfoJsonObject info)
 	{
 		return ToObjectInfo(info);
 	}
-
 	public static WwiseObjectInfo ToObjectInfo(WwiseObjectInfoJsonObject info)
 	{
 		var type = info.type == null ? "" : info.type;
@@ -304,7 +267,6 @@ public class WwiseObjectInfoJsonObject
 		var objectType = WaapiHelper.GetWwiseObjectTypeFromString(type.ToLower(), wutype.ToLower());
 		var parentID = info.parent.id == null ? System.Guid.Empty : System.Guid.Parse(info.parent.id);
 		var objectGuid = info.id == null ? System.Guid.Empty : System.Guid.Parse(info.id);
-
 		return new WwiseObjectInfo
 		{
 			objectGUID = objectGuid,
@@ -319,7 +281,6 @@ public class WwiseObjectInfoJsonObject
 		};
 	}
 }
-
 /// <summary>
 /// Contains the GUID of the returned object's parent.
 /// </summary>
@@ -328,8 +289,6 @@ public class WwiseObjectInfoParent
 {
 	public string id;
 }
-
-
 /// <summary>
 /// Class containing the information returned by a WAAPI request for an object.
 /// </summary>
@@ -346,7 +305,6 @@ public struct WwiseObjectInfo
 	public string filePath;
 	public string soundbankBnkFilePath;
 }
-
 /// <summary>
 /// Contains a helper function GetWwiseObjectTypeFromString.
 /// </summary>
@@ -356,20 +314,17 @@ public static class WaapiHelper
 	{
 		if (!WaapiKeywords.typeStringDict.ContainsKey(typeString))
 			return WwiseObjectType.None;
-
 		if (workUnitType != string.Empty)
 		{
 			if (workUnitType == "folder")
 			{
 				return WaapiKeywords.typeStringDict["physicalfolder"];
 			}
-
 			return WaapiKeywords.typeStringDict[typeString];
 		}
 		return WaapiKeywords.typeStringDict[typeString];
 	}
 }
-
 /// <summary>
 /// Contains fields for specific WAAPI keywords.
 /// </summary>
@@ -457,7 +412,6 @@ public class WaapiKeywords
 	public const string OPEN_SOUNDBANK_FOLDER = "OpenContainingFolderSoundbank";
 	public const string OPEN_WORKUNIT_FOLDER = "OpenContainingFolderWorkUnit";
 	public const string OPEN_WAV_FOLDER = "OpenContainingFolderWAV";
-
 	/// <summary>
 	/// Maps WwiseObjectType to strings.
 	/// </summary>
@@ -480,7 +434,6 @@ public class WaapiKeywords
 			{WwiseObjectType.Trigger, "Trigger"},
 			{WwiseObjectType.AcousticTexture, "AcousticTexture"}
 		});
-
 	/// <summary>
 	/// Maps root folder names to displayed strings.
 	/// </summary>
@@ -494,7 +447,6 @@ public class WaapiKeywords
 		{ "Triggers", "Triggers"},
 		{ "Virtual Acoustics", "Virtual Acoustics"},
 	});
-
 	/// <summary>
 	/// Maps strings to WwiseObjectType.
 	/// </summary>

@@ -6,16 +6,13 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 [UnityEngine.AddComponentMenu("Wwise/AkWwiseTrigger")]
 [UnityEngine.ExecuteInEditMode]
 /// @brief This will call \c AkUnitySoundEngine.PostTrigger() whenever the selected Unity event is triggered. For example this component could be set on a Unity collider to trigger when an object enters it.
@@ -28,7 +25,6 @@ public class AkWwiseTrigger : AkDragDropTriggerHandler
     {
 	public AK.Wwise.Trigger data = new AK.Wwise.Trigger();
 	protected override AK.Wwise.BaseType WwiseType { get { return data; } }
-
 	protected override void Awake()
 	{
 		base.Awake();
@@ -42,7 +38,6 @@ public class AkWwiseTrigger : AkDragDropTriggerHandler
 		}
 #endif
 	}
-	
 	protected override void Start()
 	{
 #if UNITY_EDITOR
@@ -56,7 +51,6 @@ public class AkWwiseTrigger : AkDragDropTriggerHandler
 		var gameObj = useOtherObject && in_gameObject != null ? in_gameObject : gameObject;
 		data.Post(gameObj);
 	}
-
 	#region WwiseMigration
 #if UNITY_EDITOR
 	public virtual bool Migrate(UnityEditor.SerializedObject obj)

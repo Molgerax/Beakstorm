@@ -8,8 +8,6 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
-
-
 public enum AkAudioObjectDestination {
   eDefault = 0,
   eMainMix = 1,

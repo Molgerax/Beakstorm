@@ -8,8 +8,6 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
-
-
 public enum AKRESULT {
   AK_NotImplemented = 0,
   AK_Success = 1,

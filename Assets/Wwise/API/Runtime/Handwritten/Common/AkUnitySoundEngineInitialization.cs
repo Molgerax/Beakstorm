@@ -5,29 +5,22 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 using System;
 using System.Threading.Tasks;
-
 public class AkUnitySoundEngineInitialization
 {
 	protected static AkUnitySoundEngineInitialization m_Instance;
-
 	public delegate void InitializationDelegate();
 	public InitializationDelegate initializationDelegate;
-	
 	public delegate void ReInitializationDelegate();
 	public ReInitializationDelegate reInitializationDelegate;
-	
 	public delegate void TerminationDelegate();
 	public TerminationDelegate terminationDelegate;
 	public static AkUnitySoundEngineInitialization Instance
@@ -38,16 +31,13 @@ public class AkUnitySoundEngineInitialization
 			{
 				m_Instance = new AkUnitySoundEngineInitialization();
 			}
-
 			return m_Instance;
 		}
 	}
-
 	public bool InitializeSoundEngine()
 	{
 		UnityEngine.Debug.LogFormat("WwiseUnity: Wwise(R) SDK Version {0}.", AkUnitySoundEngine.WwiseVersion);
-		
-#if UNITY_ANDROID && ! UNITY_EDITOR
+#if (UNITY_ANDROID && !UNITY_EDITOR) || (UNITY_ANDROID && UNITY_EDITOR_LINUX)
 		//Obtains the Android Java Object "currentActivity" in order to set it for the android io hook initialization
 		try
 		{
@@ -56,7 +46,6 @@ public class AkUnitySoundEngineInitialization
 			{
 				UnityEngine.AndroidJavaObject activity = unityPlayer.GetStatic<UnityEngine.AndroidJavaObject>("currentActivity");
 				IntPtr rawActivityPtr = activity.GetRawObject(); // Get the JNI pointer
-
 				// Pass the raw pointer to the native side
 				AkUnitySoundEngine.SetAndroidActivity(rawActivityPtr);
 			}
@@ -74,14 +63,11 @@ public class AkUnitySoundEngineInitialization
 			AkUnitySoundEngine.Term();
 			return false;
 		}
-
 		if (AkUnitySoundEngine.InitSpatialAudio(ActivePlatformSettings.AkSpatialAudioInitSettings) != AKRESULT.AK_Success)
 		{
 			UnityEngine.Debug.LogWarning("WwiseUnity: Failed to initialize spatial audio.");
 		}
-
 		AkUnitySoundEngine.InitCommunication(ActivePlatformSettings.AkCommunicationSettings);
-
 		var akBasePathGetterInstance = AkBasePathGetter.Get();
 		var soundBankBasePath = akBasePathGetterInstance.SoundBankBasePath;
 #if UNITY_OPENHARMONY && !UNITY_EDITOR
@@ -94,10 +80,8 @@ public class AkUnitySoundEngineInitialization
 			AkUnitySoundEngine.Term();
 			return false;
 		}
-
 		var persistentDataPath = akBasePathGetterInstance.PersistentDataPath;
 		var isBasePathSameAsPersistentPath = soundBankBasePath == persistentDataPath;
-		
 #if UNITY_ANDROID
 		var canSetBasePath = !isBasePathSameAsPersistentPath;
 		var canSetPersistentDataPath = true;
@@ -105,7 +89,6 @@ public class AkUnitySoundEngineInitialization
 		var canSetBasePath = true;
 		var canSetPersistentDataPath = !isBasePathSameAsPersistentPath;
 #endif
-
 		if (canSetBasePath && AkUnitySoundEngine.SetBasePath(soundBankBasePath) != AKRESULT.AK_Success)
 		{
 #if !AK_WWISE_ADDRESSABLES
@@ -120,47 +103,37 @@ public class AkUnitySoundEngineInitialization
 #endif
 #endif
 		}
-
 		if (canSetPersistentDataPath && !string.IsNullOrEmpty(persistentDataPath))
 		{
 			AkUnitySoundEngine.AddBasePath(persistentDataPath);
 		}
-
 		var decodedBankFullPath = akBasePathGetterInstance.DecodedBankFullPath;
 		if (!string.IsNullOrEmpty(decodedBankFullPath) && AkWwiseInitializationSettings.Instance.IsDecodedBankEnabled)
 		{
 			// AkUnitySoundEngine.SetDecodedBankPath creates the folders for writing to (if they don't exist)
 			AkUnitySoundEngine.SetDecodedBankPath(decodedBankFullPath);
-
 			// Adding decoded bank path last to ensure that it is the first one used when writing decoded banks.
 			AkUnitySoundEngine.AddBasePath(decodedBankFullPath);
 		}
-
 		AkUnitySoundEngine.SetCurrentLanguage(ActivePlatformSettings.InitialLanguage);
-
 		AkCallbackManager.Init(ActivePlatformSettings.CallbackManagerInitializationSettings);
 		UnityEngine.Debug.Log("WwiseUnity: Sound engine initialized successfully.");
 		LoadInitBank();
 		initializationDelegate?.Invoke();
 		return true;
 	}
-
 	protected virtual void LoadInitBank()
 	{
 		AkBankManager.LoadInitBank();
 	}
-
 	protected virtual void ClearBanks()
 	{
 		AkUnitySoundEngine.ClearBanks();
 	}
-
 	protected virtual void ResetBanks()
 	{
 		AkBankManager.Reset();
 	}
-
-
 	public bool ResetSoundEngine(bool isInPlayMode)
 	{
 		if (isInPlayMode)
@@ -168,13 +141,10 @@ public class AkUnitySoundEngineInitialization
 			ClearBanks();
 			LoadInitBank();
 		}
-
 		AkCallbackManager.Init(AkWwiseInitializationSettings.ActivePlatformSettings.CallbackManagerInitializationSettings);
-		
 		reInitializationDelegate?.Invoke();
 		return true;
 	}
-
 	public bool ShouldKeepSoundEngineEnabled()
 	{
 #if UNITY_EDITOR
@@ -183,7 +153,6 @@ public class AkUnitySoundEngineInitialization
 		{
 			return false;
 		}
-
 		if (UnityEngine.Application.isPlaying)
 		{
 			return true;
@@ -207,7 +176,6 @@ public class AkUnitySoundEngineInitialization
 		return false;
 #endif // UNITY_EDITOR 
 	}
-
 	public void ResetSoundEngine()
     {
 		TerminateSoundEngine(forceReset : true);
@@ -217,45 +185,35 @@ public class AkUnitySoundEngineInitialization
 			InitializeSoundEngine();
 		}
     }
-
 	public void TerminateSoundEngine()
     {
 		TerminateSoundEngine(forceReset : false);
     }
-
 	private void TerminateSoundEngine(bool forceReset)
 	{
 		if (!AkUnitySoundEngine.IsInitialized())
 		{
 			return;
 		}
-
 		if (ShouldKeepSoundEngineEnabled() && !forceReset)
 		{
 			return;
 		}
-		
 		terminationDelegate?.Invoke();
-
 		AkUnitySoundEngine.SetOfflineRendering(false);
-
 		// Stop everything, and make sure the callback buffer is empty. We try emptying as much as possible, and wait 10 ms before retrying.
 		// Callbacks can take a long time to be posted after the call to RenderAudio().
 		AkUnitySoundEngine.StopAll();
 		AkUnitySoundEngine.UnregisterAllGameObjects();
 		ClearBanks();
 		AkUnitySoundEngine.Term();
-
 		// Make sure we have no callbacks left after Term. Some might be posted during termination.
 		AkCallbackManager.PostCallbacks();
-
 		AkCallbackManager.Term();
 		ResetBanks();
-
 		UnityEngine.Debug.Log("WwiseUnity: Sound engine terminated successfully.");
 	}
 }
-
 #if WWISE_ADDRESSABLES_23_1_OR_LATER
 [System.Obsolete(AkUnitySoundEngine.Deprecation_2024_1_0)]
 public class AkSoundEngineInitialization  : AkUnitySoundEngineInitialization {}

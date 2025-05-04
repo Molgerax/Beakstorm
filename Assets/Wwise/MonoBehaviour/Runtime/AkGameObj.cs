@@ -6,9 +6,7 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
@@ -16,7 +14,6 @@ in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
 using UnityEngine;
-
 [UnityEngine.AddComponentMenu("Wwise/AkGameObj")]
 [UnityEngine.DisallowMultipleComponent]
 [UnityEngine.ExecuteInEditMode] //ExecuteInEditMode necessary to maintain proper state of isStaticObject.
@@ -32,28 +29,19 @@ using UnityEngine;
 public class AkGameObj : UnityEngine.MonoBehaviour
 {
 	[UnityEngine.SerializeField] private AkGameObjListenerList m_listeners = new AkGameObjListenerList();
-
 	/// Indicates whether the object is affected by environmental changes. Set to false if the object is not affected in order to save some unnecessary calls. The default value is true.
 	public bool isEnvironmentAware = true;
-
 	/// Maintains and persists the Static setting of the game object, which is available only in the editor.
 	[UnityEngine.SerializeField] private bool isStaticObject = false;
-
 	/// Cache the bounds to avoid calls to GetComponent()
 	private UnityEngine.Collider m_Collider;
-
 	private AkGameObjEnvironmentData m_envData;
-
 	private AkGameObjPositionData m_posData;
-	
 	public bool usePositionOffsetData;
-
 	/// When not set to null, the position is offset relative to the Game Object position by the Position Offset
 	public AkGameObjPositionOffsetData m_positionOffsetData;
-
 	[UnityEngine.SerializeField]
 	private float scalingFactor = 1f;
-
 	public float ScalingFactor
 	{
 		get => scalingFactor;
@@ -73,45 +61,36 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 			}
 		}
 	}
-
 	public bool IsUsingDefaultListeners
 	{
 		get { return m_listeners.useDefaultListeners; }
 	}
-
 	public System.Collections.Generic.List<AkAudioListener> ListenerList
 	{
 		get { return m_listeners.ListenerList; }
 	}
-
 	private bool isRegistered = false;
-
 	public bool GameObjIsRegistered()
 	{
 		return isRegistered;
 	}
-
 	internal void AddListener(AkAudioListener listener)
 	{
 		m_listeners.Add(listener);
 	}
-
 	internal void RemoveListener(AkAudioListener listener)
 	{
 		m_listeners.Remove(listener);
 	}
-
 	public AKRESULT Register()
 	{
 		if (isRegistered)
 		{
 			return AKRESULT.AK_Success;
 		}
-
 		isRegistered = true;
 		return AkUnitySoundEngine.RegisterGameObj(gameObject, gameObject.name);
 	}
-
 	private void UnregisterGameObject()
 	{
 		if (AkUnitySoundEngine.IsInitialized())
@@ -119,40 +98,33 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 			Unregister();
 		}
     }
-
 	public AKRESULT Unregister()
 	{
 		if (!isRegistered)
 		{
 			return AKRESULT.AK_Success;
 		}
-
 		isRegistered = false;
 		m_posData = null;
 		return AkUnitySoundEngine.UnregisterGameObj(gameObject);
 	}
-	
 	private void SetPosition()
 	{
 		var position = GetPosition();
 		var forward = GetForward();
 		var up = GetUpward();
-
 		if (m_posData != null)
 		{
 			if (m_posData.position == position && m_posData.forward == forward && m_posData.up == up)
 			{
 				return;
 			}
-
 			m_posData.position = position;
 			m_posData.forward = forward;
 			m_posData.up = up;
 		}
-
 		AkUnitySoundEngine.SetObjectPosition(gameObject, position, forward, up);
 	}
-
 	private void Awake()
 	{
 #if UNITY_EDITOR
@@ -160,7 +132,6 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 		{
 			return;
 		}
-
 		if (!UnityEditor.EditorApplication.isPlaying)
 		{
 			UnityEditor.EditorApplication.update += CheckStaticStatus;
@@ -168,41 +139,33 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 		AkUnitySoundEngineInitialization.Instance.initializationDelegate += RegisterGameObject;
 		AkUnitySoundEngineInitialization.Instance.terminationDelegate += UnregisterGameObject;
 #endif
-
 		// If the object was marked as static, don't update its position to save cycles.
 		if (!isStaticObject)
 		{
 			m_posData = new AkGameObjPositionData();
 		}
-
 		// Cache the bounds to avoid calls to GetComponent()
 		m_Collider = GetComponent<UnityEngine.Collider>();
 	}
-
     private void RegisterGameObject()
     {
 		if (!AkUnitySoundEngine.IsInitialized())
         {
 			return;
         }
-
 		//Register a Game Object in the sound engine, with its name.
 		if (Register() == AKRESULT.AK_Success)
 		{
 			SetPosition();
-
 			if (isEnvironmentAware)
 			{
 				m_envData = new AkGameObjEnvironmentData();
-
 				if (m_Collider)
 				{
 					m_envData.AddAkEnvironment(m_Collider, m_Collider);
 				}
-
 				m_envData.UpdateAuxSend(gameObject, transform.position);
 			}
-
 			m_listeners.Init(this);
 			//The Listener will win for the scaling factor
 			if (gameObject.GetComponent<AkAudioListener>() == null)
@@ -214,7 +177,6 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 			}
 		}
 	}
-
 	private void CheckStaticStatus()
 	{
 #if UNITY_EDITOR
@@ -222,7 +184,6 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 		{
 			return;
 		}
-
 		try
 		{
 			if (gameObject != null && isStaticObject != gameObject.isStatic)
@@ -237,7 +198,6 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 		}
 #endif
 	}
-
 	private void OnEnable()
 	{
 #if UNITY_EDITOR
@@ -248,7 +208,6 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 #endif
 		RegisterGameObject();
 	}
-
 #if UNITY_EDITOR
 	private void OnDisable()
 	{
@@ -258,7 +217,6 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 		}
 	}
 #endif
-
 	private void OnDestroy()
 	{
 #if UNITY_EDITOR
@@ -266,16 +224,13 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 		{
 			return;
 		}
-
 		if (!UnityEditor.EditorApplication.isPlaying)
 		{
 			UnityEditor.EditorApplication.update -= CheckStaticStatus;
 		}
-
 		AkUnitySoundEngineInitialization.Instance.initializationDelegate -= RegisterGameObject;
 		AkUnitySoundEngineInitialization.Instance.terminationDelegate -= UnregisterGameObject;
 #endif
-
 		// We can't do the code in OnDestroy if the gameObj is unregistered, so do it now.
 		var eventHandlers = gameObject.GetComponents<AkTriggerHandler>();
 		foreach (var handler in eventHandlers)
@@ -285,13 +240,11 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 				handler.DoDestroy();
 			}
 		}
-
 		if (AkUnitySoundEngine.IsInitialized())
 		{
 			Unregister();
 		}
 	}
-
 	private void Update()
 	{
 #if UNITY_EDITOR
@@ -300,18 +253,15 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 			return;
 		}
 #endif
-
 		if (!isStaticObject)
 		{
 			if (m_envData != null)
 			{
 				m_envData.UpdateAuxSend(gameObject, transform.position);
 			}
-
 			SetPosition();			
 		}
 	}
-
 	/// Gets the position including the position offset, if applyPositionOffset is enabled. User can also override this method to calculate an arbitrary position.
 	/// \return  The position.
 	public virtual UnityEngine.Vector3 GetPosition()
@@ -320,25 +270,21 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 		{
 			return transform.position;
 		}
-
 		var worldOffset = transform.rotation * m_positionOffsetData.positionOffset;
 		return transform.position + worldOffset;
 	}
-
 	/// Gets the orientation forward vector. User can also override this method to calculate an arbitrary vector.
 	/// \return  The forward vector of orientation.
 	public virtual UnityEngine.Vector3 GetForward()
 	{
 		return transform.forward;
 	}
-
 	/// Gets the orientation upward vector. User can also override this method to calculate an arbitrary vector.
 	/// \return  The upward vector of orientation.
 	public virtual UnityEngine.Vector3 GetUpward()
 	{
 		return transform.up;
 	}
-
 	private void OnTriggerEnter(UnityEngine.Collider other)
 	{
 #if UNITY_EDITOR
@@ -347,13 +293,11 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 			return;
 		}
 #endif
-
 		if (isEnvironmentAware && m_envData != null)
 		{
 			m_envData.AddAkEnvironment(other, m_Collider);
 		}
 	}
-
 	private void OnTriggerExit(UnityEngine.Collider other)
 	{
 #if UNITY_EDITOR
@@ -362,13 +306,11 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 			return;
 		}
 #endif
-
 		if (isEnvironmentAware && m_envData != null)
 		{
 			m_envData.RemoveAkEnvironment(other, m_Collider);
 		}
 	}
-
 #if UNITY_EDITOR
 	public void OnDrawGizmosSelected()
 	{
@@ -376,44 +318,33 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 		{
 			return;
 		}
-
 		var position = GetPosition();
 		UnityEngine.Gizmos.DrawIcon(position, "WwiseAudioSpeaker.png", false);
 	}
 #endif
-
 	#region WwiseMigration
-
 #pragma warning disable 0414 // private field assigned but not used.
-
 	[UnityEngine.HideInInspector]
 	[UnityEngine.SerializeField]
 	private AkGameObjPosOffsetData m_posOffsetData;
-
 	// Wwise v2016.2 and below supported up to 8 listeners[0-7].
 	private const int AK_NUM_LISTENERS = 8;
-
 	[UnityEngine.HideInInspector]
 	[UnityEngine.SerializeField]
 	/// Listener 0 by default.
 	private int listenerMask = 1;
-
 #pragma warning restore 0414 // private field assigned but not used.
-
 #if UNITY_EDITOR
 	public void Migrate9()
 	{
 		UnityEngine.Debug.Log("WwiseUnity: AkGameObj.Migrate9 for " + gameObject.name);
-
 		const int ALL_LISTENER_MASK = (1 << AK_NUM_LISTENERS) - 1;
 		if ((listenerMask & ALL_LISTENER_MASK) == ALL_LISTENER_MASK)
 			listenerMask = 1;
 	}
-
 	public void Migrate10()
 	{
 		UnityEngine.Debug.Log("WwiseUnity: AkGameObj.Migrate10 for " + gameObject.name);
-
 		if (m_posOffsetData != null)
 		{
 			m_positionOffsetData = new AkGameObjPositionOffsetData(true);
@@ -421,16 +352,13 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 			m_posOffsetData = null;
 		}
 	}
-
 	private class Migration14Data
 	{
 		private readonly System.Collections.Generic.List<AkAudioListener>[] listeners =
 			new System.Collections.Generic.List<AkAudioListener>[AK_NUM_LISTENERS];
-
 		public Migration14Data()
 		{
 			var fullSceneListenerMask = 0;
-
 			// Get all AkAudioListeners in the scene.
 #if UNITY_6000_0_OR_NEWER
 			var listenerObjects = FindObjectsByType<AkAudioListener>(FindObjectsSortMode.None);
@@ -451,20 +379,17 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 					else
 						UnityEngine.Debug.LogError("WwiseUnity: Failed to add AkGameObj to <" + listener.gameObject.name + ">.");
 				}
-
 				var listenerId = listener.listenerId;
 				if (listenerId >= 0 && listenerId < AK_NUM_LISTENERS)
 				{
 					if (listeners[listenerId] == null)
 						listeners[listenerId] = new System.Collections.Generic.List<AkAudioListener>();
-
 					listeners[listenerId].Add(listener);
 					fullSceneListenerMask |= 1 << listenerId;
 				}
 				else
 					UnityEngine.Debug.LogError("WwiseUnity: Invalid listenerId <" + listenerId + "> found during migration.");
 			}
-
 			if (fullSceneListenerMask == 0)
 			{
 				UnityEngine.Debug.LogWarning("WwiseUnity: Listeners were not added via components within this Scene.");
@@ -480,7 +405,6 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 						                             "> with same listenerId <" + ii + "> found during migration.");
 					}
 				}
-
 				if (fullSceneListenerMask == 1)
 				{
 					UnityEngine.Debug.Log("WwiseUnity: Default listeners will be used for this Scene.");
@@ -488,7 +412,6 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 				}
 			}
 		}
-
 		public void Migrate(AkGameObj akGameObj)
 		{
 			if (listeners != null)
@@ -505,29 +428,22 @@ public class AkGameObj : UnityEngine.MonoBehaviour
 			}
 		}
 	}
-
 	private static Migration14Data migration14data;
-
 	public static void PreMigration14()
 	{
 		migration14data = new Migration14Data();
 	}
-
 	public void Migrate14()
 	{
 		UnityEngine.Debug.Log("WwiseUnity: AkGameObj.Migrate14 for " + gameObject.name);
-
 		if (migration14data != null)
 			migration14data.Migrate(this);
 	}
-
 	public static void PostMigration14()
 	{
 		migration14data = null;
 	}
-
 #endif
-
 	#endregion
 }
 #endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.

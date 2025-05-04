@@ -5,18 +5,14 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
-
 namespace AK.Wwise
 {
 	[System.Serializable]
@@ -24,15 +20,12 @@ namespace AK.Wwise
 	public class RTPC : BaseType
 	{
 		public WwiseRtpcReference WwiseObjectReference;
-
 		public override WwiseObjectReference ObjectReference
 		{
 			get { return WwiseObjectReference; }
 			set { WwiseObjectReference = value as WwiseRtpcReference; }
 		}
-
 		public override WwiseObjectType WwiseObjectType { get { return WwiseObjectType.GameParameter; } }
-
 		public void SetValue(UnityEngine.GameObject gameObject, float value)
 		{
 			if (IsValid())
@@ -41,7 +34,6 @@ namespace AK.Wwise
 				Verify(result);
 			}
 		}
-
 		public float GetValue(UnityEngine.GameObject gameObject)
 		{
 			float value = 0;
@@ -52,10 +44,8 @@ namespace AK.Wwise
 				var result = AkUnitySoundEngine.GetRTPCValue(Id, gameObject, AkUnitySoundEngine.AK_INVALID_PLAYING_ID, out value, ref queryValue);
 				Verify(result);
 			}
-
 			return value;
 		}
-
 		public void SetGlobalValue(float value)
 		{
 			if (IsValid())
@@ -64,7 +54,6 @@ namespace AK.Wwise
 				Verify(result);
 			}
 		}
-
 		public float GetGlobalValue()
 		{
 			return GetValue(null);

@@ -6,20 +6,16 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
-
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 using AK.Wwise.Unity.WwiseAddressables;
 #endif
-
 [UnityEngine.AddComponentMenu("Wwise/AkInitializer")]
 [UnityEngine.ExecuteAlways]
 [UnityEngine.DisallowMultipleComponent]
@@ -42,15 +38,12 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 #else
 	public AkWwiseInitializationSettings InitializationSettings;
 #endif
-
 #if UNITY_WEBGL && !UNITY_EDITOR
     [System.Runtime.InteropServices.DllImport("__Internal")]
     private static extern bool AkVerifyPluginRegistration();
 #endif
-
 	public static AkSurfaceReflector.GeometryData CubeGeometryData;
 	public static AkSurfaceReflector.GeometryData SphereGeometryData;
-
 	/// <summary>
 	/// Create Spatial Audio Geometry from Unity Box and Sphere Colliders.
 	/// When an AkRoom component is placed on a GameObject without a SurfaceReflector component, the AkRoom component's geometry is based on its sibling collider component.
@@ -60,20 +53,17 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 	private void CreateRoomGeometryData()
 	{
 		float[] transmissionLossValue = { 0 };
-
 		// Cube Geometry
 		UnityEngine.GameObject tempGameObject = UnityEngine.GameObject.CreatePrimitive(UnityEngine.PrimitiveType.Cube);
 		UnityEngine.Mesh mesh = tempGameObject.GetComponent<UnityEngine.MeshFilter>().sharedMesh;
 		AkSurfaceReflector.GetGeometryDataFromMesh(mesh, ref CubeGeometryData, null, transmissionLossValue);
 		UnityEngine.GameObject.DestroyImmediate(tempGameObject);
-
 		// Sphere Geometry
 		tempGameObject = UnityEngine.GameObject.CreatePrimitive(UnityEngine.PrimitiveType.Sphere);
 		mesh = tempGameObject.GetComponent<UnityEngine.MeshFilter>().sharedMesh;
 		AkSurfaceReflector.GetGeometryDataFromMesh(mesh, ref SphereGeometryData, null, transmissionLossValue);
 		UnityEngine.GameObject.DestroyImmediate(tempGameObject);
 	}
-
 	private void Awake()
 	{
 #if UNITY_EDITOR
@@ -82,18 +72,14 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			return;
 		}
 #endif
-
 		if (ms_Instance)
 		{
 			DestroyImmediate(this);
 			return;
 		}
-
 		ms_Instance = this;
-
 #if UNITY_EDITOR
 		UnityEditor.EditorApplication.quitting += OnApplicationQuit;
-
 		if (!UnityEditor.EditorApplication.isPlaying)
 		{
 			return;
@@ -102,10 +88,8 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 		WwiseProjectDatabase.SoundBankDirectoryUpdated += AkBankManager.ReloadAllBanks;
 	#endif
 #endif
-
 		DontDestroyOnLoad(this);
 	}
-
 	private bool IsInstance()
 	{
 		if(ms_Instance == null)
@@ -115,7 +99,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 		}
 		return ms_Instance == this;
 	}
-
 	public static UnityEngine.GameObject GetAkInitializerGameObject()
     {
 		if(ms_Instance != null)
@@ -125,7 +108,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 		UnityEngine.Debug.LogWarning("AkInitializer is null.");
 		return null;
 	}
-
 	private void OnEnable()
 	{
 #if UNITY_EDITOR
@@ -142,7 +124,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			return;
 		}
 #endif
-
 		InitializeInitializationSettings();
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES && UNITY_EDITOR
 		var bankHolder = UnityEngine.Object.FindObjectOfType<AK.Wwise.Unity.WwiseAddressables.InitBankHolder>();
@@ -151,7 +132,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			bankHolder = UnityEditor.Undo.AddComponent<AK.Wwise.Unity.WwiseAddressables.InitBankHolder>(gameObject);
 		}
 #endif
-
 		if (IsInstance())
 		{
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -163,7 +143,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			CreateRoomGeometryData();
 		}
 	}
-
 	public void InitializeInitializationSettings()
 	{
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
@@ -172,7 +151,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 		InitializationSettings = AkWwiseInitializationSettings.Instance;
 #endif
 	}
-
 	private void OnDisable()
 	{
 #if UNITY_EDITOR
@@ -186,7 +164,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			AkSoundEngineController.Instance.OnDisable();
 		}
 	}
-
 	private void OnDestroy()
 	{
 #if UNITY_EDITOR
@@ -195,7 +172,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			return;
 		}
 #endif
-
 		if (IsInstance())
 		{
 #if UNITY_EDITOR
@@ -203,12 +179,10 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 #endif
 			ms_Instance = null;
 		}
-
 #if UNITY_EDITOR
 		AkWwiseTypes.DragAndDropObjectReference = null;
 #endif
 	}
-
 	private void OnApplicationPause(bool pauseStatus)
 	{
 		if (IsInstance())
@@ -216,7 +190,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			AkSoundEngineController.Instance.OnApplicationPause(pauseStatus);
 		}
 	}
-
 	private void OnApplicationFocus(bool focus)
 	{
 		if (IsInstance())
@@ -224,7 +197,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			AkSoundEngineController.Instance.OnApplicationFocus(focus);
 		}
 	}
-
 	private void OnApplicationQuit()
 	{
 		if (IsInstance() && !AkUnitySoundEngineInitialization.Instance.ShouldKeepSoundEngineEnabled())
@@ -232,7 +204,6 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			AkSoundEngineController.Instance.Terminate();
 		}
 	}
-
 	//Use LateUpdate instead of Update() to ensure all gameobjects positions, listener positions, environements, RTPC, etc are set before finishing the audio frame.
 	private void LateUpdate()
 	{
@@ -241,11 +212,9 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 			AkSoundEngineController.Instance.LateUpdate();
 		}
 	}
-
 #region WwiseMigration
 #if UNITY_EDITOR
 #pragma warning disable 0414 // private field assigned but not used.
-
 	// previously serialized data that will be consumed by migration
 	[UnityEngine.HideInInspector][UnityEngine.SerializeField] private string basePath = string.Empty;
 	[UnityEngine.HideInInspector][UnityEngine.SerializeField] private string language = string.Empty;
@@ -259,18 +228,14 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 	[UnityEngine.HideInInspector][UnityEngine.SerializeField] private int spatialAudioPoolSize = 0;
 	[UnityEngine.HideInInspector][UnityEngine.SerializeField] private uint maxSoundPropagationDepth = 0;
 	[UnityEngine.HideInInspector][UnityEngine.SerializeField] private bool engineLogging = false;
-
 #pragma warning restore 0414 // private field assigned but not used.
-
 	private class Migration15Data
 	{
 		bool hasMigrated = false;
-
 		public void Migrate(AkInitializer akInitializer)
 		{
 			if (hasMigrated)
 				return;
-
 			var initializationSettings = akInitializer.InitializationSettings;
 			if (!initializationSettings)
 			{
@@ -282,62 +247,47 @@ public class AkInitializer : UnityEngine.MonoBehaviour
 				if (!initializationSettings)
 					return;
 			}
-
 			if (initializationSettings.UserSettings == null)
 			{
 				initializationSettings.UserSettings = new AkCommonUserSettings();
 			}
-
 			if (initializationSettings.AdvancedSettings == null)
 			{
 				initializationSettings.AdvancedSettings = new AkCommonAdvancedSettings();
 			}
-
 			if (initializationSettings.CommsSettings == null)
 			{
 				initializationSettings.CommsSettings = new AkCommonCommSettings();
 			}
-
 			if (initializationSettings.UserSettings.m_SpatialAudioSettings == null)
 			{
 				initializationSettings.UserSettings.m_SpatialAudioSettings =
 					new AkCommonUserSettings.SpatialAudioSettings();
 			}
-
 			initializationSettings.UserSettings.m_BasePath = akInitializer.basePath;
 			initializationSettings.UserSettings.m_StartupLanguage = akInitializer.language;
-
 			initializationSettings.AdvancedSettings.m_MonitorQueuePoolSize = (uint)akInitializer.monitorQueuePoolSize * 1024;
-
 			initializationSettings.UserSettings.m_SpatialAudioSettings.m_MaxSoundPropagationDepth = akInitializer.maxSoundPropagationDepth;
-
 			initializationSettings.CallbackManagerInitializationSettings.IsLoggingEnabled = akInitializer.engineLogging;
-
 			UnityEditor.EditorUtility.SetDirty(initializationSettings);
 			UnityEditor.AssetDatabase.SaveAssets();
-			
 			UnityEngine.Debug.Log("WwiseUnity: Converted from AkInitializer to AkWwiseInitializationSettings.");
 			hasMigrated = true;
 		}
 	}
-
 	private static Migration15Data migration15data;
-
 	public static void PreMigration15()
 	{
 		migration15data = new Migration15Data();
 	}
-
 	public void Migrate15()
 	{
 		UnityEngine.Debug.Log("WwiseUnity: AkInitializer.Migrate15 for " + gameObject.name);
-
 		if (migration15data != null)
 		{
 			migration15data.Migrate(this);
 		}
 	}
-
 	public static void PostMigration15()
 	{
 		migration15data = null;

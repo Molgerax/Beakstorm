@@ -6,9 +6,7 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
@@ -18,18 +16,15 @@ Copyright (c) 2025 Audiokinetic Inc.
 public class AkTriggerCollisionEnter : AkTriggerBase
 {
 	public UnityEngine.GameObject triggerObject = null;
-
 	private void OnCollisionEnter(UnityEngine.Collision in_other)
 	{
 		if (triggerDelegate != null && (triggerObject == null || triggerObject == in_other.gameObject))
 			triggerDelegate(in_other.gameObject);
 	}
-
 	private void OnTriggerEnter(UnityEngine.Collider in_other)
 	{
 		if (triggerDelegate != null && (triggerObject == null || triggerObject == in_other.gameObject))
 			triggerDelegate(in_other.gameObject);
 	}
 }
-
 #endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.

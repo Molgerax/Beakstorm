@@ -5,9 +5,7 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
@@ -19,36 +17,30 @@ public class WwiseEventRef: global::System.IDisposable
 {
     private global::System.IntPtr swigCPtr;
     protected bool swigCMemOwn;
-
     internal WwiseEventRef(global::System.IntPtr cPtr, bool cMemoryOwn)
     {
         swigCMemOwn = cMemoryOwn;
         swigCPtr = cPtr;
         Medias = new WwiseEventRefMediaArray(cPtr);
     }
-
     internal static global::System.IntPtr getCPtr(WwiseEventRef obj)
     {
         return (obj == null) ? global::System.IntPtr.Zero : obj.swigCPtr;
     }
-
     internal virtual void setCPtr(global::System.IntPtr cPtr)
     {
         Dispose();
         swigCPtr = cPtr;
     }
-
     ~WwiseEventRef()
     {
         Dispose(false);
     }
-
     public void Dispose()
     {
         Dispose(true);
         global::System.GC.SuppressFinalize(this);
     }
-
     protected virtual void Dispose(bool disposing)
     {
         lock (this)
@@ -60,21 +52,17 @@ public class WwiseEventRef: global::System.IDisposable
                     swigCMemOwn = false;
                     WwiseProjectDatabase.DeleteEventRef(swigCPtr);
                 }
-
                 swigCPtr = global::System.IntPtr.Zero;
             }
-
             global::System.GC.SuppressFinalize(this);
         }
     }
-    
     public WwiseEventRef(global::System.IntPtr cPtr) : this(cPtr, true)
     {
     }
     public WwiseEventRef(string eventName) : this(WwiseProjectDatabase.GetEventRefString(eventName), true)
     {
     }
-    
     public string Name => WwiseProjectDatabase.GetEventName(swigCPtr);
     public string Path => WwiseProjectDatabase.GetEventPath(swigCPtr);
     public System.IntPtr Guid =>WwiseProjectDatabase.GetEventGuid(swigCPtr);

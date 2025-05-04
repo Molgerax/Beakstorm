@@ -5,9 +5,7 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
- 
 License Usage
- 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
@@ -19,35 +17,29 @@ public class WwiseMediaRef: global::System.IDisposable
 {
     private global::System.IntPtr swigCPtr;
     protected bool swigCMemOwn;
-
     internal WwiseMediaRef(global::System.IntPtr cPtr, bool cMemoryOwn)
     {
         swigCMemOwn = cMemoryOwn;
         swigCPtr = cPtr;
     }
-
     internal static global::System.IntPtr getCPtr(WwiseMediaRef obj)
     {
         return (obj == null) ? global::System.IntPtr.Zero : obj.swigCPtr;
     }
-
     internal virtual void setCPtr(global::System.IntPtr cPtr)
     {
         Dispose();
         swigCPtr = cPtr;
     }
-
     ~WwiseMediaRef()
     {
         Dispose(false);
     }
-
     public void Dispose()
     {
         Dispose(true);
         global::System.GC.SuppressFinalize(this);
     }
-
     protected virtual void Dispose(bool disposing)
     {
         lock (this)
@@ -59,14 +51,11 @@ public class WwiseMediaRef: global::System.IDisposable
                     swigCMemOwn = false;
                     WwiseProjectDatabase.DeleteMediaRef(swigCPtr);
                 }
-
                 swigCPtr = global::System.IntPtr.Zero;
             }
-
             global::System.GC.SuppressFinalize(this);
         }
     }
-    
     public WwiseMediaRef(global::System.IntPtr cPtr) : this(cPtr, true)
     {
     }
