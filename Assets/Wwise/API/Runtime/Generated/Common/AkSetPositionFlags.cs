@@ -8,6 +8,8 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public enum AkSetPositionFlags : byte {
   AkSetPositionFlags_Emitter = 1 << 0,
   AkSetPositionFlags_Listener = 1 << 1,

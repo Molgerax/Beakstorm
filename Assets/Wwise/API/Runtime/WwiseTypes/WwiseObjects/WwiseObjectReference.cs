@@ -5,7 +5,9 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
@@ -13,6 +15,7 @@ in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
 using System.Collections.Generic;
+
 /// @brief Represents Wwise objects as Unity assets.
 public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 {
@@ -20,13 +23,16 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 	[AkShowOnly]
 	[UnityEngine.SerializeField]
 	private string objectName = string.Empty;
+
 	[AkShowOnly]
 	[UnityEngine.SerializeField]
 	private uint id = AkUnitySoundEngine.AK_INVALID_UNIQUE_ID;
+
 	[AkShowOnly]
 	[UnityEngine.SerializeField]
 	private string guid = string.Empty;
 	#endregion
+
 	#region Properties
 	/// <summary>
 	/// The Wwise GUID which is represented by the ScriptableObject's asset file name.
@@ -35,32 +41,41 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 	{
 		get { return string.IsNullOrEmpty(guid) ? System.Guid.Empty : new System.Guid(guid); }
 	}
+
 	/// <summary>
 	/// The name of the Wwise object.
 	/// </summary>
 	public string ObjectName { get { return objectName; } }
+
 	/// <summary>
 	/// The display name for the Wwise object.
 	/// </summary>
 	public virtual string DisplayName { get { return ObjectName; } }
+
 	/// <summary>
 	/// The Wwise ID.
 	/// </summary>
 	public uint Id { get { return id; } }
+
 	/// <summary>
 	/// The type of the Wwise object resource (for example: Event, State or Switch).
 	/// </summary>
 	public abstract WwiseObjectType WwiseObjectType { get; }
 	#endregion
+
 #if UNITY_EDITOR
 	private static Dictionary<WwiseObjectType, Dictionary<System.Guid, WwiseObjectReference>> s_objectReferenceDictionary = new Dictionary<WwiseObjectType, Dictionary<System.Guid, WwiseObjectReference>>();
+
 	public virtual  bool IsComplete()
 	{
 		return true;
 	}
+
 	public virtual void CompleteData()
 	{
+
 	}
+
 	#region Creation and File Management
 	private static readonly System.Collections.Generic.Dictionary<WwiseObjectType, System.Type> m_WwiseObjectReferenceClasses
 		= new System.Collections.Generic.Dictionary<WwiseObjectType, System.Type>
@@ -76,6 +91,8 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 		{ WwiseObjectType.Switch, typeof(WwiseSwitchReference) },
 		{ WwiseObjectType.Trigger, typeof(WwiseTriggerReference) },
 	};
+
+
 	private static WwiseObjectReference Create(WwiseObjectType wwiseObjectType, System.Guid guid)
 	{
 		System.Type type = null;
@@ -88,11 +105,14 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 		{
 			objectReference = CreateInstance<WwiseObjectReference>();
 		}
+		
 		objectReference.guid = guid.ToString().ToUpper();
+
 		if (!s_objectReferenceDictionary.ContainsKey(wwiseObjectType))
 		{
 			FetchAssetsOfType(wwiseObjectType);
 		}
+
 		if (s_objectReferenceDictionary[wwiseObjectType].ContainsKey(objectReference.Guid))
 		{
 			s_objectReferenceDictionary[wwiseObjectType][objectReference.Guid] = objectReference;
@@ -101,31 +121,40 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 		{
 			s_objectReferenceDictionary[wwiseObjectType].Add(objectReference.Guid, objectReference);
 		}
+
 		return objectReference;
 	}
+
 	protected static WwiseObjectReference FindExistingWwiseObject(WwiseObjectType wwiseObjectType, System.Guid guid, string path)
 	{
 		var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<WwiseObjectReference>(path);
 		if (asset)
 			return asset;
+
 		System.Type type = null;
 		if (!m_WwiseObjectReferenceClasses.TryGetValue(wwiseObjectType, out type))
 			return null;
+
 		if (!s_objectReferenceDictionary.ContainsKey(wwiseObjectType))
 		{
 			FetchAssetsOfType(wwiseObjectType);
 		}
+
 		if (s_objectReferenceDictionary[wwiseObjectType].ContainsKey(guid))
 		{
 			return s_objectReferenceDictionary[wwiseObjectType][guid];
 		}
+
 		return null;
 	}
+
 	private static void FetchAssetsOfType(WwiseObjectType wwiseObjectType)
 	{
+
 		System.Type type = null;
 		if (!m_WwiseObjectReferenceClasses.TryGetValue(wwiseObjectType, out type))
 			type = typeof(WwiseObjectReference);
+
 		var objectReferenceDictionary = new Dictionary<System.Guid, WwiseObjectReference>();
 		var guids = UnityEditor.AssetDatabase.FindAssets("t:" + type.Name);
 		foreach (var assetGuid in guids)
@@ -135,15 +164,19 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 			objectReferenceDictionary[asset.Guid] = asset;
 		}
 		s_objectReferenceDictionary[wwiseObjectType] = objectReferenceDictionary;
+
 	}
+
 	private static bool UpdateWwiseObjectData(WwiseObjectReference wwiseObjectReference, string name)
 	{
 		var id = AkUtilities.ShortIDGenerator.Compute(name);
 		var changed = false;
 		if (wwiseObjectReference.objectName != name || wwiseObjectReference.id != id)
 			changed = true;
+
 		wwiseObjectReference.objectName = name;
 		wwiseObjectReference.id = id;
+
 		if (!wwiseObjectReference.IsComplete())
 		{
 			changed = true;
@@ -151,14 +184,17 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 		}
 		return changed;
 	}
+
 	public static string GetParentPath(WwiseObjectType wwiseObjectType)
 	{
 		return System.IO.Path.Combine(AkWwiseEditorSettings.WwiseScriptableObjectRelativePath, wwiseObjectType.ToString());
 	}
+
 	public static string GetAssetFileName(System.Guid guid)
 	{
 		return guid.ToString().ToUpper() + ".asset";
 	}
+
 	public static WwiseObjectReference FindOrCreateWwiseObject(WwiseObjectType wwiseObjectType, string name, System.Guid guid)
 	{
 		var parentPath = GetParentPath(wwiseObjectType);
@@ -170,7 +206,9 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 			AkUtilities.CreateFolder(parentPath);
 			asset = Create(wwiseObjectType, guid);
 		}
+
 		var changed = UpdateWwiseObjectData(asset, name);
+		
 		if (wwiseObjectType == WwiseObjectType.Event)
 		{
 			//Need to directly set IsUserDefinedSoundBank, since we can't rely on the user to generate the bank after the creation of the reference.
@@ -181,14 +219,17 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 			UnityEditor.AssetDatabase.CreateAsset(asset, path);
 		else if (changed)
 			UnityEditor.EditorUtility.SetDirty(asset);
+
 		return asset;
 	}
+
 	public static WwiseObjectReference FindWwiseObject(WwiseObjectType wwiseObjectType, System.Guid guid)
 	{
 		var parentPath = GetParentPath(wwiseObjectType);
 		var path = System.IO.Path.Combine(parentPath, GetAssetFileName(guid));
 		return FindExistingWwiseObject(wwiseObjectType, guid, path);
 	}
+
 	public static void UpdateWwiseObject(WwiseObjectType wwiseObjectType, string name, System.Guid guid)
 	{
 		var path = System.IO.Path.Combine(GetParentPath(wwiseObjectType), GetAssetFileName(guid));
@@ -196,6 +237,7 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 		if (asset && UpdateWwiseObjectData(asset, name))
 			UnityEditor.EditorUtility.SetDirty(asset);
 	}
+
 	public static void DeleteWwiseObject(WwiseObjectType wwiseObjectType, System.Guid guid)
 	{
 		var path = System.IO.Path.Combine(GetParentPath(wwiseObjectType), GetAssetFileName(guid));
@@ -204,17 +246,21 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 			UnityEditor.AssetDatabase.DeleteAsset(path);
 	}
 	#endregion
+
 	#region WwiseMigration
 	private class WwiseObjectData
 	{
 		public string objectName;
 	}
+
 	private static System.Collections.Generic.Dictionary<WwiseObjectType, System.Collections.Generic.Dictionary<System.Guid, WwiseObjectData>> WwiseObjectDataMap
 		= new System.Collections.Generic.Dictionary<WwiseObjectType, System.Collections.Generic.Dictionary<System.Guid, WwiseObjectData>>();
+
 	public static void ClearWwiseObjectDataMap()
 	{
 		WwiseObjectDataMap.Clear();
 	}
+
 	public static void UpdateWwiseObjectDataMap(WwiseObjectType wwiseObjectType, string name, System.Guid guid)
 	{
 		System.Collections.Generic.Dictionary<System.Guid, WwiseObjectData> map = null;
@@ -223,28 +269,34 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 			map = new System.Collections.Generic.Dictionary<System.Guid, WwiseObjectData>();
 			WwiseObjectDataMap.Add(wwiseObjectType, map);
 		}
+
 		WwiseObjectData data = null;
 		if (!map.TryGetValue(guid, out data))
 		{
 			data = new WwiseObjectData();
 			map.Add(guid, data);
 		}
+
 		data.objectName = name;
 	}
+
 	public static WwiseObjectReference GetWwiseObjectForMigration(WwiseObjectType wwiseObjectType, byte[] valueGuid, int id)
 	{
 		if (valueGuid == null)
 		{
 			return null;
 		}
+
 		System.Collections.Generic.Dictionary<System.Guid, WwiseObjectData> map = null;
 		if (!WwiseObjectDataMap.TryGetValue(wwiseObjectType, out map) || map == null)
 		{
 			UnityEngine.Debug.LogWarning("WwiseUnity: Cannot find WwiseObjectReferences of type <WwiseObjectType." + wwiseObjectType + ">.");
 			return null;
 		}
+
 		var guid = System.Guid.Empty;
 		WwiseObjectData data = null;
+
 		try
 		{
 			guid = new System.Guid(valueGuid);
@@ -254,10 +306,12 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 			UnityEngine.Debug.LogWarning("WwiseUnity: Invalid guid for WwiseObjectReference of type <WwiseObjectType." + wwiseObjectType + ">.");
 			return null;
 		}
+
 		var formattedId = (uint)id;
 		if (guid != System.Guid.Empty && !map.TryGetValue(guid, out data))
 		{
 			UnityEngine.Debug.LogWarning("WwiseUnity: Cannot find guid <" + guid.ToString() + "> for WwiseObjectReference of type <WwiseObjectType." + wwiseObjectType + "> in Wwise Project.");
+
 			foreach (var pair in map)
 			{
 				if (AkUtilities.ShortIDGenerator.Compute(pair.Value.objectName) == formattedId)
@@ -269,20 +323,24 @@ public abstract class WwiseObjectReference : UnityEngine.ScriptableObject
 				}
 			}
 		}
+
 		if (data == null)
 		{
 			return null;
 		}
+
 		var objectReference = FindOrCreateWwiseObject(wwiseObjectType, data.objectName, guid);
 		if (objectReference && objectReference.Id != formattedId)
 		{
 			UnityEngine.Debug.LogWarning("WwiseUnity: ID mismatch for WwiseObjectReference of type <WwiseObjectType." + wwiseObjectType + ">. Expected <" + formattedId + ">. Found <" + objectReference.Id + ">.");
 		}
+
 		return objectReference;
 	}
 	#endregion
 #endif
 }
+
 /// @brief Represents Wwise group value objects (such as states and switches) as Unity assets.
 public abstract class WwiseGroupValueObjectReference : WwiseObjectReference
 {
@@ -291,10 +349,12 @@ public abstract class WwiseGroupValueObjectReference : WwiseObjectReference
 	/// The group object reference.
 	/// </summary>
 	public abstract WwiseObjectReference GroupObjectReference { get; set; }
+
 	/// <summary>
 	/// The type of the Wwise object resource (for example: Event, State or Switch).
 	/// </summary>
 	public abstract WwiseObjectType GroupWwiseObjectType { get; }
+
 	/// <summary>
 	/// The display name for the Wwise object.
 	/// </summary>
@@ -308,11 +368,13 @@ public abstract class WwiseGroupValueObjectReference : WwiseObjectReference
 			var groupReference = GroupObjectReference;
 			if (!groupReference)
 				return ObjectName;
+
 			return groupReference.ObjectName + " / " + ObjectName;
 #endif // AK_DISPLAY_GROUP_TYPES_WITH_SINGLE_NAME
 		}
 	}
 	#endregion
+
 #if UNITY_EDITOR
 	public void SetupGroupObjectReference(string name, System.Guid guid)
 	{
@@ -323,24 +385,28 @@ public abstract class WwiseGroupValueObjectReference : WwiseObjectReference
 			UnityEditor.EditorUtility.SetDirty(this);
 		}
 	}
+
 	#region WwiseMigration
 	public static WwiseGroupValueObjectReference GetWwiseObjectForMigration(WwiseObjectType wwiseObjectType, byte[] valueGuid, int id, byte[] groupGuid, int groupId)
 	{
 		var objectReference = GetWwiseObjectForMigration(wwiseObjectType, valueGuid, id);
 		if (!objectReference)
 			return null;
+
 		var groupValueObjectReference = objectReference as WwiseGroupValueObjectReference;
 		if (!groupValueObjectReference)
 		{
 			UnityEngine.Debug.LogWarning("WwiseUnity: Not setting WwiseObjectReference since it is not a WwiseGroupValueObjectReference.");
 			return null;
 		}
+
 		var groupObjectReference = GetWwiseObjectForMigration(groupValueObjectReference.GroupWwiseObjectType, groupGuid, groupId);
 		if (!groupObjectReference)
 		{
 			UnityEngine.Debug.LogWarning("WwiseUnity: Not setting WwiseObjectReference since its GroupObjectReference cannot be determined.");
 			return null;
 		}
+
 		groupValueObjectReference.GroupObjectReference = groupObjectReference;
 		UnityEditor.EditorUtility.SetDirty(groupValueObjectReference);
 		return groupValueObjectReference;
@@ -348,10 +414,12 @@ public abstract class WwiseGroupValueObjectReference : WwiseObjectReference
 	#endregion
 #endif
 }
+
 #if UNITY_EDITOR
 public static class AkWwiseTypes
 {
 	private const string DragAndDropId = "AkDragDropId";
+
 	public static WwiseObjectReference DragAndDropObjectReference
 	{
 		set { UnityEditor.DragAndDrop.SetGenericData(DragAndDropId, value); }

@@ -8,6 +8,8 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public enum AkGroupType {
   AkGroupType_Switch = 0,
   AkGroupType_State = 1

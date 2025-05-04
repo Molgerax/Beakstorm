@@ -5,17 +5,22 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
+
 #if !(UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 using AK.Wwise.Unity.WwiseAddressables;
 #endif
+
 namespace AK.Wwise
 {
 	[System.Serializable]
@@ -28,12 +33,15 @@ namespace AK.Wwise
 		{
 			get { return m_playingId; }
 		}
+
 		public override WwiseObjectReference ObjectReference
 		{
 			get { return WwiseObjectReference; }
 			set { WwiseObjectReference = value as WwiseEventReference; }
 		}
+
 		public override WwiseObjectType WwiseObjectType { get { return WwiseObjectType.Event; } }
+
 		private void VerifyPlayingID(uint playingId)
 		{
 #if UNITY_EDITOR
@@ -45,6 +53,7 @@ namespace AK.Wwise
 			}
 #endif
 		}
+
 		/// <summary>
 		///     Posts this Event on a GameObject.
 		/// </summary>
@@ -54,6 +63,7 @@ namespace AK.Wwise
 		{
 			if (!IsValid())
 				return AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
+
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 			var args = new object[] { gameObject };
 			var argTypes = new System.Type[] { gameObject.GetType()};
@@ -77,8 +87,10 @@ namespace AK.Wwise
 				UnityEngine.Debug.LogWarning("WwiseUnity: Could not post event (name: " + Name + ", ID: " + Id +
 				                             "). The gameObject to post the event on has been deleted or is now invalid.");
 			}
+
 			return m_playingId;
 		}
+
 		/// <summary>
 		///     Posts this Event on a GameObject.
 		/// </summary>
@@ -92,6 +104,7 @@ namespace AK.Wwise
 		{
 			if (!IsValid())
 				return AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
+
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 			var args = new object[] { gameObject, flags, callback, cookie };
 			var argTypes = new System.Type[] { typeof(UnityEngine.GameObject), 
@@ -109,6 +122,7 @@ namespace AK.Wwise
 					UnityEngine.Debug.LogError("Post Event failed. If working with Autobanks, make sure that the \"Is In User Defined SoundBank\" setting is properly unchecked. If working with User Defined Soundbanks, make sure to add an AkBank Component.");
 				}
 				VerifyPlayingID(m_playingId);
+
 			}
 			else
 			{
@@ -117,6 +131,7 @@ namespace AK.Wwise
 			}
 			return m_playingId;
 		}
+
 		/// <summary>
 		///     Posts this Event on a GameObject.
 		/// </summary>
@@ -130,6 +145,7 @@ namespace AK.Wwise
 		{
 			if (!IsValid())
 				return AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
+
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 			var args = new object[] { gameObject, flags, callback, cookie };
 			var argTypes = new System.Type[] { typeof(UnityEngine.GameObject), 
@@ -139,6 +155,7 @@ namespace AK.Wwise
 				return AkUnitySoundEngine.AK_PENDING_EVENT_LOAD_ID;
 			}
 #endif
+			
 			if (gameObject)
 			{
 				m_playingId = AkUnitySoundEngine.PostEvent(Id, gameObject, flags, callback, cookie);
@@ -155,6 +172,7 @@ namespace AK.Wwise
 			}
 			return m_playingId;
 		}
+
 		/// <summary>
 		///     Posts this Event on a GameObject ID.
 		/// </summary>
@@ -164,6 +182,7 @@ namespace AK.Wwise
 		{
 			if (!IsValid())
 				return AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
+
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 			var args = new object[] { gameObjectId };
 			var argTypes = new System.Type[] { gameObjectId.GetType() };
@@ -172,15 +191,18 @@ namespace AK.Wwise
 				return AkUnitySoundEngine.AK_PENDING_EVENT_LOAD_ID;
 			}
 #endif
+
 			m_playingId = AkUnitySoundEngine.PostEvent(Id, gameObjectId);
 			VerifyPlayingID(m_playingId);
 			return m_playingId;
 		}
+
 		public void Stop(UnityEngine.GameObject gameObject, int transitionDuration = 0,
 			AkCurveInterpolation curveInterpolation = AkCurveInterpolation.AkCurveInterpolation_Linear)
 		{
 			ExecuteAction(gameObject, AkActionOnEventType.AkActionOnEventType_Stop, transitionDuration, curveInterpolation);
 		}
+
 		/// <summary>
 		///     Executes various actions on this event associated with a GameObject.
 		/// </summary>
@@ -193,6 +215,7 @@ namespace AK.Wwise
 		{
 			if (IsValid())
 			{
+
 #if AK_WWISE_ADDRESSABLES && UNITY_ADDRESSABLES
 				if (!gameObject)
 				{
@@ -206,11 +229,13 @@ namespace AK.Wwise
 					return;
 				}
 #endif
+
 				var result = AkUnitySoundEngine.ExecuteActionOnEvent(Id, actionOnEventType, gameObject, transitionDuration,
 					curveInterpolation);
 				Verify(result);
 			}
 		}
+
 		/// <summary>
 		///     Posts MIDI Events on this Event associated with a GameObject.
 		/// </summary>
@@ -221,6 +246,7 @@ namespace AK.Wwise
 			if (IsValid())
 				array.PostOnEvent(Id, gameObject);
 		}
+
 		/// <summary>
 		///     Posts MIDI Events on this Event associated with a GameObject.
 		/// </summary>
@@ -232,6 +258,7 @@ namespace AK.Wwise
 			if (IsValid())
 				array.PostOnEvent(Id, gameObject, count);
 		}
+
 		/// <summary>
 		///     Stops MIDI Events on this Event associated with a GameObject.
 		/// </summary>
@@ -241,6 +268,7 @@ namespace AK.Wwise
 			if (IsValid())
 				AkUnitySoundEngine.StopMIDIOnEvent(Id, gameObject);
 		}
+
 		/// <summary>
 		///     Stops all MIDI Events on this Event.
 		/// </summary>

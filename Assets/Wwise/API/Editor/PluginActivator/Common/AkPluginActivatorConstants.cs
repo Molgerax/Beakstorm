@@ -5,20 +5,25 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
+
 #if UNITY_EDITOR
 public class AkPluginActivatorConstants
 {
 	internal const string WwisePluginFolder = "Runtime/Plugins";
+	
 	public const string CONFIG_DEBUG = "Debug";
 	public const string CONFIG_PROFILE = "Profile";
 	public const string CONFIG_RELEASE = "Release";
+
 	internal static readonly System.Collections.Generic.HashSet<PluginID> builtInPluginIDs =
 		new System.Collections.Generic.HashSet<PluginID>
 		{
@@ -40,6 +45,7 @@ public class AkPluginActivatorConstants
 			PluginID.VitaEQ,
 #endif
 		};
+
 	internal static readonly System.Collections.Generic.HashSet<PluginID> alwaysSkipPluginsIDs =
 		new System.Collections.Generic.HashSet<PluginID>
 		{
@@ -55,6 +61,7 @@ public class AkPluginActivatorConstants
 			PluginID.WwiseSilence,
 			PluginID.AkAudioInput,
 		};
+
 	internal static readonly System.Collections.Generic.Dictionary<PluginID, string> PluginIDToStaticLibName =
 		new System.Collections.Generic.Dictionary<PluginID, string>
 		{
@@ -105,12 +112,14 @@ public class AkPluginActivatorConstants
 			{ PluginID.IgniterLive, "IgniterLiveSource" },
 			{ PluginID.IgniterLiveSynth, "IgniterLiveSource" }
 		};
+	
 	// Support libraries are DLLs that do not have an associated Wwise plug-in ID; they are meant to be loaded manually by the application
 	internal static readonly System.Collections.Generic.List<string> SupportLibraries = 
 		new System.Collections.Generic.List<string>
 		{
 			"AkVorbisHwAccelerator"
 		};
+		
 	internal enum PluginID
 	{
 		// Built-in plugins
@@ -143,6 +152,7 @@ public class AkPluginActivatorConstants
 		VitaDistortion = 0x008F0003, //Vita Distortion
 		VitaEQ = 0x00900003, //Vita EQ
 #endif
+
 		// Static or DLL plugins
 		AkAudioInput = 0xC80002,
 		AkConvolutionReverb = 0x7F0003,

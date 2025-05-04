@@ -6,27 +6,33 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
+
 [UnityEditor.CustomEditor(typeof(AkSurfaceReflector), true)]
 [UnityEditor.CanEditMultipleObjects]
 public class AkSurfaceReflectorInspector : UnityEditor.Editor
 {
 	private AkSurfaceReflector m_AkSurfaceReflector;
+
 	private UnityEditor.SerializedProperty Mesh;
 	private UnityEditor.SerializedProperty AcousticTextures;
 	private UnityEditor.SerializedProperty TransmissionLossValues;
 	private UnityEditor.SerializedProperty EnableDiffraction;
 	private UnityEditor.SerializedProperty EnableDiffractionOnBoundaryEdges;
 	private UnityEditor.SerializedProperty Solid;
+
 	public void OnEnable()
 	{
 		m_AkSurfaceReflector = target as AkSurfaceReflector;
+
 		Mesh = serializedObject.FindProperty("Mesh");
 		AcousticTextures = serializedObject.FindProperty("AcousticTextures");
 		TransmissionLossValues = serializedObject.FindProperty("TransmissionLossValues");
@@ -34,34 +40,45 @@ public class AkSurfaceReflectorInspector : UnityEditor.Editor
 		EnableDiffractionOnBoundaryEdges = serializedObject.FindProperty("EnableDiffractionOnBoundaryEdges");
 		Solid = serializedObject.FindProperty("Solid");
 	}
+
 	public override void OnInspectorGUI()
 	{
 		serializedObject.Update();
+
 		UnityEditor.EditorGUILayout.PropertyField(Mesh);
+
 		UnityEditor.EditorGUILayout.PropertyField(AcousticTextures, true);
 		CheckArraySize(m_AkSurfaceReflector, m_AkSurfaceReflector.AcousticTextures.Length, "acoustic textures");
+
 		UnityEditor.EditorGUILayout.PropertyField(TransmissionLossValues, true);
 		CheckArraySize(m_AkSurfaceReflector, m_AkSurfaceReflector.TransmissionLossValues.Length, "transmission loss values");
+
 		UnityEditor.EditorGUILayout.PropertyField(EnableDiffraction);
 		if (EnableDiffraction.boolValue)
 		{
 			UnityEditor.EditorGUILayout.PropertyField(EnableDiffractionOnBoundaryEdges);
 		}
+
 		UnityEditor.EditorGUILayout.PropertyField(Solid);
+
 		serializedObject.ApplyModifiedProperties();
 	}
+
 	public static void CheckArraySize(AkSurfaceReflector surfaceReflector, int length, string name)
 	{
 		if (surfaceReflector == null || surfaceReflector.Mesh == null)
 		{
 			return;
 		}
+
 		int maxSize = surfaceReflector.Mesh.subMeshCount;
 		if (length <= maxSize)
 		{
 			return;
 		}
+
 		UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
+
 		using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
 		{
 			UnityEditor.EditorGUILayout.HelpBox(

@@ -1,4 +1,5 @@
 using UnityEngine;
+
 #if UNITY_EDITOR
 /*******************************************************************************
 The content of this file includes portions of the proprietary AUDIOKINETIC Wwise
@@ -7,13 +8,16 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
+
 [UnityEditor.CanEditMultipleObjects]
 [UnityEditor.CustomEditor(typeof(AkAmbient), true)]
 public class AkAmbientInspector : AkEventInspector
@@ -24,37 +28,53 @@ public class AkAmbientInspector : AkEventInspector
         Current_Event_Only,
         All_Events
     }
+
     public static System.Collections.Generic.Dictionary<UnityEngine.Object, AttenuationSphereOptions> attSphereProperties =
         new System.Collections.Generic.Dictionary<UnityEngine.Object, AttenuationSphereOptions>();
+
     public AttenuationSphereOptions currentAttSphereOp;
+
     private AkAmbient m_AkAmbient;
     private UnityEditor.SerializedProperty multiPositionTypeProperty;
     private UnityEditor.SerializedProperty largeModePositionArrayProperty;
     private UnityEditor.SerializedProperty sphereColorProperty;
+
     private System.Collections.Generic.List<int> triggerList;
+
     public new void OnEnable()
     {
         base.OnEnable();
+
         m_AkAmbient = target as AkAmbient;
+
         multiPositionTypeProperty = serializedObject.FindProperty("multiPositionTypeLabel");
         largeModePositionArrayProperty = serializedObject.FindProperty("LargeModePositions");
         sphereColorProperty = serializedObject.FindProperty("attenuationSphereColor");
+
         if (!attSphereProperties.ContainsKey(target))
             attSphereProperties.Add(target, AttenuationSphereOptions.Dont_Show);
+
         currentAttSphereOp = attSphereProperties[target];
+
         WwiseProjectDatabase.SoundBankDirectoryUpdated += PopulateMaxAttenuation;
     }
+
     public new void OnDisable()
     {
         base.OnDisable();
+
         DefaultHandles.Hidden = false;
+
         WwiseProjectDatabase.SoundBankDirectoryUpdated -= PopulateMaxAttenuation;
     }
+
     public override void OnChildInspectorGUI()
     {
         //Save trigger mask to know when it changes
         triggerList = m_AkAmbient.triggerList;
+
         base.OnChildInspectorGUI();
+
         if (UnityEngine.Event.current.type == UnityEngine.EventType.ExecuteCommand
             && UnityEngine.Event.current.commandName == "ObjectSelectorClosed")
         {
@@ -63,15 +83,19 @@ public class AkAmbientInspector : AkEventInspector
             {
                 int insertIndex = largeModePositionArrayProperty.arraySize;
                 largeModePositionArrayProperty.InsertArrayElementAtIndex(insertIndex);
+
                 var newElement = largeModePositionArrayProperty.GetArrayElementAtIndex(insertIndex);
                 newElement.objectReferenceValue = pickedObject;
                 return;
             }
         }
+
         UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
+
         using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
         {
             UnityEditor.EditorGUILayout.PropertyField(multiPositionTypeProperty, new UnityEngine.GUIContent("Position Type: ", "Simple Mode: Only one position is used.\nLarge Mode: Children of AkAmbient with AkAmbientLargeModePositioner component will be used as position source for multi-positioning.\nMultiple Position Mode: Every AkAmbient using the same event will be used as position source for multi-positioning."));
+
             var multiPositionType = (MultiPositionTypeLabel)multiPositionTypeProperty.intValue;
             if (multiPositionType == MultiPositionTypeLabel.Large_Mode || multiPositionType == MultiPositionTypeLabel.MultiPosition_Mode)
             {
@@ -85,9 +109,12 @@ public class AkAmbientInspector : AkEventInspector
                     }
                 }
             }
+
             UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
+
             currentAttSphereOp = (AttenuationSphereOptions) UnityEditor.EditorGUILayout.EnumPopup("Show Attenuation Sphere: ", currentAttSphereOp);
             attSphereProperties[target] = currentAttSphereOp;
+
             UnityEditor.EditorGUI.BeginChangeCheck();
             if (currentAttSphereOp != AttenuationSphereOptions.Dont_Show)
             {
@@ -97,6 +124,7 @@ public class AkAmbientInspector : AkEventInspector
             {
                 serializedObject.ApplyModifiedProperties();
             }
+
             if (multiPositionType == MultiPositionTypeLabel.Large_Mode)
             {
                 UnityEngine.GUILayout.BeginHorizontal();
@@ -104,21 +132,25 @@ public class AkAmbientInspector : AkEventInspector
                 {
                     int insertIndex = largeModePositionArrayProperty.arraySize;
                     largeModePositionArrayProperty.InsertArrayElementAtIndex(insertIndex);
+
                     var newPoint = new UnityEngine.GameObject(string.Format("AkAmbientPoint{0}", insertIndex));
                     UnityEditor.Undo.RegisterCreatedObjectUndo(newPoint, "CreateNewLargeModePositionObject");
                     UnityEditor.Undo.AddComponent<AkAmbientLargeModePositioner>(newPoint);
                     UnityEditor.Undo.SetTransformParent(newPoint.transform, m_AkAmbient.transform, "CreateNewLargeModePositionObjectSetParent");
                     newPoint.transform.position = m_AkAmbient.transform.TransformPoint(UnityEngine.Vector3.zero);
                     newPoint.transform.localScale = new UnityEngine.Vector3(1f, 1f, 1f);
+
                     var newElement = largeModePositionArrayProperty.GetArrayElementAtIndex(insertIndex);
                     newElement.objectReferenceValue = newPoint.GetComponent<AkAmbientLargeModePositioner>();
                 }
+
                 if (UnityEngine.GUILayout.Button("Pick existing position object"))
                 {
                     int controlID = UnityEngine.GUIUtility.GetControlID(UnityEngine.FocusType.Passive);
                     UnityEditor.EditorGUIUtility.ShowObjectPicker<AkAmbientLargeModePositioner>(null, true, string.Empty, controlID);
                 }
                 UnityEngine.GUILayout.EndHorizontal();
+
                 ++UnityEditor.EditorGUI.indentLevel;
                 UnityEditor.EditorGUI.BeginChangeCheck();
                 for (int i = 0; i < largeModePositionArrayProperty.arraySize; ++i)
@@ -132,13 +164,16 @@ public class AkAmbientInspector : AkEventInspector
                 --UnityEditor.EditorGUI.indentLevel;
             }
         }
+
         //Save multi-position type to know if it has changed
         var multiPosType = m_AkAmbient.multiPositionTypeLabel;
+
         if (m_AkAmbient.multiPositionTypeLabel == MultiPositionTypeLabel.MultiPosition_Mode)
         {
             UpdateTriggers(multiPosType);
         }
     }
+
     private void UpdateTriggers(MultiPositionTypeLabel in_multiPosType)
     {
         //if we just switched to MultiPosition_Mode
@@ -150,6 +185,7 @@ public class AkAmbientInspector : AkEventInspector
 #else
             var akAmbients = FindObjectsOfType<AkAmbient>();
 #endif
+
             //Find the first AkAmbient that is in multiPosition_Mode and that has the same event as the current AkAmbient
             for (var i = 0; i < akAmbients.Length; i++)
             {
@@ -167,6 +203,7 @@ public class AkAmbientInspector : AkEventInspector
                         else
                             m_AkAmbient.triggerList = akAmbients[i].triggerList;
                     }
+
                     break;
                 }
             }
@@ -183,11 +220,13 @@ public class AkAmbientInspector : AkEventInspector
             SetMultiPosTrigger(akAmbients);
         }
     }
+
     private bool HasSameTriggers(System.Collections.Generic.List<int> other)
     {
         return other.Count == m_AkAmbient.triggerList.Count &&
                System.Linq.Enumerable.Count(System.Linq.Enumerable.Except(m_AkAmbient.triggerList, other)) == 0;
     }
+
     private void SetMultiPosTrigger(AkAmbient[] akAmbients)
     {
         for (var i = 0; i < akAmbients.Length; i++)
@@ -197,18 +236,22 @@ public class AkAmbientInspector : AkEventInspector
                 akAmbients[i].triggerList = m_AkAmbient.triggerList;
         }
     }
+
     private void OnSceneGUI()
     {
         RenderAttenuationSpheres();
     }
+
     public void RenderAttenuationSpheres()
     {
         if (currentAttSphereOp == AttenuationSphereOptions.Dont_Show)
             return;
+
         if (currentAttSphereOp == AttenuationSphereOptions.Current_Event_Only)
         {
             // Get the max attenuation for the event (if available)
             var radius = AkWwiseProjectInfo.GetData().GetEventMaxAttenuation(m_AkAmbient.data.Id) * m_AkAmbient.gameObject.GetComponent<AkGameObj>().ScalingFactor;
+
             if (m_AkAmbient.multiPositionTypeLabel == MultiPositionTypeLabel.Simple_Mode)
             {
                 DrawSphere(m_AkAmbient.gameObject.transform.position, radius, sphereColorProperty.colorValue);
@@ -216,6 +259,7 @@ public class AkAmbientInspector : AkEventInspector
             else if (m_AkAmbient.multiPositionTypeLabel == MultiPositionTypeLabel.Large_Mode)
             {
                 var positionComponents = m_AkAmbient.GetComponentsInChildren<AkAmbientLargeModePositioner>();
+
                 for (int i = 0; i < positionComponents.Length; i++)
                 {
                     DrawSphere(positionComponents[i].transform.position, radius, sphereColorProperty.colorValue);
@@ -245,13 +289,16 @@ public class AkAmbientInspector : AkEventInspector
 #else
             var akAmbients = FindObjectsOfType<AkAmbient>();
 #endif
+
             for (var i = 0; i < akAmbients.Length; i++)
             {
                 // Get the max attenuation for the event (if available)
                 var radius = AkWwiseProjectInfo.GetData().GetEventMaxAttenuation(akAmbients[i].data.Id);
+
                 if (akAmbients[i].multiPositionTypeLabel == MultiPositionTypeLabel.Large_Mode)
                 {
                     var positionComponents = m_AkAmbient.GetComponentsInChildren<AkAmbientLargeModePositioner>();
+
                     for (int j = 0; j < positionComponents.Length; j++)
                     {
                         DrawSphere(positionComponents[j].transform.position, radius, akAmbients[i].attenuationSphereColor);
@@ -264,6 +311,7 @@ public class AkAmbientInspector : AkEventInspector
             }
         }
     }
+
     private void DrawSphere(UnityEngine.Vector3 in_position, float in_radius, UnityEngine.Color in_sphereColor)
     {
         UnityEngine.Color wireColor = in_sphereColor;
@@ -272,6 +320,7 @@ public class AkAmbientInspector : AkEventInspector
         {
             UnityEditor.Handles.color = wireColor;
             DrawWireDiscs(UnityEngine.Vector3.left, UnityEngine.Vector3.right, 2, in_position, in_radius);
+
             UnityEditor.Handles.color = in_sphereColor;
             UnityEditor.Handles.SphereHandleCap(0, in_position, UnityEngine.Quaternion.identity, in_radius * 2.0f, UnityEngine.EventType.Repaint);
         }
@@ -279,10 +328,12 @@ public class AkAmbientInspector : AkEventInspector
         {
             UnityEditor.Handles.color = wireColor;
             DrawWireDiscs(UnityEngine.Vector3.left, UnityEngine.Vector3.right, 6, in_position, in_radius);
+
             UnityEditor.Handles.color = in_sphereColor;
             UnityEditor.Handles.DrawSolidDisc(in_position, UnityEngine.Vector3.up, in_radius);
         }
     }
+
     private void DrawWireDiscs(UnityEngine.Vector3 in_startNormal, UnityEngine.Vector3 in_endNormal, uint in_nbDiscs,
         UnityEngine.Vector3 in_position, float in_radius)
     {
@@ -291,6 +342,7 @@ public class AkAmbientInspector : AkEventInspector
         {
             UnityEditor.Handles.DrawWireDisc(in_position, UnityEngine.Vector3.Slerp(in_startNormal, in_endNormal, f * i), in_radius);
         }
+
         var orthogonalVector = UnityEngine.Vector3.Cross(in_startNormal, in_endNormal);
         //Handle edge case where vectors are parallel
         if (orthogonalVector.magnitude == 0.0f)
@@ -299,6 +351,7 @@ public class AkAmbientInspector : AkEventInspector
         }
         UnityEditor.Handles.DrawWireDisc(in_position, orthogonalVector, in_radius);
     }
+
     public static void PopulateMaxAttenuation()
     {
         UnityEditor.SceneView.RepaintAll();

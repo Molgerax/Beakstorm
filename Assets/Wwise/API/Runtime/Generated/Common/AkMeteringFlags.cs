@@ -8,6 +8,8 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public enum AkMeteringFlags : byte {
   AK_NoMetering = 0,
   AK_EnableBusMeter_Peak = 1 << 0,

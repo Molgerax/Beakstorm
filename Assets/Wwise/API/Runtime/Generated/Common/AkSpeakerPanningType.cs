@@ -8,6 +8,8 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public enum AkSpeakerPanningType : byte {
   AK_DirectSpeakerAssignment = 0,
   AK_BalanceFadeHeight = 1,

@@ -8,6 +8,8 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public enum AkMIDICcTypes {
   BANK_SELECT_COARSE = 0,
   MOD_WHEEL_COARSE = 1,

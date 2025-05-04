@@ -8,18 +8,24 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public class AkMusicPlaylistCallbackInfo : AkEventCallbackInfo {
   private global::System.IntPtr swigCPtr;
+
   internal AkMusicPlaylistCallbackInfo(global::System.IntPtr cPtr, bool cMemoryOwn) : base(AkUnitySoundEnginePINVOKE.CSharp_AkMusicPlaylistCallbackInfo_SWIGUpcast(cPtr), cMemoryOwn) {
     swigCPtr = cPtr;
   }
+
   internal static global::System.IntPtr getCPtr(AkMusicPlaylistCallbackInfo obj) {
     return (obj == null) ? global::System.IntPtr.Zero : obj.swigCPtr;
   }
+
   internal override void setCPtr(global::System.IntPtr cPtr) {
     base.setCPtr(AkUnitySoundEnginePINVOKE.CSharp_AkMusicPlaylistCallbackInfo_SWIGUpcast(cPtr));
     swigCPtr = cPtr;
   }
+
   protected override void Dispose(bool disposing) {
     lock(this) {
       if (swigCPtr != global::System.IntPtr.Zero) {
@@ -33,15 +39,21 @@ public class AkMusicPlaylistCallbackInfo : AkEventCallbackInfo {
       base.Dispose(disposing);
     }
   }
+
   public uint playlistID { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMusicPlaylistCallbackInfo_playlistID_get(swigCPtr); } 
   }
+
   public uint uNumPlaylistItems { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMusicPlaylistCallbackInfo_uNumPlaylistItems_get(swigCPtr); } 
   }
+
   public uint uPlaylistSelection { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMusicPlaylistCallbackInfo_uPlaylistSelection_get(swigCPtr); } 
   }
+
   public uint uPlaylistItemDone { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMusicPlaylistCallbackInfo_uPlaylistItemDone_get(swigCPtr); } 
   }
+
   public AkMusicPlaylistCallbackInfo() : this(AkUnitySoundEnginePINVOKE.CSharp_new_AkMusicPlaylistCallbackInfo(), true) {
   }
+
 }
 #endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.

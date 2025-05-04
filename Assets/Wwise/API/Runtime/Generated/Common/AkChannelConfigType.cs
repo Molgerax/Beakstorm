@@ -8,6 +8,8 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public enum AkChannelConfigType {
   AK_ChannelConfigType_Anonymous = 0,
   AK_ChannelConfigType_Standard = 1,

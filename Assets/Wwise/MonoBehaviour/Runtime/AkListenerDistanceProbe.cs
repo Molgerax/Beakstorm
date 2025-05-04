@@ -6,13 +6,16 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
+
 [UnityEngine.RequireComponent(typeof(AkAudioListener))]
 [UnityEngine.DisallowMultipleComponent]
 [UnityEngine.DefaultExecutionOrder(-10)]
@@ -25,6 +28,7 @@ public class AkListenerDistanceProbe : UnityEngine.MonoBehaviour
 {
 	[UnityEngine.Tooltip("Game object that is assigned as the distance probe for this listener.")]
 	public AkGameObj distanceProbe;
+
 	private void OnEnable()
 	{
         if (distanceProbe)
@@ -34,10 +38,12 @@ public class AkListenerDistanceProbe : UnityEngine.MonoBehaviour
 			AkUnitySoundEngine.SetDistanceProbe(listenerGameObjectID, distanceProbeGameObjectID);
         }
     }
+
 	private void OnDisable()
 	{
         var listenerGameObjectID = AkUnitySoundEngine.GetAkGameObjectID(this.gameObject);
         AkUnitySoundEngine.SetDistanceProbe(listenerGameObjectID, AkUnitySoundEngine.AK_INVALID_GAME_OBJECT);
 	}
+
 }
 #endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.

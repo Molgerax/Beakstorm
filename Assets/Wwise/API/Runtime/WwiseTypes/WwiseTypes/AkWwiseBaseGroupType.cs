@@ -5,14 +5,18 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
+
 #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
+
 namespace AK.Wwise
 {
 	[System.Serializable]
@@ -27,21 +31,26 @@ namespace AK.Wwise
 				return reference ? reference.GroupObjectReference : null;
 			}
 		}
+
 		public abstract WwiseObjectType WwiseObjectGroupType { get; }
+
 		public uint GroupId
 		{
 			get { return GroupWwiseObjectReference ? GroupWwiseObjectReference.Id : AkUnitySoundEngine.AK_INVALID_UNIQUE_ID; }
 		}
+
 		public override bool IsValid()
 		{
 			return base.IsValid() && GroupWwiseObjectReference != null;
 		}
+
 		#region Obsolete
 		[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_2)]
 		public int groupID
 		{
 			get { return (int)GroupId; }
 		}
+
 		[System.Obsolete(AkUnitySoundEngine.Deprecation_2018_1_6)]
 		public byte[] groupGuid
 		{
@@ -52,6 +61,7 @@ namespace AK.Wwise
 			}
 		}
 		#endregion
+
 		#region WwiseMigration
 #pragma warning disable 0414 // private field assigned but not used.
 		[UnityEngine.HideInInspector]

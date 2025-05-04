@@ -6,13 +6,16 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
+
 [UnityEngine.AddComponentMenu("Wwise/Spatial Audio/AkRoomPortalObstruction")]
 [UnityEngine.RequireComponent(typeof(AkRoomPortal))]
 /// @brief Completely obstructs the spatial audio portal of the current game object from the spatial audio listener if at least one object is between them.
@@ -20,15 +23,18 @@ Copyright (c) 2025 Audiokinetic Inc.
 public class AkRoomPortalObstruction : AkObstructionOcclusion
 {
 	private AkRoomPortal m_portal;
+
 	private void Awake()
 	{
 		InitIntervalsAndFadeRates();
 		m_portal = GetComponent<AkRoomPortal>();
 	}
+
 	protected override void UpdateCurrentListenerList()
 	{
 		currentListenerList.Add(AkSpatialAudioListener.TheSpatialAudioListener);
 	}
+
 	protected override void SetObstructionOcclusion(
 		System.Collections.Generic.KeyValuePair<AkAudioListener, ObstructionOcclusionValue> ObsOccPair)
 	{

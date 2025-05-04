@@ -8,6 +8,8 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public enum AkConnectionType {
   ConnectionType_Direct = 0,
   ConnectionType_GameDefSend = 1,

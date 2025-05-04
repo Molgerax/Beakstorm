@@ -8,6 +8,8 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public enum Ak3DSpatializationMode : byte {
   AK_SpatializationMode_None = 0,
   AK_SpatializationMode_PositionOnly = 1,

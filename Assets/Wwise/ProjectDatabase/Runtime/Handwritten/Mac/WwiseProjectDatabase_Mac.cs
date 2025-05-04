@@ -5,7 +5,9 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
@@ -14,6 +16,7 @@ Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
 #if UNITY_EDITOR_OSX || (UNITY_STANDALONE_OSX && !UNITY_EDITOR)
 using System.Threading.Tasks;
+
 public partial class WwiseProjectDatabase
 {
     static WwiseProjectDatabase()
@@ -30,6 +33,7 @@ public partial class WwiseProjectDatabase
        InitCheckUp(inDirectoryPath);
        if (!ProjectInfoExists)
            return false;
+
        try
        {
            await Task.Run(() => WwiseProjectDatabasePINVOKE_Mac.Init(inDirectoryPath, inDirectoryPlatformName));
@@ -41,11 +45,13 @@ public partial class WwiseProjectDatabase
        }
        return ProjectInfoExists;
     }
+
     public static void Init(string inDirectoryPath, string inDirectoryPlatformName, string language = null)
     {
         InitCheckUp(inDirectoryPath);
         if (!ProjectInfoExists)
             return;
+        
         try
         {
             WwiseProjectDatabasePINVOKE_Mac.Init(inDirectoryPath, inDirectoryPlatformName);
@@ -60,6 +66,7 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+
     public static void SetCurrentPlatform(string inDirectoryPlatformName)
     {
         try
@@ -72,6 +79,7 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+
     public static void SetCurrentLanguage(string inLanguageName)
     {
         try
@@ -84,13 +92,16 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+
     public static string StringFromIntPtrString(System.IntPtr ptr)
     {
         return System.Runtime.InteropServices.Marshal.PtrToStringAnsi(ptr);
     }
+    
     /*
      * SoundBanks
      */
+
     public static global::System.IntPtr GetSoundBankRefString(string soundBankName, string soundBankType)
     {
         try
@@ -259,6 +270,7 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+
     public static global::System.IntPtr GetSoundBankMedia(global::System.IntPtr soundBankRefPtr, int index)
     {
         try
@@ -271,6 +283,7 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+
     public static uint GetSoundBankMediasCount(global::System.IntPtr soundBankRefPtr)
     {
         try
@@ -283,6 +296,7 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+
     public static global::System.IntPtr GetSoundBankEvent(global::System.IntPtr soundBankRefPtr, int index)
     {
         try
@@ -295,6 +309,7 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+
     public static uint GetSoundBankEventsCount(global::System.IntPtr soundBankRefPtr)
     {
         try
@@ -307,6 +322,7 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+
     public static void DeleteSoundBankRef(global::System.IntPtr soundBankRefPtr)
     {
         try
@@ -319,9 +335,11 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+    
     /*
      * Medias
     */
+    
     public static string GetMediaName(global::System.IntPtr mediaRefPtr)
     {
         try
@@ -418,9 +436,11 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+    
     /*
      * Events
     */
+    
     public static global::System.IntPtr GetEventRefString(string soundBankName)
     {
         try
@@ -553,9 +573,11 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+    
     /*
      * Platform
     */
+    
     public static global::System.IntPtr GetPlatformRef(string soundBankName)
     {
         try
@@ -604,9 +626,11 @@ public partial class WwiseProjectDatabase
             throw;
         }
     }
+
     /**
     * Plugin
     */
+
     public static global::System.IntPtr GetAllPluginRef()
     {
         try

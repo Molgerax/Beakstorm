@@ -6,28 +6,34 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
+
 [UnityEditor.CustomEditor(typeof(AkRoomAwareObject), true)]
 public class AkRoomAwareObjectInspector : UnityEditor.Editor
 {
 	private bool hideDefaultHandle;
 	private UnityEditor.SerializedProperty listeners;
 	private AkRoomAwareObject m_AkRoomAwareObject;
+
 	private void OnEnable()
 	{
 		m_AkRoomAwareObject = target as AkRoomAwareObject;
 	}
+
 	public override void OnInspectorGUI()
 	{
 		RigidbodyCheck(m_AkRoomAwareObject.gameObject);
 		ColliderCheck(m_AkRoomAwareObject.gameObject);
 	}
+
 	public static void ColliderCheck(UnityEngine.GameObject gameObject)
 	{
 		if (AkWwiseEditorSettings.Instance.ShowSpatialAudioWarningMsg)
@@ -36,6 +42,7 @@ public class AkRoomAwareObjectInspector : UnityEditor.Editor
 			if (collider == null || !collider.enabled)
 			{
 				UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
+
 				using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
 				{
 					UnityEditor.EditorGUILayout.HelpBox(
@@ -45,16 +52,19 @@ public class AkRoomAwareObjectInspector : UnityEditor.Editor
 			}
 		}
 	}
+
 	public static void RigidbodyCheck(UnityEngine.GameObject gameObject)
 	{
 		if (AkWwiseEditorSettings.Instance.ShowSpatialAudioWarningMsg && gameObject.GetComponent<UnityEngine.Rigidbody>() == null)
 		{
 			UnityEngine.GUILayout.Space(UnityEditor.EditorGUIUtility.standardVerticalSpacing);
+
 			using (new UnityEditor.EditorGUILayout.VerticalScope("box"))
 			{
 				UnityEditor.EditorGUILayout.HelpBox(
 					"Interactions between AkRoomAwareObject and AkRoom require a Rigidbody component on the object or the room.",
 					UnityEditor.MessageType.Warning);
+
 				if (UnityEngine.GUILayout.Button("Add Rigidbody"))
 				{
 					var rb = UnityEditor.Undo.AddComponent<UnityEngine.Rigidbody>(gameObject);

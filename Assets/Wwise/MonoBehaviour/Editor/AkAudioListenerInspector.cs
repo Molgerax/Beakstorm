@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+
 #if UNITY_EDITOR
 /*******************************************************************************
 The content of this file includes portions of the proprietary AUDIOKINETIC Wwise
@@ -8,24 +9,29 @@ The content of this file may not be used without valid licenses to the
 AUDIOKINETIC Wwise Technology.
 Note that the use of the game engine is subject to the Unity(R) Terms of
 Service at https://unity3d.com/legal/terms-of-service
+ 
 License Usage
+ 
 Licensees holding valid licenses to the AUDIOKINETIC Wwise Technology may use
 this file in accordance with the end user license agreement provided with the
 software or, alternatively, in accordance with the terms contained
 in a written agreement between you and Audiokinetic Inc.
 Copyright (c) 2025 Audiokinetic Inc.
 *******************************************************************************/
+
 [UnityEditor.CanEditMultipleObjects]
 [UnityEditor.CustomEditor(typeof(AkAudioListener), true)]
 public class AkAudioListenerInspector : UnityEditor.Editor
 {
 	private UnityEditor.SerializedProperty m_isDefaultListener;
 	private AkAudioListener m_Listener;
+
 	private void OnEnable()
 	{
 		m_isDefaultListener = serializedObject.FindProperty("isDefaultListener");
 		m_Listener = target as AkAudioListener;
 	}
+
 	public override void OnInspectorGUI()
 	{
 		using (new UnityEditor.EditorGUILayout.VerticalScope("box"))

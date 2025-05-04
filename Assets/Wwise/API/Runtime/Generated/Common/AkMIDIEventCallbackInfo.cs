@@ -8,18 +8,24 @@
 // Do not make changes to this file unless you know what you are doing - modify
 // the SWIG interface file instead.
 //------------------------------------------------------------------------------
+
+
 public class AkMIDIEventCallbackInfo : AkEventCallbackInfo {
   private global::System.IntPtr swigCPtr;
+
   internal AkMIDIEventCallbackInfo(global::System.IntPtr cPtr, bool cMemoryOwn) : base(AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_SWIGUpcast(cPtr), cMemoryOwn) {
     swigCPtr = cPtr;
   }
+
   internal static global::System.IntPtr getCPtr(AkMIDIEventCallbackInfo obj) {
     return (obj == null) ? global::System.IntPtr.Zero : obj.swigCPtr;
   }
+
   internal override void setCPtr(global::System.IntPtr cPtr) {
     base.setCPtr(AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_SWIGUpcast(cPtr));
     swigCPtr = cPtr;
   }
+
   protected override void Dispose(bool disposing) {
     lock(this) {
       if (swigCPtr != global::System.IntPtr.Zero) {
@@ -33,35 +39,51 @@ public class AkMIDIEventCallbackInfo : AkEventCallbackInfo {
       base.Dispose(disposing);
     }
   }
+
   public byte byChan { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byChan_get(swigCPtr); } 
   }
+
   public byte byParam1 { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byParam1_get(swigCPtr); } 
   }
+
   public byte byParam2 { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byParam2_get(swigCPtr); } 
   }
+
   public AkMIDIEventTypes byType { get { return (AkMIDIEventTypes)AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byType_get(swigCPtr); } 
   }
+
   public byte byOnOffNote { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byOnOffNote_get(swigCPtr); } 
   }
+
   public byte byVelocity { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byVelocity_get(swigCPtr); } 
   }
+
   public AkMIDICcTypes byCc { get { return (AkMIDICcTypes)AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byCc_get(swigCPtr); } 
   }
+
   public byte byCcValue { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byCcValue_get(swigCPtr); } 
   }
+
   public byte byValueLsb { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byValueLsb_get(swigCPtr); } 
   }
+
   public byte byValueMsb { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byValueMsb_get(swigCPtr); } 
   }
+
   public byte byAftertouchNote { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byAftertouchNote_get(swigCPtr); } 
   }
+
   public byte byNoteAftertouchValue { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byNoteAftertouchValue_get(swigCPtr); } 
   }
+
   public byte byChanAftertouchValue { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byChanAftertouchValue_get(swigCPtr); } 
   }
+
   public byte byProgramNum { get { return AkUnitySoundEnginePINVOKE.CSharp_AkMIDIEventCallbackInfo_byProgramNum_get(swigCPtr); } 
   }
+
   public AkMIDIEventCallbackInfo() : this(AkUnitySoundEnginePINVOKE.CSharp_new_AkMIDIEventCallbackInfo(), true) {
   }
+
 }
 #endif // #if ! (UNITY_DASHBOARD_WIDGET || UNITY_WEBPLAYER || UNITY_WII || UNITY_WIIU || UNITY_NACL || UNITY_FLASH || UNITY_BLACKBERRY) // Disable under unsupported platforms.
