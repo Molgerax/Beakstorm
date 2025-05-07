@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{A9E4BE09-F7CE-4CF6-B447-BA31A871BED5}" SchemaVersion="123">
 	<Triggers>
-		<WorkUnit Name="Default Work Unit" ID="{A9E4BE09-F7CE-4CF6-B447-BA31A871BED5}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{A9E4BE09-F7CE-4CF6-B447-BA31A871BED5}" PersistMode="Standalone">
+			<ChildrenList>
+				<Trigger Name="ship_Spawn" ID="{65607DCB-60AB-41ED-8557-FC16C7CF60AE}"/>
+				<Trigger Name="ship_Sink" ID="{51A47BCD-63B6-4F78-A095-FA6B97581DB2}"/>
+			</ChildrenList>
+		</WorkUnit>
 	</Triggers>
 </WwiseDocument>

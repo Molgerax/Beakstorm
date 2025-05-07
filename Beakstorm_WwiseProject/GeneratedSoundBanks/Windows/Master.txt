@@ -1,0 +1,14 @@
+Event	ID	Name			Wwise Object Path	Notes
+	217586636	play_birdFollow			\Default Work Unit\play_birdFollow	
+	275388915	play_shipCannon			\Default Work Unit\play_shipCannon	
+	452547817	stop_all			\Default Work Unit\stop_all	
+	463795711	play_shipHorn			\Default Work Unit\play_shipHorn	
+	792515034	play_shipDestroy			\Default Work Unit\play_shipDestroy	
+	1602214372	play_birdTarget			\Default Work Unit\play_birdTarget	
+	1912775917	play_gliderHum			\Default Work Unit\play_gliderHum	
+	2435460859	play_birdAttack			\Default Work Unit\play_birdAttack	
+	2650593202	play_shipDrone			\Default Work Unit\play_shipDrone	
+	2932040671	play_Music			\Default Work Unit\play_Music	
+	3133186549	play_atmo			\Default Work Unit\play_atmo	
+	4227130709	play_birdStatic			\Default Work Unit\play_birdStatic	
+

@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{A3950640-ACA4-4C33-A989-428F2F7299D9}" SchemaVersion="123">
 	<States>
-		<WorkUnit Name="Default Work Unit" ID="{A3950640-ACA4-4C33-A989-428F2F7299D9}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{A3950640-ACA4-4C33-A989-428F2F7299D9}" PersistMode="Standalone">
+			<ChildrenList>
+				<StateGroup Name="wave_State" ID="{E57D9068-39D6-44C1-9D66-C6B62FFBBFF1}">
+					<ChildrenList>
+						<State Name="None" ID="{1715F336-77CF-4E02-9029-B875071C7162}"/>
+						<State Name="rest" ID="{0931359C-7C1F-4F55-8AB1-8C70E91EB294}"/>
+						<State Name="wave1" ID="{4525D8B5-377F-4FCA-A536-42CA39FED080}"/>
+						<State Name="wave2" ID="{B28E096F-E043-4103-95AD-A2E921247910}"/>
+						<State Name="wave3" ID="{F27E4BEC-E205-4237-AE7F-9AD9402D82B8}"/>
+						<State Name="wave4" ID="{8D036A0F-71FA-4167-872D-2F6BD678BE04}"/>
+						<State Name="wave5" ID="{3BC2B253-5A53-48BA-AF99-D117D0614D8C}"/>
+					</ChildrenList>
+				</StateGroup>
+			</ChildrenList>
+		</WorkUnit>
 	</States>
 </WwiseDocument>

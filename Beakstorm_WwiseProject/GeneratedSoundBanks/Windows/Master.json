@@ -1,0 +1,143 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "154",
+  "SoundBanks": [
+   {
+    "Id": "4056684167",
+    "Type": "User",
+    "GUID": "{2DEEA307-6196-4782-BE05-DD5404768833}",
+    "Language": "SFX",
+    "Hash": "{13BDE451-91FB-1815-EC4F-2A6A1CD30511}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\Master",
+    "ShortName": "Master",
+    "Path": "Master.bnk",
+    "Events": [
+     {
+      "Id": "3133186549",
+      "Name": "play_atmo",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_atmo",
+      "GUID": "{3083773F-BDA6-4629-9181-3456407EDC26}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "2435460859",
+      "Name": "play_birdAttack",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_birdAttack",
+      "GUID": "{475EC075-A4E2-4EBC-BDA4-6D8BBFBD4E09}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "217586636",
+      "Name": "play_birdFollow",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_birdFollow",
+      "GUID": "{8A7CBEDB-D2C0-4E39-A42B-27EF3E51460F}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "4227130709",
+      "Name": "play_birdStatic",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_birdStatic",
+      "GUID": "{633555D6-2C6D-4619-9CC9-2301EB60DE90}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "1602214372",
+      "Name": "play_birdTarget",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_birdTarget",
+      "GUID": "{6859B005-A6FB-4D44-ABD0-AC41370B8E2D}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "1912775917",
+      "Name": "play_gliderHum",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_gliderHum",
+      "GUID": "{B1B2C1C7-D181-4A6E-A351-FAD333E7FC15}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "2932040671",
+      "Name": "play_Music",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_Music",
+      "GUID": "{E76F5740-2EB8-43A8-A1B3-7C7FBA4E1AAE}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "275388915",
+      "Name": "play_shipCannon",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_shipCannon",
+      "GUID": "{761E02DC-A217-4203-B3E7-FF5CEC0F556D}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "792515034",
+      "Name": "play_shipDestroy",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_shipDestroy",
+      "GUID": "{8FF6B736-2268-41E2-89B2-A6875B2A7CD2}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "2650593202",
+      "Name": "play_shipDrone",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_shipDrone",
+      "GUID": "{02A07C88-BA95-4FDE-8B54-D4105F030C80}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "463795711",
+      "Name": "play_shipHorn",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_shipHorn",
+      "GUID": "{E8A606D4-A984-453C-8364-12C3F700B116}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "452547817",
+      "Name": "stop_all",
+      "ObjectPath": "\\Events\\Default Work Unit\\stop_all",
+      "GUID": "{B618E87F-5839-4D42-A85E-749F8CDD4053}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     }
+    ]
+   }
+  ],
+  "FileHash": "{01CB2383-E9CE-D9AA-D47B-52F56B023929}"
+ }
+}

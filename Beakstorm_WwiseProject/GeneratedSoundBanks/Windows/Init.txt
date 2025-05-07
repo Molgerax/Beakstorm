@@ -1,0 +1,22 @@
+State Group	ID	Name			Wwise Object Path	Notes
+	108563492	wave_State			\Default Work Unit\wave_State	
+
+State	ID	Name	State Group			Notes
+	748895195	None	wave_State			
+	2277599019	rest	wave_State			
+	2453122370	wave4	wave_State			
+	2453122371	wave5	wave_State			
+	2453122372	wave2	wave_State			
+	2453122373	wave3	wave_State			
+	2453122375	wave1	wave_State			
+
+Audio Bus	ID	Name			Wwise Object Path	Notes
+	1191978290	2D SFX			\Default Work Unit\Master Audio Bus\2D SFX	
+	2352922065	3D Music			\Default Work Unit\Master Audio Bus\3D Music	
+	3803692087	Master Audio Bus			\Default Work Unit\Master Audio Bus	
+	3938878469	3D SFX			\Default Work Unit\Master Audio Bus\3D SFX	
+
+Audio Devices	ID	Name	Type				Notes
+	2317455096	No_Output	No Output			
+	3859886410	System	System			
+

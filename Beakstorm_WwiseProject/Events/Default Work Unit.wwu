@@ -15,6 +15,16 @@
 					</ChildrenList>
 				</Event>
 				<Event Name="play_atmo" ID="{3083773F-BDA6-4629-9181-3456407EDC26}"/>
+				<Event Name="play_birdTarget" ID="{6859B005-A6FB-4D44-ABD0-AC41370B8E2D}"/>
+				<Event Name="play_birdAttack" ID="{475EC075-A4E2-4EBC-BDA4-6D8BBFBD4E09}"/>
+				<Event Name="play_birdStatic" ID="{633555D6-2C6D-4619-9CC9-2301EB60DE90}"/>
+				<Event Name="play_birdFollow" ID="{8A7CBEDB-D2C0-4E39-A42B-27EF3E51460F}"/>
+				<Event Name="play_shipDrone" ID="{02A07C88-BA95-4FDE-8B54-D4105F030C80}"/>
+				<Event Name="play_shipCannon" ID="{761E02DC-A217-4203-B3E7-FF5CEC0F556D}"/>
+				<Event Name="play_shipHorn" ID="{E8A606D4-A984-453C-8364-12C3F700B116}"/>
+				<Event Name="play_shipDestroy" ID="{8FF6B736-2268-41E2-89B2-A6875B2A7CD2}"/>
+				<Event Name="play_gliderHum" ID="{B1B2C1C7-D181-4A6E-A351-FAD333E7FC15}"/>
+				<Event Name="play_Music" ID="{E76F5740-2EB8-43A8-A1B3-7C7FBA4E1AAE}"/>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>
