@@ -1,3 +1,4 @@
+using System;
 using Beakstorm.Inputs;
 using UnityEngine;
 
@@ -7,6 +8,9 @@ namespace Beakstorm.Pausing
     {
         public static PauseManager Instance;
 
+        public static event Action OnPauseAction = delegate { };
+        public static event Action OnUnpauseAction = delegate { }; 
+        
         public static bool IsPaused { get; private set; }
         
         private void Awake()
@@ -33,6 +37,8 @@ namespace Beakstorm.Pausing
             PlayerInputs.Instance.EnableUiInputs();
             Time.timeScale = 0;
             IsPaused = true;
+            
+            OnPauseAction?.Invoke();
         }
 
         public void Unpause()
@@ -40,6 +46,8 @@ namespace Beakstorm.Pausing
             PlayerInputs.Instance.EnablePlayerInputs();
             Time.timeScale = 1f;
             IsPaused = false;
+            
+            OnUnpauseAction?.Invoke();
         }
     }
 }

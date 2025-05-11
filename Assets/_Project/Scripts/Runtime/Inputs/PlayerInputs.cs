@@ -1,4 +1,5 @@
 using System;
+using Beakstorm.Settings;
 using Beakstorm.Utility;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -47,8 +48,8 @@ namespace Beakstorm.Inputs
 
         #region Properties
 
-        public Vector2 MoveInput => moveAction.ReadValue<Vector2>();
-        public Vector2 LookInput => lookAction.ReadValue<Vector2>() * mouseSensitivity;
+        public Vector2 MoveInput => moveAction.ReadValue<Vector2>() * GameplaySettings.Instance.FlightAxisInversion;
+        public Vector2 LookInput => lookAction.ReadValue<Vector2>() * GameplaySettings.Instance.LookAxisInversion * mouseSensitivity;
 
         public bool ConfirmBuffered => _confirmBuffered;
         public bool CancelBuffered => _cancelBuffered;
