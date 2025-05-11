@@ -62,7 +62,7 @@ Transform:
   m_GameObject: {fileID: 6120369539214848294}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 150, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -103,6 +103,7 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 6120369539214848294}
+  emergeTime: 10
 --- !u!1 &7086835390173058031
 GameObject:
   m_ObjectHideFlags: 0
