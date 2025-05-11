@@ -10,6 +10,7 @@ namespace Beakstorm.Gameplay.Player
 
         [SerializeField] private int maxHealth = 100;
 
+        private int _damageTaken = 0;
         private int _health;
         
         private Vector3 _oldPosition;
@@ -20,7 +21,8 @@ namespace Beakstorm.Gameplay.Player
 
         public Vector3 Position => _position;
         public Vector3 Velocity => _velocity;
-        
+        public int Health => _health;
+        public int DamageTaken => _damageTaken;
 
         private void Awake()
         {
@@ -46,11 +48,13 @@ namespace Beakstorm.Gameplay.Player
 
         public bool CanTakeDamage()
         {
+            return true;
             return _health > 0;
         }
 
         public void TakeDamage(int damage)
         {
+            _damageTaken += damage;
             _health -= damage;
             transform.position += Vector3.up * damage;
         }
