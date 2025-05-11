@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AppKey: A-SH-3039813117
   SelfHostURL: beakstorm.duckdns.org:8000
-  AppBuildNumber: 0.0.1
+  AppBuildNumber: 0.1.0
   EnableOverride: 0
   AppVersion: 
   FlushInterval: 0

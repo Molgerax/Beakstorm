@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Simulation.Particles;
@@ -15,8 +14,6 @@ namespace Beakstorm.Simulation.Collisions
 
         public static WeakPointManager Instance;
         
-        private BoidManager _boidManager;
-
         public List<WeakPoint> WeakPoints = new List<WeakPoint>(16);
         public GraphicsBuffer WeakPointBuffer;
         public GraphicsBuffer DamageBuffer;
@@ -36,11 +33,8 @@ namespace Beakstorm.Simulation.Collisions
             _flushDamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
             
             _damageArray = new NativeArray<int>(_bufferSize, Allocator.Persistent);
-        }
-
-        private void Start()
-        {
-            _boidManager = BoidManager.Instance;
+            for (int i = 0; i < _damageArray.Length; i++)
+                _damageArray[i] = 0;
         }
 
         private void OnDestroy()
@@ -133,7 +127,7 @@ namespace Beakstorm.Simulation.Collisions
 
         private void CollideBoids()
         {
-            if (!_boidManager)
+            if (!BoidManager.Instance)
                 return;
             
             int kernel = compute.FindKernel("CollideBoids");
@@ -145,13 +139,13 @@ namespace Beakstorm.Simulation.Collisions
             compute.SetFloat(PropertyIDs.Time, Time.time);
             compute.SetFloat(PropertyIDs.DeltaTime, Time.deltaTime);
 
-            compute.SetBuffer(kernel, PropertyIDs.SpatialIndices, _boidManager.SpatialIndicesBuffer);
-            compute.SetBuffer(kernel, PropertyIDs.SpatialOffsets, _boidManager.SpatialOffsetsBuffer);
-            compute.SetBuffer(kernel, PropertyIDs.PositionBuffer, _boidManager.PositionBuffer);
-            compute.SetBuffer(kernel, PropertyIDs.OldPositionBuffer, _boidManager.OldPositionBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.SpatialIndices, BoidManager.Instance.SpatialIndicesBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.SpatialOffsets, BoidManager.Instance.SpatialOffsetsBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.PositionBuffer, BoidManager.Instance.PositionBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.OldPositionBuffer, BoidManager.Instance.OldPositionBuffer);
             
-            compute.SetFloat(PropertyIDs.HashCellSize, _boidManager.HashCellSize);
-            compute.SetFloat(PropertyIDs.TotalCount, _boidManager.Capacity);
+            compute.SetFloat(PropertyIDs.HashCellSize, BoidManager.Instance.HashCellSize);
+            compute.SetInt(PropertyIDs.TotalCount, BoidManager.Instance.Capacity);
             
             compute.DispatchExact(kernel, _bufferSize);
         }

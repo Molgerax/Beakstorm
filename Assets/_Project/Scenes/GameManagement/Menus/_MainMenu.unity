@@ -522,6 +522,8 @@ MonoBehaviour:
   scenesToLoad:
   - asset: {fileID: 102900000, guid: a7e9b15eccbf3864b99ac2f2607adda5, type: 3}
     guid: a7e9b15eccbf3864b99ac2f2607adda5
+  - asset: {fileID: 102900000, guid: bce57ba8687361f48b36b24647246677, type: 3}
+    guid: bce57ba8687361f48b36b24647246677
   loadAdditively: 0
   setFirstSceneActive: 1
   sceneLoadChannel: {fileID: 11400000, guid: 29689ca4195341d43b509ad0c2bcbe82, type: 2}

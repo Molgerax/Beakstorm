@@ -78,6 +78,7 @@ namespace Beakstorm.Simulation.Particles
         private void Awake()
         {
             Instance = this;
+            _capacity = maxCount;
         }
 
         private void Start()

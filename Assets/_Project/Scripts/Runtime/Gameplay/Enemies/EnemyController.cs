@@ -1,3 +1,4 @@
+using System;
 using Beakstorm.Simulation.Collisions;
 using UltEvents;
 using UnityEngine;
@@ -8,10 +9,16 @@ namespace Beakstorm.Gameplay.Enemies
     {
         [SerializeField] private WeakPoint[] weakPoints;
         [SerializeField] private UltEvent onHealthZero;
+
+        [SerializeField] private float emergeTime = 10;
         
         private int _maxHealth;
         private int _currentHealth;
 
+        private Vector3 _spawnPos;
+        private Vector3 _emergePos;
+        private float _emergeTimer;
+        
         private EnemySpawner _spawner;
         
         public int CurrentHealth()
@@ -43,9 +50,32 @@ namespace Beakstorm.Gameplay.Enemies
             }
         }
 
+        private void Update()
+        {
+            if (_emergeTimer > 0)
+            {
+                float t = 1 - (_emergeTimer / emergeTime);
+
+                t = 1 - (1-t) * (1-t);
+                
+                transform.position = Vector3.Lerp(_emergePos, _spawnPos, t);
+                _emergeTimer -= Time.deltaTime;
+
+                if (_emergeTimer <= 0)
+                    transform.position = _spawnPos;
+            }
+        }
+
+
         public void Spawn(EnemySpawner spawner)
         {
             _spawner = spawner;
+
+            _emergeTimer = emergeTime;
+
+            _spawnPos = transform.position;
+            _emergePos = _spawnPos;
+            _emergePos.y = -100;
         }
         
         public void CheckHealth()

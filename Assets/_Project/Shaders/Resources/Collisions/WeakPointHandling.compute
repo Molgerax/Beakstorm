@@ -20,7 +20,9 @@ void FlushDamage(uint3 id : SV_DispatchThreadID)
     if (index >= _WeakPointCount)
         return;
 
-    _DamageBuffer[index] -= _FlushDamageBuffer[index];
+    int dmg = _DamageBuffer[index] - _FlushDamageBuffer[index];
+    
+    _DamageBuffer[index] = max(0, dmg);
 }
 
 
