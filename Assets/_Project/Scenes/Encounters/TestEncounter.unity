@@ -418,6 +418,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LargeEnemySpawner (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5009129160466776262, guid: 0906141f4404ea44abeffc6005d535cb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -534,7 +538,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4589091284097469159, guid: 0906141f4404ea44abeffc6005d535cb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4589091284097469159, guid: 0906141f4404ea44abeffc6005d535cb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -542,7 +546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4589091284097469159, guid: 0906141f4404ea44abeffc6005d535cb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -163
+      value: -156
       objectReference: {fileID: 0}
     - target: {fileID: 4589091284097469159, guid: 0906141f4404ea44abeffc6005d535cb, type: 3}
       propertyPath: m_LocalRotation.w

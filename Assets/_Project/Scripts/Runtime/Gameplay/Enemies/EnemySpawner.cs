@@ -63,7 +63,8 @@ namespace Beakstorm.Gameplay.Enemies
             WaitForDelay = 1,
             WaitUntilDefeated = 2
         }
-
+        
+#if UNITY_EDITOR
         private EnemyController _preview;
 
         private void OnEnable()
@@ -91,5 +92,6 @@ namespace Beakstorm.Gameplay.Enemies
         {
             DestroyImmediate(_preview);
         }
+#endif
     }
 }
