@@ -23,5 +23,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Encounters/TestEncounter.unity
     guid: bce57ba8687361f48b36b24647246677
+  - enabled: 1
+    path: Assets/_Project/Scenes/GameManagement/_SimulationManagers.unity
+    guid: 375d37e5f92c1db4dafac9b8d188290a
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
