@@ -1,4 +1,3 @@
-using System;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Pausing;
 using Beakstorm.Simulation.Collisions.SDF;
@@ -10,7 +9,7 @@ namespace Beakstorm.Simulation.Particles
     /// <summary>
     /// Pulled heavily from: https://github.com/abecombe/VFXGraphStudy/blob/main/Assets/Scenes/Flocking/Scripts/Flocking.cs
     /// </summary>
-    public class BoidManager : MonoBehaviour
+    public class BoidManager : MonoBehaviour, IHashedParticleSimulation
     {
         private const int THREAD_GROUP_SIZE = 256;
 
@@ -72,8 +71,10 @@ namespace Beakstorm.Simulation.Particles
         public ComputeBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
         public GraphicsBuffer PositionBuffer => _positionBuffer;
         public GraphicsBuffer OldPositionBuffer => _oldPositionBuffer;
+        public GraphicsBuffer DataBuffer => _dataBuffer;
         public int Capacity => _capacity;
         public float HashCellSize => _hashCellSize;
+        public Vector3 SimulationSpace => simulationSpace;
 
         private Vector4 _whistleSource;
         
@@ -99,7 +100,8 @@ namespace Beakstorm.Simulation.Particles
              
                 int updateKernel = _boidComputeShader.FindKernel("Update");
                 RunSimulation(updateKernel, Time.deltaTime);
-                
+                //SpawnPheromonesFromBoids(Time.deltaTime);
+
                 RenderMeshes();
             }
         }
@@ -234,6 +236,61 @@ namespace Beakstorm.Simulation.Particles
             _boidComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
         }
 
+        private void SpawnPheromonesFromBoids(float timeStep)
+        {
+            if (PauseManager.IsPaused)
+                return;
+            if (timeStep == 0)
+                return;
+
+            if (!PheromoneManager.Instance)
+                return;
+
+            int kernelId = _boidComputeShader.FindKernel("SpawnPheromone");
+
+            if (kernelId < 0)
+            {
+                Debug.LogError($"Kernel for ComputeShader {_boidComputeShader} is invalid", this);
+                return;
+            }
+
+            _boidComputeShader.SetInt(PropertyIDs.TotalCount, _capacity);
+            _boidComputeShader.SetFloat(PropertyIDs.HashCellSize, _hashCellSize);
+
+            _boidComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
+            _boidComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
+            _boidComputeShader.SetVector(PropertyIDs.SimulationSpace, simulationSpace);
+
+            _boidComputeShader.SetFloat(PropertyIDs.Time, Time.time);
+            _boidComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
+
+            _boidComputeShader.SetBoidStateSettings("_Neutral", neutralState);
+            _boidComputeShader.SetBoidStateSettings("_Exposed", exposedState);
+            
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PositionBuffer, _positionBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.OldPositionBuffer, _oldPositionBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.DataBuffer, _dataBuffer);
+
+            PheromoneManager p = PheromoneManager.Instance;
+
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialIndices, p.SpatialIndicesBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialOffsets, p.SpatialOffsetsBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromonePositionBufferWrite, p.PositionBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneOldPositionBufferWrite, p.OldPositionBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneDataBufferWrite, p.DataBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneAliveBufferWrite, p.AliveBuffer);            
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneAliveIndexBuffer, p.DeadIndexBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneDeadCountBuffer, p.DeadCountBuffer);
+
+            _boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.HashCellSize);
+            _boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.Capacity);
+
+
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialIndices, _spatialIndicesBuffer);
+            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _spatialOffsetsBuffer);
+
+            _boidComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
+        }
 
         private void UpdateSpatialHash()
         {
@@ -287,35 +344,40 @@ namespace Beakstorm.Simulation.Particles
 
         public static class PropertyIDs
         {
-            public static readonly int TotalCount              = Shader.PropertyToID("_TotalCount");
-            public static readonly int HashCellSize            = Shader.PropertyToID("_HashCellSize");
-            public static readonly int WorldPos                = Shader.PropertyToID("_WorldPos");
-            public static readonly int WorldMatrix             = Shader.PropertyToID("_WorldMatrix");
-            public static readonly int SimulationSpace         = Shader.PropertyToID("_SimulationSpace");
-            public static readonly int Time                    = Shader.PropertyToID("_Time");
-            public static readonly int DeltaTime               = Shader.PropertyToID("_DeltaTime");
-            public static readonly int FloorYLevel             = Shader.PropertyToID("_FloorYLevel");
-            public static readonly int CollisionBounce         = Shader.PropertyToID("_CollisionBounce");
-            public static readonly int Gravity                 = Shader.PropertyToID("_Gravity");
-            public static readonly int CollisionRadius         = Shader.PropertyToID("_CollisionRadius");
-            public static readonly int PositionBuffer          = Shader.PropertyToID("_PositionBuffer");
-            public static readonly int OldPositionBuffer       = Shader.PropertyToID("_OldPositionBuffer");
-            public static readonly int VelocityBuffer          = Shader.PropertyToID("_VelocityBuffer");
-            public static readonly int NormalBuffer            = Shader.PropertyToID("_NormalBuffer");
-            public static readonly int DataBuffer              = Shader.PropertyToID("_DataBuffer");
+            public static readonly int TotalCount = Shader.PropertyToID("_TotalCount");
+            public static readonly int HashCellSize = Shader.PropertyToID("_HashCellSize");
+            public static readonly int WorldPos = Shader.PropertyToID("_WorldPos");
+            public static readonly int WorldMatrix = Shader.PropertyToID("_WorldMatrix");
+            public static readonly int SimulationSpace = Shader.PropertyToID("_SimulationSpace");
+            public static readonly int Time = Shader.PropertyToID("_Time");
+            public static readonly int DeltaTime = Shader.PropertyToID("_DeltaTime");
+            public static readonly int FloorYLevel = Shader.PropertyToID("_FloorYLevel");
+            public static readonly int CollisionBounce = Shader.PropertyToID("_CollisionBounce");
+            public static readonly int Gravity = Shader.PropertyToID("_Gravity");
+            public static readonly int CollisionRadius = Shader.PropertyToID("_CollisionRadius");
+            public static readonly int PositionBuffer = Shader.PropertyToID("_PositionBuffer");
+            public static readonly int OldPositionBuffer = Shader.PropertyToID("_OldPositionBuffer");
+            public static readonly int VelocityBuffer = Shader.PropertyToID("_VelocityBuffer");
+            public static readonly int NormalBuffer = Shader.PropertyToID("_NormalBuffer");
+            public static readonly int DataBuffer = Shader.PropertyToID("_DataBuffer");
             
-            public static readonly int WhistleSource         = Shader.PropertyToID("_WhistleSource");
+            public static readonly int WhistleSource = Shader.PropertyToID("_WhistleSource");
             
-            public static readonly int SpatialIndices              = Shader.PropertyToID("_BoidSpatialIndices");
-            public static readonly int SpatialOffsets              = Shader.PropertyToID("_BoidSpatialOffsets");
-            public static readonly int PheromoneSpatialIndices              = Shader.PropertyToID("_PheromoneSpatialIndices");
-            public static readonly int PheromoneSpatialOffsets              = Shader.PropertyToID("_PheromoneSpatialOffsets");
-            
-            public static readonly int PheromonePositionBuffer              = Shader.PropertyToID("_PheromonePositionBuffer");
-            public static readonly int PheromoneDataBuffer              = Shader.PropertyToID("_PheromoneDataBuffer");
-            public static readonly int PheromoneAliveBuffer              = Shader.PropertyToID("_PheromoneAliveBuffer");
-            public static readonly int PheromoneHashCellSize              = Shader.PropertyToID("_PheromoneHashCellSize");
-            public static readonly int PheromoneTotalCount              = Shader.PropertyToID("_PheromoneTotalCount");
+            public static readonly int SpatialIndices = Shader.PropertyToID("_BoidSpatialIndices");
+            public static readonly int SpatialOffsets = Shader.PropertyToID("_BoidSpatialOffsets");
+            public static readonly int PheromoneSpatialIndices = Shader.PropertyToID("_PheromoneSpatialIndices");
+            public static readonly int PheromoneSpatialOffsets = Shader.PropertyToID("_PheromoneSpatialOffsets");
+            public static readonly int PheromonePositionBuffer = Shader.PropertyToID("_PheromonePositionBuffer");
+            public static readonly int PheromoneDataBuffer = Shader.PropertyToID("_PheromoneDataBuffer");
+            public static readonly int PheromoneAliveBuffer = Shader.PropertyToID("_PheromoneAliveBuffer");
+            public static readonly int PheromoneHashCellSize = Shader.PropertyToID("_PheromoneHashCellSize");
+            public static readonly int PheromoneTotalCount = Shader.PropertyToID("_PheromoneTotalCount");
+            public static readonly int PheromoneDeadCountBuffer = Shader.PropertyToID("_PheromoneDeadCountBuffer");
+            public static readonly int PheromoneAliveIndexBuffer = Shader.PropertyToID("_PheromoneAliveIndexBuffer");
+            public static readonly int PheromoneAliveBufferWrite = Shader.PropertyToID("_PheromoneAliveBufferWrite");
+            public static readonly int PheromonePositionBufferWrite = Shader.PropertyToID("_PheromonePositionBufferWrite");
+            public static readonly int PheromoneOldPositionBufferWrite = Shader.PropertyToID("_PheromoneOldPositionBufferWrite");
+            public static readonly int PheromoneDataBufferWrite = Shader.PropertyToID("_PheromoneDataBufferWrite");
         }
     }
 }

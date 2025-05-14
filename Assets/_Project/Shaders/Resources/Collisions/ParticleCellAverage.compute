@@ -1,0 +1,78 @@
+#pragma kernel CollectValues
+
+#include "../SpatialHashing/SpatialHashGrids.hlsl"
+
+RWStructuredBuffer<int> _CountBuffer;
+
+float _Time;
+float _DeltaTime;
+
+
+uint _TotalCount;
+float3 _SimulationSpace;
+
+StructuredBuffer<float3> _ParticlePositionBuffer;
+StructuredBuffer<float3> _ParticleOldPositionBuffer;
+StructuredBuffer<float4> _ParticleDataBuffer;
+uint _ParticleCount;
+float _HashCellSize;
+
+
+
+SPATIAL_HASH_BUFFERS(_)
+
+
+[numthreads(16,1,1)]
+void CollectValues(uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.x;
+
+    if (index >= _TotalCount)
+        return;
+
+    int3 cellCount = (ceil(_SimulationSpace / _HashCellSize));
+
+    int3 cellId = 0;
+    cellId.z = index % cellCount.z; 
+    cellId.y = (index / cellCount.z) % cellCount.y;
+    cellId.x = index / (cellCount.y * cellCount.z);
+    
+
+    float3 pos = ((cellId + 0.5) / (cellCount) * 2 - 1) * _SimulationSpace; 
+    
+    // Neighborhood Search using Spatial Hash Grids
+    int3 originCell = GetCell3D(pos, _HashCellSize);
+    
+    
+    uint hashCell = HashCell3D(originCell);
+    uint key = KeyFromHash(hashCell, _ParticleCount);
+    uint currIndex = _SpatialOffsets[key];
+
+    uint count = 0;
+    
+    while (currIndex < _ParticleCount)
+    {
+        uint3 indexData = _SpatialIndices[currIndex];
+        currIndex++;
+        // Exit if no longer looking at correct bin
+        if (indexData[2] != key)
+            break;
+		// Skip if hash does not match
+        if (indexData[1] != hashCell)
+            continue;
+        
+        uint neighborIndex = indexData[0];
+        float3 particlePos = _ParticlePositionBuffer[neighborIndex]; 
+        float3 offset = particlePos - pos;
+        
+        if (dot(offset, offset) > (_HashCellSize * 2) * (_HashCellSize * 2))
+            continue;
+
+        float3 particleOldPos = _ParticleOldPositionBuffer[neighborIndex];
+        float3 velocity = (particlePos - particleOldPos) / _DeltaTime;
+
+        count++;
+    }
+    
+    _CountBuffer[index] = count;
+}

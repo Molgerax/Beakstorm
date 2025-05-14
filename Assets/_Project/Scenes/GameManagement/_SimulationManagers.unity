@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb8d800e686f834cbb50b20864d26bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCount: 8192
+  maxCount: 16384
   pheromoneComputeShader: {fileID: 7200000, guid: d6ca223d4ec8bb54ba802374a8bbee18, type: 3}
   mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 21034e5a3b21a964b880ceb135566dee, type: 2}
@@ -183,6 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1049459286}
   - component: {fileID: 1049459285}
+  - component: {fileID: 1049459287}
   m_Layer: 0
   m_Name: BoidManager
   m_TagString: Untagged
@@ -230,6 +231,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1049459287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049459284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2c69da7fde2c34b9304f0a48af1716, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  compute: {fileID: 7200000, guid: f5b680bf28d30d849badfce89ad098f9, type: 3}
+  sim:
+    rid: -2
+  ParticleCountArray: 
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &1980418811
 GameObject:
   m_ObjectHideFlags: 0
