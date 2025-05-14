@@ -76,6 +76,7 @@ namespace Beakstorm.Gameplay.Enemies
             _spawnPos = transform.position;
             _emergePos = _spawnPos;
             _emergePos.y = -100;
+            transform.position = _emergePos;
         }
         
         public void CheckHealth()
