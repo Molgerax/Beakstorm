@@ -64,6 +64,8 @@ namespace Beakstorm.Simulation.Particles
         private int _capacity;
         private bool _initialized;
 
+        public bool Initialized => _initialized;
+
         public static BoidManager Instance;
 
         public ComputeBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;

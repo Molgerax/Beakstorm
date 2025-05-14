@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Simulation.Particles;
 using Unity.Collections;
@@ -11,6 +12,8 @@ namespace Beakstorm.Simulation.Collisions
     public class WeakPointManager : MonoBehaviour
     {
         [SerializeField] private ComputeShader compute;
+
+        [SerializeField] private bool logDebugInfo = false;
 
         public static WeakPointManager Instance;
         
@@ -25,19 +28,27 @@ namespace Beakstorm.Simulation.Collisions
         private AsyncGPUReadbackRequest _request;
         private NativeArray<int> _damageArray;
 
+        private StringBuilder _logBuilder;
+
         private void Awake()
         {
             Instance = this;
+            Initialize();
+        }
+
+        private void Initialize()
+        {
             WeakPointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 4);
             DamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
             _flushDamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
-            
+         
             _damageArray = new NativeArray<int>(_bufferSize, Allocator.Persistent);
-            for (int i = 0; i < _damageArray.Length; i++)
-                _damageArray[i] = 0;
+            DamageBuffer.SetData(_damageArray);
+            _flushDamageBuffer.SetData(_damageArray);
         }
 
-        private void OnDestroy()
+
+        private void Release()
         {
             WeakPointBuffer?.Dispose();
             DamageBuffer?.Dispose();
@@ -45,6 +56,11 @@ namespace Beakstorm.Simulation.Collisions
 
             _request.WaitForCompletion();
             _damageArray.Dispose();
+        }
+        
+        private void OnDestroy()
+        {
+            Release();
         }
 
         private void Update()
@@ -59,11 +75,27 @@ namespace Beakstorm.Simulation.Collisions
 
         private void UpdatePositions()
         {
+            if (logDebugInfo)
+            {
+                _logBuilder ??= new StringBuilder();
+                _logBuilder.Append("Weak Point Positions:\n");
+            }
+            
             for (int i = 0; i < WeakPoints.Count; i++)
             {
                 _weakPointPositions[i] = WeakPoints[i].PositionRadius;
+
+                if (logDebugInfo)
+                    _logBuilder.Append($"{i}: {_weakPointPositions[i]}\n");
             }
             WeakPointBuffer.SetData(_weakPointPositions);
+
+            if (logDebugInfo)
+            {
+                Debug.Log(_logBuilder, this);
+                _logBuilder.Clear();
+            }
+            
         }
 
 
@@ -71,6 +103,14 @@ namespace Beakstorm.Simulation.Collisions
         {
             if (_request.done)
             {
+                if (logDebugInfo)
+                {
+                    _logBuilder ??= new StringBuilder();
+                    _logBuilder.Append("Request Damage Info:\n");
+                    if (_request.hasError) 
+                        _logBuilder.Append($"!!Has Error!!");
+                }
+                
                 if (!_request.hasError)
                 {
                     bool flush = false;
@@ -82,11 +122,23 @@ namespace Beakstorm.Simulation.Collisions
                             WeakPoints[i].ApplyDamage(damage);
                             flush = true;
                         }
+
+                        if (damage < 0)
+                            flush = true;
+                        
+                        if (logDebugInfo)
+                            _logBuilder.Append($"{i}: {damage}\n");
                     }
                     if (flush)
                         FlushDamage();
                 }
                 _request = AsyncGPUReadback.RequestIntoNativeArray(ref _damageArray, DamageBuffer);
+                
+                if (logDebugInfo)
+                {
+                    Debug.Log(_logBuilder, this);
+                    _logBuilder.Clear();
+                }
             }
         }
         
@@ -105,6 +157,7 @@ namespace Beakstorm.Simulation.Collisions
                 _flushDamageBuffer?.Dispose();
                 _flushDamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
 
+                // TODO: time this, can lead to problems
                 _damageArray.Dispose();
                 _damageArray = new NativeArray<int>(_bufferSize, Allocator.Persistent);
                 
@@ -127,7 +180,7 @@ namespace Beakstorm.Simulation.Collisions
 
         private void CollideBoids()
         {
-            if (!BoidManager.Instance)
+            if (!BoidManager.Instance || !BoidManager.Instance.Initialized)
                 return;
             
             int kernel = compute.FindKernel("CollideBoids");
