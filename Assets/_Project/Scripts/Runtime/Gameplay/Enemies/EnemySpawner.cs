@@ -69,6 +69,9 @@ namespace Beakstorm.Gameplay.Enemies
 
         private void OnEnable()
         {
+            if (UnityEditor.EditorApplication.isPlaying)
+                return;
+                
             if (!_preview)
             {
                 _preview = Instantiate(enemyPrefab, transform.position, transform.rotation, transform);
@@ -90,6 +93,9 @@ namespace Beakstorm.Gameplay.Enemies
 
         private void OnDisable()
         {
+            if (UnityEditor.EditorApplication.isPlaying)
+                return;
+
             DestroyImmediate(_preview);
         }
 #endif
