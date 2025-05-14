@@ -571,8 +571,8 @@ MonoBehaviour:
   _Event:
     _PersistentCalls:
     - _Target: {fileID: 0}
-      _MemberName: UnityEngine.Application, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null.Quit
+      _MemberName: Beakstorm.Utility.QuitGame, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null.QuitApplication
       _PersistentArguments: []
 --- !u!114 &340139911
 MonoBehaviour:
