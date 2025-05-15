@@ -281,7 +281,7 @@ void UpdateSpatialHash(uint3 id : SV_DispatchThreadID)
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
 void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
 {
-    if (CurrentEmissionCount() <= id.x + groupId.x * THREAD_BLOCK_SIZE)
+    if (CurrentEmissionCount() <= id.x)
         return;
     
     const uint index = _AliveIndexBuffer.Consume();

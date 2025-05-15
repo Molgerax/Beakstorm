@@ -23,7 +23,13 @@ SPATIAL_HASH_BUFFERS_READ(_Pheromone)
 
 StructuredBuffer<float3> _PheromonePositionBuffer;
 StructuredBuffer<float4> _PheromoneDataBuffer;
-StructuredBuffer<uint> _PheromoneAliveBuffer;
+StructuredBuffer<float> _PheromoneAliveBuffer;
+
+StructuredBuffer<uint> _PheromoneDeadCountBuffer;
+inline uint DeadParticleCount() { return _PheromoneDeadCountBuffer[3]; }
+
+
+
 float _PheromoneHashCellSize;
 uint _PheromoneTotalCount;
 

@@ -2,6 +2,7 @@
 #pragma kernel Init
 
 #pragma kernel UpdateSpatialHash
+#pragma kernel SpawnPheromone
 
 #include "../SpatialHashing/RandomFunctions.hlsl"
 
@@ -427,4 +428,61 @@ void UpdateSpatialHash(uint3 id : SV_DispatchThreadID)
     float3 position = _PositionBuffer[index];
 
     SetSpatialHash_Boid(index, position, _TotalCount, _HashCellSize);
+}
+
+ConsumeStructuredBuffer<uint> _PheromoneAliveIndexBuffer;
+RWStructuredBuffer<float> _PheromoneAliveBufferWrite;
+RWStructuredBuffer<float3> _PheromonePositionBufferWrite;
+RWStructuredBuffer<float3> _PheromoneOldPositionBufferWrite;
+RWStructuredBuffer<float4> _PheromoneDataBufferWrite;
+
+[numthreads(THREAD_BLOCK_SIZE,1,1)]
+void SpawnPheromone (uint3 id : SV_DispatchThreadID)
+{
+    return;
+    const uint index = id.x;
+    const float spawnRate = 10;
+    float lifeTime = 1;
+
+    bool emit = false;
+    
+    float3 pos = _PositionBuffer[index];
+    float3 oldPos = _OldPositionBuffer[index];
+    
+    float4 factors = GetBoidSettings(index);
+    float maxSpeed = GetMaxSpeed(index);
+    float maxForce = GetMaxForce(index);
+    float4 data = _DataBuffer[index];
+    
+    float pheromoneExposure = data.w;
+    float emissionTimeStep = _DeltaTime * pheromoneExposure * spawnRate;
+
+    lifeTime = pheromoneExposure * 1;
+    
+    // Emission Time
+    data.z *= 0.75;
+    data.z += emissionTimeStep;
+    if (data.z >= 1)
+        emit = true;
+
+    data.z = frac(data.z);
+
+    _DataBuffer[index] = data;
+
+    if (!emit)
+        return;
+
+    if (DeadParticleCount() < 1024)
+        return;
+    
+    const uint pheromoneIndex = _PheromoneAliveIndexBuffer.Consume();
+    float randomOffset = Random(pheromoneIndex) * 1.0;
+
+    pos = oldPos;
+    
+    _PheromoneAliveBufferWrite[pheromoneIndex] = lifeTime;
+    
+    _PheromonePositionBufferWrite[pheromoneIndex] = pos;
+    _PheromoneOldPositionBufferWrite[pheromoneIndex] = oldPos;
+    _PheromoneDataBufferWrite[pheromoneIndex] = lifeTime;
 }
