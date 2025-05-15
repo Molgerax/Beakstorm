@@ -1,6 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{998C2AED-EDDA-4D88-942A-4D4672A92FD1}" SchemaVersion="123">
 	<InteractiveMusic>
-		<WorkUnit Name="Default Work Unit" ID="{998C2AED-EDDA-4D88-942A-4D4672A92FD1}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{998C2AED-EDDA-4D88-942A-4D4672A92FD1}" PersistMode="Standalone">
+			<ChildrenList>
+				<Folder Name="Wave Music" ID="{9349BDD5-0A73-481A-8A23-14E616850A91}" ShortID="506253994">
+					<ChildrenList>
+						<Folder Name="Peace" ID="{63B2C5A2-BC13-4AD9-9AB6-EC423109D1CD}" ShortID="340943329">
+							<ChildrenList>
+								<MusicSegment Name="Pause 1" ID="{84C32C5F-FE66-4E37-A18E-B1BF3745394F}" ShortID="838478788">
+									<PropertyList>
+										<Property Name="EndPosition" Type="Real64" Value="44601.7708333333"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<MusicTrack Name="Pause 1" ID="{17C8EA3C-FA1F-4D83-AE75-7F9A4D539F1B}" ShortID="567012211">
+											<ReferenceList>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+												<Reference Name="TransitionRoot">
+													<Custom>
+														<MusicTransition Name="Root" ID="{61D50074-43C9-4DAC-AB23-B193E42BEC02}">
+															<PropertyList>
+																<Property Name="IsFolder" Type="bool" Value="True"/>
+															</PropertyList>
+															<TransitionInfo/>
+														</MusicTransition>
+													</Custom>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="Pause 1" ID="{2BA5EA1B-EF55-4CC5-838D-C672DF85E095}">
+													<Language>SFX</Language>
+													<AudioFile>Pause 1.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="631563851"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ObjectLists>
+												<ObjectList Name="Sequences">
+													<Reference>
+														<Local>
+															<MusicTrackSequence Name="" ID="{A74A87B2-1698-48B8-882B-F6E6B735FFA8}">
+																<ObjectLists>
+																	<ObjectList Name="Clips">
+																		<Reference>
+																			<Local>
+																				<MusicClip Name="Pause 1" ID="{F1BC1F55-2840-4414-9945-9320D1307FE0}">
+																					<PropertyList>
+																						<Property Name="EndTrimOffset" Type="Real64" Value="44601.7708333333"/>
+																						<Property Name="FadeInMode" Type="int16" Value="0"/>
+																						<Property Name="FadeOutMode" Type="int16" Value="0"/>
+																					</PropertyList>
+																					<AudioSourceRef Name="Pause 1" ID="{2BA5EA1B-EF55-4CC5-838D-C672DF85E095}"/>
+																				</MusicClip>
+																			</Local>
+																		</Reference>
+																	</ObjectList>
+																</ObjectLists>
+															</MusicTrackSequence>
+														</Local>
+													</Reference>
+												</ObjectList>
+											</ObjectLists>
+										</MusicTrack>
+									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="Cues">
+											<Reference>
+												<Local>
+													<MusicCue Name="Entry Cue" ID="{A330672A-1D3E-4D70-8382-33D589A1367E}"/>
+												</Local>
+											</Reference>
+											<Reference>
+												<Local>
+													<MusicCue Name="Exit Cue" ID="{AAA21694-6413-49C7-B221-81A1FFA59C42}">
+														<PropertyList>
+															<Property Name="CueType" Type="int16" Value="1"/>
+															<Property Name="TimeMs" Type="Real64" Value="44601.7708333333"/>
+														</PropertyList>
+													</MusicCue>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
+								</MusicSegment>
+								<MusicSegment Name="Pause 2" ID="{4BC59694-551D-43A6-9C25-5442417947D4}" ShortID="989851312">
+									<PropertyList>
+										<Property Name="EndPosition" Type="Real64" Value="44601.7708333333"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<MusicTrack Name="Pause 2" ID="{D247EA30-2153-4B8A-96F4-D671A3F11D49}" ShortID="757802403">
+											<ReferenceList>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+												<Reference Name="TransitionRoot">
+													<Custom>
+														<MusicTransition Name="Root" ID="{46764666-9DE7-4E6B-8994-40CF0EA12880}">
+															<PropertyList>
+																<Property Name="IsFolder" Type="bool" Value="True"/>
+															</PropertyList>
+															<TransitionInfo/>
+														</MusicTransition>
+													</Custom>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="Pause 2" ID="{9942357C-2451-483A-ADBB-DC9003CF4C15}">
+													<Language>SFX</Language>
+													<AudioFile>Pause 2.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="128446933"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ObjectLists>
+												<ObjectList Name="Sequences">
+													<Reference>
+														<Local>
+															<MusicTrackSequence Name="" ID="{5944C35B-0FE5-43BB-A317-343A3F3788FE}">
+																<ObjectLists>
+																	<ObjectList Name="Clips">
+																		<Reference>
+																			<Local>
+																				<MusicClip Name="Pause 2" ID="{8B83FBD2-4364-4491-8893-1EF657DD8284}">
+																					<PropertyList>
+																						<Property Name="EndTrimOffset" Type="Real64" Value="44601.7708333333"/>
+																						<Property Name="FadeInMode" Type="int16" Value="0"/>
+																						<Property Name="FadeOutMode" Type="int16" Value="0"/>
+																					</PropertyList>
+																					<AudioSourceRef Name="Pause 2" ID="{9942357C-2451-483A-ADBB-DC9003CF4C15}"/>
+																				</MusicClip>
+																			</Local>
+																		</Reference>
+																	</ObjectList>
+																</ObjectLists>
+															</MusicTrackSequence>
+														</Local>
+													</Reference>
+												</ObjectList>
+											</ObjectLists>
+										</MusicTrack>
+									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="Cues">
+											<Reference>
+												<Local>
+													<MusicCue Name="Entry Cue" ID="{4A652337-33B3-4DCD-88D8-8ED58BE3B267}"/>
+												</Local>
+											</Reference>
+											<Reference>
+												<Local>
+													<MusicCue Name="Exit Cue" ID="{AAE6FDE3-DF00-413D-BDC0-2734BF636E0C}">
+														<PropertyList>
+															<Property Name="CueType" Type="int16" Value="1"/>
+															<Property Name="TimeMs" Type="Real64" Value="44601.7708333333"/>
+														</PropertyList>
+													</MusicCue>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
+								</MusicSegment>
+								<MusicSegment Name="Pause 3" ID="{5C888520-FEE8-4D6B-8C1A-66347FEBABD1}" ShortID="941923736">
+									<PropertyList>
+										<Property Name="EndPosition" Type="Real64" Value="44601.7708333333"/>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<MusicTrack Name="Pause 3" ID="{FC497EE5-706F-4CDC-B989-D65DD2EE0CAF}" ShortID="136253986">
+											<ReferenceList>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+												<Reference Name="TransitionRoot">
+													<Custom>
+														<MusicTransition Name="Root" ID="{4CBB6677-4894-4E6F-A6C7-48A22B30153C}">
+															<PropertyList>
+																<Property Name="IsFolder" Type="bool" Value="True"/>
+															</PropertyList>
+															<TransitionInfo/>
+														</MusicTransition>
+													</Custom>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="Pause 3" ID="{7B6CD928-91EC-400A-9569-F03449CBDB6F}">
+													<Language>SFX</Language>
+													<AudioFile>Pause 3.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="876391092"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ObjectLists>
+												<ObjectList Name="Sequences">
+													<Reference>
+														<Local>
+															<MusicTrackSequence Name="" ID="{4B80EF57-CE8A-4AAE-97FC-4006E83A00F1}">
+																<ObjectLists>
+																	<ObjectList Name="Clips">
+																		<Reference>
+																			<Local>
+																				<MusicClip Name="Pause 3" ID="{B4853086-4687-46A5-8810-0B39B051FFA8}">
+																					<PropertyList>
+																						<Property Name="EndTrimOffset" Type="Real64" Value="44601.7708333333"/>
+																						<Property Name="FadeInMode" Type="int16" Value="0"/>
+																						<Property Name="FadeOutMode" Type="int16" Value="0"/>
+																					</PropertyList>
+																					<AudioSourceRef Name="Pause 3" ID="{7B6CD928-91EC-400A-9569-F03449CBDB6F}"/>
+																				</MusicClip>
+																			</Local>
+																		</Reference>
+																	</ObjectList>
+																</ObjectLists>
+															</MusicTrackSequence>
+														</Local>
+													</Reference>
+												</ObjectList>
+											</ObjectLists>
+										</MusicTrack>
+									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="Cues">
+											<Reference>
+												<Local>
+													<MusicCue Name="Entry Cue" ID="{F62598BB-0615-4E79-9881-F1798B19B3F9}"/>
+												</Local>
+											</Reference>
+											<Reference>
+												<Local>
+													<MusicCue Name="Exit Cue" ID="{0CD8ECB1-E6C4-46B4-9289-C679CFD5974C}">
+														<PropertyList>
+															<Property Name="CueType" Type="int16" Value="1"/>
+															<Property Name="TimeMs" Type="Real64" Value="44601.7708333333"/>
+														</PropertyList>
+													</MusicCue>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
+								</MusicSegment>
+							</ChildrenList>
+						</Folder>
+						<Folder Name="War" ID="{43C7087E-7CE0-4033-B71C-28DD12969564}" ShortID="650434601"/>
+					</ChildrenList>
+				</Folder>
+			</ChildrenList>
+		</WorkUnit>
 	</InteractiveMusic>
 </WwiseDocument>
