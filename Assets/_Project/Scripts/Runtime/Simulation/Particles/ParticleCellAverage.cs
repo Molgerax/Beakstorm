@@ -1,4 +1,3 @@
-using System;
 using Beakstorm.ComputeHelpers;
 using Unity.Collections;
 using UnityEngine;
@@ -11,18 +10,16 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField] private ComputeShader compute;
         private IHashedParticleSimulation sim;
 
-        private GraphicsBuffer _positionBuffer;
-        private GraphicsBuffer _velocityBuffer;
-        private GraphicsBuffer _dataBuffer;
-        private GraphicsBuffer _particleCountBuffer;
+        
+        private GraphicsBuffer _cellBuffer;
 
         private Vector3Int _dimensions;
         private int _cellCount;
         
         
         private AsyncGPUReadbackRequest _request;
-        private NativeArray<int> _particleCountArray;
-        public int[] ParticleCountArray; 
+        private NativeArray<ParticleCell> _cellArray;
+        public ParticleCell[] CellArray; 
 
         private void Awake()
         {
@@ -49,37 +46,35 @@ namespace Beakstorm.Simulation.Particles
 
             _dimensions = Vector3Int.CeilToInt(sim.SimulationSpace / sim.HashCellSize);
             _cellCount = _dimensions.x * _dimensions.y * _dimensions.z;
+   
+            _cellBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _cellCount, sizeof(float) * 10 + sizeof(uint) * 1);
 
-            _particleCountBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _cellCount, sizeof(int) * 1);
 
-            _particleCountArray = new NativeArray<int>(_cellCount, Allocator.Persistent);
-            _particleCountBuffer.SetData(_particleCountArray);
-            ParticleCountArray = new int[_cellCount];
+            _cellArray = new NativeArray<ParticleCell>(_cellCount, Allocator.Persistent);
+            _cellBuffer.SetData(_cellArray);
+            CellArray = new ParticleCell[_cellCount];
         }
 
         private void Release()
         {
-            _positionBuffer?.Dispose();
-            _velocityBuffer?.Dispose();
-            _dataBuffer?.Dispose();
-            _particleCountBuffer?.Dispose();
+            _cellBuffer?.Dispose();
             
             _request.WaitForCompletion();
-            _particleCountArray.Dispose();
+            _cellArray.Dispose();
         }
         
         private void RequestGpuData()
         {
-            if (ParticleCountArray == null)
+            if (CellArray == null)
                 return;
             
             if (_request.done)
             {
                 if (!_request.hasError)
                 {
-                    _particleCountArray.CopyTo(ParticleCountArray);
+                    _cellArray.CopyTo(CellArray);
                 }
-                _request = AsyncGPUReadback.RequestIntoNativeArray(ref _particleCountArray, _particleCountBuffer);
+                _request = AsyncGPUReadback.RequestIntoNativeArray(ref _cellArray, _cellBuffer);
             }
         }
 
@@ -90,7 +85,7 @@ namespace Beakstorm.Simulation.Particles
             
             int kernel = compute.FindKernel("CollectValues");
             
-            compute.SetBuffer(kernel, PropertyIDs.CountBuffer, _particleCountBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.CellBuffer, _cellBuffer);
             
             compute.SetInt(PropertyIDs.TotalCount, _cellCount);
 
@@ -110,24 +105,64 @@ namespace Beakstorm.Simulation.Particles
             compute.DispatchExact(kernel, _cellCount);
         }
 
-        private Vector3Int GetIndex3D(int index)
+        private Vector3Int Index1DTo3D(int index)
         {
             Vector3Int cellId = Vector3Int.zero;
-            cellId.z = index % _dimensions.z; 
-            cellId.y = (index / _dimensions.z) % _dimensions.y;
-            cellId.x = index / (_dimensions.y * _dimensions.z);
-
+            cellId.z = index / (_dimensions.x * _dimensions.y);
+            cellId.y = index / _dimensions.x - cellId.z * _dimensions.y;
+            cellId.x = index - cellId.y * _dimensions.x - cellId.z * _dimensions.x * _dimensions.y;
+            
             return cellId;
         }
 
+        private bool IsIndexInDimensions(Vector3Int cellId)
+        {
+            if (cellId.x < 0 || cellId.y < 0 || cellId.z < 0)
+                return false;
+            if (cellId.x >= _dimensions.x || cellId.y >= _dimensions.y || cellId.z >= _dimensions.z)
+                return false;
+            return true;
+        }
+        
+        private int Index3DTo1D(Vector3Int cellId)
+        {
+            if (!IsIndexInDimensions(cellId))
+                return -1;
+            
+            int index = 
+                + cellId.x
+                + cellId.y * _dimensions.x
+                + cellId.z * _dimensions.x * _dimensions.y;
+            
+            return index;
+        }
+
+        private bool IsPositionInBounds(Vector3 pos)
+        {
+            Bounds bounds = new Bounds(Vector3.zero, sim.SimulationSpace);
+            return bounds.Contains(pos);
+        }
+        
+        private Vector3Int GetIndex3D(Vector3 pos)
+        {
+            Vector3Int cellId = new(
+                Mathf.FloorToInt((pos.x / sim.SimulationSpace.x + 0.5f) * _dimensions.x), 
+                Mathf.FloorToInt((pos.y / sim.SimulationSpace.y + 0.5f) * _dimensions.y), 
+                Mathf.FloorToInt((pos.z / sim.SimulationSpace.z + 0.5f) * _dimensions.z));
+            
+            return cellId;
+        }
+
+        private int GetIndex1D(Vector3 pos) => Index3DTo1D(GetIndex3D(pos));
+        
         private Vector3 GetPosition(int index)
         {
-            Vector3Int cellId = GetIndex3D(index);
+            Vector3Int cellId = Index1DTo3D(index);
             Vector3 pos = new(
                 (cellId.x + 0.5f) / _dimensions.x, 
                 (cellId.y + 0.5f) / _dimensions.y, 
                 (cellId.z + 0.5f) / _dimensions.z);
-            pos = (pos * 2f - Vector3.one);
+            pos = (pos - Vector3.one * 0.5f);
             pos.x *= sim.SimulationSpace.x;
             pos.y *= sim.SimulationSpace.y;
             pos.z *= sim.SimulationSpace.z;
@@ -135,23 +170,53 @@ namespace Beakstorm.Simulation.Particles
             return pos;
         }
 
+        public bool GetCellData(Vector3 pos, out ParticleCell cellData)
+        {
+            cellData = new ParticleCell();
+
+            if (CellArray == null)
+                return false;
+            
+            if (!IsPositionInBounds(pos))
+                return false;
+
+            int index = GetIndex1D(pos);
+            if (index < 0 || index >= _cellCount)
+                return false;
+
+            cellData = CellArray[index];
+            return true;
+        }
+        
         private void OnDrawGizmosSelected()
         {
-            if (ParticleCountArray == null)
+            if (CellArray == null)
                 return;
             
             Gizmos.color = Color.magenta;
 
             for (int i = 0; i < _cellCount; i++)
             {
-                int count = ParticleCountArray[i];
+                ParticleCell cell = CellArray[i];
                 
-                if (count == 0)
+                if (cell.Count == 0)
                     continue;
+
+                Vector3 pos = cell.Position;
+                Vector3 vel = cell.Velocity;
                 
-                Gizmos.DrawCube(GetPosition(i), Vector3.one * 0.1f * count);
+                Gizmos.DrawSphere(pos, 1f);
+                Gizmos.DrawLine(pos, pos + vel);
             }
         }
+        
+        public struct ParticleCell
+        {
+            public Vector3 Position;
+            public Vector3 Velocity;
+            public Vector4 Data;
+            public uint Count;
+        };
 
         public static class PropertyIDs
         {
@@ -161,10 +226,7 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int Time = Shader.PropertyToID("_Time");
             public static readonly int DeltaTime = Shader.PropertyToID("_DeltaTime");
             
-            public static readonly int PositionBuffer = Shader.PropertyToID("_PositionBuffer");
-            public static readonly int VelocityBuffer = Shader.PropertyToID("_VelocityBuffer");
-            public static readonly int DataBuffer = Shader.PropertyToID("_DataBuffer");
-            public static readonly int CountBuffer = Shader.PropertyToID("_CountBuffer");
+            public static readonly int CellBuffer = Shader.PropertyToID("_CellBuffer");
             
             
             public static readonly int ParticlePositionBuffer = Shader.PropertyToID("_ParticlePositionBuffer");

@@ -244,14 +244,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compute: {fileID: 7200000, guid: f5b680bf28d30d849badfce89ad098f9, type: 3}
-  sim:
-    rid: -2
-  ParticleCountArray: 
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!1 &1980418811
 GameObject:
   m_ObjectHideFlags: 0
