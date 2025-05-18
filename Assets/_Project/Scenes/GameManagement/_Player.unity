@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 390b8762f5bab554a9ccc23b9a575cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
+  projectilePrefab: {fileID: 5012512307083224738, guid: dca3a167808b9b2448520304764741b4, type: 3}
 --- !u!114 &119709471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1615,6 +1615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emissionRate: 256
+  lifeTime: 3.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

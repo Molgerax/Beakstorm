@@ -98,12 +98,13 @@ GameObject:
   - component: {fileID: 5012512307083224738}
   - component: {fileID: 2981456697708023891}
   - component: {fileID: 8417193104476582687}
+  - component: {fileID: 2153457033390618031}
   - component: {fileID: 238433144582504019}
   - component: {fileID: -5033398536401664210}
   - component: {fileID: 1407406865008997820}
   - component: {fileID: 6373692553685565216}
   m_Layer: 0
-  m_Name: PheromoneCapsule
+  m_Name: PheromoneCapsule_Spread
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,7 +176,67 @@ MonoBehaviour:
       _MemberName: Deactivate
       _PersistentArguments: []
   completionPercentage:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 2153457033390618031}
+      _MemberName: EvaluateCurve
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: 
+        _X: 5
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+--- !u!114 &2153457033390618031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7264894178766051763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766a1d6869ec4bf4800afeb183ca7e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 128
+      inSlope: 256
+      outSlope: 256
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 384
+      inSlope: 256
+      outSlope: 256
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  remappedValue:
+    _PersistentCalls:
+    - _Target: {fileID: 2981456697708023891}
+      _MemberName: set_EmissionRate
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: 
+        _X: 5
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
 --- !u!114 &238433144582504019
 MonoBehaviour:
   m_ObjectHideFlags: 0
