@@ -216,11 +216,11 @@ void Update (uint3 id : SV_DispatchThreadID)
     float life = DepleteLife(index, _DeltaTime);
 
     float4 data = _DataBuffer[index];
-    data.xyz = densityGradient;
-    data.w = density;
+    //data.xyz = densityGradient;
+    //data.w = density;
 
     data.x = density;
-    data.w = life / _LifeTime;
+    data.w = life / data.z;
     
     _DataBuffer[index] = data;
 }
@@ -295,12 +295,21 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     
     float3 oldPos = pos;// - RandomVector(index) * _DeltaTime * 5;
     //oldPos.y = 0;
+
+    float maxLifeTime = _LifeTime;
+    float lifeTime = _LifeTime - _DeltaTime * randomOffset;
+    _AliveBuffer[index] = lifeTime;
+
+
+    float4 data = 0;
     
-    _AliveBuffer[index] = _LifeTime - _DeltaTime * randomOffset;
+    data.z = maxLifeTime;
+    data.w = lifeTime / maxLifeTime;
+    data.xy = lifeTime;
     
     _PositionBuffer[index] = pos;
     _OldPositionBuffer[index] = oldPos;
-    _DataBuffer[index] = _LifeTime - _DeltaTime * randomOffset;
+    _DataBuffer[index] = data;
 }
 
 

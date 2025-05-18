@@ -21,7 +21,6 @@ namespace Beakstorm.Simulation.Particles
         [Header("Collision")] [SerializeField] private Vector3 simulationSpace = Vector3.one;
         [SerializeField] private float targetDensity = 1;
         [SerializeField] private float pressureMultiplier = 1;
-        [SerializeField, Range(0.1f, 10f)] private float lifeTime = 1;
 
         [Header("Bitonic Merge Sort")] [SerializeField]
         private ComputeShader sortShader;
@@ -172,7 +171,7 @@ namespace Beakstorm.Simulation.Particles
             
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
             pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
-            pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, lifeTime);
+            pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, 1f);
 
             pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);
             pheromoneComputeShader.SetFloat(PropertyIDs.PressureMultiplier, pressureMultiplier);
@@ -198,12 +197,12 @@ namespace Beakstorm.Simulation.Particles
             pheromoneComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
         }
 
-        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float deltaTime)
+        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime, float deltaTime)
         {
             if (PauseManager.IsPaused)
                 return;
             
-            if (count <= 0)
+            if (count <= 0 || lifeTime <= 0)
                 return;
         
             UpdateEmissionCount(count);
