@@ -14,17 +14,35 @@
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="play_atmo" ID="{3083773F-BDA6-4629-9181-3456407EDC26}"/>
+				<Event Name="play_levelAtmo" ID="{3083773F-BDA6-4629-9181-3456407EDC26}">
+					<ChildrenList>
+						<Action Name="" ID="{CC40EAEA-B87E-4A48-92EB-9D67603B5EB7}" ShortID="628357255">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="test_render_9channels" ID="{337312E9-D210-4DEA-B309-3F818A9DF4FD}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 				<Event Name="play_birdTarget" ID="{6859B005-A6FB-4D44-ABD0-AC41370B8E2D}"/>
 				<Event Name="play_birdAttack" ID="{475EC075-A4E2-4EBC-BDA4-6D8BBFBD4E09}"/>
 				<Event Name="play_birdStatic" ID="{633555D6-2C6D-4619-9CC9-2301EB60DE90}"/>
 				<Event Name="play_birdFollow" ID="{8A7CBEDB-D2C0-4E39-A42B-27EF3E51460F}"/>
-				<Event Name="play_shipDrone" ID="{02A07C88-BA95-4FDE-8B54-D4105F030C80}"/>
+				<Event Name="play_shipStaticBig" ID="{02A07C88-BA95-4FDE-8B54-D4105F030C80}"/>
 				<Event Name="play_shipCannon" ID="{761E02DC-A217-4203-B3E7-FF5CEC0F556D}"/>
 				<Event Name="play_shipHorn" ID="{E8A606D4-A984-453C-8364-12C3F700B116}"/>
 				<Event Name="play_shipDestroy" ID="{8FF6B736-2268-41E2-89B2-A6875B2A7CD2}"/>
 				<Event Name="play_gliderHum" ID="{B1B2C1C7-D181-4A6E-A351-FAD333E7FC15}"/>
-				<Event Name="play_Music" ID="{E76F5740-2EB8-43A8-A1B3-7C7FBA4E1AAE}"/>
+				<Event Name="play_levelMusic" ID="{E76F5740-2EB8-43A8-A1B3-7C7FBA4E1AAE}"/>
+				<Event Name="play_pheroShoot" ID="{391ACA4A-5704-4657-92FA-AE6AD59B8D4F}"/>
+				<Event Name="play_pheroDrag" ID="{AAC72AD1-B504-451F-AF8C-44EE5A1ED14C}"/>
+				<Event Name="play_menuMusic" ID="{9304A74D-D480-4FAE-AEE2-FD823775742E}"/>
+				<Event Name="play_menuChoose" ID="{258DD3B3-7409-454C-B822-5340821B1054}"/>
+				<Event Name="play_menuConfirm" ID="{09E20CD4-F00D-43B7-BE44-E035BEF23FCB}"/>
+				<Event Name="play_menuBack" ID="{90153DE6-B8A5-4D80-95A8-EC460080C525}"/>
+				<Event Name="play_menuAtmo" ID="{BA1D51D8-3C2E-472C-BF4B-432C2CBFC36A}"/>
+				<Event Name="play_shipStaticSmall" ID="{C5E530F5-0D37-4545-9A90-3F92F99C3DEB}"/>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

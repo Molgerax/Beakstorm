@@ -12,7 +12,7 @@
 						</Property>
 						<Property Name="MainMixHeadphoneConfiguration" Type="Uint32">
 							<ValueList>
-								<Value>521</Value>
+								<Value>528</Value>
 							</ValueList>
 						</Property>
 						<Property Name="MainMixSpeakerConfiguration" Type="Uint32">

@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{654C5FB4-AC49-11BB-4571-D7B520943D34}",
+    "Hash": "{930519E1-CDE7-3FE6-972F-5305A17AEF8B}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -38,25 +38,25 @@
      {
       "Id": "1191978290",
       "Name": "2D SFX",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\2D SFX",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Binaural\\2D SFX",
       "GUID": "{0F61F354-9750-49C2-89EC-5C91E57F5E7C}"
      },
      {
       "Id": "2352922065",
       "Name": "3D Music",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\3D Music",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Binaural\\3D Music",
       "GUID": "{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}"
      },
      {
-      "Id": "3803692087",
-      "Name": "Master Audio Bus",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus",
+      "Id": "3007728267",
+      "Name": "Master Binaural",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Binaural",
       "GUID": "{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}"
      },
      {
       "Id": "3938878469",
       "Name": "3D SFX",
-      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Audio Bus\\3D SFX",
+      "ObjectPath": "\\Master-Mixer Hierarchy\\Default Work Unit\\Master Binaural\\3D SFX",
       "GUID": "{8A995618-57A4-4456-80DD-C5EA286A3623}"
      }
     ],
@@ -128,6 +128,6 @@
     ]
    }
   ],
-  "FileHash": "{72BCCA58-F72C-4669-E05F-601403D77123}"
+  "FileHash": "{431CD4F1-35F9-A719-B4EB-A6A1711ADC5E}"
  }
 }

@@ -26,6 +26,9 @@
 					</ActiveSourceList>
 				</Sound>
 				<Sound Name="test_render_9channels" ID="{337312E9-D210-4DEA-B309-3F818A9DF4FD}" ShortID="378542656">
+					<PropertyList>
+						<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
@@ -36,6 +39,9 @@
 					</ReferenceList>
 					<ChildrenList>
 						<AudioFileSource Name="test_render_9channels" ID="{47372A2B-4D10-47C2-80E8-D0DAD790EDFA}">
+							<PropertyList>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>test_render_9channels.wav</AudioFile>
 							<MediaIDList>

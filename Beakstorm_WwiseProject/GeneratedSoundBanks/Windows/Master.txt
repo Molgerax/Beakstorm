@@ -1,14 +1,25 @@
 Event	ID	Name			Wwise Object Path	Notes
 	217586636	play_birdFollow			\Default Work Unit\play_birdFollow	
+	236989436	play_shipStaticBig			\Default Work Unit\play_shipStaticBig	
+	264564891	play_shipStaticSmall			\Default Work Unit\play_shipStaticSmall	
 	275388915	play_shipCannon			\Default Work Unit\play_shipCannon	
 	452547817	stop_all			\Default Work Unit\stop_all	
 	463795711	play_shipHorn			\Default Work Unit\play_shipHorn	
 	792515034	play_shipDestroy			\Default Work Unit\play_shipDestroy	
+	1113566242	play_menuBack			\Default Work Unit\play_menuBack	
 	1602214372	play_birdTarget			\Default Work Unit\play_birdTarget	
+	1661723931	play_levelAtmo			\Default Work Unit\play_levelAtmo	
+	1867351924	play_pheroDrag			\Default Work Unit\play_pheroDrag	
+	1897074628	play_menuChoose			\Default Work Unit\play_menuChoose	
 	1912775917	play_gliderHum			\Default Work Unit\play_gliderHum	
 	2435460859	play_birdAttack			\Default Work Unit\play_birdAttack	
-	2650593202	play_shipDrone			\Default Work Unit\play_shipDrone	
-	2932040671	play_Music			\Default Work Unit\play_Music	
-	3133186549	play_atmo			\Default Work Unit\play_atmo	
+	2570041344	play_menuMusic			\Default Work Unit\play_menuMusic	
+	2671044069	play_levelMusic			\Default Work Unit\play_levelMusic	
+	3100142473	play_menuConfirm			\Default Work Unit\play_menuConfirm	
+	3830652644	play_menuAtmo			\Default Work Unit\play_menuAtmo	
 	4227130709	play_birdStatic			\Default Work Unit\play_birdStatic	
+	4261851675	play_pheroShoot			\Default Work Unit\play_pheroShoot	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	919248550	test_render_9channels	C:\Fork\Beakstorm\Beakstorm_WwiseProject\.cache\8C\{8C70F86E-6DEA-D912-37B9-B0F78D5DAAD2}.wem		\Actor-Mixer Hierarchy\Default Work Unit\test_render_9channels		29376096
 

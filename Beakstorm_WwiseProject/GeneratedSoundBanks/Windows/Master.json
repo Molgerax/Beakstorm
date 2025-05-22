@@ -10,21 +10,21 @@
     "Type": "User",
     "GUID": "{2DEEA307-6196-4782-BE05-DD5404768833}",
     "Language": "SFX",
-    "Hash": "{13BDE451-91FB-1815-EC4F-2A6A1CD30511}",
+    "Hash": "{E10221AD-DA07-AB2D-08E3-230C689F6D8D}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Master",
     "ShortName": "Master",
     "Path": "Master.bnk",
-    "Events": [
+    "Media": [
      {
-      "Id": "3133186549",
-      "Name": "play_atmo",
-      "ObjectPath": "\\Events\\Default Work Unit\\play_atmo",
-      "GUID": "{3083773F-BDA6-4629-9181-3456407EDC26}",
-      "MaxAttenuation": "0",
-      "DurationType": "OneShot",
-      "DurationMin": "0",
-      "DurationMax": "0"
-     },
+      "Id": "919248550",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "test_render_9channels.wav",
+      "CachePath": "8C/{8C70F86E-6DEA-D912-37B9-B0F78D5DAAD2}.wem"
+     }
+    ],
+    "Events": [
      {
       "Id": "2435460859",
       "Name": "play_birdAttack",
@@ -76,10 +76,92 @@
       "DurationMax": "0"
      },
      {
-      "Id": "2932040671",
-      "Name": "play_Music",
-      "ObjectPath": "\\Events\\Default Work Unit\\play_Music",
+      "Id": "1661723931",
+      "Name": "play_levelAtmo",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_levelAtmo",
+      "GUID": "{3083773F-BDA6-4629-9181-3456407EDC26}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "919248550"
+       }
+      ]
+     },
+     {
+      "Id": "2671044069",
+      "Name": "play_levelMusic",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_levelMusic",
       "GUID": "{E76F5740-2EB8-43A8-A1B3-7C7FBA4E1AAE}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "3830652644",
+      "Name": "play_menuAtmo",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_menuAtmo",
+      "GUID": "{BA1D51D8-3C2E-472C-BF4B-432C2CBFC36A}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "1113566242",
+      "Name": "play_menuBack",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_menuBack",
+      "GUID": "{90153DE6-B8A5-4D80-95A8-EC460080C525}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "1897074628",
+      "Name": "play_menuChoose",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_menuChoose",
+      "GUID": "{258DD3B3-7409-454C-B822-5340821B1054}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "3100142473",
+      "Name": "play_menuConfirm",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_menuConfirm",
+      "GUID": "{09E20CD4-F00D-43B7-BE44-E035BEF23FCB}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "2570041344",
+      "Name": "play_menuMusic",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_menuMusic",
+      "GUID": "{9304A74D-D480-4FAE-AEE2-FD823775742E}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "1867351924",
+      "Name": "play_pheroDrag",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_pheroDrag",
+      "GUID": "{AAC72AD1-B504-451F-AF8C-44EE5A1ED14C}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "4261851675",
+      "Name": "play_pheroShoot",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_pheroShoot",
+      "GUID": "{391ACA4A-5704-4657-92FA-AE6AD59B8D4F}",
       "MaxAttenuation": "0",
       "DurationType": "OneShot",
       "DurationMin": "0",
@@ -106,9 +188,19 @@
       "DurationMax": "0"
      },
      {
-      "Id": "2650593202",
-      "Name": "play_shipDrone",
-      "ObjectPath": "\\Events\\Default Work Unit\\play_shipDrone",
+      "Id": "463795711",
+      "Name": "play_shipHorn",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_shipHorn",
+      "GUID": "{E8A606D4-A984-453C-8364-12C3F700B116}",
+      "MaxAttenuation": "0",
+      "DurationType": "OneShot",
+      "DurationMin": "0",
+      "DurationMax": "0"
+     },
+     {
+      "Id": "236989436",
+      "Name": "play_shipStaticBig",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_shipStaticBig",
       "GUID": "{02A07C88-BA95-4FDE-8B54-D4105F030C80}",
       "MaxAttenuation": "0",
       "DurationType": "OneShot",
@@ -116,10 +208,10 @@
       "DurationMax": "0"
      },
      {
-      "Id": "463795711",
-      "Name": "play_shipHorn",
-      "ObjectPath": "\\Events\\Default Work Unit\\play_shipHorn",
-      "GUID": "{E8A606D4-A984-453C-8364-12C3F700B116}",
+      "Id": "264564891",
+      "Name": "play_shipStaticSmall",
+      "ObjectPath": "\\Events\\Default Work Unit\\play_shipStaticSmall",
+      "GUID": "{C5E530F5-0D37-4545-9A90-3F92F99C3DEB}",
       "MaxAttenuation": "0",
       "DurationType": "OneShot",
       "DurationMin": "0",
@@ -138,6 +230,6 @@
     ]
    }
   ],
-  "FileHash": "{01CB2383-E9CE-D9AA-D47B-52F56B023929}"
+  "FileHash": "{73053151-7876-EF4E-02F5-6B573FC857D0}"
  }
 }

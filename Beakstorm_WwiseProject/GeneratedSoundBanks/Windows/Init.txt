@@ -11,10 +11,10 @@ State	ID	Name	State Group			Notes
 	2453122375	wave1	wave_State			
 
 Audio Bus	ID	Name			Wwise Object Path	Notes
-	1191978290	2D SFX			\Default Work Unit\Master Audio Bus\2D SFX	
-	2352922065	3D Music			\Default Work Unit\Master Audio Bus\3D Music	
-	3803692087	Master Audio Bus			\Default Work Unit\Master Audio Bus	
-	3938878469	3D SFX			\Default Work Unit\Master Audio Bus\3D SFX	
+	1191978290	2D SFX			\Default Work Unit\Master Binaural\2D SFX	
+	2352922065	3D Music			\Default Work Unit\Master Binaural\3D Music	
+	3007728267	Master Binaural			\Default Work Unit\Master Binaural	
+	3938878469	3D SFX			\Default Work Unit\Master Binaural\3D SFX	
 
 Audio Devices	ID	Name	Type				Notes
 	2317455096	No_Output	No Output			

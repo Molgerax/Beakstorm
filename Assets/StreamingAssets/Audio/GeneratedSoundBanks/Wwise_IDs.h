@@ -13,17 +13,25 @@ namespace AK
 {
     namespace EVENTS
     {
-        static const AkUniqueID PLAY_ATMO = 3133186549U;
         static const AkUniqueID PLAY_BIRDATTACK = 2435460859U;
         static const AkUniqueID PLAY_BIRDFOLLOW = 217586636U;
         static const AkUniqueID PLAY_BIRDSTATIC = 4227130709U;
         static const AkUniqueID PLAY_BIRDTARGET = 1602214372U;
         static const AkUniqueID PLAY_GLIDERHUM = 1912775917U;
-        static const AkUniqueID PLAY_MUSIC = 2932040671U;
+        static const AkUniqueID PLAY_LEVELATMO = 1661723931U;
+        static const AkUniqueID PLAY_LEVELMUSIC = 2671044069U;
+        static const AkUniqueID PLAY_MENUATMO = 3830652644U;
+        static const AkUniqueID PLAY_MENUBACK = 1113566242U;
+        static const AkUniqueID PLAY_MENUCHOOSE = 1897074628U;
+        static const AkUniqueID PLAY_MENUCONFIRM = 3100142473U;
+        static const AkUniqueID PLAY_MENUMUSIC = 2570041344U;
+        static const AkUniqueID PLAY_PHERODRAG = 1867351924U;
+        static const AkUniqueID PLAY_PHEROSHOOT = 4261851675U;
         static const AkUniqueID PLAY_SHIPCANNON = 275388915U;
         static const AkUniqueID PLAY_SHIPDESTROY = 792515034U;
-        static const AkUniqueID PLAY_SHIPDRONE = 2650593202U;
         static const AkUniqueID PLAY_SHIPHORN = 463795711U;
+        static const AkUniqueID PLAY_SHIPSTATICBIG = 236989436U;
+        static const AkUniqueID PLAY_SHIPSTATICSMALL = 264564891U;
         static const AkUniqueID STOP_ALL = 452547817U;
     } // namespace EVENTS
 
@@ -70,7 +78,7 @@ namespace AK
         static const AkUniqueID _2D_SFX = 1191978290U;
         static const AkUniqueID _3D_MUSIC = 2352922065U;
         static const AkUniqueID _3D_SFX = 3938878469U;
-        static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
+        static const AkUniqueID MASTER_BINAURAL = 3007728267U;
     } // namespace BUSSES
 
     namespace AUDIO_DEVICES

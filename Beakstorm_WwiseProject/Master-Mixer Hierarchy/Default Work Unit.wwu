@@ -14,7 +14,7 @@
 							<PropertyList>
 								<Property Name="BusChannelConfig" Type="int32">
 									<ValueList>
-										<Value>521</Value>
+										<Value>528</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
@@ -23,35 +23,13 @@
 							<PropertyList>
 								<Property Name="BusChannelConfig" Type="int32">
 									<ValueList>
-										<Value>521</Value>
+										<Value>528</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
 						</Bus>
 						<Bus Name="2D SFX" ID="{0F61F354-9750-49C2-89EC-5C91E57F5E7C}"/>
 					</ChildrenList>
-					<ObjectLists>
-						<ObjectList Name="Effects">
-							<Reference>
-								<Local>
-									<EffectSlot Name="" ID="{97FD0703-383B-4158-ACB0-428FE6BAEB25}" ShortID="858658278">
-										<ReferenceList>
-											<Reference Name="Effect">
-												<Custom>
-													<Effect Name="Auro Headphone (Custom)" ID="{234E73A6-8AA8-455D-AF6D-A6D799CD0ADE}" ShortID="455827061" PluginName="Auro Headphone" CompanyID="263" PluginID="1100" PluginType="3">
-														<PropertyList>
-															<Property Name="Bypass" Type="bool" Value="True"/>
-															<Property Name="Reverb" Type="bool" Value="False"/>
-														</PropertyList>
-													</Effect>
-												</Custom>
-											</Reference>
-										</ReferenceList>
-									</EffectSlot>
-								</Local>
-							</Reference>
-						</ObjectList>
-					</ObjectLists>
 				</Bus>
 			</ChildrenList>
 		</WorkUnit>
