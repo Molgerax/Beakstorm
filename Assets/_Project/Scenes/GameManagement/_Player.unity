@@ -177,8 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a87fc7dfc73171c419699b4a97cf5ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: b96d0a59e46c4cf49919838ac0a61d73, type: 2}
   spawner: {fileID: 119709470}
-  initialVelocity: 50
 --- !u!1 &497573128
 GameObject:
   m_ObjectHideFlags: 0

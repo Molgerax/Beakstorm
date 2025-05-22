@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8a480dfefa5e3f4a92e7ea3822b3c61, type: 3}
+  m_Name: Simple_ConstantPheromoneShot
+  m_EditorClassIdentifier: 
+  fireDelay: 0.5
+  ammoCost: 1
+  initialVelocity: 100
+  projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
