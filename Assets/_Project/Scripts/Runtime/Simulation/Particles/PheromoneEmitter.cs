@@ -1,4 +1,3 @@
-using Beakstorm.Pausing;
 using UnityEngine;
 
 namespace Beakstorm.Simulation.Particles
@@ -36,24 +35,24 @@ namespace Beakstorm.Simulation.Particles
             _initLifeTime = lifeTime;
         }
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             ResetEmitter();
+            
+            if (!PheromoneManager.Emitters.Contains(this))
+                PheromoneManager.Emitters.Add(this);
         }
 
-        private void Update()
+        protected virtual void OnDisable()
         {
-            if (PauseManager.IsPaused)
-                return;
-         
+            PheromoneManager.Emitters.Remove(this);
+        }
+
+        public void EmitOverTime(float deltaTime)
+        {
             UpdatePositions();
-            EmitOverTime();
-        }
-
-
-        private void EmitOverTime()
-        {
-            float emissionPerFrame = emissionRate * _deltaTime;
+            
+            float emissionPerFrame = emissionRate * deltaTime;
             emissionPerFrame += _remainder;
             _remainder = emissionPerFrame % 1;
 

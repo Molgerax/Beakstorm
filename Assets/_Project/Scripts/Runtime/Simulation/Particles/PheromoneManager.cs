@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Pausing;
 using Beakstorm.Simulation.Collisions.SDF;
@@ -11,6 +12,8 @@ namespace Beakstorm.Simulation.Particles
     {
         private const int THREAD_GROUP_SIZE = 256;
 
+        public static List<PheromoneEmitter> Emitters = new(32);
+        
         [SerializeField] private int maxCount = 256;
         [SerializeField] private ComputeShader pheromoneComputeShader;
 
@@ -76,6 +79,8 @@ namespace Beakstorm.Simulation.Particles
         {
             if (_initialized)
             {
+                ApplyEmitters(Time.deltaTime);
+                
                 UpdateSpatialHash();
                 GPUBitonicMergeSort.SortAndCalculateOffsets(sortShader, _spatialIndicesBuffer, _spatialOffsetsBuffer);
 
@@ -197,7 +202,31 @@ namespace Beakstorm.Simulation.Particles
             pheromoneComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
         }
 
-        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime, float deltaTime)
+
+        private void ApplyEmitters(float timeStep)
+        {
+            if (PauseManager.IsPaused)
+                return;
+            if (timeStep == 0)
+                return;
+            
+            if (Emitters == null)
+                return;
+            
+            for (int i = Emitters.Count - 1; i >= 0; i--)
+            {
+                var emitter = Emitters[i];
+                if (emitter == null)
+                {
+                    Emitters.RemoveAt(i);
+                    continue;
+                }
+                
+                emitter.EmitOverTime(timeStep);
+            }
+        }
+
+        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime, float timeStep)
         {
             if (PauseManager.IsPaused)
                 return;
@@ -210,7 +239,7 @@ namespace Beakstorm.Simulation.Particles
             int emissionKernel = pheromoneComputeShader.FindKernel("Emit");
             
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
-            pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, deltaTime);
+            pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
             pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, lifeTime);
             
             pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);
