@@ -1,4 +1,4 @@
-using System;
+using Beakstorm.Gameplay.Player.Weapons;
 using Beakstorm.Gameplay.Projectiles;
 using Beakstorm.Inputs;
 using Beakstorm.Simulation.Particles;
@@ -9,11 +9,22 @@ namespace Beakstorm.Gameplay.Player
 {
     public class PheromoneGun : MonoBehaviour
     {
+        [SerializeField] private SimplePlayerWeapon weaponData;
         [SerializeField] private ProjectileSpawner spawner;
-        [SerializeField] private float initialVelocity = 10f;
 
         private PlayerInputs _inputs;
 
+        
+        private void OnEnable()
+        {
+            weaponData.OnMonoEnable();
+        }
+        
+        private void OnDisable()
+        {
+            weaponData.OnMonoDisable();
+        }
+        
         private void Awake()
         {
             _inputs = PlayerInputs.Instance;
@@ -31,25 +42,12 @@ namespace Beakstorm.Gameplay.Player
 
         private void OnShootActionPerformed(InputAction.CallbackContext callback)
         {
-            var spawnTransform = spawner.transform;
-            Fire(spawnTransform.position, spawnTransform.forward);
-        }
-
-
-        public void Fire(Vector3 position, Vector3 direction)
-        {
-            if (!spawner)
+            if (!weaponData)
                 return;
 
-            var projectileInstance = spawner.GetProjectile();
-            var projTransform = projectileInstance.transform;
-            projTransform.position = position;
-
-            if (projectileInstance.TryGetComponent(out SimpleMovementHandler movementHandler))
-                movementHandler.SetVelocity(direction * initialVelocity);
+            Transform weaponPivot = spawner.transform;
             
-            if (projectileInstance.TryGetComponent(out PheromoneEmitter emitter))
-                emitter.ResetEmitter();
+            weaponData.Fire(weaponPivot.position, weaponPivot.forward);
         }
     }
 }

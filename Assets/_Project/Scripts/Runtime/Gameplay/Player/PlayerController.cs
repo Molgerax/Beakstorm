@@ -56,7 +56,7 @@ namespace Beakstorm.Gameplay.Player
         {
             _damageTaken += damage;
             _health -= damage;
-            transform.position += Vector3.up * damage;
+            //transform.position += Vector3.up * damage;
         }
     }
 }
