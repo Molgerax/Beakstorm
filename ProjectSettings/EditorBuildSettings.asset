@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/GameManagement/Menus/_PauseMenu.unity
     guid: 4747b48565139b949818ef16b3ff465e
+  - enabled: 1
+    path: Assets/_Project/Scenes/GameManagement/_TargetIndicators.unity
+    guid: cf0611d3f3f63354794049e75ffe8d73
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
