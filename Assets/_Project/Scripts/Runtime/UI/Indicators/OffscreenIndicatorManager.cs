@@ -87,7 +87,8 @@ namespace Beakstorm.UI.Indicators
         
         private OffscreenIndicator CreateOffscreenIndicator()
         {
-            var offscreenIndicator = Object.Instantiate(offscreenIndicatorPrefab, _poolParentTransform, true);
+            var offscreenIndicator = Object.Instantiate(offscreenIndicatorPrefab, _poolParentTransform, false);
+            offscreenIndicator.transform.localScale = Vector3.one;
             offscreenIndicator.ObjectPool = _indicatorPool;
             return offscreenIndicator;
         }

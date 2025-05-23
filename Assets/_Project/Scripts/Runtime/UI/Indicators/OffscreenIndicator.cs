@@ -6,7 +6,9 @@ namespace Beakstorm.UI.Indicators
 {
     public class OffscreenIndicator : MonoBehaviour
     {
-        [SerializeField] private Image indicatorImage;
+        [SerializeField] private Image offscreenImage;
+
+        [SerializeField] private BoundsIndicator boundsIndicator;
         
         private OffscreenTarget _target;
         private Camera _camera;
@@ -32,8 +34,8 @@ namespace Beakstorm.UI.Indicators
 
             _target.Indicator = this;
 
-            indicatorImage.sprite = _settings.IndicatorTexture;
-            indicatorImage.color = _settings.Color;
+            offscreenImage.sprite = _settings.IndicatorTexture;
+            offscreenImage.color = _settings.Color;
         }
         
         public void Deactivate()
@@ -68,15 +70,20 @@ namespace Beakstorm.UI.Indicators
 
         private void SetOutOfSight(bool value, Vector3 pos)
         {
+            offscreenImage.enabled = value;
+
+            if (boundsIndicator)
+            {
+                boundsIndicator.gameObject.SetActive(!value);
+                if (!value)
+                {
+                    boundsIndicator.SetTransform(_target.GetBounds(), _camera);
+                }
+            }
+            
             if (value)
             {
-                indicatorImage.gameObject.SetActive(true);
-                
-                indicatorImage.rectTransform.rotation = Quaternion.Euler(RotationOutOfSightTargetIndicator(pos));
-            }
-            else
-            {
-                indicatorImage.gameObject.SetActive(false);
+                offscreenImage.rectTransform.rotation = Quaternion.Euler(RotationOutOfSightTargetIndicator(pos));
             }
         }
         

@@ -66,6 +66,19 @@ namespace Beakstorm.UI.Indicators
 
             return false;
         }
+        
+        public Bounds GetBounds()
+        {
+            if (!useRenderers || _renderers == null)
+                return new Bounds(transform.position, customSize);
+
+            Bounds bounds = _renderers[0].bounds;
+            foreach (Renderer render in _renderers)
+            {
+                bounds.Encapsulate(render.bounds);
+            }
+            return bounds;
+        }
 
         private void OnDrawGizmosSelected()
         {
