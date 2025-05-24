@@ -1,0 +1,8 @@
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Beakstorm/Data/#SCRIPTNAME#", fileName = "New#SCRIPTNAME#")]
+public class #SCRIPTNAME# : ScriptableObject
+{
+#NOTRIM#
+}
+ 
