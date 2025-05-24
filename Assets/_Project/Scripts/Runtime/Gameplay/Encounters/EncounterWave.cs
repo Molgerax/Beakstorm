@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using AptabaseSDK;
-using Beakstorm.Gameplay.Enemies;
 using Beakstorm.Gameplay.Player;
 using UltEvents;
 using UnityEngine;
@@ -12,7 +10,7 @@ namespace Beakstorm.Gameplay.Encounters
     public class EncounterWave : MonoBehaviour
     {
         [SerializeField] private int waveIndex = 0;
-        [SerializeField] private EnemySpawner[] spawners;
+        [SerializeField] private EnemySpawnData[] spawners;
 
         [SerializeField] private UltEvent onDefeatAll;
 
@@ -22,15 +20,15 @@ namespace Beakstorm.Gameplay.Encounters
 
         private CancellationTokenSource _tokenSource;
         
-        public void SpawnAll()
+        public async Awaitable SpawnAll()
         {
             if (_defeatedAll)
                 return;
 
             _tokenSource = new CancellationTokenSource();
             
-            SpawnAllLoop();
             RunTimer(_tokenSource.Token);
+            await SpawnAllLoop();
         }
 
         private void OnDestroy()
@@ -39,24 +37,29 @@ namespace Beakstorm.Gameplay.Encounters
         }
 
 
-        public async void SpawnAllLoop()
+        private async Awaitable SpawnAllLoop()
         {
             for (int i = 0; i < spawners.Length; i++)
             {
-                spawners[i].onDefeat.DynamicCalls += OnDefeatedEnemy;
+                spawners[i].spawner.OnDefeatAction += OnDefeatedEnemy;
                 spawners[i].SpawnEnemy();
                 await spawners[i].GetWaitCondition();
             }
+            
+            while (!_tokenSource.IsCancellationRequested)
+            {
+                await Awaitable.NextFrameAsync();
+            }
         }
 
-        public async void RunTimer(CancellationToken token)
+        private async void RunTimer(CancellationToken token)
         {
             _timer = 0;
             
             while (!token.IsCancellationRequested)
             {
                 _timer += Time.deltaTime;
-                await Awaitable.NextFrameAsync(token);
+                await Awaitable.NextFrameAsync();
             }
         }
         
@@ -79,7 +82,7 @@ namespace Beakstorm.Gameplay.Encounters
             bool defeatedAll = true;
             for (int i = 0; i < spawners.Length; i++)
             {
-                if (spawners[i].IsDefeated == false) defeatedAll = false;
+                if (spawners[i].IsDefeated() == false) defeatedAll = false;
             }
 
             return defeatedAll;

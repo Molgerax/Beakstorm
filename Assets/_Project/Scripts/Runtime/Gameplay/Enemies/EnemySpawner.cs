@@ -1,4 +1,4 @@
-using UltEvents;
+using System;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Enemies
@@ -8,62 +8,27 @@ namespace Beakstorm.Gameplay.Enemies
     {
         [SerializeField] private EnemyController enemyPrefab;
 
-        [SerializeField] private UltEvent onSpawnEnemy;
-        [SerializeField] public UltEvent onDefeat;
+        [HideInInspector] public bool isDefeated;
 
-        [SerializeField] private WaitCondition waitCondition;
-        [SerializeField] private float spawnDelay;
-
-        public bool IsDefeated;
-
+        public event Action OnDefeatAction;
         private EnemyController _enemy;
-
-        private AwaitableCompletionSource _completionSource = new AwaitableCompletionSource();
 
         public void SpawnEnemy()
         {
-            if (IsDefeated)
+            if (isDefeated)
                 return;
 
             _enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
             _enemy.Spawn(this);
-            _completionSource.Reset();
-            IsDefeated = false;
-
-            onSpawnEnemy?.Invoke();
+            isDefeated = false;
         }
 
         public void OnDefeat()
         {
-            IsDefeated = true;
-            _completionSource.SetResult();
-            onDefeat?.Invoke();
+            isDefeated = true;
+            OnDefeatAction?.Invoke();
         }
 
-        public Awaitable GetWaitCondition()
-        {
-            if (waitCondition == WaitCondition.Null)
-                return Awaitable.EndOfFrameAsync();
-
-            if (waitCondition == WaitCondition.WaitForDelay)
-                return Awaitable.WaitForSecondsAsync(spawnDelay);
-
-            if (waitCondition == WaitCondition.WaitUntilDefeated)
-            {
-                return _completionSource.Awaitable;
-            }
-
-            return Awaitable.EndOfFrameAsync();
-        }
-
-
-        enum WaitCondition
-        {
-            Null = 0,
-            WaitForDelay = 1,
-            WaitUntilDefeated = 2
-        }
-        
 #if UNITY_EDITOR
         private EnemyController _preview;
 
