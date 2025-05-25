@@ -7,6 +7,11 @@ namespace Beakstorm.Gameplay.Player.Weapons
     [CreateAssetMenu(menuName = "Beakstorm/PlayerWeaponData/SimpleProjectile", fileName = "SimplePlayerWeapon")]
     public class SimplePlayerWeapon : ScriptableObject
     {
+        [Header("Display")]
+        [SerializeField] protected Sprite displaySprite;
+        [SerializeField] protected string displayName;
+        
+        [Header("Data")]
         [SerializeField] protected float fireDelay = 0.5f;
         [SerializeField] protected int ammoCost = 1;
         [SerializeField] protected float initialVelocity = 100;
@@ -14,6 +19,11 @@ namespace Beakstorm.Gameplay.Player.Weapons
         [SerializeField] protected Projectile projectilePrefab;
 
         protected ProjectilePool _pool;
+
+        public Sprite DisplaySprite => displaySprite;
+        public string DisplayName => displayName;
+        public float FireDelay => fireDelay;
+        public int AmmoCost => ammoCost;
 
         public virtual void OnMonoEnable()
         {

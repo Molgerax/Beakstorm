@@ -1,4 +1,6 @@
+using System;
 using Beakstorm.Gameplay.Damaging;
+using Beakstorm.Gameplay.Player.Weapons;
 using Beakstorm.Pausing;
 using UnityEngine;
 
@@ -9,9 +11,11 @@ namespace Beakstorm.Gameplay.Player
         public static PlayerController Instance;
 
         [SerializeField] private int maxHealth = 100;
-
+        [SerializeField] private SimplePlayerWeapon[] weapons = new SimplePlayerWeapon[0];
+        
         private int _damageTaken = 0;
         private int _health;
+        private int _selectedWeaponIndex;
         
         private Vector3 _oldPosition;
         private Vector3 _position;
@@ -24,10 +28,33 @@ namespace Beakstorm.Gameplay.Player
         public int Health => _health;
         public int DamageTaken => _damageTaken;
 
+        public SimplePlayerWeapon SelectedWeapon => weapons.Length == 0 ? null : weapons[_selectedWeaponIndex];
+        public int SelectedWeaponIndex
+        {
+            get => _selectedWeaponIndex;
+            set => _selectedWeaponIndex = (weapons.Length == 0) ? 0 : (value % weapons.Length + weapons.Length) % weapons.Length;
+        }
+
         private void Awake()
         {
             Instance = this;
             _health = maxHealth;
+        }
+
+        private void OnEnable()
+        {
+            foreach (SimplePlayerWeapon weapon in weapons)
+            {
+                weapon.OnMonoEnable();
+            }
+        }
+        
+        private void OnDisable()
+        {
+            foreach (SimplePlayerWeapon weapon in weapons)
+            {
+                weapon.OnMonoDisable();
+            }
         }
 
         private void Update()

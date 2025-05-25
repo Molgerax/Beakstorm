@@ -31,6 +31,8 @@ namespace Beakstorm.Inputs
         public InputAction accelerateAction;
         public InputAction brakeAction;
         public InputAction whistleAction;
+        
+        public InputAction selectPheromoneAction;
 
         public Action PauseAction;
         
@@ -84,6 +86,8 @@ namespace Beakstorm.Inputs
             brakeAction = _inputs.Player.Brake;
             whistleAction = _inputs.Player.Whistle;
 
+            selectPheromoneAction = _inputs.Player.SwitchPheromone;
+            
             _confirmBuffered = new InputBuffered(inputGrace);
             _cancelBuffered = new InputBuffered(inputGrace);
             _shootBuffered = new InputBuffered(inputGrace);

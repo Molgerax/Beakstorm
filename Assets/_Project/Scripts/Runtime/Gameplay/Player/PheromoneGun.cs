@@ -1,5 +1,3 @@
-using Beakstorm.Gameplay.Player.Weapons;
-using Beakstorm.Gameplay.Projectiles;
 using Beakstorm.Inputs;
 using Beakstorm.Simulation.Particles;
 using UnityEngine;
@@ -9,21 +7,7 @@ namespace Beakstorm.Gameplay.Player
 {
     public class PheromoneGun : MonoBehaviour
     {
-        [SerializeField] private SimplePlayerWeapon weaponData;
-        [SerializeField] private ProjectileSpawner spawner;
-
         private PlayerInputs _inputs;
-
-        
-        private void OnEnable()
-        {
-            weaponData.OnMonoEnable();
-        }
-        
-        private void OnDisable()
-        {
-            weaponData.OnMonoDisable();
-        }
         
         private void Awake()
         {
@@ -42,12 +26,10 @@ namespace Beakstorm.Gameplay.Player
 
         private void OnShootActionPerformed(InputAction.CallbackContext callback)
         {
-            if (!weaponData)
+            if (!PlayerController.Instance || !PlayerController.Instance.SelectedWeapon)
                 return;
-
-            Transform weaponPivot = spawner.transform;
             
-            weaponData.Fire(weaponPivot.position, weaponPivot.forward);
+            PlayerController.Instance.SelectedWeapon.Fire(transform.position, transform.forward);
         }
     }
 }
