@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8a480dfefa5e3f4a92e7ea3822b3c61, type: 3}
+  m_Name: Simple_LongRangeShot
+  m_EditorClassIdentifier: 
+  displaySprite: {fileID: 21300000, guid: a05990ca867207e4eaf261bfaa2b0c9d, type: 3}
+  displayName: Long Range
+  fireDelay: 0.5
+  ammoCost: 1
+  initialVelocity: 120
+  projectilePrefab: {fileID: 5012512307083224738, guid: 67815709021f14f468bde7106cfc9a24, type: 3}

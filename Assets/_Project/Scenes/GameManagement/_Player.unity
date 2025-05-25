@@ -1747,6 +1747,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 848899affe973bf47b013bbab7f99edc, type: 2}
   - {fileID: 11400000, guid: 00293372832f14248b9698242dcaefcf, type: 2}
   - {fileID: 11400000, guid: b96d0a59e46c4cf49919838ac0a61d73, type: 2}
+  - {fileID: 11400000, guid: 2b763d6de748faf4294d1c981112eba6, type: 2}
 --- !u!136 &1982143479
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1923,6 +1924,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   multiPositionArray: []
 --- !u!114 &1982143486
 MonoBehaviour:
@@ -1957,6 +1959,7 @@ MonoBehaviour:
   multiPositionTypeLabel: 0
   attenuationSphereColor: {r: 1, g: 0, b: 0, a: 0.1}
   LargeModePositions:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
