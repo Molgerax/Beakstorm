@@ -1,3 +1,4 @@
+using Beakstorm.Gameplay.Player.Weapons;
 using UnityEngine;
 
 namespace Beakstorm.Simulation.Particles
@@ -7,6 +8,8 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField, Min(0)] private float emissionRate = 60;
         [SerializeField, Range(0, 10)] private float lifeTime = 3;
 
+        private PheromoneBehaviourData _behaviourData;
+        
         public float EmissionRate
         {
             get => emissionRate;
@@ -23,7 +26,8 @@ namespace Beakstorm.Simulation.Particles
         private float _initLifeTime;
         
         private float _remainder = 0;
-
+        private float _duration;
+        
         private Vector3 _position;
         private Vector3 _oldPosition;
 
@@ -35,6 +39,11 @@ namespace Beakstorm.Simulation.Particles
             _initLifeTime = lifeTime;
         }
 
+        public void SetBehaviourData(PheromoneBehaviourData data)
+        {
+            _behaviourData = data;
+        }
+        
         protected virtual void OnEnable()
         {
             ResetEmitter();
@@ -51,8 +60,9 @@ namespace Beakstorm.Simulation.Particles
         public void EmitOverTime(float deltaTime)
         {
             UpdatePositions();
-            
-            float emissionPerFrame = emissionRate * deltaTime;
+            ApplyBehaviour(deltaTime);
+
+            float emissionPerFrame = EmissionRate * deltaTime;
             emissionPerFrame += _remainder;
             _remainder = emissionPerFrame % 1;
 
@@ -74,10 +84,22 @@ namespace Beakstorm.Simulation.Particles
                 PheromoneManager.Instance.EmitParticles(count, _position, _oldPosition, lifeTime, _deltaTime);
         }
 
+        private void ApplyBehaviour(float deltaTime)
+        {
+            _duration += deltaTime;
+            
+            if (!_behaviourData)
+                return;
+
+            LifeTime = _behaviourData.GetPheromoneLife(_duration);
+            EmissionRate = _behaviourData.GetPheromoneEmission(_duration);
+        }
+
         public void ResetEmitter()
         {
             _position = transform.position;
             _remainder = 0;
+            _duration = 0;
 
             LifeTime = _initLifeTime;
             EmissionRate = _initEmissionRate;

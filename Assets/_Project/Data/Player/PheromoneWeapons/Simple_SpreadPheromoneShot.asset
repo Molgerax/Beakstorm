@@ -17,4 +17,5 @@ MonoBehaviour:
   fireDelay: 0.5
   ammoCost: 1
   initialVelocity: 50
-  projectilePrefab: {fileID: 5012512307083224738, guid: dca3a167808b9b2448520304764741b4, type: 3}
+  projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
+  behaviourData: {fileID: 11400000, guid: 33a83646f9fabf347b953f479d7bf422, type: 2}

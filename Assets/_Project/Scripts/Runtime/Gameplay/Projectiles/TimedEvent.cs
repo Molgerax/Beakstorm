@@ -14,6 +14,12 @@ namespace Beakstorm.Gameplay.Projectiles
         private float _elapsedTime;
         private bool _hasFired;
 
+        public float Duration
+        {
+            get => duration;
+            set => duration = value;
+        }
+        
         private void Update()
         {
             Tick();

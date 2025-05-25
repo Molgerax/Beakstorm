@@ -51,7 +51,7 @@ namespace Beakstorm.Analytics
             float averagedFrameTime = _averageDuration / _averageFrameCount;
             _highestAverageFrameTime = Mathf.Max(_highestAverageFrameTime, averagedFrameTime);
 
-            if (1 / deltaTime < 60)
+            if (1 / deltaTime < 58f)
                 _belowCount++;
             
             if (_averageDuration >= averageDuration)
@@ -64,7 +64,7 @@ namespace Beakstorm.Analytics
             _highestFrameTime = Mathf.Max(_highestFrameTime, deltaTime);
             _lowestFrameTime = Mathf.Min(_lowestFrameTime, deltaTime);
 
-            if (_duration > profilingInterval)
+            if (_duration >= profilingInterval)
             {
                 SendAnalyticsEvent();
                 ResetValues();

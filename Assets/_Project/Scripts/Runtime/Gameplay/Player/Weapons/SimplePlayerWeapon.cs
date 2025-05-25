@@ -17,6 +17,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
         [SerializeField] protected float initialVelocity = 100;
         
         [SerializeField] protected Projectile projectilePrefab;
+        [SerializeField] protected PheromoneBehaviourData behaviourData;
 
         protected ProjectilePool _pool;
 
@@ -39,10 +40,26 @@ namespace Beakstorm.Gameplay.Player.Weapons
             projTransform.position = position;
 
             if (projectileInstance.TryGetComponent(out SimpleMovementHandler movementHandler))
+            {
                 movementHandler.SetVelocity(direction * initialVelocity);
-            
+                
+                if (behaviourData)
+                    movementHandler.Gravity = behaviourData.Gravity;
+            }
+
             if (projectileInstance.TryGetComponent(out PheromoneEmitter emitter))
+            {
+                emitter.SetBehaviourData(behaviourData);
                 emitter.ResetEmitter();
+            }
+            
+            if (projectileInstance.TryGetComponent(out TimedEvent timedEvent))
+            {
+                if (behaviourData)
+                {
+                    timedEvent.Duration = behaviourData.ProjectileLifeTime;
+                }
+            }
         }
     }
 }

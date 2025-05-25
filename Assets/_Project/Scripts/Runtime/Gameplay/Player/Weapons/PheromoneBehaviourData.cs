@@ -16,6 +16,8 @@ namespace Beakstorm.Gameplay.Player.Weapons
         [SerializeField] private float projectileLifeTime = 5f;
         [SerializeField] private float gravity = 5;
 
+        public float ProjectileLifeTime => projectileLifeTime;
+        public float Gravity => gravity;
 
         public float GetLifeTime01(float currentLife) => currentLife / projectileLifeTime;
 

@@ -11,6 +11,12 @@ namespace Beakstorm.Gameplay.Projectiles
 
         private Vector3 _momentaryForce;
 
+        public float Gravity
+        {
+            get => gravity;
+            set => gravity = value;
+        }
+        
         private void OnEnable()
         {
             ResetVelocity();
