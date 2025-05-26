@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 1424759133269100437}
   - component: {fileID: 6261494730367034359}
   - component: {fileID: 8317842948508944576}
+  - component: {fileID: 4242090557312249115}
   m_Layer: 0
   m_Name: WeakPoint_Gun
   m_TagString: Untagged
@@ -355,6 +356,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4242090557312249115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3493641205500488778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a81aea3ff0e444ca4dde0cc25db5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 9c3db9fbb5321f140a7079d595366f08, type: 2}
+  useRenderers: 1
+  customSize: {x: 1, y: 1, z: 1}
 --- !u!1 &9162173147694848423
 GameObject:
   m_ObjectHideFlags: 0

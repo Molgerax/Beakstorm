@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8761654235262798898}
   - component: {fileID: 2543976353914413433}
   - component: {fileID: 2909501407152813230}
+  - component: {fileID: 8062433636948956559}
   m_Layer: 0
   m_Name: WeakPoint_SelfDestruct
   m_TagString: Untagged
@@ -167,3 +168,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8062433636948956559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2902308931138649375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43a81aea3ff0e444ca4dde0cc25db5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 9c3db9fbb5321f140a7079d595366f08, type: 2}
+  useRenderers: 1
+  customSize: {x: 1, y: 1, z: 1}
