@@ -294,20 +294,20 @@ float4 PheromoneDensity(float3 pos)
                 continue;
             
             
-            float3 positionB = _PheromonePositionBuffer[neighborIndex];
-            float4 dataB = _PheromoneDataBuffer[neighborIndex];
-            float3 offset = positionB - pos;
+            float3 pheromonePos = _PheromonePositionBuffer[neighborIndex];
+            float4 pheromoneData = _PheromoneDataBuffer[neighborIndex];
+            float3 offset = pheromonePos - pos;
             float distSquared = dot(offset, offset);
             
             if (distSquared > _PheromoneHashCellSize * _PheromoneHashCellSize)
                 continue;
             numNeighbors++;
 
-            float d = GetDensityFromParticle(pos, positionB, _PheromoneHashCellSize);
-            float3 g = GetDensityDerivativeFromParticle(pos, positionB, _PheromoneHashCellSize, 1);
+            float d = GetDensityFromParticle(pos, pheromonePos, _PheromoneHashCellSize);
+            float3 g = GetDensityDerivativeFromParticle(pos, pheromonePos, _PheromoneHashCellSize, 1);
             
             density += d;
-            densityGradient += g * (dataB.w * dataB.w) / dataB.x;
+            densityGradient += g * (pheromoneData.w * pheromoneData.w) / pheromoneData.x;
         }
     }
     
