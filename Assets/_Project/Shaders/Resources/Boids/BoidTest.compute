@@ -145,11 +145,11 @@ float3 FlockingForce(uint index)
     float largestRadius = max(max(boidRadius.x, boidRadius.y), max(boidRadius.z, boidRadius.w));
     int3 originCell = GetCell3D(positionA, _HashCellSize);
 
+    int sideLength = GetCellCoverageSideLength(largestRadius, _HashCellSize);
+    int3 cellOffset = GetCellOffset(positionA, sideLength, _HashCellSize);
 
-    
-    for (int i = 0; i < 27; i++)
-    {
-        uint hashCell = HashCell3D(originCell + offsets3D[i]);
+    ITERATE_GRID_NEIGHBORS(sideLength, cellOffset, offset3D)
+        uint hashCell = HashCell3D(originCell + offset3D);
         uint key = KeyFromHash(hashCell, _TotalCount);
         uint currIndex = _BoidSpatialOffsets[key];
         

@@ -2,6 +2,7 @@
 #define _INCLUDE_BOID_PARAMETERS_
 
 #include "../SpatialHashing/SpatialHashGrids.hlsl"
+#include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
 
 uint _TotalCount;
 
