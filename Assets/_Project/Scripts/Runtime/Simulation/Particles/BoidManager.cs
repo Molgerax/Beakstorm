@@ -67,17 +67,28 @@ namespace Beakstorm.Simulation.Particles
 
         public static BoidManager Instance;
 
-        public ComputeBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;
-        public ComputeBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
+        public GraphicsBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;
+        public GraphicsBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
         public GraphicsBuffer PositionBuffer => _positionBuffer;
         public GraphicsBuffer OldPositionBuffer => _oldPositionBuffer;
         public GraphicsBuffer DataBuffer => _dataBuffer;
         public int Capacity => _capacity;
-        public float HashCellSize => _hashCellSize;
+        public float HashCellSize => GetHashCellSize();
         public Vector3 SimulationCenter => transform.position;
         public Vector3 SimulationSpace => simulationSpace;
 
         private Vector4 _whistleSource;
+        private float GetHashCellSize()
+        {
+            if (!neutralState && !exposedState)
+                return _hashCellSize;
+            
+            float largest = 0;
+            if (neutralState) largest = Mathf.Max(largest, neutralState.LargestRadius);
+            if (exposedState) largest = Mathf.Max(largest, exposedState.LargestRadius);
+            
+            return largest * hashCellRatio;
+        }
         
         private void Awake()
         {
@@ -139,8 +150,8 @@ namespace Beakstorm.Simulation.Particles
             _dataBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 4 * sizeof(uint));
 
             // Spatial Hash Buffers
-            _spatialIndicesBuffer = new ComputeBuffer(_capacity, 3 * sizeof(int), ComputeBufferType.Structured);
-            _spatialOffsetsBuffer = new ComputeBuffer(_capacity, 1 * sizeof(int), ComputeBufferType.Structured);
+            _spatialIndicesBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(int));
+            _spatialOffsetsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 1 * sizeof(int));
 
             int initKernel = _boidComputeShader.FindKernel("Init");
             RunSimulation(initKernel, Time.deltaTime);

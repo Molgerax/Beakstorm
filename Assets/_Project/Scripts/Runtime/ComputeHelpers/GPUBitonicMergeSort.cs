@@ -28,7 +28,7 @@ namespace Beakstorm.ComputeHelpers
             CalculateOffsetsKernel = cs.FindKernel(CALCULATE_OFFSETS_KERNEL);
         }
 
-        private static void SetBuffers(ComputeShader cs, ComputeBuffer indexBuffer, ComputeBuffer offsetBuffer)
+        private static void SetBuffers(ComputeShader cs, GraphicsBuffer indexBuffer, GraphicsBuffer offsetBuffer)
         {
             cs.SetBuffer(SortKernel, _entriesPropertyID, indexBuffer);
             cs.SetBuffer(CalculateOffsetsKernel, _entriesPropertyID, indexBuffer);
@@ -36,7 +36,7 @@ namespace Beakstorm.ComputeHelpers
         }
 
         // Sorts given buffer of integer values using bitonic merge sort
-        private static void Sort(ComputeShader cs, ComputeBuffer indexBuffer)
+        private static void Sort(ComputeShader cs, GraphicsBuffer indexBuffer)
         {
             int indexBufferCount = indexBuffer.count;
             cs.SetInt(_entryCountPropertyID, indexBufferCount);
@@ -70,8 +70,13 @@ namespace Beakstorm.ComputeHelpers
         /// <param name="cs">Sorting Compute Shader</param>
         /// <param name="indexBuffer">Buffer containing data entries, which each contain a data index, a cell hash and a key</param>
         /// <param name="offsetBuffer">Buffer to store the start indices of each hash grid cell</param>
-        public static void SortAndCalculateOffsets(ComputeShader cs, ComputeBuffer indexBuffer, ComputeBuffer offsetBuffer)
+        public static void SortAndCalculateOffsets(ComputeShader cs, GraphicsBuffer indexBuffer, GraphicsBuffer offsetBuffer, bool noHashValue = false)
         {
+            if (noHashValue)
+                cs.EnableKeyword("NO_HASH");
+            else    
+                cs.DisableKeyword("NO_HASH");
+            
             GetKernelIndices(cs);
             SetBuffers(cs, indexBuffer, offsetBuffer);
             Sort(cs, indexBuffer);

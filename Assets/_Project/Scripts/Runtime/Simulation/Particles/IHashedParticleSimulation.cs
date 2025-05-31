@@ -6,8 +6,8 @@ namespace Beakstorm.Simulation.Particles
     {
         public bool Initialized { get; }
         
-        public ComputeBuffer SpatialIndicesBuffer {get;}
-        public ComputeBuffer SpatialOffsetsBuffer {get;}
+        public GraphicsBuffer SpatialIndicesBuffer {get;}
+        public GraphicsBuffer SpatialOffsetsBuffer {get;}
         public GraphicsBuffer PositionBuffer {get;}
         public GraphicsBuffer OldPositionBuffer {get;}
         public GraphicsBuffer DataBuffer {get;}

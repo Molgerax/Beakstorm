@@ -33,6 +33,8 @@ namespace Beakstorm.Simulation.Particles
         public Vector4 Radius => new(separationRadius, alignmentRadius, cohesionRadius, detectionRadius);
         public Vector4 Speed => new(minSpeed * maxSpeed, maxSpeed, maxForce, 0);
 
+        public float LargestRadius => Mathf.Max(Mathf.Max(separationRadius, alignmentRadius), Mathf.Max(cohesionRadius, detectionRadius));
+        
         public void SetComputeShaderProperties(ComputeShader cs, string prefix)
         {
             if (prefix != _cachedPrefix)

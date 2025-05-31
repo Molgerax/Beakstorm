@@ -30,8 +30,8 @@ namespace Beakstorm.Simulation.Particles
 
         [SerializeField] [Range(0.1f, 10f)] private float hashCellSize = 1f;
 
-        private ComputeBuffer _spatialIndicesBuffer;
-        private ComputeBuffer _spatialOffsetsBuffer;
+        private GraphicsBuffer _spatialIndicesBuffer;
+        private GraphicsBuffer _spatialOffsetsBuffer;
 
 
         private GraphicsBuffer _positionBuffer;
@@ -52,8 +52,8 @@ namespace Beakstorm.Simulation.Particles
         public static PheromoneManager Instance;
 
         public bool Initialized => _initialized;
-        public ComputeBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;
-        public ComputeBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
+        public GraphicsBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;
+        public GraphicsBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
         public GraphicsBuffer PositionBuffer => _positionBuffer;
         public GraphicsBuffer DataBuffer => _dataBuffer;
         public GraphicsBuffer AliveBuffer => _aliveBuffer;
@@ -118,8 +118,8 @@ namespace Beakstorm.Simulation.Particles
             _deadCountBuffer.SetData(_counterArray);
             
             // Spatial Hash Buffers
-            _spatialIndicesBuffer = new ComputeBuffer(_capacity, 3 * sizeof(int), ComputeBufferType.Structured);
-            _spatialOffsetsBuffer = new ComputeBuffer(_capacity, 1 * sizeof(int), ComputeBufferType.Structured);
+            _spatialIndicesBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(int));
+            _spatialOffsetsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 1 * sizeof(int));
 
             int initKernel = pheromoneComputeShader.FindKernel("Init");
             RunSimulation(initKernel, Time.deltaTime);
