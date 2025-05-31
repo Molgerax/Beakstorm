@@ -101,6 +101,7 @@ namespace Beakstorm.Simulation.Particles
             compute.SetFloat(PropertyIDs.HashCellSize, sim.HashCellSize);
             compute.SetInt(PropertyIDs.ParticleCount, sim.Capacity);
             compute.SetVector(PropertyIDs.SimulationSpace, sim.SimulationSpace);
+            compute.SetVector(PropertyIDs.SimulationCenter, sim.SimulationCenter);
             
             compute.DispatchExact(kernel, _cellCount);
         }
@@ -222,6 +223,7 @@ namespace Beakstorm.Simulation.Particles
         {
             public static readonly int TotalCount = Shader.PropertyToID("_TotalCount");
             public static readonly int HashCellSize = Shader.PropertyToID("_HashCellSize");
+            public static readonly int SimulationCenter = Shader.PropertyToID("_SimulationCenter");
             public static readonly int SimulationSpace = Shader.PropertyToID("_SimulationSpace");
             public static readonly int Time = Shader.PropertyToID("_Time");
             public static readonly int DeltaTime = Shader.PropertyToID("_DeltaTime");

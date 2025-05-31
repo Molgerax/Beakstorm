@@ -19,6 +19,7 @@ float _DeltaTime;
 
 
 uint _TotalCount;
+float3 _SimulationCenter;
 float3 _SimulationSpace;
 
 StructuredBuffer<float3> _ParticlePositionBuffer;
@@ -60,8 +61,7 @@ void CollectValues(uint3 id : SV_DispatchThreadID)
 
     int3 cellId = id1Dto3D(index, cellCount);
     
-
-    float3 pos = ((cellId + 0.5) / (cellCount) * 1 - 0.5) * _SimulationSpace; 
+    float3 pos = ((cellId + 0.5) / (cellCount) * 1 - 0.5) * _SimulationSpace + floor(_SimulationCenter / _HashCellSize) * _HashCellSize; 
     
     // Neighborhood Search using Spatial Hash Grids
     int3 originCell = GetCell3D(pos, _HashCellSize);

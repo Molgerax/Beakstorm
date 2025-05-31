@@ -55,8 +55,8 @@ float3 calcSteerForce(float3 steer, float3 currentVelocity, float maxSpeed, floa
 
 float3 forceFromBounds(float3 pos)
 {
-    float dist = step(0, sdfBox(pos, 0, _SimulationSpace));
-    float3 p = ClosestPointOnBox(0, _SimulationSpace * 0.5, pos);
+    float dist = step(0, sdfBox(_SimulationCenter, _SimulationSpace * 0.5, pos));
+    float3 p = ClosestPointOnBox(_SimulationCenter, _SimulationSpace * 0.5, pos);
     float3 v = p - pos;
     float3 force = clampVector(v, 10, 1);
     return force * dist;
@@ -65,13 +65,13 @@ float3 forceFromBounds(float3 pos)
 // Collision
 void collideBounds(inout float3 pos, inout float3 oldPos)
 {
-    float dist = sdfBox( 0, _SimulationSpace * 0.5, pos);
+    float dist = sdfBox(_SimulationCenter, _SimulationSpace * 0.5, pos);
     
     if (dist < 0)
     {
         return;
     }
-    float3 p = ClosestPointOnBox(0, _SimulationSpace * 0.5, pos);
+    float3 p = ClosestPointOnBox(_SimulationCenter, _SimulationSpace * 0.5, pos);
     float3 diff = pos - p;
 
     float3 normal = safeNormalize(diff);

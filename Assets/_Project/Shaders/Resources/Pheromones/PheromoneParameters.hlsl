@@ -7,6 +7,7 @@
 uint _TotalCount;
 
 float3 _SimulationSpace;
+float3 _SimulationCenter;
 float _HashCellSize;
 
 float _LifeTime;
@@ -109,5 +110,12 @@ void KillParticle(uint index)
     _DeadIndexBuffer.Append(index);
     SetDead(index);
 }
+
+
+float3 GetBoundsUV(float3 worldPos)
+{
+    return (worldPos - _SimulationCenter) / _SimulationSpace * 0.5;
+}
+
 
 #endif

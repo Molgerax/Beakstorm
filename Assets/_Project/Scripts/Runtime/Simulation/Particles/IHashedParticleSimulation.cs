@@ -14,6 +14,7 @@ namespace Beakstorm.Simulation.Particles
         public int Capacity {get;}
         public float HashCellSize {get;}
         
+        public Vector3 SimulationCenter { get; }
         public Vector3 SimulationSpace { get; }
     }
 }

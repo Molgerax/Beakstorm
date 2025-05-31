@@ -63,6 +63,7 @@ namespace Beakstorm.Simulation.Particles
         public int Capacity => _capacity;
         public float HashCellSize => hashCellSize;
 
+        public Vector3 SimulationCenter => transform.position;
         public Vector3 SimulationSpace => simulationSpace;
 
         private void Awake()
@@ -173,6 +174,7 @@ namespace Beakstorm.Simulation.Particles
             pheromoneComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
             pheromoneComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
             pheromoneComputeShader.SetVector(PropertyIDs.SimulationSpace, simulationSpace);
+            pheromoneComputeShader.SetVector(PropertyIDs.SimulationCenter, transform.position);
             
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
             pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
@@ -331,6 +333,8 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int WorldPos                = Shader.PropertyToID("_WorldPos");
             public static readonly int WorldMatrix             = Shader.PropertyToID("_WorldMatrix");
             public static readonly int SimulationSpace         = Shader.PropertyToID("_SimulationSpace");
+            public static readonly int SimulationCenter        = Shader.PropertyToID("_SimulationCenter");
+            
             public static readonly int Time                    = Shader.PropertyToID("_Time");
             public static readonly int DeltaTime               = Shader.PropertyToID("_DeltaTime");
             public static readonly int PositionBuffer          = Shader.PropertyToID("_PositionBuffer");

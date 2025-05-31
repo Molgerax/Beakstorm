@@ -34,10 +34,21 @@ float _PheromoneHashCellSize;
 uint _PheromoneTotalCount;
 
 float3 _SimulationSpace;
+float3 _SimulationCenter;
+
 float _HashCellSize;
 
 float4 _WhistleSource;
 
 SamplerState sampler_linear_clamp;
+
+
+float3 GetBoundsUV(float3 worldPos)
+{
+    return (worldPos - _SimulationCenter) / _SimulationSpace * 0.5;
+}
+
+
+
 
 #endif

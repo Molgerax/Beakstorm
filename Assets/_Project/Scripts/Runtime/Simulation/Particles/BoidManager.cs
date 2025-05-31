@@ -74,6 +74,7 @@ namespace Beakstorm.Simulation.Particles
         public GraphicsBuffer DataBuffer => _dataBuffer;
         public int Capacity => _capacity;
         public float HashCellSize => _hashCellSize;
+        public Vector3 SimulationCenter => transform.position;
         public Vector3 SimulationSpace => simulationSpace;
 
         private Vector4 _whistleSource;
@@ -260,6 +261,7 @@ namespace Beakstorm.Simulation.Particles
             _boidComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
             _boidComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
             _boidComputeShader.SetVector(PropertyIDs.SimulationSpace, simulationSpace);
+            _boidComputeShader.SetVector(PropertyIDs.SimulationCenter, transform.position);            
 
             _boidComputeShader.SetFloat(PropertyIDs.Time, Time.time);
             _boidComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
@@ -349,6 +351,7 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int WorldPos = Shader.PropertyToID("_WorldPos");
             public static readonly int WorldMatrix = Shader.PropertyToID("_WorldMatrix");
             public static readonly int SimulationSpace = Shader.PropertyToID("_SimulationSpace");
+            public static readonly int SimulationCenter = Shader.PropertyToID("_SimulationCenter");
             public static readonly int Time = Shader.PropertyToID("_Time");
             public static readonly int DeltaTime = Shader.PropertyToID("_DeltaTime");
             public static readonly int FloorYLevel = Shader.PropertyToID("_FloorYLevel");
