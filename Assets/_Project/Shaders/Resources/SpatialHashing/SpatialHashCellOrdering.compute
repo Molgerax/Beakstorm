@@ -7,7 +7,7 @@
 
 #include "SpatialHashGridsCellOrdering.hlsl"
 
-#define THREAD_BLOCK_SIZE 256
+#define THREAD_BLOCK_SIZE 1024
 
 
 struct Boid
@@ -117,8 +117,9 @@ void PrefixSum(uint3 threadId : SV_DispatchThreadID, uint groupThreadId : SV_Gro
     }
 
     if (threadIndex >= _CellCount)
+    {
         return;
-
+    }
     
     _GridOffsetBuffer[threadIndex] = prefixSumArray[sumWrite * THREAD_BLOCK_SIZE + groupThreadId];
 
@@ -138,9 +139,13 @@ void SumThreadGroups(uint3 id : SV_DispatchThreadID)
     uint k = id.x;
 
     if (k < _SumOffset)
+    {
         _GridSumsBuffer[k] = _GridSumsBufferRead[k];
+    }
     else
+    {
         _GridSumsBuffer[k] = _GridSumsBufferRead[k] + _GridSumsBufferRead[k - _SumOffset];
+    }
 }
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]

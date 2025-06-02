@@ -63,8 +63,7 @@ namespace Beakstorm.ComputeHelpers
             GridBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _agentCount, 2 * sizeof(int));
             GridOffsetBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _cellCount, 1 * sizeof(int));
             GridSumsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _threadGroupCount, 1 * sizeof(int));
-            
-            
+
             GridOffsetBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _cellCount, 1 * sizeof(int));
             GridSumsBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _threadGroupCount, 1 * sizeof(int));
         }
@@ -107,7 +106,7 @@ namespace Beakstorm.ComputeHelpers
             _cs.SetVector(PropertyIDs.SimulationSize, _size);
             
             _cs.SetBuffer(kernelId, PropertyIDs.GridBuffer, GridBuffer);
-            _cs.SetBuffer(kernelId, PropertyIDs.GridOffsetBuffer, GridOffsetBuffer);
+            _cs.SetBuffer(kernelId, PropertyIDs.GridOffsetBuffer, GridOffsetBufferRead);
             _cs.SetBuffer(kernelId, PropertyIDs.BoidBufferRead, _simulation.BoidBufferRead);
             
             _cs.DispatchExact(kernelId, _agentCount);
@@ -118,7 +117,7 @@ namespace Beakstorm.ComputeHelpers
             int kernelId = _cs.FindKernel("ClearGridOffsets"); 
             
             _cs.SetInt(PropertyIDs.CellCount, _cellCount);
-            _cs.SetBuffer(kernelId, PropertyIDs.GridOffsetBuffer, GridOffsetBuffer);
+            _cs.SetBuffer(kernelId, PropertyIDs.GridOffsetBuffer, GridOffsetBufferRead);
             
             _cs.DispatchExact(kernelId, _cellCount);
         }

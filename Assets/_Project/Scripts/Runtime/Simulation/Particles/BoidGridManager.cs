@@ -150,6 +150,8 @@ namespace Beakstorm.Simulation.Particles
             _capacity = maxCount;
             ReleaseBuffers();
 
+            _swapBuffers = false;
+            
             _boidBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 12 * sizeof(float));
             _boidBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 12 * sizeof(float));
 
@@ -227,7 +229,7 @@ namespace Beakstorm.Simulation.Particles
             boidComputeShader.SetInts(PropertyIDs.Dimensions, _hash.Dimensions);
             boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _hash.GridOffsetBuffer);
 
-            boidComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
+            boidComputeShader.DispatchExact(kernelId, _capacity);
             
             SwapBuffers();
         }
