@@ -1,0 +1,296 @@
+using Beakstorm.ComputeHelpers;
+using Beakstorm.Pausing;
+using Beakstorm.Simulation.Collisions.SDF;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+namespace Beakstorm.Simulation.Particles
+{
+    /// <summary>
+    /// Pulled heavily from: https://github.com/abecombe/VFXGraphStudy/blob/main/Assets/Scenes/Flocking/Scripts/Flocking.cs
+    /// </summary>
+    public class BoidGridManager : MonoBehaviour, IHashedParticleSimulation
+    {
+        private const int THREAD_GROUP_SIZE = 256;
+
+        [SerializeField] 
+        private int maxCount = 256;
+        [SerializeField]
+        private ComputeShader boidComputeShader;
+
+        [Header("Rendering")] 
+        [SerializeField] private Mesh mesh;
+        [SerializeField] private Material material;
+        
+        [Header("Boid Settings")]
+        [SerializeField] 
+        private BoidStateSettings neutralState;
+        [SerializeField] 
+        private BoidStateSettings exposedState;
+
+        [Header("Collision")]
+        [SerializeField]
+        private Vector3 simulationSpace = Vector3.one;
+
+        [Header("Bitonic Merge Sort")]
+        [SerializeField]
+        private ComputeShader sortShader;
+
+        [SerializeField]
+        [Range(0.1f, 10f)]
+        private float hashCellSize = 1f;
+
+        [SerializeField]
+        [Range(0.25f, 2f)] private float hashCellRatio = 1;
+        
+        [SerializeField]
+        private ComputeShader cellShader;
+
+        private GraphicsBuffer _spatialIndicesBuffer;
+        private GraphicsBuffer _spatialOffsetsBuffer;
+        
+
+        private GraphicsBuffer _boidBuffer;
+        private GraphicsBuffer _boidBufferRead;
+
+        private MaterialPropertyBlock _propertyBlock;
+        
+        private int _capacity;
+        private bool _initialized;
+
+        public bool Initialized => _initialized;
+
+        public static BoidGridManager Instance;
+
+        public GraphicsBuffer SpatialIndicesBuffer => _hash?.GridBuffer;
+        public GraphicsBuffer SpatialOffsetsBuffer => _hash?.GridOffsetBuffer;
+        public GraphicsBuffer PositionBuffer => _boidBufferRead;
+        public GraphicsBuffer OldPositionBuffer => _boidBufferRead;
+        public GraphicsBuffer DataBuffer => _boidBufferRead;
+        public int Capacity => _capacity;
+        public float HashCellSize => GetHashCellSize();
+        public Vector3 SimulationCenter => transform.position;
+        public Vector3 SimulationSpace => simulationSpace;
+
+        private Vector4 _whistleSource;
+
+        private SpatialHashCellOrdered _hash;
+
+        private bool _swapBuffers;
+
+        public void SwapBuffers() => _swapBuffers = !_swapBuffers;
+        
+        public GraphicsBuffer BoidBuffer => _swapBuffers ? _boidBufferRead : _boidBuffer;
+        public GraphicsBuffer BoidBufferRead => _swapBuffers ? _boidBuffer : _boidBufferRead;
+
+        private float GetHashCellSize()
+        {
+            if (!neutralState && !exposedState)
+                return hashCellSize;
+            
+            float largest = 0;
+            if (neutralState) largest = Mathf.Max(largest, neutralState.LargestRadius);
+            if (exposedState) largest = Mathf.Max(largest, exposedState.LargestRadius);
+
+            hashCellSize = largest * hashCellRatio;
+            return hashCellSize;
+        }
+        
+        private void Awake()
+        {
+            Instance = this;
+            _capacity = maxCount;
+        }
+
+        private void Start()
+        {
+            InitializeBuffers();
+        }
+
+        private void Update()
+        {
+            if (_initialized)
+            {
+                if (!PauseManager.IsPaused && Time.deltaTime != 0)
+                {
+                    DecayWhistle(Time.deltaTime);
+
+                    _hash.Update();
+
+                    int updateKernel = boidComputeShader.FindKernel("Update");
+                    RunSimulation(updateKernel, Time.deltaTime);
+                }
+
+                RenderMeshes();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            ReleaseBuffers();
+        }
+        
+        
+        public void RefreshWhistle(Vector3 position, float duration)
+        {
+            _whistleSource = position;
+            _whistleSource.w = duration;
+        }
+
+        private void DecayWhistle(float deltaTime)
+        {
+            _whistleSource.w = Mathf.Max(0, _whistleSource.w - deltaTime);
+        }
+        
+
+        [ContextMenu("Re-Init")]
+        private void InitializeBuffers()
+        {
+            _whistleSource = Vector4.zero;
+            _capacity = maxCount;
+            ReleaseBuffers();
+
+            _boidBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 12 * sizeof(float));
+            _boidBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 12 * sizeof(float));
+
+            _hash = new SpatialHashCellOrdered(cellShader, sortShader, this);
+            
+            int initKernel = boidComputeShader.FindKernel("Init");
+            RunSimulation(initKernel, Time.deltaTime);
+
+            _initialized = true;
+        }
+
+        private void ReleaseBuffers()
+        {
+            _boidBuffer?.Release();
+            _boidBuffer = null;
+
+            _boidBufferRead?.Release();
+            _boidBufferRead = null;
+
+            _hash?.Dispose();
+        }
+
+
+        private void RunSimulation(int kernelId, float timeStep)
+        {
+            if (PauseManager.IsPaused)
+                return;
+            if (timeStep == 0)
+                return;
+            
+            if (kernelId < 0)
+            {
+                Debug.LogError($"Kernel for ComputeShader {boidComputeShader} is invalid", this);
+                return;
+            }
+
+            boidComputeShader.SetInt(PropertyIDs.TotalCount, _capacity);
+            boidComputeShader.SetFloat(PropertyIDs.HashCellSize, hashCellSize);
+
+            boidComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
+            boidComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
+            boidComputeShader.SetVector(PropertyIDs.SimulationCenter, SimulationCenter);
+            boidComputeShader.SetVector(PropertyIDs.SimulationSpace, SimulationSpace);
+            boidComputeShader.SetVector(PropertyIDs.WhistleSource, _whistleSource);
+
+            boidComputeShader.SetFloat(PropertyIDs.Time, Time.time);
+            boidComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
+
+            boidComputeShader.SetBoidStateSettings("_Neutral", neutralState);
+            boidComputeShader.SetBoidStateSettings("_Exposed", exposedState);
+
+            boidComputeShader.SetBuffer(kernelId, PropertyIDs.BoidBuffer, BoidBuffer);
+            boidComputeShader.SetBuffer(kernelId, PropertyIDs.BoidBufferRead, BoidBufferRead);
+
+            if (SdfShapeManager.Instance)
+            {
+                boidComputeShader.SetBuffer(kernelId, SdfShapeManager.PropertyIDs.NodeBuffer, SdfShapeManager.Instance.NodeBuffer);
+                boidComputeShader.SetBuffer(kernelId, SdfShapeManager.PropertyIDs.SdfBuffer, SdfShapeManager.Instance.SdfBuffer);
+                boidComputeShader.SetInt(SdfShapeManager.PropertyIDs.NodeCount, SdfShapeManager.Instance.NodeCount);
+            }
+
+            if (PheromoneManager.Instance)
+            {
+                PheromoneManager p = PheromoneManager.Instance;
+
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialIndices, p.SpatialIndicesBuffer);
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialOffsets, p.SpatialOffsetsBuffer);
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromonePositionBuffer, p.PositionBuffer);
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneDataBuffer, p.DataBuffer);
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneAliveBuffer, p.AliveBuffer);
+                boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.HashCellSize);
+                boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.Capacity);
+            }
+
+            boidComputeShader.SetInts(PropertyIDs.Dimensions, _hash.Dimensions);
+            boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _hash.GridOffsetBuffer);
+
+            boidComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
+            
+            SwapBuffers();
+        }
+        
+
+        private void RenderMeshes()
+        {
+            if (!mesh || !material)
+                return;
+            
+            _propertyBlock ??= new MaterialPropertyBlock();
+            _propertyBlock.SetBuffer(PropertyIDs.BoidBuffer, BoidBufferRead);
+            
+            RenderParams rp = new RenderParams(material)
+            {
+                camera = null,
+                instanceID = GetInstanceID(),
+                layer = gameObject.layer,
+                lightProbeUsage = LightProbeUsage.Off,
+                lightProbeProxyVolume = null,
+                receiveShadows = true,
+                shadowCastingMode = ShadowCastingMode.On,
+                worldBounds = new Bounds(transform.position, simulationSpace * 100), 
+                matProps = _propertyBlock,
+            };
+            
+            
+            Graphics.RenderMeshPrimitives(in rp, mesh, 0, _capacity);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(Vector3.zero, simulationSpace);
+        }
+
+        public static class PropertyIDs
+        {
+            public static readonly int TotalCount = Shader.PropertyToID("_TotalCount");
+            public static readonly int HashCellSize = Shader.PropertyToID("_HashCellSize");
+            public static readonly int WorldPos = Shader.PropertyToID("_WorldPos");
+            public static readonly int WorldMatrix = Shader.PropertyToID("_WorldMatrix");
+            public static readonly int SimulationSpace = Shader.PropertyToID("_SimulationSpace");
+            public static readonly int SimulationCenter = Shader.PropertyToID("_SimulationCenter");
+            public static readonly int Time = Shader.PropertyToID("_Time");
+            public static readonly int DeltaTime = Shader.PropertyToID("_DeltaTime");
+            
+            public static readonly int BoidBuffer = Shader.PropertyToID("_BoidBuffer");
+            public static readonly int BoidBufferRead = Shader.PropertyToID("_BoidBufferRead");
+            
+            public static readonly int WhistleSource = Shader.PropertyToID("_WhistleSource");
+            public static readonly int Dimensions = Shader.PropertyToID("_Dimensions");
+            
+            public static readonly int SpatialIndices = Shader.PropertyToID("_BoidSpatialIndices");
+            public static readonly int SpatialOffsets = Shader.PropertyToID("_BoidSpatialOffsets");
+            
+            public static readonly int PheromoneSpatialIndices = Shader.PropertyToID("_PheromoneSpatialIndices");
+            public static readonly int PheromoneSpatialOffsets = Shader.PropertyToID("_PheromoneSpatialOffsets");
+            public static readonly int PheromonePositionBuffer = Shader.PropertyToID("_PheromonePositionBuffer");
+            public static readonly int PheromoneDataBuffer = Shader.PropertyToID("_PheromoneDataBuffer");
+            public static readonly int PheromoneAliveBuffer = Shader.PropertyToID("_PheromoneAliveBuffer");
+            public static readonly int PheromoneHashCellSize = Shader.PropertyToID("_PheromoneHashCellSize");
+            public static readonly int PheromoneTotalCount = Shader.PropertyToID("_PheromoneTotalCount");
+        }
+    }
+}

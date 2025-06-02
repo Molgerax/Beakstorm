@@ -17,7 +17,7 @@ namespace Beakstorm.Simulation.Collisions
 
         public static WeakPointManager Instance;
         
-        public List<WeakPoint> WeakPoints = new List<WeakPoint>(16);
+        public static List<WeakPoint> WeakPoints = new List<WeakPoint>(16);
         public GraphicsBuffer WeakPointBuffer;
         public GraphicsBuffer DamageBuffer;
         private GraphicsBuffer _flushDamageBuffer;

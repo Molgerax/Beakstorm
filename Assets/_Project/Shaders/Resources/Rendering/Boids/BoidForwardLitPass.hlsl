@@ -1,5 +1,7 @@
 // Pull in URP library functions and our own common functions
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+#include "../QuaternionUtility.hlsl"
+
 
 // Textures
 SAMPLER(sampler_MainTex);
@@ -47,24 +49,20 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 {
 	Interpolators output;
 
-	float3 meshPositionWS = _PositionBuffer[instance_id];
-	float3 meshNormalWS = _NormalBuffer[instance_id];
-	float3 meshVelocityWS = _VelocityBuffer[instance_id];
-	float4 data = _DataBuffer[instance_id];
-	
-	float3 forward = SafeNormalize(meshVelocityWS);
-	float3 up = meshNormalWS;
-	float3 right = SafeNormalize(cross(up, forward));
+	Boid boid = _BoidBuffer[instance_id];
+    
+	float3 meshPositionWS = boid.pos;
+	float4 rotation = boid.rotation;
 
-	float3x3 rotMatrix = float3x3(right, up, forward);
+	float3x3 rotMatrix = QuaternionToMatrix(rotation);
 	rotMatrix = transpose(rotMatrix);
 	
-	float3 worldPos = mul(rotMatrix, input.positionOS * 0.2) + meshPositionWS;
+	float3 worldPos = mul(rotMatrix, input.positionOS * _Size) + meshPositionWS;
 	
 	output.positionCS = TransformWorldToHClip(worldPos);
 
-	float3 color = hsv2rgb(float3(data.y * 0.5, 1, 1));
-	color = saturate(data.y);
+	float3 color = hsv2rgb(float3(boid.data * 0.5, 1, 1));
+	color = saturate(boid.data);
 	
 	output.color = float4(color, 1);
 	output.normalWS = mul(rotMatrix, input.normalOS);
@@ -82,20 +80,17 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 
 Interpolators DepthOnlyVertex(Attributes input, uint instance_id: SV_InstanceID)
 {
-	Interpolators output;
+	Interpolators output = (Interpolators)0;
 
-	float3 meshPositionWS = _PositionBuffer[instance_id];
-	float3 meshNormalWS = _NormalBuffer[instance_id];
-	float3 meshVelocityWS = _VelocityBuffer[instance_id];
+	Boid boid = _BoidBuffer[instance_id];
+    
+	float3 meshPositionWS = boid.pos;
+	float4 rotation = boid.rotation;
 
-	float3 forward = SafeNormalize(meshVelocityWS);
-	float3 up = meshNormalWS;
-	float3 right = SafeNormalize(cross(up, forward));
-
-	float3x3 rotMatrix = float3x3(right, up, forward);
+	float3x3 rotMatrix = QuaternionToMatrix(rotation);
 	rotMatrix = transpose(rotMatrix);
 	
-	float3 worldPos = mul(rotMatrix, input.positionOS) + meshPositionWS;
+	float3 worldPos = mul(rotMatrix, input.positionOS * _Size) + meshPositionWS;
 
 	output.positionCS = TransformWorldToHClip(worldPos);
 	output.instanceID = instance_id;

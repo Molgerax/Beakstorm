@@ -19,6 +19,9 @@ STATE_SETTINGS(_Exposed)
 
 float GetInterpolator(uint index)
 {
+#ifdef BOID_BUFFER
+    return _BoidBufferRead[index].exposure;
+#else
     float3 pos = _PositionBuffer[index];
     float4 data = _DataBuffer[index];
 
@@ -28,6 +31,7 @@ float GetInterpolator(uint index)
     float t = (pos.x / _SimulationSpace.x);
     return step(0, t);
     return saturate(t + 0.5);
+#endif
 }
 
 float4 GetBoidSettings(uint index)

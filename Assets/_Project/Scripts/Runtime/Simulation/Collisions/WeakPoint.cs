@@ -36,14 +36,14 @@ namespace Beakstorm.Simulation.Collisions
 
         private void Subscribe()
         {
-            if (!WeakPointManager.Instance.WeakPoints.Contains(this))
-                WeakPointManager.Instance.WeakPoints.Add(this);
+            if (!WeakPointManager.WeakPoints.Contains(this))
+                WeakPointManager.WeakPoints.Add(this);
         }
 
         private void Unsubscribe()
         {   
-            if (WeakPointManager.Instance.WeakPoints.Contains(this))
-                WeakPointManager.Instance.WeakPoints.Remove(this);
+            if (WeakPointManager.WeakPoints.Contains(this))
+                WeakPointManager.WeakPoints.Remove(this);
         }
         
         public void ApplyDamage(int value)

@@ -1,0 +1,168 @@
+#pragma kernel UpdateGrid
+#pragma kernel ClearGridOffsets
+#pragma kernel PrefixSum
+#pragma kernel SumThreadGroups
+#pragma kernel AddSums
+#pragma kernel ReorderBoids
+
+#include "SpatialHashGridsCellOrdering.hlsl"
+
+#define THREAD_BLOCK_SIZE 256
+
+
+struct Boid
+{
+    float3 pos;
+    float exposure;
+    float3 oldPos;
+    float data;
+    float4 rotation;
+};
+
+RWStructuredBuffer<Boid> _BoidBuffer;
+StructuredBuffer<Boid> _BoidBufferRead;
+
+RWStructuredBuffer<uint2> _GridBuffer;
+RWStructuredBuffer<uint> _GridOffsetBuffer;
+RWStructuredBuffer<uint> _GridSumsBuffer;
+
+StructuredBuffer<uint> _GridOffsetBufferRead;
+StructuredBuffer<uint> _GridSumsBufferRead;
+
+uint _AgentCount;
+uint _CellCount;
+uint3 _CellDimensions;
+
+uint _ThreadGroupCount;
+uint _SumOffset;
+
+float3 _SimulationCenter;
+float3 _SimulationSize;
+
+float _HashCellSize;
+
+
+inline float3 GetBoundsMin()
+{
+    return _SimulationCenter - _SimulationSize * 0.5;
+}
+
+inline uint GetGridId(float3 pos)
+{
+    return KeyFromCellId(GetGridCellId(pos, _HashCellSize, _SimulationCenter, _SimulationSize), _CellDimensions);
+}
+
+
+/// Runs for each boid
+/// _GridBuffer is associated with each boid, and holds the values
+/// x -> GridId of this boid; y -> number of boids that are already in this grid
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void UpdateGrid(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    if (index >= _AgentCount)
+        return;
+
+    uint gridId = GetGridId(_BoidBufferRead[index].pos);
+    uint offset;
+    InterlockedAdd(_GridOffsetBuffer[gridId], 1, offset);
+    _GridBuffer[index] = uint2(gridId, offset);
+}
+
+/// Clears _GridOffsetBuffer
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void ClearGridOffsets(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    if (index >= _CellCount)
+        return;
+
+    _GridOffsetBuffer[index] = 0;
+}
+
+/// double-buffered array for prefix sum
+groupshared int prefixSumArray[THREAD_BLOCK_SIZE * 2];
+
+/// Runs a PrefixSum for the total count of each
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void PrefixSum(uint3 threadId : SV_DispatchThreadID, uint groupThreadId : SV_GroupThreadID, uint groupId : SV_GroupID)
+{
+    const uint threadIndex = threadId.x;
+
+    int sumWrite = 0;
+    int sumRead = 1;
+    
+    prefixSumArray[groupThreadId] = _GridOffsetBufferRead[threadIndex]; // Number of Boids in this cell
+    GroupMemoryBarrierWithGroupSync();
+
+    [unroll]
+    for (uint offset = 1; offset < THREAD_BLOCK_SIZE; offset *= 2)
+    {
+        // Switches Read and Write offset
+        sumWrite = 1 - sumWrite;
+        sumRead = 1 - sumWrite;
+
+        if (groupThreadId >= offset)
+        {
+            prefixSumArray[sumWrite * THREAD_BLOCK_SIZE + groupThreadId] =
+                prefixSumArray[sumRead * THREAD_BLOCK_SIZE + groupThreadId] +
+                prefixSumArray[sumRead * THREAD_BLOCK_SIZE + groupThreadId - offset];
+        }
+        else
+        {
+            prefixSumArray[sumWrite * THREAD_BLOCK_SIZE + groupThreadId] = 
+                prefixSumArray[sumRead * THREAD_BLOCK_SIZE + groupThreadId];
+        }
+        GroupMemoryBarrierWithGroupSync();
+    }
+
+    if (threadIndex >= _CellCount)
+        return;
+
+    
+    _GridOffsetBuffer[threadIndex] = prefixSumArray[sumWrite * THREAD_BLOCK_SIZE + groupThreadId];
+
+    if (groupThreadId == 0)
+    {
+        _GridSumsBuffer[groupId] = prefixSumArray[sumWrite * THREAD_BLOCK_SIZE + THREAD_BLOCK_SIZE - 1];
+    }
+}
+
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void SumThreadGroups(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _ThreadGroupCount) 
+        return;
+
+    uint k = id.x;
+
+    if (k < _SumOffset)
+        _GridSumsBuffer[k] = _GridSumsBufferRead[k];
+    else
+        _GridSumsBuffer[k] = _GridSumsBufferRead[k] + _GridSumsBufferRead[k - _SumOffset];
+}
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void AddSums(uint3 globalID : SV_DispatchThreadID, uint groupID : SV_GroupID)
+{
+    if (groupID == 0 || globalID.x > _CellCount)
+        return;
+    
+    _GridOffsetBuffer[globalID.x] += _GridSumsBufferRead[groupID - 1];
+}
+
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void ReorderBoids(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _AgentCount)
+        return;
+
+    uint2 grid = _GridBuffer[id.x];
+    uint gridID = grid.x;
+    uint cellOffset = grid.y;
+    uint index = _GridOffsetBuffer[gridID] - 1 - cellOffset;
+    
+    _BoidBuffer[index] = _BoidBufferRead[id.x];
+}

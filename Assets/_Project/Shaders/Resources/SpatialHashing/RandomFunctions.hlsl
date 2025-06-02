@@ -57,6 +57,15 @@ float3 RandomUnitVector(uint seed)
     return float3(sn * xy, cs * xy, z);
 }
 
+float2 RandomUnitVector2D(uint seed)
+{
+    float PI2 = 6.28318530718;
+    float sn, cs;
+    sincos(PI2 * Random(seed + 1), sn, cs);
+    return float2(sn, cs);
+}
+
+
 float3 RandomUnitVector(float seed)
 {
     float PI2 = 6.28318530718;
@@ -71,6 +80,11 @@ float3 RandomUnitVector(float seed)
 float3 RandomVector(uint seed)
 {
     return RandomUnitVector(seed) * sqrt(Random(seed + 2));
+}
+
+float2 RandomVector2D(uint seed)
+{
+    return RandomUnitVector2D(seed) * sqrt(Random(seed + 2));
 }
 
 float3 RandomVector(float seed)

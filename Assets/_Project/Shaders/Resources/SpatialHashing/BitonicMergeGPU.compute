@@ -1,12 +1,23 @@
 #pragma kernel SortKernel
 #pragma kernel CalculateOffsetsKernel
 
+#pragma multi_compile _ NO_HASH
+
+#if NO_HASH
+struct Entry
+{
+    uint originalIndex;
+    uint key;
+};
+#else
+
 struct Entry
 {
     uint originalIndex;
     uint hash;
     uint key;
 };
+#endif
 
 RWStructuredBuffer<Entry> _Entries;
 const uint _EntryCount;

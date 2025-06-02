@@ -1,0 +1,81 @@
+#pragma kernel SortKernel
+#pragma kernel CalculateOffsetsKernel
+
+
+RWStructuredBuffer<uint> _IndexBuffer;
+RWStructuredBuffer<uint> _CellIdBuffer;
+
+
+const uint _EntryCount;
+const uint _GroupWidth;
+const uint _GroupHeight;
+const uint _StepIndex;
+
+// Sort the given entries by their keys (smallest to largest)
+// This is done using bitonic merge sort, and takes multiple iterations
+[numthreads(128, 1, 1)]
+void SortKernel(uint3 id : SV_DispatchThreadID)
+{
+    uint i = id.x;
+
+    uint hIndex = i & (_GroupWidth - 1);
+    uint indexLeft = hIndex + (_GroupHeight + 1) * (i / _GroupWidth);
+    uint rightStepSize = _StepIndex == 0 ? _GroupHeight - 2 * hIndex : (_GroupHeight + 1) / 2;
+    uint indexRight = indexLeft + rightStepSize;
+
+	// Exit if out of bounds (for non-power of 2 input sizes)
+    if (indexRight >= _EntryCount)
+        return;
+
+    uint valueLeft = _CellIdBuffer[indexLeft];
+    uint valueRight = _CellIdBuffer[indexRight];
+
+	// Swap entries if value is descending
+    if (valueLeft > valueRight)
+    {
+        uint temp = _IndexBuffer[indexLeft];
+        
+        _IndexBuffer[indexLeft] = _IndexBuffer[indexRight];
+        _CellIdBuffer[indexLeft] = valueRight;
+        
+        _IndexBuffer[indexRight] = temp;
+        _CellIdBuffer[indexRight] = valueLeft;
+    }
+}
+
+
+// Points to the First 
+RWStructuredBuffer<uint> _PointerBuffer;
+uint _CellCount;
+
+
+[numthreads(128, 1, 1)]
+void CalculateOffsetsKernel(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _CellCount)
+    {
+        return;
+    }
+
+    
+    if (id.x == _CellCount - 1)
+    {
+        _PointerBuffer[_CellCount - 1] == _EntryCount;
+    }
+
+    uint index = id.x;
+    
+    //_PointerBuffer[index] = _EntryCount;
+
+    uint agentId = _IndexBuffer[index];
+    //uint agentPrev = index == 0 ? (_CellCount + 1) : _IndexBuffer[index - 1];
+    
+    uint key = _CellIdBuffer[index];
+    uint keyPrev = index == 0 ? (_CellCount + 1) : _CellIdBuffer[index - 1];
+    
+    if (key != keyPrev)
+    {
+        _PointerBuffer[key] = agentId;
+        //_PointerBuffer[index] = agentId;
+    }
+}
