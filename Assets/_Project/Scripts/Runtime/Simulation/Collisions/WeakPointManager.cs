@@ -180,8 +180,11 @@ namespace Beakstorm.Simulation.Collisions
 
         private void CollideBoids()
         {
-            if (!BoidManager.Instance || !BoidManager.Instance.Initialized)
+            BoidGridManager manager = BoidGridManager.Instance;
+            if (!manager || !manager.Initialized)
                 return;
+
+            
             
             int kernel = compute.FindKernel("CollideBoids");
             
@@ -192,13 +195,12 @@ namespace Beakstorm.Simulation.Collisions
             compute.SetFloat(PropertyIDs.Time, Time.time);
             compute.SetFloat(PropertyIDs.DeltaTime, Time.deltaTime);
 
-            compute.SetBuffer(kernel, PropertyIDs.SpatialIndices, BoidManager.Instance.SpatialIndicesBuffer);
-            compute.SetBuffer(kernel, PropertyIDs.SpatialOffsets, BoidManager.Instance.SpatialOffsetsBuffer);
-            compute.SetBuffer(kernel, PropertyIDs.PositionBuffer, BoidManager.Instance.PositionBuffer);
-            compute.SetBuffer(kernel, PropertyIDs.OldPositionBuffer, BoidManager.Instance.OldPositionBuffer);
+            compute.SetFloat(PropertyIDs.HashCellSize, manager.HashCellSize);
+            compute.SetInt(PropertyIDs.TotalCount, manager.Capacity);
             
-            compute.SetFloat(PropertyIDs.HashCellSize, BoidManager.Instance.HashCellSize);
-            compute.SetInt(PropertyIDs.TotalCount, BoidManager.Instance.Capacity);
+            manager.Hash.SetShaderProperties(compute);
+            compute.SetBuffer(kernel, PropertyIDs.GridOffsetBuffer, manager.Hash.GridOffsetBuffer);
+            compute.SetBuffer(kernel, PropertyIDs.BoidBuffer, manager.BoidBufferRead);
             
             compute.DispatchExact(kernel, _bufferSize);
         }
@@ -221,6 +223,8 @@ namespace Beakstorm.Simulation.Collisions
             
             public static readonly int SpatialIndices              = Shader.PropertyToID("_BoidSpatialIndices");
             public static readonly int SpatialOffsets              = Shader.PropertyToID("_BoidSpatialOffsets");
+            public static readonly int GridOffsetBuffer              = Shader.PropertyToID("_GridOffsetBuffer");
+            public static readonly int BoidBuffer              = Shader.PropertyToID("_BoidBuffer");
         }
     }
 }

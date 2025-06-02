@@ -28,7 +28,7 @@ float GetInterpolator(uint index)
     return saturate(data.w);
     return 1;
     
-    float t = (pos.x / _SimulationSpace.x);
+    float t = (pos.x / _SimulationSize.x);
     return step(0, t);
     return saturate(t + 0.5);
 #endif

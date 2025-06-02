@@ -2,6 +2,14 @@
 #define _INCLUDE_SPATIAL_HASH_GRIDS_CELL_ORDERING_
 
 // --Parameters for Spatial Hash usage--
+uint _AgentCount;
+uint _CellCount;
+float _HashCellSize;
+uint3 _CellDimensions;
+float3 _SimulationCenter;
+float3 _SimulationSize;
+
+
 
 #define ITERATE_GRID_NEIGHBORS(sideLength, cellOffset, gridOffset) \
 for(int iterator = 0; iterator < sideLength * sideLength * sideLength; iterator++)\

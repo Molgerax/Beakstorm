@@ -93,6 +93,16 @@ namespace Beakstorm.ComputeHelpers
             
             _simulation.SwapBuffers();
         }
+
+        public void SetShaderProperties(ComputeShader cs)
+        {
+            cs.SetInt(PropertyIDs.AgentCount, _agentCount);
+            cs.SetInt(PropertyIDs.CellCount, _cellCount);
+            cs.SetInts(PropertyIDs.CellDimensions, _dimensionsArray);
+            cs.SetFloat(PropertyIDs.HashCellSize, _cellSize);
+            cs.SetVector(PropertyIDs.SimulationCenter, _center);
+            cs.SetVector(PropertyIDs.SimulationSize, _size);
+        }
         
         private void UpdateGrid()
         {

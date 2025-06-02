@@ -37,7 +37,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Size: 0.2
+    - _Size: 1
     - _VertexColorToBase: 1
     - _VertexColorToEmissive: 0
     m_Colors:

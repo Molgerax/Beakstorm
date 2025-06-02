@@ -75,6 +75,7 @@ namespace Beakstorm.Simulation.Particles
         private Vector4 _whistleSource;
 
         private SpatialHashCellOrdered _hash;
+        public SpatialHashCellOrdered Hash => _hash;
 
         private bool _swapBuffers;
 
@@ -159,6 +160,7 @@ namespace Beakstorm.Simulation.Particles
             
             int initKernel = boidComputeShader.FindKernel("Init");
             RunSimulation(initKernel, Time.deltaTime);
+            RunSimulation(initKernel, Time.deltaTime);
 
             _initialized = true;
         }
@@ -229,6 +231,8 @@ namespace Beakstorm.Simulation.Particles
             boidComputeShader.SetInts(PropertyIDs.Dimensions, _hash.Dimensions);
             boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _hash.GridOffsetBuffer);
 
+            _hash.SetShaderProperties(boidComputeShader);
+            
             boidComputeShader.DispatchExact(kernelId, _capacity);
             
             SwapBuffers();

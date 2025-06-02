@@ -29,17 +29,10 @@ RWStructuredBuffer<uint> _GridSumsBuffer;
 StructuredBuffer<uint> _GridOffsetBufferRead;
 StructuredBuffer<uint> _GridSumsBufferRead;
 
-uint _AgentCount;
-uint _CellCount;
-uint3 _CellDimensions;
-
 uint _ThreadGroupCount;
 uint _SumOffset;
 
-float3 _SimulationCenter;
-float3 _SimulationSize;
 
-float _HashCellSize;
 
 
 inline float3 GetBoundsMin()

@@ -3,6 +3,7 @@
 
 
 #include "../SpatialHashing/RandomFunctions.hlsl"
+#include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
 
 #include "../Collisions/SdfCollisions.hlsl"
 #include "../Pheromones/PheromoneMath.hlsl"
@@ -68,8 +69,8 @@ float3 calcSteerForce(float3 steer, float3 currentVelocity, float maxSpeed, floa
 
 float3 forceFromBounds(float3 pos)
 {
-    float dist = step(0, sdfBox(_SimulationCenter, _SimulationSpace * 0.5, pos));
-    float3 p = ClosestPointOnBox(_SimulationCenter, _SimulationSpace * 0.5, pos);
+    float dist = step(0, sdfBox(_SimulationCenter, _SimulationSize * 0.5, pos));
+    float3 p = ClosestPointOnBox(_SimulationCenter, _SimulationSize * 0.5, pos);
     float3 v = p - pos;
     float3 force = clampVector(v, 10, GetMaxForce(0));
     return force * dist;
@@ -78,13 +79,13 @@ float3 forceFromBounds(float3 pos)
 // Collision
 void collideBounds(inout float3 pos, inout float3 oldPos)
 {
-    float dist = sdfBox(_SimulationCenter, _SimulationSpace * 0.5, pos);
+    float dist = sdfBox(_SimulationCenter, _SimulationSize * 0.5, pos);
     
     if (dist < 0)
     {
         return;
     }
-    float3 p = ClosestPointOnBox(_SimulationSpace, _SimulationSpace * 0.5, pos);
+    float3 p = ClosestPointOnBox(_SimulationSize, _SimulationSize * 0.5, pos);
     float3 diff = p - pos;
     float3 normal = normalize(diff);
 
@@ -137,24 +138,24 @@ float3 sdfForce(SdfQueryInfo info)
 
 inline float3 GetBoundsMin()
 {
-    return _SimulationCenter - _SimulationSpace * 0.5;
+    return _SimulationCenter - _SimulationSize * 0.5;
 }
 
 
 void DomainRepetition(inout float3 pos, inout float3 oldPos)
 {
-    float3 uv = (pos - _SimulationCenter) / _SimulationSpace + 0.5;
+    float3 uv = (pos - _SimulationCenter) / _SimulationSize + 0.5;
     int3 mask = -1 + step(0, uv);
     mask += 1 - step(uv, 1);
 
-    pos -= mask * _SimulationSpace;
-    oldPos -= mask * _SimulationSpace;
+    pos -= mask * _SimulationSize;
+    oldPos -= mask * _SimulationSize;
 }
 
 void LimitToBounds(inout float3 pos, inout float3 oldPos)
 {   
-    float3 uv = (pos - _SimulationCenter) / _SimulationSpace + 0.5;
-    float dist = sdfBox(_SimulationCenter, _SimulationSpace * 0.5, pos);
+    float3 uv = (pos - _SimulationCenter) / _SimulationSize + 0.5;
+    float dist = sdfBox(_SimulationCenter, _SimulationSize * 0.5, pos) - 0.01;
 
     if (dist < 0)
         return;
@@ -174,7 +175,7 @@ void LimitToBounds(inout float3 pos, inout float3 oldPos)
 }
 
 
-float3 FlockingForce(uint index)
+float3 FlockingForce(uint index, out int flockMates)
 {
     float4 boidRadius = GetBoidRadius(index);
     float maxSpeed = GetMaxSpeed(index);
@@ -197,18 +198,23 @@ float3 FlockingForce(uint index)
 
     // Neighborhood Search using Spatial Hash Grids
     float largestRadius = max(max(boidRadius.x, boidRadius.y), max(boidRadius.z, boidRadius.w));
-    int3 originCell = GetGridCellId(positionA, _HashCellSize, _SimulationCenter, _SimulationSpace);
+    int3 originCell = GetGridCellId(positionA, _HashCellSize, _SimulationCenter, _SimulationSize);
     uint3 cellDimensions = _Dimensions;
 
     int sideLength = GetCellCoverageSideLength(largestRadius, _HashCellSize);
     int3 cellOffset = GetCellOffset(positionA, sideLength, _HashCellSize);
 
+    uint ogKey = KeyFromCellId(originCell, cellDimensions);
+
+    //sideLength = 3;
+    //cellOffset = 0;
+    
     for(int iterator = 0; iterator < sideLength * sideLength * sideLength; iterator++)
     {
         int3 offset3D = GetIntegerOffsets3D(sideLength, iterator) + cellOffset;
-        //uint key = KeyFromHash(hashCell, _TotalCount);
+        
         uint key = KeyFromCellId(originCell + offset3D, cellDimensions);
-        uint currIndex = _BoidSpatialOffsets[key];
+        uint currIndex = _BoidSpatialOffsets[key+0];
         uint nextIndex = _BoidSpatialOffsets[key+1];
         
         while (currIndex < nextIndex)
@@ -301,6 +307,11 @@ float3 FlockingForce(uint index)
     acceleration += alignmentForce * factors.y;
     acceleration += cohesionForce * factors.z;
 
+    flockMates = max(max(numFlockMates.x, numFlockMates.y), max(numFlockMates.z, numFlockMates.w));
+    flockMates = 0;
+    if (ogKey == 0)
+        flockMates = 1;
+    
     return acceleration;
 }
 
@@ -362,6 +373,8 @@ float4 PheromoneDensity(float3 pos)
 void Update (uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
+    if (index >= _AgentCount)
+        return;
 
     Boid boid = _BoidBufferRead[index];
     
@@ -375,10 +388,11 @@ void Update (uint3 id : SV_DispatchThreadID)
     float3 velocity = (currentPosition - oldPosition) / _DeltaTime;
     oldPosition = currentPosition;
     
-    //SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0);
+    SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0);
     
     float3 acceleration = 0;
-    //acceleration += FlockingForce(index);
+    int flockMates = 0;
+    acceleration += FlockingForce(index, flockMates);
     //acceleration += forceFromBounds(currentPosition);
     //acceleration += centerForce(currentPosition, index);
     //acceleration += sdfForce(sdfInfo);
@@ -388,22 +402,22 @@ void Update (uint3 id : SV_DispatchThreadID)
     float4 factors = GetBoidSettings(index);
     float maxSpeed = GetMaxSpeed(index);
     float maxForce = GetMaxForce(index);
-    //float4 pheromoneSample = PheromoneDensity(currentPosition + velocity * _DeltaTime * 1) * 100;
-    //float3 pheromoneForce = calcSteerForce(pheromoneSample.xyz, velocity, maxSpeed, maxForce);
-    //
-    //acceleration += pheromoneForce * factors.w * saturate(pheromoneSample.w);
+    float4 pheromoneSample = PheromoneDensity(currentPosition + velocity * _DeltaTime * 1) * 100;
+    float3 pheromoneForce = calcSteerForce(pheromoneSample.xyz, velocity, maxSpeed, maxForce);
+    
+    acceleration += pheromoneForce * factors.w * saturate(pheromoneSample.w);
     
     velocity += acceleration * _DeltaTime;
-    //velocity = clampVector(velocity, GetMinSpeed(index), GetMaxSpeed(index));
+    velocity = clampVector(velocity, GetMinSpeed(index), GetMaxSpeed(index));
 
     currentPosition += velocity * _DeltaTime;
     //collideBounds(currentPosition, oldPosition);
-    //collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
+    collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
     
     //currentPosition.y = _WorldPos.y;
 
     //DomainRepetition(currentPosition, oldPosition);
-    //LimitToBounds(currentPosition, oldPosition);
+    LimitToBounds(currentPosition, oldPosition);
 
     //currentPosition = 0;
     //oldPosition = 0;
@@ -411,25 +425,37 @@ void Update (uint3 id : SV_DispatchThreadID)
     boid.pos = currentPosition;
     boid.oldPos = oldPosition;
 
+    float3 newForward;
     float3 diff = boid.pos - boid.oldPos;
     if (dot(diff, diff) > 0)
-        forward = normalize(diff);
+        newForward = normalize(diff);
     else
-        forward = float3(0, 0, 1);
+        newForward = forward;
     
     //rot = QuaternionMultiply(QuaternionFromTo(forward, velocity), rot);
-    rot = QuaternionLookAt(forward, float3(0, 1, 0));
 
+    float3 up = float3(0,1,0);
+    float3 right = cross(up, forward);
+    if (dot(right, right) == 0)
+        up = float3(0,0,-1);
+
+
+    
+    //rot = QuaternionLookAt(forward, up);
+    rot = QuaternionMultiply(QuaternionFromTo(forward, newForward), rot);
+    
     //rot = float4(0,0,0,1);
 
     boid.rotation = rot;
     
-    //boid.exposure = saturate(boid.exposure + pheromoneSample.w - _DeltaTime * 1);
-    boid.exposure = 0;
+    boid.exposure = saturate(boid.exposure + pheromoneSample.w - _DeltaTime * 1);
+    //boid.exposure = 0;
     int3 originCell = (int3) floor((currentPosition - GetBoundsMin()) / _HashCellSize);
     uint key = KeyFromCellId(originCell, _Dimensions);
     boid.data = key * 1.0 / (_Dimensions.x * _Dimensions.y * _Dimensions.z);
 
+    boid.data = flockMates;
+    
     _BoidBuffer[index] = boid;
 }
 
@@ -437,35 +463,39 @@ void Update (uint3 id : SV_DispatchThreadID)
 void Init(uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
-
+    if (index >= _AgentCount)
+        return;
+    
     Boid boid = (Boid)0;
     
-    int sideLength = pow(_TotalCount, 1 / 3.0);
+    int sideLength = pow(_AgentCount, 1 / 3.0);
 
     int3 newId = Index1Dto3D(index, sideLength);
          
-    float stagger = ((float)index / _TotalCount) * 2;// - 1;
-    float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _TotalCount;
+    float stagger = ((float)index / _AgentCount) * 2;// - 1;
+    float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _AgentCount;
 
-    offset = _WorldMatrix._m00_m01_m02 * stagger * _SimulationSpace;
+    offset = _WorldMatrix._m00_m01_m02 * stagger * _SimulationSize;
     //offset = (RandomVector01(index) - 0.5) * _SimulationSpace;
 
     //offset = 0;
-    offset = ((float3)(newId + 0.5) / sideLength - 0.5) * _SimulationSpace; 
+    offset = ((float3)(newId + 0.5) / sideLength - 0.5) * _SimulationSize; 
     
     float3 currentPosition = offset + _WorldPos;
     float3 currentNormal = _WorldMatrix._m10_m11_m12;
     float3 currentVelocity = _WorldMatrix._m20_m21_m22 * GetMaxSpeed(index);
 
-    currentVelocity = RandomVector(index) * 0.001;
-    currentVelocity = float3(0, 0, 1);
+    currentVelocity = RandomVector(index) * 0.1;
+    //currentVelocity = float3(0, 0, 0);
     float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
-
+    
     boid.pos = currentPosition;
     boid.oldPos = oldPosition;
     boid.exposure = 0;
     boid.data = 0;
 
+    currentVelocity = float3(0,0,1);
+    
     boid.rotation = QuaternionLookAt(normalize(currentVelocity), currentNormal);
     
     _BoidBuffer[index] = boid;

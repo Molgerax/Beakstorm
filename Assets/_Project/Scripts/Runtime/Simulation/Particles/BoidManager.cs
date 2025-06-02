@@ -48,8 +48,17 @@ namespace Beakstorm.Simulation.Particles
         [Range(0.1f, 10f)]
         private float _hashCellSize = 1f;
 
-        private ComputeBuffer _spatialIndicesBuffer;
-        private ComputeBuffer _spatialOffsetsBuffer;
+        [SerializeField]
+        [Range(0.25f, 2f)] private float hashCellRatio = 1;
+        
+        [SerializeField]
+        private ComputeShader cellShader;
+
+        [SerializeField] private bool useOrderedCells = false;
+
+
+        private GraphicsBuffer _spatialIndicesBuffer;
+        private GraphicsBuffer _spatialOffsetsBuffer;
         
 
         private GraphicsBuffer _positionBuffer;        
@@ -78,6 +87,9 @@ namespace Beakstorm.Simulation.Particles
         public Vector3 SimulationSpace => simulationSpace;
 
         private Vector4 _whistleSource;
+
+        private SpatialHashCellOrdered _hash;
+
         private float GetHashCellSize()
         {
             if (!neutralState && !exposedState)
@@ -86,8 +98,9 @@ namespace Beakstorm.Simulation.Particles
             float largest = 0;
             if (neutralState) largest = Mathf.Max(largest, neutralState.LargestRadius);
             if (exposedState) largest = Mathf.Max(largest, exposedState.LargestRadius);
-            
-            return largest * hashCellRatio;
+
+            _hashCellSize = largest * hashCellRatio;
+            return _hashCellSize;
         }
         
         private void Awake()
@@ -105,8 +118,16 @@ namespace Beakstorm.Simulation.Particles
         {
             if (_initialized)
             {
-                UpdateSpatialHash();
-                GPUBitonicMergeSort.SortAndCalculateOffsets(_sortShader, _spatialIndicesBuffer, _spatialOffsetsBuffer);
+                if (useOrderedCells)
+                {
+                    _hash?.Update();
+                }
+                else
+                {
+                    UpdateSpatialHash();
+                    GPUBitonicMergeSort.SortAndCalculateOffsets(_sortShader, _spatialIndicesBuffer,
+                        _spatialOffsetsBuffer);
+                }
 
                 DecayWhistle(Time.deltaTime);
              
@@ -153,6 +174,8 @@ namespace Beakstorm.Simulation.Particles
             _spatialIndicesBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 3 * sizeof(int));
             _spatialOffsetsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 1 * sizeof(int));
 
+            //_hash = new SpatialHashCellOrdered(cellShader, _sortShader, this);
+            
             int initKernel = _boidComputeShader.FindKernel("Init");
             RunSimulation(initKernel, Time.deltaTime);
 
@@ -181,6 +204,8 @@ namespace Beakstorm.Simulation.Particles
 
             _spatialOffsetsBuffer?.Release();
             _spatialOffsetsBuffer = null;
+            
+            _hash?.Dispose();
         }
 
 
@@ -241,9 +266,19 @@ namespace Beakstorm.Simulation.Particles
                 _boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.HashCellSize);
                 _boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.Capacity);
             }
-            
-            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialIndices, _spatialIndicesBuffer);
-            _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _spatialOffsetsBuffer);
+
+            if (useOrderedCells)
+            {
+                _boidComputeShader.SetInts(PropertyIDs.Dimensions, _hash.Dimensions);
+                
+                //_boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialIndices, _hash.IndexBuffer);
+                //_boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _hash.PointerBuffer);
+            }
+            else
+            {
+                _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialIndices, _spatialIndicesBuffer);
+                _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _spatialOffsetsBuffer);
+            }
 
             _boidComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
         }
@@ -376,6 +411,7 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int DataBuffer = Shader.PropertyToID("_DataBuffer");
             
             public static readonly int WhistleSource = Shader.PropertyToID("_WhistleSource");
+            public static readonly int Dimensions = Shader.PropertyToID("_Dimensions");
             
             public static readonly int SpatialIndices = Shader.PropertyToID("_BoidSpatialIndices");
             public static readonly int SpatialOffsets = Shader.PropertyToID("_BoidSpatialOffsets");

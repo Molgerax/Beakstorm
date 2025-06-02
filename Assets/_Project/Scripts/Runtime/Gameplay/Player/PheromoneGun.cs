@@ -26,7 +26,7 @@ namespace Beakstorm.Gameplay.Player
         {
             if (_inputs.whistleAction.IsPressed())
             {
-                BoidManager.Instance.RefreshWhistle(transform.position, 1f);
+                BoidGridManager.Instance.RefreshWhistle(transform.position, 1f);
             }
         }
 

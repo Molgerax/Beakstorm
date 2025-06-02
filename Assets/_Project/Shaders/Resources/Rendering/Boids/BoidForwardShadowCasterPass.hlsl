@@ -39,7 +39,7 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
     float4 rotation = boid.rotation;
 
     float3x3 rotMatrix = QuaternionToMatrix(rotation);
-	rotMatrix = transpose(rotMatrix);
+	//rotMatrix = transpose(rotMatrix);
 	
     float3 worldPos = mul(rotMatrix, input.positionOS * _Size) + meshPositionWS;
     

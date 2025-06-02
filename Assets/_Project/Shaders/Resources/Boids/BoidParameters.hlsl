@@ -18,7 +18,21 @@ RWStructuredBuffer<float3> _VelocityBuffer;
 RWStructuredBuffer<float3> _NormalBuffer;
 RWStructuredBuffer<float4> _DataBuffer;
 
-SPATIAL_HASH_BUFFERS(_Boid)
+//SPATIAL_HASH_BUFFERS(_Boid)
+
+uint3 _Dimensions;
+RWStructuredBuffer<uint> _BoidSpatialIndices;
+RWStructuredBuffer<uint> _BoidSpatialOffsets;
+//void SetSpatialHash_Boid(uint index, float3 position, uint totalCount, float cellSize)
+//{
+//    if (index >= totalCount)
+//        return;
+//    _BoidSpatialOffsets[index] = totalCount;
+//    int3 cell = GetCell3D(position, cellSize);
+//    uint hashCell = HashCell3D(cell);
+//    uint key = KeyFromHash(hashCell, totalCount);
+//    _BoidSpatialIndices[index] = uint3(index, hashCell, key);
+//}
 
 SPATIAL_HASH_BUFFERS_READ(_Pheromone)
 
@@ -34,10 +48,6 @@ inline uint DeadParticleCount() { return _PheromoneDeadCountBuffer[3]; }
 float _PheromoneHashCellSize;
 uint _PheromoneTotalCount;
 
-float3 _SimulationSpace;
-float3 _SimulationCenter;
-
-float _HashCellSize;
 
 float4 _WhistleSource;
 
@@ -46,7 +56,7 @@ SamplerState sampler_linear_clamp;
 
 float3 GetBoundsUV(float3 worldPos)
 {
-    return (worldPos - _SimulationCenter) / _SimulationSpace * 0.5;
+    return (worldPos - _SimulationCenter) / _SimulationSize * 0.5;
 }
 
 
