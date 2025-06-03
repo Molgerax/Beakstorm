@@ -214,8 +214,8 @@ float3 FlockingForce(uint index, out int flockMates)
         int3 offset3D = GetIntegerOffsets3D(sideLength, iterator) + cellOffset;
         
         uint key = KeyFromCellId(originCell + offset3D, cellDimensions);
-        uint currIndex = _BoidSpatialOffsets[key+0];
-        uint nextIndex = _BoidSpatialOffsets[key+1];
+        uint currIndex = _BoidSpatialOffsets[key-1];
+        uint nextIndex = _BoidSpatialOffsets[key+0];
         
         while (currIndex < nextIndex)
         {

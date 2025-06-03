@@ -49,8 +49,8 @@ int3 GetCellOffset(float3 position, uint sideLength, float cellSize)
     if (sideLength % 2 != 0)
         return 0;
 
-    int3 diff = ceil(position / cellSize) - round(position / cellSize);
-    return -diff;
+    int3 diff = round(position / cellSize) - floor(position / cellSize);
+    return diff;
 }
 
 int3 GetGridCellId(float3 pos, float cellSize, float3 boundsCenter, float3 boundsSize)

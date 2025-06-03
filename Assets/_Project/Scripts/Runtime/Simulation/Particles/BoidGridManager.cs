@@ -37,7 +37,7 @@ namespace Beakstorm.Simulation.Particles
         private ComputeShader sortShader;
 
         [SerializeField]
-        [Range(0.1f, 10f)]
+        [Min(0.1f)]
         private float hashCellSize = 1f;
 
         [SerializeField]
