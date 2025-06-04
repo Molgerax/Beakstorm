@@ -283,8 +283,8 @@ MonoBehaviour:
   simulationSpace: {x: 1024, y: 512, z: 1024}
   targetDensity: 0
   pressureMultiplier: 100
-  smoothingRadius: 8
-  cellSizeRatio: 1
+  smoothingRadius: 16
+  cellSizeRatio: 2
   cellShader: {fileID: 7200000, guid: 940adfac109249998a21dc86e309f014, type: 3}
 --- !u!4 &1080342934
 Transform:
