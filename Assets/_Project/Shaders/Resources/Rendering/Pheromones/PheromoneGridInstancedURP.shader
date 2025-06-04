@@ -11,6 +11,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
     	[HDR] _EmissiveColor("Emission Color", Color) = (0, 0, 0, 0)
         [NoScaleOffset] _EmissiveMap("Emission Map", 2D) = "white" {}
     	_VertexColorToEmissive("Vertex Color Mask for Emission", Range(0.0,1.0)) = 1
+    	_Size("Size", Float) = 1
     	
     }
     
@@ -58,7 +59,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
     float _VertexColorToBase;
     float3 _EmissiveColor;
 	float _VertexColorToEmissive;
-
+	float _Size;
     
     struct Pheromone
 	{
@@ -143,6 +144,11 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		return 0;
 	}
 
+    float GetSize(Pheromone p)
+	{
+		return (0.25 + p.maxLife - p.life) * _Size;
+	}
+    
     
 	Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 	{
@@ -160,10 +166,23 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float4 data = pheromone.data;
 		
 
-		float3 vpos = input.positionOS.xyz * saturate(data.w) * 0.25;
+		float3 vpos = input.positionOS.xyz * GetSize(pheromone);
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
 
+		float random = GenerateHashedRandomFloat(pheromone.data.y);
+		
+		float angle = (random * 2 - 1) * pheromone.data.w * 6.28;
+		float sine, cosine;
+		sincos(angle, sine, cosine);
+		
+		float3x3 tilt = float3x3(
+			float3(cosine, sine, 0),
+			float3(-sine, cosine, 0),
+			float3(0, 0, 1));
+
+		vpos = mul(tilt, vpos);
+		
 		float3 worldPos = meshPositionWS + cameraX * vpos.x + cameraY * vpos.y;
 		
 		output.positionCS = TransformWorldToHClip(worldPos);
@@ -171,15 +190,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float3 color = hsv2rgb(float3(data.w * 0.25, 1, 1));
 		color = saturate(data.www);
 
-		color.x = frac(data.w);
-		color.y = saturate((data.w - frac(data.w)) / 4);
-		color.z = 0;
-
-		color = hsv2rgb(float3(data.w, 1, 1));
 		color = saturate(data.www);
-		color = saturate(entry.dist);
 		
-		output.color = float4(color, data.w);
+		output.color = float4(color, GetSize(pheromone));
 		output.uv = input.uv;
 		output.screenUV = GetNormalizedScreenSpaceUV(output.positionCS);
 	
@@ -200,7 +213,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 
 		float3 meshPositionWS = pheromone.pos;
 
-		float3 vpos = input.positionOS.xyz * 0.5;
+		float3 vpos = input.positionOS.xyz * GetSize(pheromone);
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
 
@@ -237,7 +250,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		normal.xy = offset;
 		normal.z = sqrt(1 - dot(offset, offset));
 
-		float thickness = normal.z * 0.01;
+		float thickness = normal.z * input.color.w * 2;
 		
 		float3 normalWS = TransformViewToWorldDir(normal);
 
@@ -246,14 +259,18 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		col.x = frac(input.color.x);
 		col.y = frac(input.color.x * 2);
 		col.z = frac(input.color.x * 4);
-
+		col = 1;
 		col = hsv2rgb(float3(input.color.x, 1, 1));
-		col = input.color.rgb;
+		//col = input.color.rgb;
 		//return thickness;
 
-		//col = NumberToDots(input.color, uv);
+		//col.rgb *= colorSample.rgb;
+		float alpha = saturate(normal.z * input.color.z * input.color.z) * 0.25;
+		alpha *= colorSample.a;
 		
-		return float4(col, input.color.w);
+		//col = NumberToDots(input.color, uv);
+		col = 1;
+		return float4(col, alpha);
 		return float4(normal * 0.5 + 0.5, input.color.x);
 		
 		return input.color * colorSample;
@@ -290,7 +307,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		
 	    float3 meshPositionWS = pheromone.pos;
 	    
-		float3 vpos = input.positionOS.xyz;
+		float3 vpos = input.positionOS.xyz * GetSize(pheromone);
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
 

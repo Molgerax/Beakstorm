@@ -266,11 +266,6 @@ void Update (uint3 id : SV_DispatchThreadID)
     //data.w = density;
 
     
-    float3 cameraDiff = pheromone.pos - _CameraPos;
-    float cameraDist = dot(cameraDiff, _CameraForward);
-    //if (cameraDist < 0)
-    //    cameraDist = abs(cameraDist) + 10000.0;
-    data.y = cameraDist / 100;
     
     data.x = density;
     data.w = pheromone.life / pheromone.maxLife;
@@ -377,12 +372,7 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     data.z = maxLifeTime;
     data.w = lifeTime / maxLifeTime;
     data.x = lifeTime;
-
-    float3 cameraDiff = pos - _CameraPos;
-    float cameraDist = dot(cameraDiff, _CameraForward);
-    //if (cameraDist < 0)
-    //    cameraDist = abs(cameraDist) + 10000.0;
-    data.y = cameraDist / 100;
+    data.y = index;
     
     p.pos = pos;
     p.oldPos = oldPos;
@@ -423,6 +413,9 @@ void PrepareSort(uint3 id : SV_DispatchThreadID)
     }
     
     Pheromone p = _PheromoneBufferRead[index];
-    entry.dist = p.data.y;
+    float3 cameraDiff = p.pos - _CameraPos;
+    float cameraDist = dot(cameraDiff, _CameraForward);
+    
+    entry.dist = cameraDist;
     _PheromoneSortingBuffer[index] = entry;
 }

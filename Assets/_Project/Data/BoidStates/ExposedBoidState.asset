@@ -15,11 +15,11 @@ MonoBehaviour:
   separation: 1
   alignment: 0.2
   cohesion: 0
-  detection: 1
-  separationRadius: 3
+  detection: 0
+  separationRadius: 2
   alignmentRadius: 3
   cohesionRadius: 0
-  detectionRadius: 5
+  detectionRadius: 8
   minSpeed: 0.2
   maxSpeed: 80
   maxForce: 200
