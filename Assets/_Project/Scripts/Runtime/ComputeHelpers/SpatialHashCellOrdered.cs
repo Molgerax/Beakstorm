@@ -1,6 +1,7 @@
 ﻿using System;
 using Beakstorm.Simulation.Particles;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Beakstorm.ComputeHelpers
 {
@@ -10,8 +11,7 @@ namespace Beakstorm.ComputeHelpers
     public class SpatialHashCellOrdered : IDisposable
     {
         private readonly ComputeShader _cs;
-        private readonly ComputeShader _sortShader;
-        private readonly BoidGridManager _simulation;
+        private readonly IGridParticleSimulation _simulation;
         
         private readonly int _agentCount;
         private readonly float _cellSize;
@@ -38,19 +38,25 @@ namespace Beakstorm.ComputeHelpers
         public GraphicsBuffer GridOffsetBufferRead;
         public GraphicsBuffer GridSumsBufferRead;
 
+        private GraphicsBuffer _aliveCountBuffer;
+        private readonly bool _useAliveCount;
 
+        private LocalKeyword _aliveCountKeyword;
 
-        public SpatialHashCellOrdered(ComputeShader cs, ComputeShader sortShader, BoidGridManager simulation)
+        public SpatialHashCellOrdered(ComputeShader cs, IGridParticleSimulation simulation, GraphicsBuffer aliveCountBuffer = null)
         {
             _cs = cs;
             _simulation = simulation;
-            _sortShader = sortShader;
-            _agentCount = simulation.Capacity;
-            _cellSize = simulation.HashCellSize;
-            
-            
+            _agentCount = simulation.AgentCount;
+            _cellSize = simulation.CellSize;
+
+            _aliveCountBuffer = aliveCountBuffer;
+            _useAliveCount = _aliveCountBuffer != null;
+
+            _aliveCountKeyword = new LocalKeyword(_cs, "ALIVE_COUNT");
+
             _center = simulation.SimulationCenter;
-            _size = simulation.SimulationSpace;
+            _size = simulation.SimulationSize;
 
             _cellDimensions = Vector3Int.CeilToInt(_size / _cellSize);
             _cellCount = _cellDimensions.x * _cellDimensions.y * _cellDimensions.z;
@@ -90,8 +96,6 @@ namespace Beakstorm.ComputeHelpers
             bool swapBuffers = SumThreadGroups();
             AddSums(swapBuffers);
             ReorderBoids();
-            
-            _simulation.SwapBuffers();
         }
 
         public void SetShaderProperties(ComputeShader cs)
@@ -108,6 +112,8 @@ namespace Beakstorm.ComputeHelpers
         {
             int kernelId = _cs.FindKernel("UpdateGrid"); 
             
+            _cs.SetKeyword(_aliveCountKeyword, _useAliveCount);
+            
             _cs.SetInt(PropertyIDs.AgentCount, _agentCount);
             _cs.SetInt(PropertyIDs.CellCount, _cellCount);
             _cs.SetInts(PropertyIDs.CellDimensions, _dimensionsArray);
@@ -117,8 +123,11 @@ namespace Beakstorm.ComputeHelpers
             
             _cs.SetBuffer(kernelId, PropertyIDs.GridBuffer, GridBuffer);
             _cs.SetBuffer(kernelId, PropertyIDs.GridOffsetBuffer, GridOffsetBufferRead);
-            _cs.SetBuffer(kernelId, PropertyIDs.BoidBufferRead, _simulation.BoidBufferRead);
+            _cs.SetBuffer(kernelId, PropertyIDs.BoidBufferRead, _simulation.AgentBufferRead);
             
+            if (_useAliveCount)
+                _cs.SetBuffer(kernelId, PropertyIDs.AliveCountBuffer, _aliveCountBuffer);
+
             _cs.DispatchExact(kernelId, _agentCount);
         }
 
@@ -188,13 +197,18 @@ namespace Beakstorm.ComputeHelpers
         {
             int kernelId = _cs.FindKernel("ReorderBoids");
 
+            _cs.SetKeyword(_aliveCountKeyword, _useAliveCount);
+            
             _cs.SetInt(PropertyIDs.AgentCount, _agentCount);
             _cs.SetBuffer(kernelId, PropertyIDs.GridBuffer, GridBuffer);
             _cs.SetBuffer(kernelId, PropertyIDs.GridOffsetBuffer, GridOffsetBuffer);
             
-            _cs.SetBuffer(kernelId, PropertyIDs.BoidBufferRead, _simulation.BoidBufferRead);
-            _cs.SetBuffer(kernelId, PropertyIDs.BoidBuffer, _simulation.BoidBuffer);
+            _cs.SetBuffer(kernelId, PropertyIDs.BoidBufferRead, _simulation.AgentBufferRead);
+            _cs.SetBuffer(kernelId, PropertyIDs.BoidBuffer, _simulation.AgentBufferWrite);
 
+            if (_useAliveCount)
+                _cs.SetBuffer(kernelId, PropertyIDs.AliveCountBuffer, _aliveCountBuffer);
+            
             _cs.DispatchExact(kernelId, _agentCount);
         }
 
@@ -220,6 +234,8 @@ namespace Beakstorm.ComputeHelpers
 
             public static readonly int GridOffsetBufferRead = Shader.PropertyToID("_GridOffsetBufferRead");
             public static readonly int GridSumsBufferRead = Shader.PropertyToID("_GridSumsBufferRead");
+            
+            public static readonly int AliveCountBuffer = Shader.PropertyToID("_AliveCountBuffer");
         }
     }
 }

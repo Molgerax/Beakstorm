@@ -34,6 +34,24 @@ RWStructuredBuffer<uint> _BoidSpatialOffsets;
 //    _BoidSpatialIndices[index] = uint3(index, hashCell, key);
 //}
 
+
+struct Pheromone
+{
+    float3 pos;
+    float life;
+    float3 oldPos;
+    float maxLife;
+    float4 data;
+};
+
+StructuredBuffer<Pheromone> _PheromoneBuffer;
+StructuredBuffer<uint> _PheromoneArgs;
+float _PheromoneSmoothingRadius;
+
+float3 _PheromoneCenter;
+float3 _PheromoneSize;
+uint3 _PheromoneCellDimensions;
+
 SPATIAL_HASH_BUFFERS_READ(_Pheromone)
 
 StructuredBuffer<float3> _PheromonePositionBuffer;

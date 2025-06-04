@@ -48,13 +48,13 @@ namespace Beakstorm.Simulation.Particles
         {
             ResetEmitter();
             
-            if (!PheromoneManager.Emitters.Contains(this))
-                PheromoneManager.Emitters.Add(this);
+            if (!PheromoneGridManager.Emitters.Contains(this))
+                PheromoneGridManager.Emitters.Add(this);
         }
 
         protected virtual void OnDisable()
         {
-            PheromoneManager.Emitters.Remove(this);
+            PheromoneGridManager.Emitters.Remove(this);
         }
 
         public void EmitOverTime(float deltaTime)
@@ -80,8 +80,8 @@ namespace Beakstorm.Simulation.Particles
 
         public void Emit(int count)
         {
-            if (PheromoneManager.Instance)
-                PheromoneManager.Instance.EmitParticles(count, _position, _oldPosition, lifeTime, _deltaTime);
+            if (PheromoneGridManager.Instance)
+                PheromoneGridManager.Instance.EmitParticles(count, _position, _oldPosition, lifeTime, _deltaTime);
         }
 
         private void ApplyBehaviour(float deltaTime)

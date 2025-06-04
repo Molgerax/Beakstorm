@@ -195,12 +195,12 @@ namespace Beakstorm.Simulation.Collisions
             compute.SetFloat(PropertyIDs.Time, Time.time);
             compute.SetFloat(PropertyIDs.DeltaTime, Time.deltaTime);
 
-            compute.SetFloat(PropertyIDs.HashCellSize, manager.HashCellSize);
-            compute.SetInt(PropertyIDs.TotalCount, manager.Capacity);
+            compute.SetFloat(PropertyIDs.HashCellSize, manager.CellSize);
+            compute.SetInt(PropertyIDs.TotalCount, manager.AgentCount);
             
             manager.Hash.SetShaderProperties(compute);
             compute.SetBuffer(kernel, PropertyIDs.GridOffsetBuffer, manager.Hash.GridOffsetBuffer);
-            compute.SetBuffer(kernel, PropertyIDs.BoidBuffer, manager.BoidBufferRead);
+            compute.SetBuffer(kernel, PropertyIDs.BoidBuffer, manager.AgentBufferRead);
             
             compute.DispatchExact(kernel, _bufferSize);
         }

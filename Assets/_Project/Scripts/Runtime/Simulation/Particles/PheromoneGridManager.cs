@@ -1,0 +1,372 @@
+using System.Collections.Generic;
+using Beakstorm.ComputeHelpers;
+using Beakstorm.Pausing;
+using Beakstorm.Simulation.Collisions.SDF;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+namespace Beakstorm.Simulation.Particles
+{
+    [DefaultExecutionOrder(-90)]
+    public class PheromoneGridManager : MonoBehaviour, IGridParticleSimulation
+    {
+        private const int THREAD_GROUP_SIZE = 256;
+
+        public static List<PheromoneEmitter> Emitters = new(32);
+        
+        [SerializeField] private int maxCount = 256;
+        [SerializeField] private ComputeShader pheromoneComputeShader;
+
+        [Header("Rendering")] [SerializeField] private Mesh mesh;
+        [SerializeField] private Material material;
+        [SerializeField] private ComputeShader sortShader;
+
+
+        [Header("Collision")] 
+        [SerializeField] private Vector3 simulationSpace = Vector3.one;
+        [SerializeField] private float targetDensity = 1;
+        [SerializeField] private float pressureMultiplier = 1;
+
+        [SerializeField, Range(0.1f, 16f)] private float smoothingRadius = 8;
+
+        [SerializeField] [Range(0.5f, 2f)] private float cellSizeRatio = 1f;
+        
+        [SerializeField] private ComputeShader cellShader;
+
+
+        private GraphicsBuffer _pheromoneBuffer;
+        private GraphicsBuffer _pheromoneBufferRead;
+
+        private GraphicsBuffer _pheromoneSorted;
+        
+        private GraphicsBuffer _instancedDrawingArgsBuffer;
+        
+        private MaterialPropertyBlock _propertyBlock;
+
+        private int _particlesPerEmit = 1;
+        private int[] _counterArray;
+        
+        private int _capacity;
+        private bool _initialized;
+
+        public static PheromoneGridManager Instance;
+
+        public bool Initialized => _initialized;
+        public GraphicsBuffer SpatialIndicesBuffer => _hash?.GridBuffer;
+        public GraphicsBuffer SpatialOffsetsBuffer => _hash?.GridOffsetBuffer;
+        public GraphicsBuffer PositionBuffer => AgentBufferRead;
+        public GraphicsBuffer OldPositionBuffer => AgentBufferRead;
+        public GraphicsBuffer DataBuffer => AgentBufferRead;
+
+        public GraphicsBuffer InstancedArgsBuffer => _instancedDrawingArgsBuffer;
+        
+        public int AgentCount => _capacity;
+        public float CellSize => smoothingRadius * cellSizeRatio;
+
+        public float SmoothingRadius => smoothingRadius;
+        public Vector3 SimulationCenter => transform.position;
+        public Vector3 SimulationSize => simulationSpace;
+
+        private bool _swapBuffers;
+
+        public void SwapBuffers() => _swapBuffers = !_swapBuffers;
+        
+        public GraphicsBuffer AgentBufferWrite => _swapBuffers ? _pheromoneBufferRead : _pheromoneBuffer;
+        public GraphicsBuffer AgentBufferRead => _swapBuffers ? _pheromoneBuffer : _pheromoneBufferRead;
+        public int[] CellDimensions => _hash.Dimensions;
+        public int AgentBufferStride => 12; 
+        
+        private SpatialHashCellOrdered _hash;
+        public SpatialHashCellOrdered Hash => _hash;
+
+        private Transform _mainCamera;
+
+        private void Awake()
+        {
+            Instance = this;
+            if (Camera.main is not null) _mainCamera = Camera.main.transform;
+        }
+
+        private void Start()
+        {
+            InitializeBuffers();
+        }
+
+        private void Update()
+        {
+            if (_initialized)
+            {
+                if (!PauseManager.IsPaused && Time.deltaTime != 0)
+                {
+                    Clear();
+                    int updateKernel = pheromoneComputeShader.FindKernel("Update");
+                    RunSimulation(updateKernel, Time.deltaTime);
+                    
+                    ApplyEmitters(Time.deltaTime);
+                    SwapBuffers();
+                    
+                    _hash?.Update();
+                    SwapBuffers();
+                }
+                
+                RenderMeshes();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            ReleaseBuffers();
+        }
+
+
+        [ContextMenu("Re-Init")]
+        private void InitializeBuffers()
+        {
+            _capacity = maxCount;
+            ReleaseBuffers();
+            
+            _pheromoneBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured | GraphicsBuffer.Target.Counter, _capacity, AgentBufferStride * sizeof(float));
+            _pheromoneBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured | GraphicsBuffer.Target.Counter, _capacity, AgentBufferStride * sizeof(float));
+
+            _pheromoneSorted = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 2 * sizeof(float));
+
+            _instancedDrawingArgsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.IndirectArguments, 1, GraphicsBuffer.IndirectDrawIndexedArgs.size);
+            GraphicsBuffer.IndirectDrawIndexedArgs[] indexedArgs = new GraphicsBuffer.IndirectDrawIndexedArgs[1];
+            indexedArgs[0].indexCountPerInstance = mesh.GetIndexCount(0);
+            _instancedDrawingArgsBuffer.SetData(indexedArgs);
+            
+
+            _hash = new SpatialHashCellOrdered(cellShader, this, _instancedDrawingArgsBuffer);
+            
+            _pheromoneBuffer.SetCounterValue(0);
+            _pheromoneBufferRead.SetCounterValue(0);
+            
+            int initKernel = pheromoneComputeShader.FindKernel("Init");
+            RunSimulation(initKernel, Time.deltaTime);
+
+            _initialized = true;
+        }
+
+        private void ReleaseBuffers()
+        {
+            _pheromoneBuffer?.Release();
+            _pheromoneBuffer = null;
+
+            _pheromoneBufferRead?.Release();
+            _pheromoneBufferRead = null;
+
+            _instancedDrawingArgsBuffer?.Release();
+            _instancedDrawingArgsBuffer = null;
+
+            _pheromoneSorted?.Release();
+            _pheromoneSorted = null;
+            
+            _hash?.Dispose();
+        }
+
+
+        private void RunSimulation(int kernelId, float timeStep)
+        {
+            if (PauseManager.IsPaused)
+                return;
+            if (timeStep == 0)
+                return;
+            
+            if (kernelId < 0)
+            {
+                Debug.LogError($"Kernel for ComputeShader {pheromoneComputeShader} is invalid", this);
+                return;
+            }
+
+            pheromoneComputeShader.SetFloat(PropertyIDs.HashCellSize, CellSize);
+            
+            pheromoneComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
+            pheromoneComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
+            
+            pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
+            pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
+            pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, 1f);
+
+            pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);
+            pheromoneComputeShader.SetFloat(PropertyIDs.PressureMultiplier, pressureMultiplier);
+            pheromoneComputeShader.SetFloat(PropertyIDs.SmoothingRadius, smoothingRadius);
+            
+            if (SdfShapeManager.Instance)
+            {
+                pheromoneComputeShader.SetBuffer(kernelId, SdfShapeManager.PropertyIDs.NodeBuffer, SdfShapeManager.Instance.NodeBuffer);
+                pheromoneComputeShader.SetBuffer(kernelId, SdfShapeManager.PropertyIDs.SdfBuffer, SdfShapeManager.Instance.SdfBuffer);
+                pheromoneComputeShader.SetInt(SdfShapeManager.PropertyIDs.NodeCount, SdfShapeManager.Instance.NodeCount);
+            }
+            
+            pheromoneComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _hash.GridOffsetBuffer);
+
+            pheromoneComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneBufferRead, AgentBufferRead);
+            pheromoneComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneBuffer, AgentBufferWrite);
+            pheromoneComputeShader.SetBuffer(kernelId, PropertyIDs.InstancedArgsBuffer, _instancedDrawingArgsBuffer);
+
+            pheromoneComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSortingBuffer, _pheromoneSorted);
+
+            if (_mainCamera)
+            {
+                pheromoneComputeShader.SetVector(PropertyIDs.CameraPos, _mainCamera.position);
+                pheromoneComputeShader.SetVector(PropertyIDs.CameraForward, _mainCamera.forward);
+            }
+            
+            _hash.SetShaderProperties(pheromoneComputeShader);
+            
+            pheromoneComputeShader.Dispatch(kernelId, _capacity / THREAD_GROUP_SIZE, 1, 1);
+            GraphicsBuffer.CopyCount(AgentBufferWrite, _instancedDrawingArgsBuffer, 1 * sizeof(uint));
+        }
+
+
+        private void ApplyEmitters(float timeStep)
+        {
+            if (PauseManager.IsPaused)
+                return;
+            if (timeStep == 0)
+                return;
+            
+            if (Emitters == null)
+                return;
+            
+            for (int i = Emitters.Count - 1; i >= 0; i--)
+            {
+                var emitter = Emitters[i];
+                if (emitter == null)
+                {
+                    Emitters.RemoveAt(i);
+                    continue;
+                }
+                
+                emitter.EmitOverTime(timeStep);
+            }
+        }
+
+        private void Clear()
+        {
+            int kernel = pheromoneComputeShader.FindKernel("Clear");
+            
+            _hash.SetShaderProperties(pheromoneComputeShader);
+            pheromoneComputeShader.SetBuffer(kernel, PropertyIDs.PheromoneBuffer, AgentBufferWrite);
+            
+            pheromoneComputeShader.DispatchExact(kernel, AgentCount);
+            AgentBufferWrite.SetCounterValue(0);
+        }
+
+        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime, float timeStep)
+        {
+            if (PauseManager.IsPaused)
+                return;
+            
+            if (count <= 0 || lifeTime <= 0)
+                return;
+        
+            //UpdateEmissionCount(count);
+            
+            int emissionKernel = pheromoneComputeShader.FindKernel("Emit");
+            
+            pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
+            pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
+            pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, lifeTime);
+            
+            pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);
+            pheromoneComputeShader.SetFloat(PropertyIDs.PressureMultiplier, pressureMultiplier);
+            pheromoneComputeShader.SetVector(PropertyIDs.SpawnPos, pos);
+            pheromoneComputeShader.SetVector(PropertyIDs.SpawnPosOld, oldPos);
+            
+            pheromoneComputeShader.SetInt(PropertyIDs.TargetEmitCount, count);
+            pheromoneComputeShader.SetInt(PropertyIDs.ParticlesPerEmit, _particlesPerEmit);
+            
+            pheromoneComputeShader.SetBuffer(emissionKernel, PropertyIDs.PheromoneBuffer, AgentBufferWrite);
+            pheromoneComputeShader.SetBuffer(emissionKernel, PropertyIDs.InstancedArgsBuffer, _instancedDrawingArgsBuffer);
+
+            
+            pheromoneComputeShader.Dispatch(emissionKernel, Mathf.CeilToInt((float)count / THREAD_GROUP_SIZE), 1, 1);
+            GraphicsBuffer.CopyCount(AgentBufferWrite, _instancedDrawingArgsBuffer, 1 * sizeof(uint));
+        }
+        
+        private void PrepareSort()
+        {
+            int kernel = pheromoneComputeShader.FindKernel("PrepareSort");
+            
+            pheromoneComputeShader.SetBuffer(kernel, PropertyIDs.PheromoneBufferRead, AgentBufferRead);
+            pheromoneComputeShader.SetBuffer(kernel, PropertyIDs.PheromoneSortingBuffer, _pheromoneSorted);
+            pheromoneComputeShader.SetBuffer(kernel, PropertyIDs.InstancedArgsBuffer, _instancedDrawingArgsBuffer);
+
+            pheromoneComputeShader.DispatchExact(kernel, AgentCount);
+        }
+
+        private void SortForRendering()
+        {
+            PrepareSort();
+            GPUBitonicMergeSort.SortAndCalculateOffsets(sortShader, _pheromoneSorted, null);
+        }
+
+        private void RenderMeshes()
+        {
+            if (!mesh || !material)
+                return;
+            
+            SortForRendering();
+
+            _propertyBlock ??= new MaterialPropertyBlock();
+            _propertyBlock.SetBuffer(PropertyIDs.PheromoneBuffer, AgentBufferRead);
+            _propertyBlock.SetBuffer(PropertyIDs.PheromoneSortingBuffer, _pheromoneSorted);
+
+            RenderParams rp = new RenderParams(material)
+            {
+                camera = null,
+                instanceID = GetInstanceID(),
+                layer = gameObject.layer,
+                lightProbeUsage = LightProbeUsage.Off,
+                lightProbeProxyVolume = null,
+                receiveShadows = true,
+                shadowCastingMode = ShadowCastingMode.Off,
+                worldBounds = new Bounds(transform.position, simulationSpace * 100),
+                matProps = _propertyBlock,
+            };
+
+            
+            Graphics.RenderMeshIndirect(in rp, mesh, _instancedDrawingArgsBuffer);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(Vector3.zero, simulationSpace);
+        }
+        
+        
+        public static class PropertyIDs
+        {
+            public static readonly int HashCellSize            = Shader.PropertyToID("_HashCellSize");
+            public static readonly int WorldPos                = Shader.PropertyToID("_WorldPos");
+            public static readonly int WorldMatrix             = Shader.PropertyToID("_WorldMatrix");
+            
+            public static readonly int Time                    = Shader.PropertyToID("_Time");
+            public static readonly int DeltaTime               = Shader.PropertyToID("_DeltaTime");
+            public static readonly int LifeTime        = Shader.PropertyToID("_LifeTime");
+            
+            public static readonly int SpawnPos        = Shader.PropertyToID("_SpawnPos");
+            public static readonly int SpawnPosOld        = Shader.PropertyToID("_SpawnPosOld");
+            
+            public static readonly int TargetEmitCount        = Shader.PropertyToID("_TargetEmitCount");
+            public static readonly int ParticlesPerEmit        = Shader.PropertyToID("_ParticlesPerEmit");
+                  
+            public static readonly int CameraPos              = Shader.PropertyToID("_CameraPos");
+            public static readonly int CameraForward              = Shader.PropertyToID("_CameraForward");
+            
+            public static readonly int TargetDensity           = Shader.PropertyToID("_TargetDensity");
+            public static readonly int PressureMultiplier      = Shader.PropertyToID("_PressureMultiplier");
+            public static readonly int SmoothingRadius      = Shader.PropertyToID("_SmoothingRadius");
+            
+            public static readonly int SpatialOffsets              = Shader.PropertyToID("_PheromoneSpatialOffsets");
+
+            public static readonly int PheromoneBuffer              = Shader.PropertyToID("_PheromoneBuffer");
+            public static readonly int PheromoneBufferRead              = Shader.PropertyToID("_PheromoneBufferRead");            
+            public static readonly int PheromoneSortingBuffer              = Shader.PropertyToID("_PheromoneSortingBuffer");
+            public static readonly int InstancedArgsBuffer              = Shader.PropertyToID("_InstancedArgsBuffer");
+
+        }
+    }
+}

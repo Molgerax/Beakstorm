@@ -31,8 +31,11 @@ namespace Beakstorm.ComputeHelpers
         private static void SetBuffers(ComputeShader cs, GraphicsBuffer indexBuffer, GraphicsBuffer offsetBuffer)
         {
             cs.SetBuffer(SortKernel, _entriesPropertyID, indexBuffer);
+            
             cs.SetBuffer(CalculateOffsetsKernel, _entriesPropertyID, indexBuffer);
-            cs.SetBuffer(CalculateOffsetsKernel, _offsetsPropertyID, offsetBuffer);
+            
+            if (offsetBuffer != null)
+                cs.SetBuffer(CalculateOffsetsKernel, _offsetsPropertyID, offsetBuffer);
         }
 
         // Sorts given buffer of integer values using bitonic merge sort
@@ -80,7 +83,9 @@ namespace Beakstorm.ComputeHelpers
             GetKernelIndices(cs);
             SetBuffers(cs, indexBuffer, offsetBuffer);
             Sort(cs, indexBuffer);
-            cs.DispatchExact(CalculateOffsetsKernel, indexBuffer.count);
+            
+            if(offsetBuffer != null) 
+                cs.DispatchExact(CalculateOffsetsKernel, indexBuffer.count);
         }
     }
 }

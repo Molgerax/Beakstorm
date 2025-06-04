@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 namespace Beakstorm.Simulation.Particles
 {
     [DefaultExecutionOrder(-90)]
-    public class PheromoneManager : MonoBehaviour, IHashedParticleSimulation
+    public class PheromoneManager : MonoBehaviour, IGridParticleSimulation
     {
         private const int THREAD_GROUP_SIZE = 256;
 
@@ -52,6 +52,9 @@ namespace Beakstorm.Simulation.Particles
         public static PheromoneManager Instance;
 
         public bool Initialized => _initialized;
+        public GraphicsBuffer AgentBufferRead => null;
+        public GraphicsBuffer AgentBufferWrite => null;
+        public int AgentBufferStride => 8;
         public GraphicsBuffer SpatialIndicesBuffer => _spatialIndicesBuffer;
         public GraphicsBuffer SpatialOffsetsBuffer => _spatialOffsetsBuffer;
         public GraphicsBuffer PositionBuffer => _positionBuffer;
@@ -60,11 +63,11 @@ namespace Beakstorm.Simulation.Particles
         public GraphicsBuffer DeadIndexBuffer => _deadIndexBuffer;
         public GraphicsBuffer DeadCountBuffer => _deadCountBuffer;
         public GraphicsBuffer OldPositionBuffer => _oldPositionBuffer;
-        public int Capacity => _capacity;
-        public float HashCellSize => hashCellSize;
+        public int AgentCount => _capacity;
+        public float CellSize => hashCellSize;
 
         public Vector3 SimulationCenter => transform.position;
-        public Vector3 SimulationSpace => simulationSpace;
+        public Vector3 SimulationSize => simulationSpace;
 
         private void Awake()
         {

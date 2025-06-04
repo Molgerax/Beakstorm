@@ -1,9 +1,9 @@
 #pragma kernel Update
 #pragma kernel Init
 
-#pragma kernel UpdateSpatialHash
 #pragma kernel Emit
-#pragma kernel EmissionCountKernel
+#pragma kernel Clear
+#pragma kernel PrepareSort
 
 #include "../SpatialHashing/RandomFunctions.hlsl"
 
@@ -13,6 +13,19 @@
 #include "../Collisions/SdfCollisions.hlsl"
 
 #define THREAD_BLOCK_SIZE 256
+
+float3 _CameraPos;
+float3 _CameraForward;
+
+void KeepAlive(Pheromone p)
+{
+    uint index = _PheromoneBuffer.IncrementCounter();
+    if (index >= _AgentCount)
+        return;
+
+    _PheromoneBuffer[index] = p;
+}
+
 
 
 float UvOutOfBounds(float2 uv)
@@ -117,53 +130,72 @@ float3 sdfForce(SdfQueryInfo info)
     return f * strength;
 }
 
-float4 PressureForce(uint index)
+
+void LimitToBounds(inout float3 pos, inout float3 oldPos)
+{   
+    float3 uv = (pos - _SimulationCenter) / _SimulationSize + 0.5;
+    float dist = sdfBox(_SimulationCenter, _SimulationSize * 0.5, pos) - 0.01;
+
+    if (dist < 0)
+        return;
+    
+    int3 mask = -1 + step(0, uv);
+    mask += 1 - step(uv, 1);
+
+    float3 normal = normalize(mask);
+    
+
+    float3 vel = pos - oldPos;
+    float3 flattenVelocity = -dot(vel + normal * -dist, normal) * normal;
+    float3 mostBounceVelocity = -dot(vel, normal) * normal;
+           
+    oldPos = lerp(oldPos - flattenVelocity, oldPos - mostBounceVelocity, saturate(0.1));
+    pos -= normal * dist;
+}
+
+
+float4 PressureForce(uint index, Pheromone pheromone)
 {
-    float3 positionA = _PositionBuffer[index];
+    float3 positionA = pheromone.pos;
     
     int numNeighbors = 0;
     float3 densityGradient = 0;
     float density = 0;
     
-    // Neighborhood Search using Spatial Hash Grids
-    int3 originCell = GetCell3D(positionA, _HashCellSize);
+    int3 originCell = GetGridCellId(positionA, _HashCellSize, _SimulationCenter, _SimulationSize);
     
-    for (int i = 0; i < 27; i++)
+    int sideLength = GetCellCoverageSideLength(_SmoothingRadius, _HashCellSize);
+    int3 cellOffset = GetCellOffset(positionA, sideLength, _HashCellSize);
+    
+    for(int iterator = 0; iterator < sideLength * sideLength * sideLength; iterator++)
     {
-        uint hashCell = HashCell3D(originCell + offsets3D[i]);
-        uint key = KeyFromHash(hashCell, _AgentCount);
-        uint currIndex = _PheromoneSpatialOffsets[key];
+        int3 offset3D = GetIntegerOffsets3D(sideLength, iterator) + cellOffset;
         
+        uint key = KeyFromCellId(originCell + offset3D, _CellDimensions);
+        uint currIndex = _PheromoneSpatialOffsets[key-1];
+        uint nextIndex = _PheromoneSpatialOffsets[key+0];
         
-        while (currIndex < _AgentCount)
+        while (currIndex < nextIndex)
         {
-            uint3 indexData = _PheromoneSpatialIndices[currIndex];
+            Pheromone p2 = _PheromoneBufferRead[currIndex];
             currIndex++;
-            // Exit if no longer looking at correct bin
-            if (indexData[2] != key)
-                break;
-			// Skip if hash does not match
-            if (indexData[1] != hashCell)
+            
+            if (!IsAlive(p2))
                 continue;
             
-            uint neighborIndex = indexData[0];
-
-            if (!IsAlive(neighborIndex))
+            if(currIndex - 1 == index)
                 continue;
             
-            if(neighborIndex == index)
-                continue;
-            
-            float3 positionB = _PositionBuffer[neighborIndex];
+            float3 positionB = p2.pos;
             float3 offset = positionB - positionA;
             float distSquared = dot(offset, offset);
             
-            if (distSquared > _HashCellSize * _HashCellSize)
+            if (distSquared > _SmoothingRadius * _SmoothingRadius)
                 continue;
             numNeighbors++;
 
-            float d = GetDensityFromParticle(positionA, positionB, _HashCellSize);
-            float3 g = GetDensityDerivativeFromParticle(positionA, positionB, _HashCellSize);
+            float d = GetDensityFromParticle(positionA, positionB, _SmoothingRadius);
+            float3 g = GetDensityDerivativeFromParticle(positionA, positionB, _SmoothingRadius);
             
             density += d;
             densityGradient += g;
@@ -178,19 +210,31 @@ float4 PressureForce(uint index)
 void Update (uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
-
-    if (!IsAlive(index))
+    
+    if (index >= _AgentCount)
         return;
-        
-    float3 currentPosition = _PositionBuffer[index];
-    float3 oldPosition = _OldPositionBuffer[index];
+
+    if (index >= _InstancedArgsBuffer[1])
+    {
+        _PheromoneBuffer[index] = (Pheromone)0;
+        return;
+    }
+
+    
+    Pheromone pheromone = _PheromoneBufferRead[index];
+    
+    if (pheromone.life <= 0)
+        return;
+    
+    float3 currentPosition = pheromone.pos;
+    float3 oldPosition = pheromone.oldPos;
     
     float3 velocity = (currentPosition - oldPosition) / _DeltaTime;
     oldPosition = currentPosition;
     
     SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0);
     
-    float4 dense = PressureForce(index);
+    float4 dense = PressureForce(index, pheromone);
     float3 densityGradient = dense.xyz;
     float density = (dense.w);
     
@@ -209,26 +253,44 @@ void Update (uint3 id : SV_DispatchThreadID)
     
     //collideBounds(currentPosition, oldPosition);
     collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
+
+    LimitToBounds(currentPosition, oldPosition);
     
-    _PositionBuffer[index] = currentPosition;
-    _OldPositionBuffer[index] = oldPosition;
+    pheromone.pos = currentPosition;
+    pheromone.oldPos = oldPosition;
 
-    float life = DepleteLife(index, _DeltaTime);
-
-    float4 data = _DataBuffer[index];
+    pheromone.life = (pheromone.life - _DeltaTime);
+    
+    float4 data = pheromone.data;
     //data.xyz = densityGradient;
     //data.w = density;
 
-    data.x = density;
-    data.w = life / data.z;
     
-    _DataBuffer[index] = data;
+    float3 cameraDiff = pheromone.pos - _CameraPos;
+    float cameraDist = dot(cameraDiff, _CameraForward);
+    //if (cameraDist < 0)
+    //    cameraDist = abs(cameraDist) + 10000.0;
+    data.y = cameraDist / 100;
+    
+    data.x = density;
+    data.w = pheromone.life / pheromone.maxLife;
+    pheromone.data = data;
+
+    
+    if (pheromone.life > 0)
+        KeepAlive(pheromone);
+    
+    //_PheromoneBuffer[index] = pheromone;
 }
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
 void Init(uint3 id : SV_DispatchThreadID)
 {
     const uint index = id.x;
+    if (index >= _AgentCount)
+        return;
+
+    Pheromone pheromone = (Pheromone)0;
     
     int sideLength = pow(_AgentCount, 1 / 2.0);
 
@@ -252,53 +314,51 @@ void Init(uint3 id : SV_DispatchThreadID)
     float3 currentVelocity = RandomVector(index) * 0.0;
     float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
 
-    
-    _AliveBuffer[index] = 0;
-    _DeadIndexBuffer.Append(index);
-    
-    _PositionBuffer[index] = currentPosition;
-    _OldPositionBuffer[index] = oldPosition;
-    _DataBuffer[index] = 0;
-}
 
-[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
-void UpdateSpatialHash(uint3 id : SV_DispatchThreadID)
-{
-    const uint index = id.x;
+    pheromone.pos = currentPosition;
+    pheromone.oldPos = oldPosition;
+    pheromone.life = 0;
+    pheromone.maxLife = 0;
+    pheromone.data = 0;
     
-    if (index >= _AgentCount)
-        return;
+    //_DeadIndexBuffer.Append(index);
 
-    //if (!IsAlive(index))
-    //    return;
+    //KeepAlive(pheromone);
     
-    float3 position = _PositionBuffer[index];
-
-    SetSpatialHash_Pheromone(index, position, _AgentCount, _HashCellSize);
+    //_PheromoneBuffer[index] = pheromone;
 }
 
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
 void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
 {
-    if (CurrentEmissionCount() <= id.x)
-        return;
+    uint aliveCount = _InstancedArgsBuffer[1];
+    uint totalDead = _AgentCount - aliveCount; 
+    uint finalEmit = min(_TargetEmitCount, floor(totalDead / _ParticlesPerEmit));
     
-    const uint index = _AliveIndexBuffer.Consume();
+    if (id.x >= finalEmit)
+        return;
 
-    float randomOffset = Random(index) * 1.0;
+    const uint index = _PheromoneBuffer.IncrementCounter();
+    Pheromone p = (Pheromone)0;
+    
+    uint seed = index + id.x + groupId.x * THREAD_BLOCK_SIZE + _Time * 240;
+    float randomOffset = Random(seed) * 1.0;
 
     float sinus, cosine;
     sincos(randomOffset * 6.283185, sinus, cosine);
+
+    float3 spawnPos = _SpawnPos;
+    float3 spawnPosOld = _SpawnPosOld;
+
+    float3 pos = lerp(spawnPos, spawnPosOld, randomOffset) + RandomVector(seed) * 0.01;
     
-    float3 pos = lerp(_SpawnPos, _SpawnPosOld, randomOffset) + RandomVector(index) * 0.01;
-    
-    float3 vel = _SpawnPos - _SpawnPosOld;
+    float3 vel = spawnPos - spawnPosOld;
     if (dot(vel, vel) != 0)
     {
         float3 right = cross(float3(0,1,0), vel);
         float3 up = cross(vel, right);
-        float mag = sqrt(Random(index + 2));
+        float mag = sqrt(Random(seed + 2));
         //pos += normalize(right) * sinus * mag + normalize(up) * cosine * mag;
     }
     //pos.y = 0;
@@ -310,26 +370,59 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
 
     float maxLifeTime = _LifeTime;
     float lifeTime = _LifeTime - _DeltaTime * randomOffset;
-    _AliveBuffer[index] = lifeTime;
 
 
     float4 data = 0;
     
     data.z = maxLifeTime;
     data.w = lifeTime / maxLifeTime;
-    data.xy = lifeTime;
+    data.x = lifeTime;
+
+    float3 cameraDiff = pos - _CameraPos;
+    float cameraDist = dot(cameraDiff, _CameraForward);
+    //if (cameraDist < 0)
+    //    cameraDist = abs(cameraDist) + 10000.0;
+    data.y = cameraDist / 100;
     
-    _PositionBuffer[index] = pos;
-    _OldPositionBuffer[index] = oldPos;
-    _DataBuffer[index] = data;
+    p.pos = pos;
+    p.oldPos = oldPos;
+    p.data = data;
+    p.life = lifeTime;
+    p.maxLife = maxLifeTime;
+    
+    _PheromoneBuffer[index] = p;    
 }
 
 
-[numthreads(1, 1, 1)] 
-void EmissionCountKernel (uint3 id : SV_DispatchThreadID) 
-{ 
-    uint totalDead = _DeadCountBuffer[0]; 
-    uint finalEmit = min(_TargetEmitCount, floor(totalDead / _ParticlesPerEmit));
-    _DeadCountBuffer[0] = finalEmit;
-    _DeadCountBuffer[3] = totalDead;
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void Clear(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    if (index >= _AgentCount)
+        return;
+
+    _PheromoneBuffer[index] = (Pheromone)0;
+}
+
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void PrepareSort(uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    if (index >= _AgentCount)
+        return;
+
+    SortEntry entry;
+    entry.index = index;
+    entry.dist = 10000;
+    
+    if (index >= _InstancedArgsBuffer[1])
+    {
+        _PheromoneSortingBuffer[index] = entry;
+        return;
+    }
+    
+    Pheromone p = _PheromoneBufferRead[index];
+    entry.dist = p.data.y;
+    _PheromoneSortingBuffer[index] = entry;
 }

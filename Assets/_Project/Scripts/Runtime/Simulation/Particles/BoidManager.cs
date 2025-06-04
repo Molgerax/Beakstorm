@@ -9,7 +9,7 @@ namespace Beakstorm.Simulation.Particles
     /// <summary>
     /// Pulled heavily from: https://github.com/abecombe/VFXGraphStudy/blob/main/Assets/Scenes/Flocking/Scripts/Flocking.cs
     /// </summary>
-    public class BoidManager : MonoBehaviour, IHashedParticleSimulation
+    public class BoidManager : MonoBehaviour, IGridParticleSimulation
     {
         private const int THREAD_GROUP_SIZE = 256;
 
@@ -81,14 +81,18 @@ namespace Beakstorm.Simulation.Particles
         public GraphicsBuffer PositionBuffer => _positionBuffer;
         public GraphicsBuffer OldPositionBuffer => _oldPositionBuffer;
         public GraphicsBuffer DataBuffer => _dataBuffer;
-        public int Capacity => _capacity;
-        public float HashCellSize => GetHashCellSize();
+        public int AgentCount => _capacity;
+        public float CellSize => GetHashCellSize();
         public Vector3 SimulationCenter => transform.position;
-        public Vector3 SimulationSpace => simulationSpace;
+        public Vector3 SimulationSize => simulationSpace;
 
         private Vector4 _whistleSource;
 
         private SpatialHashCellOrdered _hash;
+        
+        public GraphicsBuffer AgentBufferRead => null;
+        public GraphicsBuffer AgentBufferWrite => null;
+        public int AgentBufferStride => 12;
 
         private float GetHashCellSize()
         {
@@ -263,8 +267,8 @@ namespace Beakstorm.Simulation.Particles
                 _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromonePositionBuffer, p.PositionBuffer);
                 _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneDataBuffer, p.DataBuffer);
                 _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneAliveBuffer, p.AliveBuffer);
-                _boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.HashCellSize);
-                _boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.Capacity);
+                _boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.CellSize);
+                _boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.AgentCount);
             }
 
             if (useOrderedCells)
@@ -330,8 +334,8 @@ namespace Beakstorm.Simulation.Particles
             _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneAliveIndexBuffer, p.DeadIndexBuffer);
             _boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneDeadCountBuffer, p.DeadCountBuffer);
 
-            _boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.HashCellSize);
-            _boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.Capacity);
+            _boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.CellSize);
+            _boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.AgentCount);
 
 
             _boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialIndices, _spatialIndicesBuffer);

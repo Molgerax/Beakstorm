@@ -114,6 +114,16 @@ float sdfBox(float3 center, float3 bounds, float3 p)
     return length(max(q, 0)) + min(max(q.x, max(q.y, q.z)), 0.0);
 }
 
+float3 sdfBoxNormal(float3 center, float3 bounds, float3 p)
+{
+    float3 q = (p - center);
+    float3 diff = abs(q) - bounds;
+    float3 norm = (getLargest(diff) + max(diff, 0)) * sign(q);
+    if (dot(norm, norm) == 0)
+        norm = float3(0,0,0);
+    return (norm);
+}
+
 
 /// <summary>
 /// Gets the signed distance of point p to the surface of a box.

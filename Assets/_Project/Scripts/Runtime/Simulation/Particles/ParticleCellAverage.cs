@@ -8,7 +8,7 @@ namespace Beakstorm.Simulation.Particles
     public class ParticleCellAverage : MonoBehaviour
     {
         [SerializeField] private ComputeShader compute;
-        private IHashedParticleSimulation sim;
+        private IGridParticleSimulation sim;
 
         
         private GraphicsBuffer _cellBuffer;
@@ -40,11 +40,11 @@ namespace Beakstorm.Simulation.Particles
 
         private void Initialize()
         {
-            sim = GetComponent<IHashedParticleSimulation>();
+            sim = GetComponent<IGridParticleSimulation>();
             if (sim == null)
                 return;
 
-            _dimensions = Vector3Int.CeilToInt(sim.SimulationSpace / sim.HashCellSize);
+            _dimensions = Vector3Int.CeilToInt(sim.SimulationSize / sim.CellSize);
             _cellCount = _dimensions.x * _dimensions.y * _dimensions.z;
    
             _cellBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _cellCount, sizeof(float) * 10 + sizeof(uint) * 1);
@@ -98,9 +98,9 @@ namespace Beakstorm.Simulation.Particles
             compute.SetBuffer(kernel, PropertyIDs.ParticleOldPositionBuffer, sim.OldPositionBuffer);
             compute.SetBuffer(kernel, PropertyIDs.ParticleDataBuffer, sim.DataBuffer);
             
-            compute.SetFloat(PropertyIDs.HashCellSize, sim.HashCellSize);
-            compute.SetInt(PropertyIDs.ParticleCount, sim.Capacity);
-            compute.SetVector(PropertyIDs.SimulationSpace, sim.SimulationSpace);
+            compute.SetFloat(PropertyIDs.HashCellSize, sim.CellSize);
+            compute.SetInt(PropertyIDs.ParticleCount, sim.AgentCount);
+            compute.SetVector(PropertyIDs.SimulationSpace, sim.SimulationSize);
             compute.SetVector(PropertyIDs.SimulationCenter, sim.SimulationCenter);
             
             compute.DispatchExact(kernel, _cellCount);
@@ -140,16 +140,16 @@ namespace Beakstorm.Simulation.Particles
 
         private bool IsPositionInBounds(Vector3 pos)
         {
-            Bounds bounds = new Bounds(Vector3.zero, sim.SimulationSpace);
+            Bounds bounds = new Bounds(Vector3.zero, sim.SimulationSize);
             return bounds.Contains(pos);
         }
         
         private Vector3Int GetIndex3D(Vector3 pos)
         {
             Vector3Int cellId = new(
-                Mathf.FloorToInt((pos.x / sim.SimulationSpace.x + 0.5f) * _dimensions.x), 
-                Mathf.FloorToInt((pos.y / sim.SimulationSpace.y + 0.5f) * _dimensions.y), 
-                Mathf.FloorToInt((pos.z / sim.SimulationSpace.z + 0.5f) * _dimensions.z));
+                Mathf.FloorToInt((pos.x / sim.SimulationSize.x + 0.5f) * _dimensions.x), 
+                Mathf.FloorToInt((pos.y / sim.SimulationSize.y + 0.5f) * _dimensions.y), 
+                Mathf.FloorToInt((pos.z / sim.SimulationSize.z + 0.5f) * _dimensions.z));
             
             return cellId;
         }
@@ -164,9 +164,9 @@ namespace Beakstorm.Simulation.Particles
                 (cellId.y + 0.5f) / _dimensions.y, 
                 (cellId.z + 0.5f) / _dimensions.z);
             pos = (pos - Vector3.one * 0.5f);
-            pos.x *= sim.SimulationSpace.x;
-            pos.y *= sim.SimulationSpace.y;
-            pos.z *= sim.SimulationSpace.z;
+            pos.x *= sim.SimulationSize.x;
+            pos.y *= sim.SimulationSize.y;
+            pos.z *= sim.SimulationSize.z;
 
             return pos;
         }

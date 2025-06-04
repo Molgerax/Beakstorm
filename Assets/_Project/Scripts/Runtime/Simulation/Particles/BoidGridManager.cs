@@ -9,7 +9,7 @@ namespace Beakstorm.Simulation.Particles
     /// <summary>
     /// Pulled heavily from: https://github.com/abecombe/VFXGraphStudy/blob/main/Assets/Scenes/Flocking/Scripts/Flocking.cs
     /// </summary>
-    public class BoidGridManager : MonoBehaviour, IHashedParticleSimulation
+    public class BoidGridManager : MonoBehaviour, IGridParticleSimulation
     {
         private const int THREAD_GROUP_SIZE = 256;
 
@@ -32,10 +32,7 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField]
         private Vector3 simulationSpace = Vector3.one;
 
-        [Header("Bitonic Merge Sort")]
-        [SerializeField]
-        private ComputeShader sortShader;
-
+        [Header("Spatial Subdivision")]
         [SerializeField]
         [Min(0.1f)]
         private float hashCellSize = 1f;
@@ -67,10 +64,10 @@ namespace Beakstorm.Simulation.Particles
         public GraphicsBuffer PositionBuffer => _boidBufferRead;
         public GraphicsBuffer OldPositionBuffer => _boidBufferRead;
         public GraphicsBuffer DataBuffer => _boidBufferRead;
-        public int Capacity => _capacity;
-        public float HashCellSize => GetHashCellSize();
+        public int AgentCount => _capacity;
+        public float CellSize => GetHashCellSize();
         public Vector3 SimulationCenter => transform.position;
-        public Vector3 SimulationSpace => simulationSpace;
+        public Vector3 SimulationSize => simulationSpace;
 
         private Vector4 _whistleSource;
 
@@ -81,8 +78,9 @@ namespace Beakstorm.Simulation.Particles
 
         public void SwapBuffers() => _swapBuffers = !_swapBuffers;
         
-        public GraphicsBuffer BoidBuffer => _swapBuffers ? _boidBufferRead : _boidBuffer;
-        public GraphicsBuffer BoidBufferRead => _swapBuffers ? _boidBuffer : _boidBufferRead;
+        public GraphicsBuffer AgentBufferWrite => _swapBuffers ? _boidBufferRead : _boidBuffer;
+        public GraphicsBuffer AgentBufferRead => _swapBuffers ? _boidBuffer : _boidBufferRead;
+        public int AgentBufferStride => 12;
 
         private float GetHashCellSize()
         {
@@ -115,11 +113,12 @@ namespace Beakstorm.Simulation.Particles
                 if (!PauseManager.IsPaused && Time.deltaTime != 0)
                 {
                     DecayWhistle(Time.deltaTime);
-
-                    _hash.Update();
-
+                    
                     int updateKernel = boidComputeShader.FindKernel("Update");
                     RunSimulation(updateKernel, Time.deltaTime);
+
+                    _hash.Update();
+                    SwapBuffers();
                 }
 
                 RenderMeshes();
@@ -153,10 +152,10 @@ namespace Beakstorm.Simulation.Particles
 
             _swapBuffers = false;
             
-            _boidBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 12 * sizeof(float));
-            _boidBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 12 * sizeof(float));
+            _boidBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, AgentBufferStride * sizeof(float));
+            _boidBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, AgentBufferStride * sizeof(float));
 
-            _hash = new SpatialHashCellOrdered(cellShader, sortShader, this);
+            _hash = new SpatialHashCellOrdered(cellShader, this);
             
             int initKernel = boidComputeShader.FindKernel("Init");
             RunSimulation(initKernel, Time.deltaTime);
@@ -196,7 +195,7 @@ namespace Beakstorm.Simulation.Particles
             boidComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
             boidComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
             boidComputeShader.SetVector(PropertyIDs.SimulationCenter, SimulationCenter);
-            boidComputeShader.SetVector(PropertyIDs.SimulationSpace, SimulationSpace);
+            boidComputeShader.SetVector(PropertyIDs.SimulationSpace, SimulationSize);
             boidComputeShader.SetVector(PropertyIDs.WhistleSource, _whistleSource);
 
             boidComputeShader.SetFloat(PropertyIDs.Time, Time.time);
@@ -205,8 +204,8 @@ namespace Beakstorm.Simulation.Particles
             boidComputeShader.SetBoidStateSettings("_Neutral", neutralState);
             boidComputeShader.SetBoidStateSettings("_Exposed", exposedState);
 
-            boidComputeShader.SetBuffer(kernelId, PropertyIDs.BoidBuffer, BoidBuffer);
-            boidComputeShader.SetBuffer(kernelId, PropertyIDs.BoidBufferRead, BoidBufferRead);
+            boidComputeShader.SetBuffer(kernelId, PropertyIDs.BoidBuffer, AgentBufferWrite);
+            boidComputeShader.SetBuffer(kernelId, PropertyIDs.BoidBufferRead, AgentBufferRead);
 
             if (SdfShapeManager.Instance)
             {
@@ -215,19 +214,22 @@ namespace Beakstorm.Simulation.Particles
                 boidComputeShader.SetInt(SdfShapeManager.PropertyIDs.NodeCount, SdfShapeManager.Instance.NodeCount);
             }
 
-            if (PheromoneManager.Instance)
+            if (PheromoneGridManager.Instance)
             {
-                PheromoneManager p = PheromoneManager.Instance;
+                PheromoneGridManager p = PheromoneGridManager.Instance;
 
-                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialIndices, p.SpatialIndicesBuffer);
-                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialOffsets, p.SpatialOffsetsBuffer);
-                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromonePositionBuffer, p.PositionBuffer);
-                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneDataBuffer, p.DataBuffer);
-                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneAliveBuffer, p.AliveBuffer);
-                boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.HashCellSize);
-                boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.Capacity);
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneSpatialOffsets, p.Hash.GridOffsetBuffer);
+                boidComputeShader.SetFloat(PropertyIDs.PheromoneHashCellSize, p.CellSize);
+                boidComputeShader.SetFloat(PropertyIDs.PheromoneSmoothingRadius, p.SmoothingRadius);
+                boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.AgentCount);
+                
+                boidComputeShader.SetVector(PropertyIDs.PheromoneCenter, p.SimulationCenter);
+                boidComputeShader.SetVector(PropertyIDs.PheromoneSize, p.SimulationSize);
+                boidComputeShader.SetInts(PropertyIDs.PheromoneCellDimensions, p.Hash.Dimensions);
+                
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneBuffer, p.AgentBufferRead);
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneArgs, p.InstancedArgsBuffer);
             }
-
             boidComputeShader.SetInts(PropertyIDs.Dimensions, _hash.Dimensions);
             boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _hash.GridOffsetBuffer);
 
@@ -245,7 +247,7 @@ namespace Beakstorm.Simulation.Particles
                 return;
             
             _propertyBlock ??= new MaterialPropertyBlock();
-            _propertyBlock.SetBuffer(PropertyIDs.BoidBuffer, BoidBufferRead);
+            _propertyBlock.SetBuffer(PropertyIDs.BoidBuffer, AgentBufferRead);
             
             RenderParams rp = new RenderParams(material)
             {
@@ -297,6 +299,13 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int PheromoneAliveBuffer = Shader.PropertyToID("_PheromoneAliveBuffer");
             public static readonly int PheromoneHashCellSize = Shader.PropertyToID("_PheromoneHashCellSize");
             public static readonly int PheromoneTotalCount = Shader.PropertyToID("_PheromoneTotalCount");
+            public static readonly int PheromoneSmoothingRadius = Shader.PropertyToID("_PheromoneSmoothingRadius");
+            public static readonly int PheromoneBuffer = Shader.PropertyToID("_PheromoneBuffer");
+            public static readonly int PheromoneCenter = Shader.PropertyToID("_PheromoneCenter");
+            public static readonly int PheromoneSize = Shader.PropertyToID("_PheromoneSize");
+            public static readonly int PheromoneCellDimensions = Shader.PropertyToID("_PheromoneCellDimensions");
+            public static readonly int PheromoneArgs = Shader.PropertyToID("_PheromoneArgs");
+
         }
     }
 }

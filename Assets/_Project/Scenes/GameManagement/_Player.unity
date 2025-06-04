@@ -1568,8 +1568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b814bc75a31064bb2954c0a7c4b570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emissionRate: 256
-  lifeTime: 3.5
+  emissionRate: 1024
+  lifeTime: 8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

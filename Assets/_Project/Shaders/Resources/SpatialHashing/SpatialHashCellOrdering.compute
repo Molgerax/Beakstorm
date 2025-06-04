@@ -5,6 +5,8 @@
 #pragma kernel AddSums
 #pragma kernel ReorderBoids
 
+#pragma multi_compile _ ALIVE_COUNT
+
 #include "SpatialHashGridsCellOrdering.hlsl"
 
 #define THREAD_BLOCK_SIZE 1024
@@ -34,6 +36,9 @@ uint _SumOffset;
 
 
 
+StructuredBuffer<uint> _AliveCountBuffer;
+
+
 
 inline float3 GetBoundsMin()
 {
@@ -56,6 +61,11 @@ void UpdateGrid(uint3 id : SV_DispatchThreadID)
     if (index >= _AgentCount)
         return;
 
+#if ALIVE_COUNT
+    if (index >= _AliveCountBuffer[1])
+        return;
+#endif
+    
     uint gridId = GetGridId(_BoidBufferRead[index].pos);
     uint offset;
     InterlockedAdd(_GridOffsetBuffer[gridId], 1, offset);
@@ -157,6 +167,11 @@ void ReorderBoids(uint3 id : SV_DispatchThreadID)
     if (id.x >= _AgentCount)
         return;
 
+#if ALIVE_COUNT
+    if (id.x >= _AliveCountBuffer[1])
+        return;
+#endif
+    
     uint2 grid = _GridBuffer[id.x];
     uint gridID = grid.x;
     uint cellOffset = grid.y;

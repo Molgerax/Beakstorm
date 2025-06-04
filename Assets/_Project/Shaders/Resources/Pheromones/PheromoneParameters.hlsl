@@ -2,18 +2,24 @@
 #define _INCLUDE_PHEROMONE_PARAMETERS_
 
 #include "../SpatialHashing/SpatialHashGrids.hlsl"
+#include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
 
+struct Pheromone
+{
+    float3 pos;
+    float life;
+    float3 oldPos;
+    float maxLife;
+    float4 data;
+};
 
-uint _TotalCount;
-
-float3 _SimulationSpace;
-float3 _SimulationCenter;
-float _HashCellSize;
 
 float _LifeTime;
 
 float _Time;
 float _DeltaTime;
+
+float _SmoothingRadius;
 
 float3 _WorldPos;
 float4x4 _WorldMatrix;
@@ -34,6 +40,19 @@ ConsumeStructuredBuffer<uint> _AliveIndexBuffer;
 RWStructuredBuffer<uint> _DeadCountBuffer;
 uint _TargetEmitCount;
 uint _ParticlesPerEmit;
+
+
+RWStructuredBuffer<Pheromone> _PheromoneBuffer;
+StructuredBuffer<Pheromone> _PheromoneBufferRead;
+
+struct SortEntry
+{
+    uint index;
+    float dist;
+};
+RWStructuredBuffer<SortEntry> _PheromoneSortingBuffer;
+
+RWStructuredBuffer<uint> _InstancedArgsBuffer;
 
 SPATIAL_HASH_BUFFERS(_Pheromone)
 
@@ -60,6 +79,11 @@ bool IsAlive(uint index)
     uint bit = index % 32;
     uint read = _AliveBuffer[id];
     return ((read >> bit) & 1) == 1;
+}
+
+bool IsAlive(Pheromone p)
+{
+    return p.life > 0;
 }
 
 // SETTER FUNCTIONS
@@ -114,7 +138,7 @@ void KillParticle(uint index)
 
 float3 GetBoundsUV(float3 worldPos)
 {
-    return (worldPos - _SimulationCenter) / _SimulationSpace * 0.5;
+    return (worldPos - _SimulationCenter) / _SimulationSize * 0.5;
 }
 
 
