@@ -13,7 +13,6 @@ namespace Beakstorm.Inputs
         
         #region Serialize Fields
 
-        [SerializeField] [Range(0.01f, 5f)] private float mouseSensitivity = 1;
         [SerializeField] [Range(0.0f, 0.5f)] private float inputGrace = 0.2f;
 
         #endregion
@@ -51,7 +50,7 @@ namespace Beakstorm.Inputs
         #region Properties
 
         public Vector2 MoveInput => moveAction.ReadValue<Vector2>() * GameplaySettings.Instance.FlightAxisInversion;
-        public Vector2 LookInput => lookAction.ReadValue<Vector2>() * GameplaySettings.Instance.LookAxisInversion * mouseSensitivity;
+        public Vector2 LookInput => lookAction.ReadValue<Vector2>() * GameplaySettings.Instance.LookAxisInversion * GameplaySettings.Instance.MouseSensitivity;
 
         public bool ConfirmBuffered => _confirmBuffered;
         public bool CancelBuffered => _cancelBuffered;
@@ -71,8 +70,8 @@ namespace Beakstorm.Inputs
             _inputs = new PlayerInputActions();
             _inputs.Enable();
 
-            if (InputSystem.GetDevice(typeof(Gamepad)) != null)
-                _inputs.bindingMask = InputBinding.MaskByGroup(_inputs.ControllerScheme.bindingGroup);
+            //if (InputSystem.GetDevice(typeof(Gamepad)) != null)
+            //    _inputs.bindingMask = InputBinding.MaskByGroup(_inputs.ControllerScheme.bindingGroup);
             
             moveAction = _inputs.Player.Move;
             lookAction = _inputs.Player.Look;
@@ -110,12 +109,18 @@ namespace Beakstorm.Inputs
         {
             InputActions.Player.Enable();
             InputActions.UI.Disable();
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
         
         public void EnableUiInputs()
         {
             InputActions.Player.Disable();
             InputActions.UI.Enable();
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
 

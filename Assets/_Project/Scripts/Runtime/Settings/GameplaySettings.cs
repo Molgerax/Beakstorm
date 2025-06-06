@@ -14,10 +14,13 @@ namespace Beakstorm.Settings
         public bool InvertFlightAxisX = false;
         public bool InvertFlightAxisY = false;
 
+        public float MouseSensitivity = 1f;
+        
         public void SetInvertLookAxisX(bool value) => InvertLookAxisX = value; 
         public void SetInvertLookAxisY(bool value) => InvertLookAxisY = value; 
         public void SetInvertFlightAxisX(bool value) => InvertFlightAxisX = value; 
         public void SetInvertFlightAxisY(bool value) => InvertFlightAxisY = value; 
+        public void SetMouseSensitivity(float value) => MouseSensitivity = value;
 
         public Vector2 LookAxisInversion => new(InvertLookAxisX ? -1 : 1, InvertLookAxisY ? -1 : 1);
         public Vector2 FlightAxisInversion => new(InvertFlightAxisX ? -1 : 1, InvertFlightAxisY ? -1 : 1);
