@@ -7,28 +7,17 @@ namespace Beakstorm.Gameplay.Player.Weapons
     [CreateAssetMenu(menuName = "Beakstorm/PlayerWeaponData/MultiShotProjectile", fileName = "MultiShotPlayerWeapon")]
     public class MultiShotPlayerWeapon : SimplePlayerWeapon
     {
-        [SerializeField, Range(1, 5)] private int count = 1;
-        [SerializeField, Range(1f, 90f)] private float spreadAngle = 25f;
+        [SerializeField, Range(1, 15)] private int count = 1;
+        [SerializeField, Range(1f, 360f)] private float spreadAngle = 25f;
         [SerializeField, Range(0f, 3f)] private float offset = 1f;
         
-        public override void Fire(Vector3 position, Vector3 direction)
+        protected override void FireSingleProjectile(Vector3 position, Vector3 direction)
         {
             for (int i = 0; i < count; i++)
             {
                 Vector3 shotDirection = GetShotDirection(i, direction);
                 
-                base.Fire(position + shotDirection * offset, shotDirection);
-                continue;
-                
-                var projectileInstance = _pool.GetProjectile();
-                var projTransform = projectileInstance.transform;
-                projTransform.position = position + shotDirection * offset;
-
-                if (projectileInstance.TryGetComponent(out SimpleMovementHandler movementHandler))
-                    movementHandler.SetVelocity(shotDirection * initialVelocity);
-
-                if (projectileInstance.TryGetComponent(out PheromoneEmitter emitter))
-                    emitter.ResetEmitter();
+                base.FireSingleProjectile(position + shotDirection * offset, shotDirection);
             }
         }
 

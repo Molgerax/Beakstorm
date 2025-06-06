@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8a480dfefa5e3f4a92e7ea3822b3c61, type: 3}
-  m_Name: Simple_LongRangeShot
+  m_Name: Impact_PheromoneShot
   m_EditorClassIdentifier: 
-  displaySprite: {fileID: 21300000, guid: a05990ca867207e4eaf261bfaa2b0c9d, type: 3}
-  displayName: Long Range
-  fireDelay: 2
+  displaySprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  displayName: Impact
+  fireDelay: 0.5
   ammoCost: 1
-  initialVelocity: 50
-  projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
-  behaviourData: {fileID: 11400000, guid: d1cc5b3cedb407f47840eb2d65e17859, type: 2}
+  initialVelocity: 100
+  projectilePrefab: {fileID: 5012512307083224738, guid: bc7de790a204626479f719529a915965, type: 3}
+  behaviourData: {fileID: 11400000, guid: 2692ea444efd7884fb42834a9e55c792, type: 2}

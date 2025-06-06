@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displaySprite: {fileID: 21300000, guid: ab89f33e8a0bd4b45b04a3dc477e7033, type: 3}
   displayName: Multi Shot
-  fireDelay: 0.5
+  fireDelay: 3
   ammoCost: 3
-  initialVelocity: 50
+  initialVelocity: 70
   projectilePrefab: {fileID: 5012512307083224738, guid: 857d7de287929cd4f9976c04d2729c21, type: 3}
-  count: 5
+  behaviourData: {fileID: 11400000, guid: a19b5a8a228756f46b290e5fc7426d43, type: 2}
+  count: 15
   spreadAngle: 22.5
   offset: 3

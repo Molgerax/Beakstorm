@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4485577773283016394}
   - component: {fileID: 3903295148314396189}
   - component: {fileID: 107753263765418574}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: VisualModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,8 +101,8 @@ GameObject:
   - component: {fileID: 238433144582504019}
   - component: {fileID: -5033398536401664210}
   - component: {fileID: 1407406865008997820}
-  - component: {fileID: 6373692553685565216}
-  m_Layer: 0
+  - component: {fileID: 7247312149404298291}
+  m_Layer: 7
   m_Name: PheromoneCapsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultCapacity: 16
-  maximumCapacity: 16
+  maximumCapacity: 128
   onSpawn:
     _PersistentCalls: []
 --- !u!114 &2981456697708023891
@@ -240,7 +240,7 @@ CapsuleCollider:
   m_Height: 0.5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6373692553685565216
+--- !u!114 &7247312149404298291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,15 +249,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7264894178766051763}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8e0c45775f1b8f4b9a24196038d1b93, type: 3}
+  m_Script: {fileID: 11500000, guid: 5415fc5b19b541647982d4880b5e9473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _TriggerEnterEvent:
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  onTriggerEnter:
     _PersistentCalls:
     - _Target: {fileID: 8417193104476582687}
       _MemberName: CompleteTimer
       _PersistentArguments: []
-  _TriggerStayEvent:
-    _PersistentCalls: []
-  _TriggerExitEvent:
+  onCollisionEnter:
     _PersistentCalls: []

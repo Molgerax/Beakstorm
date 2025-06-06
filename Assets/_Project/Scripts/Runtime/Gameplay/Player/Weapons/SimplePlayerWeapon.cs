@@ -21,10 +21,14 @@ namespace Beakstorm.Gameplay.Player.Weapons
 
         protected ProjectilePool _pool;
 
+        protected float _fireCooldown;
+        
         public Sprite DisplaySprite => displaySprite;
         public string DisplayName => displayName;
         public float FireDelay => fireDelay;
         public int AmmoCost => ammoCost;
+
+        public float Cooldown01 => _fireCooldown / fireDelay;
 
         public virtual void OnMonoEnable()
         {
@@ -32,8 +36,13 @@ namespace Beakstorm.Gameplay.Player.Weapons
         }
 
         public virtual void OnMonoDisable() {}
+
+        public virtual void UpdateWeapon(float deltaTime)
+        {
+            _fireCooldown = Mathf.Max(0, _fireCooldown - deltaTime);
+        }
         
-        public virtual void Fire(Vector3 position, Vector3 direction)
+        protected virtual void FireSingleProjectile(Vector3 position, Vector3 direction)
         {
             var projectileInstance = _pool.GetProjectile();
             var projTransform = projectileInstance.transform;
@@ -60,6 +69,15 @@ namespace Beakstorm.Gameplay.Player.Weapons
                     timedEvent.Duration = behaviourData.ProjectileLifeTime;
                 }
             }
+        }
+        
+        public virtual void Fire(Vector3 position, Vector3 direction)
+        {
+            if (_fireCooldown > 0)
+                return;
+        
+            FireSingleProjectile(position, direction);
+            _fireCooldown = FireDelay;
         }
     }
 }

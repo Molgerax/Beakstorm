@@ -7,6 +7,7 @@ namespace Beakstorm.Gameplay.Player
     [DefaultExecutionOrder(-40)]
     public class GliderController : MonoBehaviour
     {
+        [SerializeField] private Transform t;
         [SerializeField] private Vector2 maxAngles = new Vector2(0f, 90f);
         [SerializeField] private float maxSpeed = 20f;
         [SerializeField] private float minSpeed = 10f;
@@ -23,7 +24,6 @@ namespace Beakstorm.Gameplay.Player
 
         private float _roll;
         
-        private Transform t;
         
         public float Speed01 => (_speed - minSpeed) / (maxSpeed - minSpeed);
 
@@ -33,7 +33,8 @@ namespace Beakstorm.Gameplay.Player
         {
             _inputs = PlayerInputs.Instance;
 
-            t = transform;
+            if (!t)
+                t = transform;
             
             _eulerAngles = t.localEulerAngles;
             _speed = minSpeed;

@@ -101,9 +101,9 @@ GameObject:
   - component: {fileID: 238433144582504019}
   - component: {fileID: -5033398536401664210}
   - component: {fileID: 1407406865008997820}
-  - component: {fileID: 7910856044669902306}
+  - component: {fileID: 7247312149404298291}
   m_Layer: 7
-  m_Name: PheromoneCapsule_Light
+  m_Name: PheromoneCapsule_Impact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0b7016e3322134cbfaa7366833389a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultCapacity: 32
+  defaultCapacity: 16
   maximumCapacity: 128
   onSpawn:
     _PersistentCalls: []
@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b814bc75a31064bb2954c0a7c4b570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emissionRate: 128
-  lifeTime: 2
+  emissionRate: 64
+  lifeTime: 3.5
 --- !u!114 &8417193104476582687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cd18d6dbe9579f4cb19f774bf43fbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 2
+  gravity: 5
   drag: 0.005
 --- !u!54 &-5033398536401664210
 Rigidbody:
@@ -240,7 +240,7 @@ CapsuleCollider:
   m_Height: 0.5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7910856044669902306
+--- !u!114 &7247312149404298291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,6 +257,17 @@ MonoBehaviour:
     m_Bits: 1
   onTriggerEnter:
     _PersistentCalls:
+    - _Target: {fileID: 2981456697708023891}
+      _MemberName: Emit
+      _PersistentArguments:
+      - _Type: 3
+        _Int: 4096
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
     - _Target: {fileID: 8417193104476582687}
       _MemberName: CompleteTimer
       _PersistentArguments: []

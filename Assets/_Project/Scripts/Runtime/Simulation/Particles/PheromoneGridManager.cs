@@ -238,6 +238,9 @@ namespace Beakstorm.Simulation.Particles
                 }
                 
                 emitter.EmitOverTime(timeStep);
+                
+                if (emitter.MarkedForRemoval)
+                    Emitters.RemoveAt(i);
             }
         }
 
@@ -252,7 +255,7 @@ namespace Beakstorm.Simulation.Particles
             AgentBufferWrite.SetCounterValue(0);
         }
 
-        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime, float timeStep)
+        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime)
         {
             if (PauseManager.IsPaused)
                 return;
@@ -263,7 +266,7 @@ namespace Beakstorm.Simulation.Particles
             int emissionKernel = pheromoneComputeShader.FindKernel("Emit");
             
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
-            pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
+            pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, SimulationTime.DeltaTime);
             pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, lifeTime);
             
             pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);

@@ -9,6 +9,10 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField, Range(0, 10)] private float lifeTime = 3;
 
         private PheromoneBehaviourData _behaviourData;
+
+        private bool _markForRemoval;
+
+        public bool MarkedForRemoval => _markForRemoval;
         
         public float EmissionRate
         {
@@ -31,6 +35,8 @@ namespace Beakstorm.Simulation.Particles
         private Vector3 _position;
         private Vector3 _oldPosition;
 
+        private int _emissionCountQueued;
+        
         private void Awake()
         {
             _initEmissionRate = emissionRate;
@@ -52,7 +58,7 @@ namespace Beakstorm.Simulation.Particles
 
         protected virtual void OnDisable()
         {
-            PheromoneGridManager.Emitters.Remove(this);
+            _markForRemoval = true;
         }
 
         public void EmitOverTime(float deltaTime)
@@ -65,7 +71,8 @@ namespace Beakstorm.Simulation.Particles
             _remainder = emissionPerFrame % 1;
 
             int emissionCount = Mathf.FloorToInt(emissionPerFrame);
-            Emit(emissionCount, deltaTime);
+            _emissionCountQueued += emissionCount;
+            Emit();
         }
         
         
@@ -75,10 +82,16 @@ namespace Beakstorm.Simulation.Particles
             _position = transform.position;
         }
 
-        public void Emit(int count, float timeStep)
+        public void Emit(int count)
+        {
+            _emissionCountQueued += count;
+        }
+        
+        private void Emit()
         {
             if (PheromoneGridManager.Instance)
-                PheromoneGridManager.Instance.EmitParticles(count, _position, _oldPosition, lifeTime, timeStep);
+                PheromoneGridManager.Instance.EmitParticles(_emissionCountQueued, _position, _oldPosition, lifeTime);
+            _emissionCountQueued = 0;
         }
 
         private void ApplyBehaviour(float deltaTime)
@@ -100,6 +113,9 @@ namespace Beakstorm.Simulation.Particles
 
             LifeTime = _initLifeTime;
             EmissionRate = _initEmissionRate;
+
+            _markForRemoval = false;
+            _emissionCountQueued = 0;
             
             UpdatePositions();
         }

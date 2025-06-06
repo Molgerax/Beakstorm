@@ -119,133 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &316349902
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 316349904}
-  - component: {fileID: 316349903}
-  m_Layer: 0
-  m_Name: PheromoneManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &316349903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316349902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb8d800e686f834cbb50b20864d26bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxCount: 16384
-  pheromoneComputeShader: {fileID: 7200000, guid: d6ca223d4ec8bb54ba802374a8bbee18, type: 3}
-  mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  material: {fileID: 2100000, guid: 21034e5a3b21a964b880ceb135566dee, type: 2}
-  simulationSpace: {x: 64, y: 64, z: 64}
-  targetDensity: 0
-  pressureMultiplier: 100
-  sortShader: {fileID: 7200000, guid: b31ad9a788edaed4391c282e2fd46cff, type: 3}
-  hashCellSize: 10
---- !u!4 &316349904
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316349902}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1049459284
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1049459286}
-  - component: {fileID: 1049459285}
-  - component: {fileID: 1049459287}
-  m_Layer: 0
-  m_Name: BoidManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1049459285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049459284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: accb2f3f33d052949be5146d20c83dbe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxCount: 4096
-  _boidComputeShader: {fileID: 7200000, guid: a71c79202ee047944b2c821c0f6b9b6d, type: 3}
-  mesh: {fileID: 3475534928989439400, guid: 9b7a6cdb75cef4244896b58ae0af9c2b, type: 3}
-  material: {fileID: 2100000, guid: deb78959c575b0242950100d5906e96f, type: 2}
-  neutralState: {fileID: 11400000, guid: f1bb86f32dd7f7b408898680af8e3ea4, type: 2}
-  exposedState: {fileID: 11400000, guid: e7aec695776c965488de5bf02150a3a0, type: 2}
-  simulationSpace: {x: 8, y: 8, z: 8}
-  _floorYLevel: 0
-  _gravity: -9.8
-  _collisionBounce: 0
-  _collisionRadius: 0.1
-  _sortShader: {fileID: 7200000, guid: b29a947338d048ce968c691d69d4eb9d, type: 3}
-  _hashCellSize: 1
-  hashCellRatio: 1
-  cellShader: {fileID: 7200000, guid: 940adfac109249998a21dc86e309f014, type: 3}
-  useOrderedCells: 1
---- !u!4 &1049459286
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049459284}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1049459287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049459284}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f2c69da7fde2c34b9304f0a48af1716, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  compute: {fileID: 7200000, guid: f5b680bf28d30d849badfce89ad098f9, type: 3}
 --- !u!1 &1080342932
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c5eacc5b0f346efbef43866fc7742d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCount: 524288
+  maxCount: 131072
   pheromoneComputeShader: {fileID: 7200000, guid: 684be236198042bc826e6767d8668d0d, type: 3}
   mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 62d2b1e04bc404044a64a4bae6ed71cf, type: 2}
@@ -330,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d292d83b1a8f4013ac070cb2b2e8e74c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCount: 131072
+  maxCount: 32768
   boidComputeShader: {fileID: 7200000, guid: 5b7c6a4eeb954c08a9746191f87c3628, type: 3}
   mesh: {fileID: 3475534928989439400, guid: 9b7a6cdb75cef4244896b58ae0af9c2b, type: 3}
   material: {fileID: 2100000, guid: 47e7f82be5f348d42940c13ab860fd18, type: 2}
@@ -456,7 +329,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 1807399487}
   - {fileID: 1080342934}
-  - {fileID: 1049459286}
   - {fileID: 1990501152}
-  - {fileID: 316349904}
   - {fileID: 1980418813}

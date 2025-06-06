@@ -68,7 +68,7 @@ namespace Beakstorm.Gameplay.Player
             
             OnLookInput();
 
-            cameraHead.localPosition = playerTarget.TransformDirection(_headOffset);
+            //cameraHead.localPosition = playerTarget.TransformDirection(_headOffset);
         }
 
         #endregion

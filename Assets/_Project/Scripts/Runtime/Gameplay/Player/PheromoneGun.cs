@@ -24,12 +24,22 @@ namespace Beakstorm.Gameplay.Player
 
         private void Update()
         {
+            UpdateWeapon(Time.deltaTime);
+            
             if (_inputs.whistleAction.IsPressed())
             {
                 BoidGridManager.Instance.RefreshWhistle(transform.position, 1f);
             }
         }
 
+        private void UpdateWeapon(float deltaTime)
+        {
+            if (!PlayerController.Instance || !PlayerController.Instance.SelectedWeapon)
+                return;
+            
+            PlayerController.Instance.SelectedWeapon.UpdateWeapon(deltaTime);
+        }
+        
         private void OnShootActionPerformed(InputAction.CallbackContext callback)
         {
             if (!PlayerController.Instance || !PlayerController.Instance.SelectedWeapon)
