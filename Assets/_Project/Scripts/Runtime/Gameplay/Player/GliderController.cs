@@ -13,6 +13,8 @@ namespace Beakstorm.Gameplay.Player
         [SerializeField] private float acceleration = 5f;
 
         [SerializeField] private float steerSpeed = 60;
+
+        [SerializeField] private float rollSpeed = 20;
         
         private PlayerInputs _inputs;
         private Vector3 _eulerAngles;
@@ -22,6 +24,8 @@ namespace Beakstorm.Gameplay.Player
         private float _roll;
         
         private Transform t;
+        
+        public float Speed01 => (_speed - minSpeed) / (maxSpeed - minSpeed);
 
         #region Mono Methods
         
@@ -44,6 +48,9 @@ namespace Beakstorm.Gameplay.Player
             SteerInput();
             HandleAcceleration();
             Move();
+            
+            if (CameraFOV.Instance)
+                CameraFOV.Instance.SetFoV(Speed01);
         }
 
         #endregion
@@ -63,13 +70,17 @@ namespace Beakstorm.Gameplay.Player
             _eulerAngles.x = Mathf.Max(_eulerAngles.x, maxAngles.x);
             _eulerAngles.x = Mathf.Min(_eulerAngles.x, maxAngles.y);
 
-            _roll = Mathf.Lerp(_roll, -inputVector.x * 30f * Time.deltaTime * steerSpeed, 0.01f);
+            float yAcceleration = inputVector.x * Time.deltaTime * steerSpeed;
+
+            float rollAngle = Mathf.Lerp(20f, 80f, Speed01);
+            
+            _roll = Mathf.Lerp(_roll, -inputVector.x * rollAngle, 1 - Mathf.Exp(-rollSpeed * Time.deltaTime));
             
             _eulerAngles.z = _roll;
 
             t.localEulerAngles = _eulerAngles;
             
-            t.Rotate(0.0f, inputVector.x * Time.deltaTime * steerSpeed, 0.0f, Space.World);
+            t.Rotate(0.0f, yAcceleration, 0.0f, Space.World);
         }
 
         private void HandleAcceleration()
@@ -78,13 +89,13 @@ namespace Beakstorm.Gameplay.Player
             flatForward.y = 0f;
             
             float angle = Vector3.SignedAngle(t.forward, flatForward, t.right);
-            float angleStrength = -angle / 360f;
+            float angleStrength = -angle / 180f;
             
             float inputStrength = 0;
             inputStrength += _inputs.accelerateAction.IsPressed() ? 1 : 0;
             inputStrength -= _inputs.brakeAction.IsPressed() ? 1 : 0;
             
-            _speed += (inputStrength * 0.05f + angleStrength * Mathf.Abs(angleStrength)) * acceleration * Time.deltaTime;
+            _speed += (inputStrength + angleStrength * Mathf.Abs(angleStrength)) * acceleration * Time.deltaTime;
             _speed = Mathf.Clamp(_speed, minSpeed, maxSpeed);
         }
         
