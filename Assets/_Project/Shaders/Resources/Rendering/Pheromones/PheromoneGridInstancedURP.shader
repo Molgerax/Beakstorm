@@ -2,7 +2,8 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 {
     Properties
     {
-        _Color("Color", Color) = (1, 1, 1, 1)
+        _MainColor("Color", Color) = (1, 1, 1, 1)
+        _OffColor("Color", Color) = (1, 1, 1, 1)
     	_MainTex("Texture", 2D) = "white" {}
     	_VertexColorToBase("Vertex Color Mask for Base", Range(0.0,1.0)) = 1
     	
@@ -55,7 +56,8 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 	sampler2D _EmissiveMap;
 
     
-    half4 _Color;
+    half4 _MainColor;
+    half4 _OffColor;
     float _VertexColorToBase;
     float3 _EmissiveColor;
 	float _VertexColorToEmissive;
@@ -191,6 +193,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		color = saturate(data.www);
 
 		color = saturate(data.www);
+		color.r = data.x;
+		color.g = data.w;
+		color.b = pheromone.life;
 		
 		output.color = float4(color, GetSize(pheromone));
 		output.uv = input.uv;
@@ -217,6 +222,10 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
 
+		float3 cameraZ = (meshPositionWS - GetCameraPositionWS());
+		cameraX = normalize(cross(float3(0,1,0), cameraZ));
+		cameraY = normalize(cross(cameraZ, cameraY));
+		
 		float3 worldPos = meshPositionWS + cameraX * vpos.x + cameraY * vpos.y;
 		
 		float4 outPos = TransformWorldToHClip(worldPos);
@@ -250,6 +259,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		normal.xy = offset;
 		normal.z = sqrt(1 - dot(offset, offset));
 
+		Light light = GetMainLight();
+		float lightStrength = dot(normal, light.direction) * 0.5 + 0.5;
+		
 		float thickness = normal.z * input.color.w * 2;
 		
 		float3 normalWS = TransformViewToWorldDir(normal);
@@ -260,20 +272,47 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		col.y = frac(input.color.x * 2);
 		col.z = frac(input.color.x * 4);
 		col = 1;
-		col = hsv2rgb(float3(input.color.x, 1, 1));
-		//col = input.color.rgb;
+		//col = hsv2rgb(float3(input.color.x, 1, 1));
+		col = input.color.rgb;
+		col = 1;
+
+		half4 pheromoneColor = lerp(_OffColor, _MainColor, input.color.g);
+		
 		//return thickness;
 
 		//col.rgb *= colorSample.rgb;
 		float alpha = saturate(normal.z * input.color.z * input.color.z) * 0.25;
 		alpha *= colorSample.a;
+		alpha *= pheromoneColor.a;
 		
 		//col = NumberToDots(input.color, uv);
-		col = 1;
+		//col = 1;
+
+		col *= pheromoneColor.rgb;
+		col *= light.color;
+		float3 gi = SAMPLE_GI(input.lightmapUV, 0, normalWS);
+		//col = saturate(col + gi);
+		col = lerp(gi, col, lightStrength);
 		return float4(col, alpha);
 		return float4(normal * 0.5 + 0.5, input.color.x);
 		
 		return input.color * colorSample;
+		
+		InputData lightingInput = (InputData)0; // Found in URP/ShaderLib/Input.hlsl
+		lightingInput.positionWS = input.positionWS;
+		lightingInput.normalWS = (normalWS);
+		lightingInput.viewDirectionWS = GetWorldSpaceNormalizeViewDir(input.positionWS); // In ShaderVariablesFunctions.hlsl
+		lightingInput.shadowCoord = TransformWorldToShadowCoord(input.positionWS); // In Shadows.hlsl
+		lightingInput.bakedGI = SAMPLE_GI(input.lightmapUV, 0, normalWS);
+		lightingInput.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
+		SurfaceData surfaceInput = (SurfaceData)0;
+		surfaceInput.albedo = col;
+		surfaceInput.alpha = alpha;
+		surfaceInput.specular = 0;
+		surfaceInput.smoothness = 1;
+		surfaceInput.occlusion = 1;
+		
+		return UniversalFragmentPBR(lightingInput, surfaceInput);
 	}
 
     
@@ -346,19 +385,19 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 
         	//#define _SPECULAR_COLOR
         	
-        	//#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile _ EVALUATE_SH_MIXED EVALUATE_SH_VERTEX
-            //#pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
-//
-        	//#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            //#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
-            //#pragma multi_compile_fragment _ _LIGHT_COOKIES
-        	//#pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
-            //#pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
-            //#pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
-            //#pragma multi_compile _ _LIGHT_LAYERS
-            //#pragma multi_compile _ _FORWARD_PLUS
+        	#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile _ EVALUATE_SH_MIXED EVALUATE_SH_VERTEX
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+
+        	#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES
+        	#pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+            #pragma multi_compile _ _LIGHT_LAYERS
+            #pragma multi_compile _ _FORWARD_PLUS
             #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
             #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
 
