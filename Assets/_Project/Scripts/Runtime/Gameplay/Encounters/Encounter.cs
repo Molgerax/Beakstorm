@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using AptabaseSDK;
@@ -51,7 +52,14 @@ namespace Beakstorm.Gameplay.Encounters
             while (!token.IsCancellationRequested)
             {
                 _timer += Time.deltaTime;
-                await Awaitable.NextFrameAsync(token);
+                try
+                {
+                    await Awaitable.NextFrameAsync(token);
+                }
+                catch (OperationCanceledException e)
+                {
+                    Debug.LogError(e, this);
+                }
             }
         }
         
