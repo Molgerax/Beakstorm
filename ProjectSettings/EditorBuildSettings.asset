@@ -35,5 +35,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Encounters/Environment.unity
     guid: d8b9408c4b11b9941b7bb78395692637
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: e60fc8aa09731434f8a2133b3fb99879, type: 2}
   m_UseUCBPForAssetBundles: 0

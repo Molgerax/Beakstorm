@@ -27,6 +27,11 @@ namespace Beakstorm.Settings
 
         public void Awake()
         {
+            if (_instance)
+            {
+                LoadData();
+            }
+            
             _instance = (T)this;
         }
 
@@ -46,6 +51,9 @@ namespace Beakstorm.Settings
 
         public void SaveData()
         {
+            if (_instance != this)
+                _instance = (T)this;
+            
             string json = JsonUtility.ToJson(this);
 
             using (StreamWriter writer = new StreamWriter(SavePath))

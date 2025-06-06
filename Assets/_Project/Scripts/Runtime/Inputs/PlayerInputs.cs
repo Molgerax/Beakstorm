@@ -50,7 +50,7 @@ namespace Beakstorm.Inputs
         #region Properties
 
         public Vector2 MoveInput => moveAction.ReadValue<Vector2>() * GameplaySettings.Instance.FlightAxisInversion;
-        public Vector2 LookInput => lookAction.ReadValue<Vector2>() * GameplaySettings.Instance.LookAxisInversion * GameplaySettings.Instance.MouseSensitivity;
+        public Vector2 LookInput => lookAction.ReadValue<Vector2>() * GameplaySettings.Instance.LookAxisInversion * GameplaySettings.Instance.MouseSensitivity * 60;
 
         public bool ConfirmBuffered => _confirmBuffered;
         public bool CancelBuffered => _cancelBuffered;

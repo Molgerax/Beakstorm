@@ -14,7 +14,7 @@ namespace Beakstorm.Settings
         public bool InvertFlightAxisX = false;
         public bool InvertFlightAxisY = false;
 
-        public float MouseSensitivity = 1f;
+        public float MouseSensitivity = 5f;
         
         public void SetInvertLookAxisX(bool value) => InvertLookAxisX = value; 
         public void SetInvertLookAxisY(bool value) => InvertLookAxisY = value; 
