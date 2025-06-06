@@ -31,8 +31,6 @@ namespace Beakstorm.Simulation.Particles
         private Vector3 _position;
         private Vector3 _oldPosition;
 
-        private float _deltaTime;
-
         private void Awake()
         {
             _initEmissionRate = emissionRate;
@@ -67,7 +65,7 @@ namespace Beakstorm.Simulation.Particles
             _remainder = emissionPerFrame % 1;
 
             int emissionCount = Mathf.FloorToInt(emissionPerFrame);
-            Emit(emissionCount);
+            Emit(emissionCount, deltaTime);
         }
         
         
@@ -75,13 +73,12 @@ namespace Beakstorm.Simulation.Particles
         {
             _oldPosition = _position;
             _position = transform.position;
-            _deltaTime = Time.deltaTime;
         }
 
-        public void Emit(int count)
+        public void Emit(int count, float timeStep)
         {
             if (PheromoneGridManager.Instance)
-                PheromoneGridManager.Instance.EmitParticles(count, _position, _oldPosition, lifeTime, _deltaTime);
+                PheromoneGridManager.Instance.EmitParticles(count, _position, _oldPosition, lifeTime, timeStep);
         }
 
         private void ApplyBehaviour(float deltaTime)

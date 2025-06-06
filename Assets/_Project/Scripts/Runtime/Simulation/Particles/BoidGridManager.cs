@@ -1,6 +1,7 @@
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Pausing;
 using Beakstorm.Simulation.Collisions.SDF;
+using Beakstorm.Utility;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -112,10 +113,10 @@ namespace Beakstorm.Simulation.Particles
             {
                 if (!PauseManager.IsPaused)
                 {
-                    DecayWhistle(Time.deltaTime);
+                    DecayWhistle(SimulationTime.DeltaTime);
                     
                     int updateKernel = boidComputeShader.FindKernel("Update");
-                    RunSimulation(updateKernel, Time.deltaTime);
+                    RunSimulation(updateKernel, SimulationTime.DeltaTime);
 
                     _hash.Update();
                     SwapBuffers();
@@ -158,8 +159,8 @@ namespace Beakstorm.Simulation.Particles
             _hash = new SpatialHashCellOrdered(cellShader, this);
             
             int initKernel = boidComputeShader.FindKernel("Init");
-            RunSimulation(initKernel, Time.deltaTime);
-            RunSimulation(initKernel, Time.deltaTime);
+            RunSimulation(initKernel, SimulationTime.DeltaTime);
+            RunSimulation(initKernel, SimulationTime.DeltaTime);
 
             _initialized = true;
         }

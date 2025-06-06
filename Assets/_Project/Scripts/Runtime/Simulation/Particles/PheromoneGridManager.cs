@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Pausing;
 using Beakstorm.Simulation.Collisions.SDF;
+using Beakstorm.Utility;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -100,9 +101,9 @@ namespace Beakstorm.Simulation.Particles
                 {
                     Clear();
                     int updateKernel = pheromoneComputeShader.FindKernel("Update");
-                    RunSimulation(updateKernel, Time.deltaTime);
+                    RunSimulation(updateKernel, SimulationTime.DeltaTime);
                     
-                    ApplyEmitters(Time.deltaTime);
+                    ApplyEmitters(SimulationTime.DeltaTime);
                     SwapBuffers();
                     
                     _hash?.Update();
@@ -142,7 +143,7 @@ namespace Beakstorm.Simulation.Particles
             _pheromoneBufferRead.SetCounterValue(0);
             
             int initKernel = pheromoneComputeShader.FindKernel("Init");
-            RunSimulation(initKernel, Time.deltaTime);
+            RunSimulation(initKernel, SimulationTime.DeltaTime);
 
             _initialized = true;
         }

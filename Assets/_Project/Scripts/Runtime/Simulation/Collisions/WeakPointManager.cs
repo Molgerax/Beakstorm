@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Simulation.Particles;
+using Beakstorm.Utility;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -193,7 +194,7 @@ namespace Beakstorm.Simulation.Collisions
             compute.SetInt(PropertyIDs.WeakPointCount, WeakPoints.Count);
             
             compute.SetFloat(PropertyIDs.Time, Time.time);
-            compute.SetFloat(PropertyIDs.DeltaTime, Time.deltaTime);
+            compute.SetFloat(PropertyIDs.DeltaTime, SimulationTime.DeltaTime);
 
             compute.SetFloat(PropertyIDs.HashCellSize, manager.CellSize);
             compute.SetInt(PropertyIDs.TotalCount, manager.AgentCount);

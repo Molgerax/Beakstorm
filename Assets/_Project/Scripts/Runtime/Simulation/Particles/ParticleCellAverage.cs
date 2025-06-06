@@ -1,4 +1,5 @@
 using Beakstorm.ComputeHelpers;
+using Beakstorm.Utility;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -90,7 +91,7 @@ namespace Beakstorm.Simulation.Particles
             compute.SetInt(PropertyIDs.TotalCount, _cellCount);
 
             compute.SetFloat(PropertyIDs.Time, Time.time);
-            compute.SetFloat(PropertyIDs.DeltaTime, Time.deltaTime);
+            compute.SetFloat(PropertyIDs.DeltaTime, SimulationTime.DeltaTime);
 
             compute.SetBuffer(kernel, PropertyIDs.SpatialIndices, sim.SpatialIndicesBuffer);
             compute.SetBuffer(kernel, PropertyIDs.SpatialOffsets, sim.SpatialOffsetsBuffer);
