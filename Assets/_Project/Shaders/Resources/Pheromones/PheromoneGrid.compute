@@ -304,7 +304,12 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     if (id.x >= finalEmit)
         return;
 
-    if (_DeltaTime == 0)
+    if (_DeltaTime <= 0)
+    {
+        return;
+    }
+
+    if (_LifeTime <= 0)
     {
         return;
     }
@@ -321,7 +326,9 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     float3 spawnPos = _SpawnPos;
     float3 spawnPosOld = _SpawnPosOld;
 
-    float3 pos = lerp(spawnPos, spawnPosOld, randomOffset) + RandomVector(seed) * 0.01;
+    float3 pos = lerp(spawnPos, spawnPosOld, randomOffset);
+    float3 oldPos = pos;// - RandomVector(index) * _DeltaTime * 5;
+    pos += RandomVector(seed) * 3 * randomOffset * _DeltaTime;
     
     float3 vel = spawnPos - spawnPosOld;
     if (dot(vel, vel) != 0)
@@ -335,18 +342,17 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     //pos = 0;
     //pos.x = ((float)index / _TotalCount * 2 - 1) * _SimulationSpace.x;
     
-    float3 oldPos = pos;// - RandomVector(index) * _DeltaTime * 5;
     //oldPos.y = 0;
 
     float maxLifeTime = _LifeTime;
-    float lifeTime = _LifeTime - _DeltaTime * randomOffset;
+    float lifeTime = _LifeTime - _DeltaTime * randomOffset * 3;
 
 
     float4 data = 0;
     
     data.z = maxLifeTime;
     data.w = lifeTime / maxLifeTime;
-    data.x = lifeTime;
+    data.x = 0;
     data.y = index;
     
     p.pos = pos;

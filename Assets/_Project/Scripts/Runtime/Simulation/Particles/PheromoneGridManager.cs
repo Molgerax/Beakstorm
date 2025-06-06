@@ -82,6 +82,16 @@ namespace Beakstorm.Simulation.Particles
 
         private Transform _mainCamera;
 
+        private List<EmissionRequest> _emissionRequests = new List<EmissionRequest>(128);
+
+        public void AddEmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime)
+        {
+            if (count <= 0 || lifeTime <= 0)
+                return;
+            
+            _emissionRequests.Add(new EmissionRequest(count, pos, oldPos, lifeTime));
+        }
+
         private void Awake()
         {
             Instance = this;
@@ -103,7 +113,8 @@ namespace Beakstorm.Simulation.Particles
                     int updateKernel = pheromoneComputeShader.FindKernel("Update");
                     RunSimulation(updateKernel, SimulationTime.DeltaTime);
                     
-                    ApplyEmitters(SimulationTime.DeltaTime);
+                    ApplyEmitters(Time.deltaTime);
+                    ApplyEmissionRequests(SimulationTime.DeltaTime);
                     SwapBuffers();
                     
                     _hash?.Update();
@@ -238,9 +249,24 @@ namespace Beakstorm.Simulation.Particles
                 }
                 
                 emitter.EmitOverTime(timeStep);
-                
-                if (emitter.MarkedForRemoval)
-                    Emitters.RemoveAt(i);
+            }
+        }
+        
+        private void ApplyEmissionRequests(float timeStep)
+        {
+            if (PauseManager.IsPaused)
+                return;
+            if (timeStep == 0)
+                return;
+            
+            if (_emissionRequests == null)
+                return;
+            
+            for (int i = _emissionRequests.Count - 1; i >= 0; i--)
+            {
+                var request = _emissionRequests[i];
+                EmitParticles(request.Count, request.Position, request.OldPosition, request.LifeTime);
+                _emissionRequests.RemoveAt(i);
             }
         }
 
@@ -335,7 +361,22 @@ namespace Beakstorm.Simulation.Particles
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(Vector3.zero, simulationSpace);
         }
-        
+
+        private struct EmissionRequest
+        {
+            public int Count;
+            public Vector3 Position;
+            public Vector3 OldPosition;
+            public float LifeTime;
+
+            public EmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime)
+            {
+                Count = count;
+                Position = pos;
+                OldPosition = oldPos;
+                LifeTime = lifeTime;
+            }
+        }
         
         public static class PropertyIDs
         {

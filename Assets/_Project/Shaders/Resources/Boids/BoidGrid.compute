@@ -363,7 +363,8 @@ float4 PheromoneDensity(float3 pos)
             float3 g = GetDensityDerivativeFromParticle(pos, p2.pos, _PheromoneSmoothingRadius, 1);
         
             density += d;
-            densityGradient += g * (p2.data.w * p2.data.w) / p2.data.x; 
+            if (p2.data.x != 0)
+                densityGradient += g * (p2.data.w * p2.data.w) / p2.data.x; 
         }
     }
     

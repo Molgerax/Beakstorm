@@ -10,10 +10,6 @@ namespace Beakstorm.Simulation.Particles
 
         private PheromoneBehaviourData _behaviourData;
 
-        private bool _markForRemoval;
-
-        public bool MarkedForRemoval => _markForRemoval;
-        
         public float EmissionRate
         {
             get => emissionRate;
@@ -35,8 +31,6 @@ namespace Beakstorm.Simulation.Particles
         private Vector3 _position;
         private Vector3 _oldPosition;
 
-        private int _emissionCountQueued;
-        
         private void Awake()
         {
             _initEmissionRate = emissionRate;
@@ -58,7 +52,8 @@ namespace Beakstorm.Simulation.Particles
 
         protected virtual void OnDisable()
         {
-            _markForRemoval = true;
+            if (PheromoneGridManager.Emitters.Contains(this))
+                PheromoneGridManager.Emitters.Remove(this);
         }
 
         public void EmitOverTime(float deltaTime)
@@ -71,8 +66,7 @@ namespace Beakstorm.Simulation.Particles
             _remainder = emissionPerFrame % 1;
 
             int emissionCount = Mathf.FloorToInt(emissionPerFrame);
-            _emissionCountQueued += emissionCount;
-            Emit();
+            Emit(emissionCount);
         }
         
         
@@ -82,16 +76,16 @@ namespace Beakstorm.Simulation.Particles
             _position = transform.position;
         }
 
-        public void Emit(int count)
-        {
-            _emissionCountQueued += count;
-        }
-        
-        private void Emit()
+        public void Emit(int count, float life)
         {
             if (PheromoneGridManager.Instance)
-                PheromoneGridManager.Instance.EmitParticles(_emissionCountQueued, _position, _oldPosition, lifeTime);
-            _emissionCountQueued = 0;
+                PheromoneGridManager.Instance.AddEmissionRequest(count, _position, _position , life);
+        }
+        
+        private void Emit(int count)
+        {
+            if (PheromoneGridManager.Instance)
+                PheromoneGridManager.Instance.EmitParticles(count, _position, _oldPosition, lifeTime);
         }
 
         private void ApplyBehaviour(float deltaTime)
@@ -114,9 +108,6 @@ namespace Beakstorm.Simulation.Particles
             LifeTime = _initLifeTime;
             EmissionRate = _initEmissionRate;
 
-            _markForRemoval = false;
-            _emissionCountQueued = 0;
-            
             UpdatePositions();
         }
     }

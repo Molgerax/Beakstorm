@@ -268,6 +268,14 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+      - _Type: 5
+        _Int: 0
+        _String: 
+        _X: 20
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
     - _Target: {fileID: 8417193104476582687}
       _MemberName: CompleteTimer
       _PersistentArguments: []

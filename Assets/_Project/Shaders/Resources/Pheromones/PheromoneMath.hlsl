@@ -66,7 +66,7 @@ float3 GetDensityDerivativeFromParticle(float3 p, float3 particlePos, float smoo
     float dist = sqrt(distSquared);
     float3 direction = float3(0, 1, 0);
     
-    if (distSquared != 0)
+    if (distSquared > 0)
         direction = diff / dist;
     
     float slope = SmoothingKernelPow3Derivative(dist, smoothingRadius);
