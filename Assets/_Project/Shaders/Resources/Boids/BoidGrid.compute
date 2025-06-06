@@ -378,6 +378,12 @@ void Update (uint3 id : SV_DispatchThreadID)
         return;
 
     Boid boid = _BoidBufferRead[index];
+
+    if (_DeltaTime == 0)
+    {
+        _BoidBuffer[index] = boid;
+        return;
+    }
     
     float3 currentPosition = boid.pos;
     float3 oldPosition = boid.oldPos;

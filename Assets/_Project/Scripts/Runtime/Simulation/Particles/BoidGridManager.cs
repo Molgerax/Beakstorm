@@ -110,7 +110,7 @@ namespace Beakstorm.Simulation.Particles
         {
             if (_initialized)
             {
-                if (!PauseManager.IsPaused && Time.deltaTime != 0)
+                if (!PauseManager.IsPaused)
                 {
                     DecayWhistle(Time.deltaTime);
                     
@@ -179,8 +179,6 @@ namespace Beakstorm.Simulation.Particles
         private void RunSimulation(int kernelId, float timeStep)
         {
             if (PauseManager.IsPaused)
-                return;
-            if (timeStep == 0)
                 return;
             
             if (kernelId < 0)

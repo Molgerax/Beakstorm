@@ -94,7 +94,7 @@ void CollectValues(uint3 id : SV_DispatchThreadID)
             continue;
 
         float3 particleOldPos = _ParticleOldPositionBuffer[neighborIndex];
-        float3 velocity = (particlePos - particleOldPos) / _DeltaTime;
+        float3 velocity = (particlePos - particleOldPos) / max(_DeltaTime, 0.01);
         float4 data = _ParticleDataBuffer[neighborIndex];
         
         cell.position += particlePos;

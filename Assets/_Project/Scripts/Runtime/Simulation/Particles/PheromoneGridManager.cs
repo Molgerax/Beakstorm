@@ -96,7 +96,7 @@ namespace Beakstorm.Simulation.Particles
         {
             if (_initialized)
             {
-                if (!PauseManager.IsPaused && Time.deltaTime != 0)
+                if (!PauseManager.IsPaused)
                 {
                     Clear();
                     int updateKernel = pheromoneComputeShader.FindKernel("Update");
@@ -168,8 +168,6 @@ namespace Beakstorm.Simulation.Particles
         private void RunSimulation(int kernelId, float timeStep)
         {
             if (PauseManager.IsPaused)
-                return;
-            if (timeStep == 0)
                 return;
             
             if (kernelId < 0)
@@ -261,8 +259,6 @@ namespace Beakstorm.Simulation.Particles
             if (count <= 0 || lifeTime <= 0)
                 return;
         
-            //UpdateEmissionCount(count);
-            
             int emissionKernel = pheromoneComputeShader.FindKernel("Emit");
             
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);

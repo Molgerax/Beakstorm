@@ -58,6 +58,11 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
 
     if (index >= _WeakPointCount)
         return;
+
+    if (_DeltaTime == 0)
+    {
+        return;
+    }
     
     float4 posR = _WeakPointBuffer.Load(index);
     float3 positionA = posR.xyz;

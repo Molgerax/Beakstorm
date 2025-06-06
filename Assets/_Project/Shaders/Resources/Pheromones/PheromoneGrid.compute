@@ -219,13 +219,20 @@ void Update (uint3 id : SV_DispatchThreadID)
         _PheromoneBuffer[index] = (Pheromone)0;
         return;
     }
-
     
     Pheromone pheromone = _PheromoneBufferRead[index];
-    
     if (pheromone.life <= 0)
         return;
     
+
+    if (_DeltaTime == 0)
+    {
+        
+        if (pheromone.life > 0)
+            KeepAlive(pheromone);
+        return;
+    }
+
     float3 currentPosition = pheromone.pos;
     float3 oldPosition = pheromone.oldPos;
     
@@ -284,43 +291,6 @@ void Init(uint3 id : SV_DispatchThreadID)
     const uint index = id.x;
     if (index >= _AgentCount)
         return;
-
-    Pheromone pheromone = (Pheromone)0;
-    
-    int sideLength = pow(_AgentCount, 1 / 2.0);
-
-    int3 newId = 0;
-    newId.x = index % sideLength;
-    newId.y = (index / sideLength);
-    newId.z = (index / sideLength);
-    
-    float stagger = ((float)index / _AgentCount) * 2;// - 1;
-    float3 offset = - _WorldMatrix._m20_m21_m22 * stagger * _AgentCount;
-
-    //offset = _WorldMatrix._m00_m01_m02 * stagger * 32;
-    offset = (RandomVector01(index) - 0.5) * _SimulationSize;
-
-    //offset = 0;
-    //offset.xyz = ((float3)newId / sideLength - 0.5) * _SimulationSpace.xyz; 
-
-    //offset.y = 0;
-    
-    float3 currentPosition = offset + _WorldPos;
-    float3 currentVelocity = RandomVector(index) * 0.0;
-    float3 oldPosition = currentPosition - currentVelocity * _DeltaTime;
-
-
-    pheromone.pos = currentPosition;
-    pheromone.oldPos = oldPosition;
-    pheromone.life = 0;
-    pheromone.maxLife = 0;
-    pheromone.data = 0;
-    
-    //_DeadIndexBuffer.Append(index);
-
-    //KeepAlive(pheromone);
-    
-    //_PheromoneBuffer[index] = pheromone;
 }
 
 
@@ -333,6 +303,11 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     
     if (id.x >= finalEmit)
         return;
+
+    if (_DeltaTime == 0)
+    {
+        return;
+    }
 
     const uint index = _PheromoneBuffer.IncrementCounter();
     Pheromone p = (Pheromone)0;
