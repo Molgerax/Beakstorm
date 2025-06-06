@@ -39,14 +39,15 @@ Material:
     m_Ints: []
     m_Floats:
     - _CloudAlpha: 1
-    - _CloudPower: 0.31
-    - _CloudScale: 86.3
+    - _CloudPower: 0.26
+    - _CloudScale: 4
+    - _DerivativeOffset: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _VertexOffset: 0.05
     m_Colors:
     - _CloudColor: {r: 1.6051236, g: 1.224187, b: 0.9464172, a: 1}
-    - _CloudSpeed: {r: 0.01, g: 0.01, b: 0, a: 0}
+    - _CloudSpeed: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &7243032237042111066
