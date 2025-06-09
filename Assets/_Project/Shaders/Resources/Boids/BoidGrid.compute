@@ -105,11 +105,10 @@ void collideSdf(inout float3 pos, inout float3 oldPos, SdfQueryInfo sdf, float b
         return;
     }
     float3 vel = pos - oldPos;
-    float3 flattenVelocity = -dot(vel + normal * -dist, normal) * normal;
-    float3 mostBounceVelocity = -dot(vel, normal) * normal;
-           
-    oldPos = lerp(oldPos - flattenVelocity, oldPos - mostBounceVelocity, saturate(bounce));
-    pos -= normal * dist;
+    float3 newVel = vel - (1+bounce) * dot(vel, normal) * normal;
+    
+    pos -= (1+bounce) * normal * dist;
+    oldPos = pos - newVel;
 }
 
 float3 centerForce(float3 pos, uint index)
@@ -396,8 +395,6 @@ void Update (uint3 id : SV_DispatchThreadID)
     float3 velocity = (currentPosition - oldPosition) / _DeltaTime;
     oldPosition = currentPosition;
     
-    SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0);
-    
     float4 factors = GetBoidSettings(index);
     float maxSpeed = GetMaxSpeed(index);
     float maxForce = GetMaxForce(index);
@@ -419,6 +416,8 @@ void Update (uint3 id : SV_DispatchThreadID)
 
     currentPosition += velocity * _DeltaTime;
     //collideBounds(currentPosition, oldPosition);
+    
+    SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0);
     collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
     
     //currentPosition.y = _WorldPos.y;
