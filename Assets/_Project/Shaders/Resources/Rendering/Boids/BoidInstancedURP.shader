@@ -65,7 +65,8 @@ Shader "BeakStorm/Particles/Boids Instanced URP"
 	    float exposure;
 	    float3 oldPos;
 	    float data;
-	    float4 rotation;
+	    uint rotation;
+    	float3 padding;
 	};
     
     StructuredBuffer<Boid> _BoidBuffer;

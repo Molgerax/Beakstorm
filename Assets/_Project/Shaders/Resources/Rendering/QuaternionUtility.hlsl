@@ -9,6 +9,68 @@
 #define PI 3.14159265359
 #endif
 
+
+inline float signedSaturate(float value)
+{
+    return sign(value) * saturate(abs(value));
+}
+
+inline float map01to11(float value)
+{
+    return saturate(value) * 2 - 1;
+}
+
+inline float map11to01(float value)
+{
+    return saturate(value * 0.5 + 0.5);
+}
+
+uint PackQuaternion(float4 q)
+{
+    return  (uint(floor(map11to01(q.w) * 255 + 0.5)) << 0) |
+            (uint(floor(map11to01(q.z) * 255 + 0.5)) << 8) |
+            (uint(floor(map11to01(q.y) * 255 + 0.5)) << 16) |
+            (uint(floor(map11to01(q.x) * 255 + 0.5)) << 24);
+}
+
+float4 UnpackQuaternion(uint v)
+{
+    uint x = (v / (256 * 256 * 256)) % 256;
+    uint y = (v / (256 * 256)) % 256;
+    uint z = (v / 256) % 256;
+    uint w = v % 256;
+
+    return normalize(float4(
+        map01to11(x / 255.0),
+        map01to11(y / 255.0),
+        map01to11(z / 255.0),
+        map01to11(w / 255.0)));
+}
+
+uint2 PackQuaternion2(float4 q)
+{
+    return  uint2(
+            (uint(floor(map11to01(q.w) * 65535 + 0.5)) << 0) |
+            (uint(floor(map11to01(q.z) * 65535 + 0.5)) << 16),
+            (uint(floor(map11to01(q.y) * 65535 + 0.5)) << 0) |
+            (uint(floor(map11to01(q.x) * 65535 + 0.5)) << 16));
+}
+
+float4 UnpackQuaternion2(uint2 v)
+{
+    uint x = (v.y / 65536) % 65536;
+    uint y = v.y % 65536;
+    uint z = (v.x / 65536) % 65536;
+    uint w = v.x % 65536;
+
+    return float4(
+        map01to11(x / 65535.0),
+        map01to11(y / 65535.0),
+        map01to11(z / 65535.0),
+        map01to11(w / 65535.0));
+}
+
+
 inline float4 QuaternionMultiply(float4 qLhs, float4 qRhs)
 {
     return float4(

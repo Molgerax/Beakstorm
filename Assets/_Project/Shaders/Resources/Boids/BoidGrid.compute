@@ -18,7 +18,8 @@ struct Boid
     float exposure;
     float3 oldPos;
     float data;
-    float4 rotation;
+    uint rotation;
+    float3 padding;
 };
 
 RWStructuredBuffer<Boid> _BoidBuffer;
@@ -388,7 +389,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     float3 currentPosition = boid.pos;
     float3 oldPosition = boid.oldPos;
 
-    float4 rot = boid.rotation;
+    float4 rot = UnpackQuaternion(boid.rotation);
     float3 normal = RotateVectorByQuaternion(float3(0,1,0), rot);
     float3 forward = RotateVectorByQuaternion(float3(0,0,1), rot);
     
@@ -452,7 +453,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     
     //rot = float4(0,0,0,1);
 
-    boid.rotation = rot;
+    boid.rotation = PackQuaternion(rot);
     
     boid.exposure = saturate(boid.exposure + pheromoneSample.w - _DeltaTime * 1);
     //boid.exposure = 0;
@@ -504,8 +505,10 @@ void Init(uint3 id : SV_DispatchThreadID)
     boid.data = 0;
 
     currentVelocity = float3(0,0,1);
+
+    float4 rot = QuaternionLookAt(normalize(currentVelocity), currentNormal);
     
-    boid.rotation = QuaternionLookAt(normalize(currentVelocity), currentNormal);
+    boid.rotation = PackQuaternion(rot);
     
     _BoidBuffer[index] = boid;
 }
