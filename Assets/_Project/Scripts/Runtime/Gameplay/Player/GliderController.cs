@@ -1,3 +1,5 @@
+using System;
+using Beakstorm.Gameplay.Damaging;
 using Beakstorm.Inputs;
 using Beakstorm.Pausing;
 using UnityEngine;
@@ -16,14 +18,16 @@ namespace Beakstorm.Gameplay.Player
         [SerializeField] private float steerSpeed = 60;
 
         [SerializeField] private float rollSpeed = 20;
+
+        private LayerMask _layerMask;
         
+        private Rigidbody _rb;
         private PlayerInputs _inputs;
         private Vector3 _eulerAngles;
         
-        [SerializeField] private float _speed;
+        private float _speed;
 
         private float _roll;
-        
         
         public float Speed01 => (_speed - minSpeed) / (maxSpeed - minSpeed);
 
@@ -31,7 +35,11 @@ namespace Beakstorm.Gameplay.Player
         
         private void Awake()
         {
+            _layerMask = int.MaxValue;
+            _layerMask &= ~(1 << gameObject.layer);
+            
             _inputs = PlayerInputs.Instance;
+            _rb = GetComponent<Rigidbody>();
 
             if (!t)
                 t = transform;
@@ -49,6 +57,8 @@ namespace Beakstorm.Gameplay.Player
             SteerInput();
             HandleAcceleration();
             Move();
+
+            HandleCollision();
             
             if (CameraFOV.Instance)
                 CameraFOV.Instance.SetFoV(Speed01);
@@ -56,6 +66,65 @@ namespace Beakstorm.Gameplay.Player
 
         #endregion
 
+
+        
+        private void HandleCollision()
+        {
+            float depth = 2f;
+            float bounce = 0.4f;
+            
+            Vector3 forward = t.forward;
+            Vector3 pos = t.position;
+
+            Ray ray = new Ray(pos - forward * depth, forward);
+            if (Physics.Raycast(ray, out RaycastHit hit, _speed * Time.deltaTime * 2 + depth, _layerMask, QueryTriggerInteraction.Ignore))
+            {
+                float penetrationDepth = hit.distance - depth - _speed * Time.deltaTime;
+
+                float angle = Vector3.Angle(forward, hit.normal);
+
+                float collisionStrength = Mathf.Clamp01((angle - 90) / 90);
+
+                if (TryGetComponent(out IDamageable damageable))
+                {
+                    damageable.TakeDamage(Mathf.CeilToInt(collisionStrength * _speed * 0.75f));
+                }
+
+                _speed = Mathf.Clamp(_speed - (maxSpeed - minSpeed) * collisionStrength, minSpeed, maxSpeed);
+                
+                pos += (hit.normal * (Mathf.Max(0,penetrationDepth) * (1 + bounce)));
+
+
+                forward = Vector3.Lerp(
+                    Vector3.ProjectOnPlane(forward, hit.normal),
+                    Vector3.Reflect(forward, hit.normal), bounce);
+                //forward = forward - (1 + bounce) * Vector3.Dot(forward, hit.normal) * hit.normal;
+                //forward = Vector3.Reflect(forward, hit.normal);
+
+                if (forward.magnitude == 0)
+                    forward = Vector3.Cross(hit.normal, Vector3.up);
+
+
+                Quaternion rotation = Quaternion.LookRotation(forward.normalized, t.up);
+                
+                t.position = pos;
+                //t.forward = forward.normalized;
+                t.rotation = rotation;
+            }
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            ContactPoint p = other.GetContact(0);
+
+            Vector3 forward = t.forward;
+            forward = Vector3.Reflect(forward, p.normal);
+            Vector3 pos = t.position;
+            pos += (p.normal * p.separation * 2);
+
+            t.position = pos;
+            t.forward = forward;
+        }
 
         private void SteerInput()
         {

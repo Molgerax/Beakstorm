@@ -15,18 +15,26 @@ namespace Beakstorm.UI.HUD
         [SerializeField] private TMP_Text text;
 
         private SimplePlayerWeapon _currentWeapon;
-        
+
+        private bool _initialized = false;
         
         public void OnEnable()
         {
             PlayerInputs.Instance.selectPheromoneAction.performed += OnSelectPheromone;
-            
+
+            _initialized = false;
             CycleItems(0);
         }
 
         private void OnDisable()
         {
             PlayerInputs.Instance.selectPheromoneAction.performed -= OnSelectPheromone;
+        }
+
+        private void Update()
+        {
+            if (!_initialized)
+                CycleItems(0);
         }
 
         private void OnSelectPheromone(InputAction.CallbackContext context)
@@ -50,8 +58,11 @@ namespace Beakstorm.UI.HUD
             {
                 image.sprite = null;
                 text.text = null;
+                _initialized = false;
                 return;
             }
+
+            _initialized = true;
             
             PlayerController.Instance.SelectedWeaponIndex += value;
             _currentWeapon = PlayerController.Instance.SelectedWeapon;

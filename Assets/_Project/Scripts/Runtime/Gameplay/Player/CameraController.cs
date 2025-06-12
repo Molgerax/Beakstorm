@@ -1,5 +1,4 @@
-﻿using System;
-using Beakstorm.Inputs;
+﻿using Beakstorm.Inputs;
 using Beakstorm.Pausing;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -77,7 +76,8 @@ namespace Beakstorm.Gameplay.Player
             
             OnLookInput();
 
-            //cameraHead.localPosition = playerTarget.TransformDirection(_headOffset);
+            if (_headOffset.sqrMagnitude > 0)
+                cameraHead.localPosition = playerTarget.TransformDirection(_headOffset);
         }
 
         #endregion

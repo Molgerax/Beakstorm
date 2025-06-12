@@ -1,7 +1,7 @@
-using System;
 using Beakstorm.Gameplay.Damaging;
 using Beakstorm.Gameplay.Player.Weapons;
 using Beakstorm.Pausing;
+using UltEvents;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player
@@ -10,8 +10,13 @@ namespace Beakstorm.Gameplay.Player
     {
         public static PlayerController Instance;
 
+        [SerializeField] private Transform playerAnchor;
         [SerializeField] private int maxHealth = 100;
         [SerializeField] private SimplePlayerWeapon[] weapons = new SimplePlayerWeapon[0];
+        [SerializeField] private UltEvent<float> onDamageTaken;
+
+        [SerializeField] private UltEvent onDeath;
+        
         
         private int _damageTaken = 0;
         private int _health;
@@ -26,6 +31,9 @@ namespace Beakstorm.Gameplay.Player
         public Vector3 Position => _position;
         public Vector3 Velocity => _velocity;
         public int Health => _health;
+
+        public float Health01 => (float)_health / maxHealth;
+        
         public int DamageTaken => _damageTaken;
 
         public SimplePlayerWeapon SelectedWeapon => weapons.Length == 0 ? null : weapons[_selectedWeaponIndex];
@@ -37,6 +45,9 @@ namespace Beakstorm.Gameplay.Player
 
         private void Awake()
         {
+            if (!playerAnchor)
+                playerAnchor = transform;
+            
             _health = maxHealth;
         }
 
@@ -72,14 +83,13 @@ namespace Beakstorm.Gameplay.Player
         private void UpdatePosition()
         {
             _oldPosition = _position;
-            _position = transform.position;
+            _position = playerAnchor.position;
 
             _velocity = (_position - _oldPosition) / Time.deltaTime;
         }
 
         public bool CanTakeDamage()
         {
-            return true;
             return _health > 0;
         }
 
@@ -87,7 +97,15 @@ namespace Beakstorm.Gameplay.Player
         {
             _damageTaken += damage;
             _health -= damage;
+            
+            onDamageTaken?.Invoke(damage / 5f);
             //transform.position += Vector3.up * damage;
+
+            if (_health <= 0)
+            {
+                _health = 0;
+                onDeath?.Invoke();
+            }
         }
     }
 }

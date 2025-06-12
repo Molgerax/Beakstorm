@@ -75,7 +75,7 @@ namespace Beakstorm.Gameplay.Enemies
 
             _spawnPos = transform.position;
             _emergePos = _spawnPos;
-            _emergePos.y = -100;
+            _emergePos.y = -256;
             transform.position = _emergePos;
         }
         
