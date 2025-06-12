@@ -18,10 +18,13 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField] private int maxCount = 256;
         [SerializeField] private ComputeShader pheromoneComputeShader;
 
-        [Header("Rendering")] [SerializeField] private Mesh mesh;
+        [Header("Rendering")] 
+        [SerializeField] private Mesh mesh;
         [SerializeField] private Material material;
         [SerializeField] private ComputeShader sortShader;
 
+        [Header("Attractor")] 
+        [SerializeField] private bool useAttractor = false;
 
         [Header("Collision")] 
         [SerializeField] private Vector3 simulationSpace = Vector3.one;
@@ -113,12 +116,16 @@ namespace Beakstorm.Simulation.Particles
                     int updateKernel = pheromoneComputeShader.FindKernel("Update");
                     RunSimulation(updateKernel, SimulationTime.DeltaTime);
                     
+                    ResetAttractor();
+                    
                     ApplyEmitters(Time.deltaTime);
                     ApplyEmissionRequests(SimulationTime.DeltaTime);
                     SwapBuffers();
                     
                     _hash?.Update();
                     SwapBuffers();
+                    
+                    TransferAttractorData();
                 }
                 
                 RenderMeshes();
@@ -147,6 +154,7 @@ namespace Beakstorm.Simulation.Particles
             indexedArgs[0].indexCountPerInstance = mesh.GetIndexCount(0);
             _instancedDrawingArgsBuffer.SetData(indexedArgs);
             
+            InitializeAttractor();
 
             _hash = new SpatialHashCellOrdered(cellShader, this, _instancedDrawingArgsBuffer);
             
@@ -174,6 +182,9 @@ namespace Beakstorm.Simulation.Particles
             _pheromoneSorted = null;
             
             _hash?.Dispose();
+            
+            _attractorBuffer?.Release();
+            _attractorBuffer = null;
         }
 
 
@@ -289,6 +300,8 @@ namespace Beakstorm.Simulation.Particles
             if (count <= 0 || lifeTime <= 0)
                 return;
         
+            AddAttractor(pos, count / SimulationTime.DeltaTime, lifeTime);
+            
             int emissionKernel = pheromoneComputeShader.FindKernel("Emit");
             
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
@@ -377,6 +390,81 @@ namespace Beakstorm.Simulation.Particles
                 LifeTime = lifeTime;
             }
         }
+
+
+
+        #region Attractors
+
+        struct AttractorData
+        {
+            public Vector3 Position;
+            public uint Data;
+
+            public AttractorData(Vector3 pos, float radius, float strength)
+            {
+                Position = pos;
+                Data = (uint)Mathf.RoundToInt(Mathf.Max(1, radius));
+                uint str = (uint) Mathf.RoundToInt(strength * 256);
+                Data |= str << 16;
+            }
+        }
+
+        private GraphicsBuffer _attractorBuffer;
+
+        public GraphicsBuffer AttractorBuffer => _attractorBuffer;
+        private List<AttractorData> _attractorList = new List<AttractorData>(16);
+        private int _attractorCount;
+        public int AttractorCount => _attractorCount;
+        public bool UseAttractors => useAttractor;
+        private void InitializeAttractor()
+        {
+            if (!useAttractor)
+                return;
+            
+            _attractorBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, 16, 4 * sizeof(float));
+        }
+        
+        private void ResetAttractor()
+        {
+            if (!useAttractor)
+                return;
+            _attractorCount = 0;
+            _attractorList.Clear();
+        }
+
+        private void AddAttractor(Vector3 pos, float emissionRate, float lifeTime)
+        {
+            if (!useAttractor)
+                return;
+            
+            float strength = Mathf.Sqrt(emissionRate);
+            float radius = SmoothingRadius * 2;
+            _attractorList.Add(new AttractorData(pos, radius, strength));
+        }
+
+        private void TransferAttractorData()
+        {
+            if (!useAttractor)
+                return;
+            
+            _attractorCount = _attractorList.Count;
+            if (_attractorCount == 0)
+                return;
+            
+            if (AttractorBuffer == null || AttractorBuffer.count < _attractorCount)
+            {
+                _attractorBuffer?.Release();
+                _attractorBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, 
+                    Mathf.NextPowerOfTwo(_attractorCount), 4 * sizeof(float));
+            }
+            
+            _attractorBuffer.SetData(_attractorList);
+        }
+
+
+        #endregion
+        
+        
         
         public static class PropertyIDs
         {

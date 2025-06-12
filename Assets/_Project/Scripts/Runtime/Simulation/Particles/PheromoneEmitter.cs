@@ -31,6 +31,9 @@ namespace Beakstorm.Simulation.Particles
         private Vector3 _position;
         private Vector3 _oldPosition;
 
+        public Vector3 Position => _position;
+        public Vector3 OldPosition => _oldPosition;
+        
         private void Awake()
         {
             _initEmissionRate = emissionRate;

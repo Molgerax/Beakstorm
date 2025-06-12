@@ -228,6 +228,15 @@ namespace Beakstorm.Simulation.Particles
                 
                 boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneBuffer, p.AgentBufferRead);
                 boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneArgs, p.InstancedArgsBuffer);
+
+
+                if (p.UseAttractors)
+                {
+                    boidComputeShader.SetBuffer(kernelId, PropertyIDs.AttractorBuffer, p.AttractorBuffer);
+                    boidComputeShader.SetInt(PropertyIDs.AttractorCount, p.AttractorCount);
+                }
+                else
+                    boidComputeShader.SetInt(PropertyIDs.AttractorCount, 0);
             }
             boidComputeShader.SetInts(PropertyIDs.Dimensions, _hash.Dimensions);
             boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _hash.GridOffsetBuffer);
@@ -288,14 +297,9 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int WhistleSource = Shader.PropertyToID("_WhistleSource");
             public static readonly int Dimensions = Shader.PropertyToID("_Dimensions");
             
-            public static readonly int SpatialIndices = Shader.PropertyToID("_BoidSpatialIndices");
             public static readonly int SpatialOffsets = Shader.PropertyToID("_BoidSpatialOffsets");
             
-            public static readonly int PheromoneSpatialIndices = Shader.PropertyToID("_PheromoneSpatialIndices");
             public static readonly int PheromoneSpatialOffsets = Shader.PropertyToID("_PheromoneSpatialOffsets");
-            public static readonly int PheromonePositionBuffer = Shader.PropertyToID("_PheromonePositionBuffer");
-            public static readonly int PheromoneDataBuffer = Shader.PropertyToID("_PheromoneDataBuffer");
-            public static readonly int PheromoneAliveBuffer = Shader.PropertyToID("_PheromoneAliveBuffer");
             public static readonly int PheromoneHashCellSize = Shader.PropertyToID("_PheromoneHashCellSize");
             public static readonly int PheromoneTotalCount = Shader.PropertyToID("_PheromoneTotalCount");
             public static readonly int PheromoneSmoothingRadius = Shader.PropertyToID("_PheromoneSmoothingRadius");
@@ -304,6 +308,10 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int PheromoneSize = Shader.PropertyToID("_PheromoneSize");
             public static readonly int PheromoneCellDimensions = Shader.PropertyToID("_PheromoneCellDimensions");
             public static readonly int PheromoneArgs = Shader.PropertyToID("_PheromoneArgs");
+            
+            
+            public static readonly int AttractorBuffer = Shader.PropertyToID("_AttractorBuffer");
+            public static readonly int AttractorCount = Shader.PropertyToID("_AttractorCount");
 
         }
     }
