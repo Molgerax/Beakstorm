@@ -37,12 +37,13 @@ namespace Beakstorm.Gameplay.Player
 
         private void Awake()
         {
-            Instance = this;
             _health = maxHealth;
         }
 
         private void OnEnable()
         {
+            Instance = this;
+            
             foreach (SimplePlayerWeapon weapon in weapons)
             {
                 weapon.OnMonoEnable();
@@ -55,6 +56,9 @@ namespace Beakstorm.Gameplay.Player
             {
                 weapon.OnMonoDisable();
             }
+
+            if (Instance == this)
+                Instance = null;
         }
 
         private void Update()

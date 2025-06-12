@@ -9,7 +9,6 @@ namespace Beakstorm.Gameplay.Projectiles
         [SerializeField] private bool resetOnDisable = true;
 
         [SerializeField] private UltEvent onTimerElapsed;
-        [SerializeField] private UltEvent<float> completionPercentage;
 
         private float _elapsedTime;
         private bool _hasFired;
@@ -55,9 +54,6 @@ namespace Beakstorm.Gameplay.Projectiles
                 return;
 
             _elapsedTime += Time.deltaTime;
-
-            float percentage = Mathf.Clamp01(_elapsedTime / duration);
-            completionPercentage?.Invoke(percentage);
 
             if (_elapsedTime >= duration)
                 CompleteTimer();

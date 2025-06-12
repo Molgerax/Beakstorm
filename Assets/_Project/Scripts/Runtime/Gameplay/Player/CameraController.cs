@@ -1,4 +1,5 @@
-﻿using Beakstorm.Inputs;
+﻿using System;
+using Beakstorm.Inputs;
 using Beakstorm.Pausing;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -54,9 +55,17 @@ namespace Beakstorm.Gameplay.Player
         private void Awake()
         {
             _inputs = PlayerInputs.Instance;
-            _inputs.switchCameraAction.performed += OnSwitchCameraInput;
-
             _headOffset = cameraHead.localPosition;
+        }
+
+        private void OnEnable()
+        {
+            _inputs.switchCameraAction.performed += OnSwitchCameraInput;
+        }
+
+        private void OnDisable()
+        {
+            _inputs.switchCameraAction.performed -= OnSwitchCameraInput;
         }
 
         private void Update()

@@ -15,11 +15,19 @@ namespace Beakstorm.Gameplay.Player
         private void Awake()
         {
             _inputs = PlayerInputs.Instance;
+            onEmitStop?.Invoke();
+        }
 
+        private void OnEnable()
+        {
             _inputs.emitAction.performed += OnEmitActionPerformed;
             _inputs.emitAction.canceled += OnEmitActionCancelled;
+        }
 
-            onEmitStop?.Invoke();
+        private void OnDisable()
+        {
+            _inputs.emitAction.performed -= OnEmitActionPerformed;
+            _inputs.emitAction.canceled -= OnEmitActionCancelled;
         }
 
         private void OnEmitActionPerformed(InputAction.CallbackContext callback)

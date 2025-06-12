@@ -19,6 +19,8 @@ namespace Beakstorm.UI.Indicators
         
         private Camera _camera;
         private Canvas _canvas;
+
+        private Plane[] _frustumPlanes = new Plane[6];
         
         private void Awake()
         {
@@ -41,7 +43,7 @@ namespace Beakstorm.UI.Indicators
 
         private void Update()
         {
-            Plane[] frustumPlanes = GeometryUtility.CalculateFrustumPlanes(_camera);
+            GeometryUtility.CalculateFrustumPlanes(_camera, _frustumPlanes);
             
             for (int i = Targets.Count - 1; i >= 0; i--)
             {
@@ -52,7 +54,7 @@ namespace Beakstorm.UI.Indicators
                     continue;
                 }
                 
-                target.UpdateIndicator(frustumPlanes);
+                target.UpdateIndicator(_frustumPlanes);
             }
         }
 

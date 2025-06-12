@@ -14,7 +14,6 @@ namespace Beakstorm.Gameplay.Projectiles
                 {
                     var gameObject = new GameObject($"{nameof(ProjectileManager)}");
                     _instance = gameObject.AddComponent<ProjectileManager>();
-                    DontDestroyOnLoad(gameObject);
                 }
                 return _instance;
             }

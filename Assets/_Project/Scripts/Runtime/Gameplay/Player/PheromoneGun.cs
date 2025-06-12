@@ -18,8 +18,17 @@ namespace Beakstorm.Gameplay.Player
         {
             _inputs = PlayerInputs.Instance;
             _camera = Camera.main;
-            
+        }
+
+        private void OnEnable()
+        {
             _inputs.shootAction.performed += OnShootActionPerformed;
+        }
+
+        private void OnDisable()
+        {
+            
+            _inputs.shootAction.performed -= OnShootActionPerformed;
         }
 
         private void Update()
