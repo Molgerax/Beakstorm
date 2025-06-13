@@ -38,7 +38,9 @@ namespace Beakstorm.Pausing
         }
 
 
-        private void Pause()
+        public void TogglePause() => OnPause();
+
+        public void Pause()
         {
             Time.timeScale = 0;
             IsPaused = true;
@@ -46,7 +48,7 @@ namespace Beakstorm.Pausing
             OnPauseAction?.Invoke();
         }
 
-        private void Unpause()
+        public void Unpause()
         {
             Time.timeScale = 1f;
             IsPaused = false;

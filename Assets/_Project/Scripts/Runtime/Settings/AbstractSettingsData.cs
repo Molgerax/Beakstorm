@@ -23,6 +23,8 @@ namespace Beakstorm.Settings
             }
         }
         
+        public virtual void Apply() {}
+        
         private static T _instance;
 
         public void Awake()
@@ -60,6 +62,8 @@ namespace Beakstorm.Settings
             {
                 writer.Write(json);
             }
+            
+            Apply();
         }
 
         public bool LoadData()
@@ -75,6 +79,8 @@ namespace Beakstorm.Settings
             }
             
             JsonUtility.FromJsonOverwrite(json, this);
+            
+            Apply();
             return true;
         }
     }
