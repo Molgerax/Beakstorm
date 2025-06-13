@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28ac0264ec9bb43679a499d67037d3cf, type: 3}
-  m_Name: AptabaseSettings
+  m_Name: AptabaseSettings_Cloud
   m_EditorClassIdentifier: 
   AppKey: A-EU-7220723383
   SelfHostURL: beakstorm.duckdns.org:8000
