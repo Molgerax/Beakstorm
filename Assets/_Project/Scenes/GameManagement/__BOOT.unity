@@ -735,6 +735,9 @@ MonoBehaviour:
     - _Target: {fileID: 11400000, guid: 975256c11e1b1ba408928c7ad31adc26, type: 2}
       _MemberName: LoadData
       _PersistentArguments: []
+    - _Target: {fileID: 11400000, guid: d9863013852cf434fa53df8782440566, type: 2}
+      _MemberName: LoadData
+      _PersistentArguments: []
   _StartEvent:
     _PersistentCalls: []
   _EnableEvent:
