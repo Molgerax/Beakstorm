@@ -50,7 +50,8 @@ namespace Beakstorm.Pausing
 
         public void Unpause()
         {
-            Time.timeScale = 1f;
+            if (Time.timeScale == 0)
+                Time.timeScale = 1f;
             IsPaused = false;
             
             OnUnpauseAction?.Invoke();
