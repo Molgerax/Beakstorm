@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using AptabaseSDK;
 using Beakstorm.Gameplay.Player;
+using Beakstorm.Simulation;
 using UltEvents;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ namespace Beakstorm.Gameplay.Encounters
 
         private float _timer;
 
+        private int _damageTaken;
+
         private CancellationTokenSource _tokenSource;
         
         public async Awaitable SpawnAll()
@@ -26,6 +29,8 @@ namespace Beakstorm.Gameplay.Encounters
                 return;
 
             _tokenSource = new CancellationTokenSource();
+
+            _damageTaken = PlayerController.Instance.DamageTaken;
             
             RunTimer(_tokenSource.Token);
             await SpawnAllLoop();
@@ -94,7 +99,8 @@ namespace Beakstorm.Gameplay.Encounters
             {
                 {"index", waveIndex}, 
                 {"time", _timer},
-                {"damage", PlayerController.Instance.DamageTaken}
+                {"damage", PlayerController.Instance.DamageTaken - _damageTaken},
+                {"system", UseAttractorSystem.UseAttractorsString}
             };
             Aptabase.TrackEvent("wave_completed", dict);
         }

@@ -2215,6 +2215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2049153238}
+  - component: {fileID: 2049153239}
   m_Layer: 6
   m_Name: PlayerOrigin
   m_TagString: Untagged
@@ -2241,6 +2242,21 @@ Transform:
   - {fileID: 815246325}
   m_Father: {fileID: 1982143474}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2049153239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049153237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8f3448e699efaa43ac22366c9a56f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  t: {fileID: 2135799939}
+  normalOffset: 2
+  attractorOffset: 8
 --- !u!1 &2135799938
 GameObject:
   m_ObjectHideFlags: 0
@@ -2328,7 +2344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b814bc75a31064bb2954c0a7c4b570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emissionRate: 1024
+  emissionRate: 512
   lifeTime: 8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

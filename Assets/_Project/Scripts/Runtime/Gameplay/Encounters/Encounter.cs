@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using AptabaseSDK;
 using Beakstorm.Gameplay.Player;
+using Beakstorm.Simulation;
+using UltEvents;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Encounters
@@ -10,10 +12,13 @@ namespace Beakstorm.Gameplay.Encounters
     public class Encounter : MonoBehaviour
     {
         [SerializeField] private EncounterWave[] waves;
+        [SerializeField] private UltEvent onDefeatedAll;
         
         private bool _defeatedAll;
 
         private float _timer;
+
+        private int _damageTaken;
 
         private CancellationTokenSource _tokenSource;
         
@@ -23,6 +28,8 @@ namespace Beakstorm.Gameplay.Encounters
                 return;
 
             _tokenSource = new CancellationTokenSource();
+
+            _damageTaken = PlayerController.Instance.DamageTaken;
             
             SpawnAllLoop();
             RunTimer(_tokenSource.Token);
@@ -43,6 +50,7 @@ namespace Beakstorm.Gameplay.Encounters
 
             _tokenSource.Cancel();
             SendEncounterCompletedEvent();
+            onDefeatedAll?.Invoke();
         }
 
         private async void RunTimer(CancellationToken token)
@@ -58,7 +66,7 @@ namespace Beakstorm.Gameplay.Encounters
                 }
                 catch (OperationCanceledException e)
                 {
-                    Debug.LogError(e, this);
+                    Debug.LogWarning(e, this);
                 }
             }
         }
@@ -70,7 +78,8 @@ namespace Beakstorm.Gameplay.Encounters
             {
                 {"index", gameObject.name}, 
                 {"time", _timer},
-                {"damage", PlayerController.Instance.DamageTaken}
+                {"damage", PlayerController.Instance.DamageTaken - _damageTaken},
+                {"system", UseAttractorSystem.UseAttractorsString}
             };
             Aptabase.TrackEvent("encounter_completed", dict);
         }

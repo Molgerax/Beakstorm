@@ -119,6 +119,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &650846044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 650846046}
+  - component: {fileID: 650846045}
+  m_Layer: 0
+  m_Name: UseAttractors
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &650846045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650846044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 906f4c6538b9d464fb83b53dddf45a71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enable: 0
+--- !u!4 &650846046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650846044}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1080342932
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,6 +198,7 @@ MonoBehaviour:
   mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 62d2b1e04bc404044a64a4bae6ed71cf, type: 2}
   sortShader: {fileID: 7200000, guid: 5c3a24f9e4714cd09156233042f6f269, type: 3}
+  useAttractor: 0
   simulationSpace: {x: 1024, y: 512, z: 1024}
   targetDensity: 0
   pressureMultiplier: 100
@@ -331,3 +377,4 @@ SceneRoots:
   - {fileID: 1080342934}
   - {fileID: 1990501152}
   - {fileID: 1980418813}
+  - {fileID: 650846046}

@@ -281,7 +281,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		//return thickness;
 
 		//col.rgb *= colorSample.rgb;
-		float alpha = saturate(normal.z * input.color.z * input.color.z) * 0.25;
+		float alpha = saturate(normal.z * input.color.z * input.color.z);
 		alpha *= colorSample.a;
 		alpha *= pheromoneColor.a;
 		

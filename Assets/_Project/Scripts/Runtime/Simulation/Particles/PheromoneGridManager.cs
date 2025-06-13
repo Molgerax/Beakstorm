@@ -301,6 +301,12 @@ namespace Beakstorm.Simulation.Particles
                 return;
         
             AddAttractor(pos, count / SimulationTime.DeltaTime, lifeTime);
+
+            if (useAttractor)
+            {
+                count *= 4;
+                lifeTime = 0.5f;
+            }
             
             int emissionKernel = pheromoneComputeShader.FindKernel("Emit");
             
