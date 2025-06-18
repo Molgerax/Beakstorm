@@ -14,7 +14,7 @@ namespace Beakstorm.UI.Menus
         
         private void OnEnable()
         {
-            UsesController(CheckForPointer());
+            SelectDefault();
         }
 
         private void Reset()

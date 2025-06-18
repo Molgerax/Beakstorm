@@ -35,6 +35,8 @@ namespace Beakstorm.Gameplay.Player
         {
             UpdateWeapon(Time.deltaTime);
             
+            return;
+            
             if (_inputs.whistleAction.IsPressed())
             {
                 BoidGridManager.Instance.RefreshWhistle(transform.position, 1f);
