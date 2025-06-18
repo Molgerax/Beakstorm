@@ -7,5 +7,10 @@ namespace Beakstorm.Inputs
         private void OnEnable() => PlayerInputs.Instance.EnableUiInputs();
 
         private void OnDisable() => PlayerInputs.Instance.EnablePlayerInputs();
+
+        private void Update()
+        {
+            PlayerInputs.Instance.EnableUiInputs();
+        }
     }
 }

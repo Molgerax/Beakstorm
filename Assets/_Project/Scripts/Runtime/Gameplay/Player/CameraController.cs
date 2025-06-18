@@ -25,6 +25,9 @@ namespace Beakstorm.Gameplay.Player
         [Range(1f, 25f)] private float movementAlpha = 10;
         [SerializeField]
         [Range(0f, 1f)] private float yAlpha = 0.5f;
+        
+        [SerializeField]
+        [Min(0f)] private float lookThreshold = 0.5f;
 
         #endregion
 
@@ -87,7 +90,7 @@ namespace Beakstorm.Gameplay.Player
         {
             _timeSinceCenter = Mathf.Max(0, _timeSinceCenter - Time.deltaTime);
             
-            if (_inputs.LookInputRaw.magnitude > _timeSinceCenter / centerCooldown)
+            if (_inputs.LookInputRaw.magnitude > Mathf.Max(_timeSinceCenter / centerCooldown, lookThreshold))
             {
                 _useManualCamera = true;
             }

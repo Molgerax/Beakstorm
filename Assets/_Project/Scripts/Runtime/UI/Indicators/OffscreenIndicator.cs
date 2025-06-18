@@ -9,6 +9,7 @@ namespace Beakstorm.UI.Indicators
         [SerializeField] private Image offscreenImage;
 
         [SerializeField] private BoundsIndicator boundsIndicator;
+        [SerializeField] private float outOfSightOffset = 12f;
         
         private OffscreenTarget _target;
         private Camera _camera;
@@ -17,7 +18,6 @@ namespace Beakstorm.UI.Indicators
         private RectTransform _rect;
         private RectTransform _canvasRect;
 
-        private float outOfSightOffset = 1f;
         
         private IObjectPool<OffscreenIndicator> _objectPool;
         public IObjectPool<OffscreenIndicator> ObjectPool { set => _objectPool = value; }

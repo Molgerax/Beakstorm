@@ -385,6 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52d66bb435be7440bc4f72a52570649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collection: {fileID: 0}
   scenesToLoad:
   - asset: {fileID: 102900000, guid: 6ae18e4567669184386d6c7b22563c14, type: 3}
     guid: 6ae18e4567669184386d6c7b22563c14
@@ -699,7 +700,7 @@ Transform:
   m_GameObject: {fileID: 737318622}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: -6}
+  m_LocalPosition: {x: 0, y: 12.5, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1579,6 +1580,7 @@ MonoBehaviour:
   centerCooldown: 1
   movementAlpha: 7
   yAlpha: 0.125
+  lookThreshold: 0.2
 --- !u!1 &1422211437
 GameObject:
   m_ObjectHideFlags: 0
@@ -1824,6 +1826,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1485981615}
   m_CullTransparentMesh: 1
+--- !u!1 &1490118445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1490118447}
+  - component: {fileID: 1490118446}
+  m_Layer: 0
+  m_Name: PerformanceProfiler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1490118446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490118445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c64d9502f2f1e4cbfc6c453636109e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profilingInterval: 60
+  averageDuration: 1
+--- !u!4 &1490118447
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490118445}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1719817401
 GameObject:
   m_ObjectHideFlags: 0
@@ -2015,7 +2063,6 @@ GameObject:
   - component: {fileID: 1982143479}
   - component: {fileID: 1982143483}
   - component: {fileID: 1982143482}
-  - component: {fileID: 1982143484}
   - component: {fileID: 1982143481}
   - component: {fileID: 1982143485}
   - component: {fileID: 1982143486}
@@ -2215,31 +2262,6 @@ MonoBehaviour:
   scalingFactor: 1
   m_posOffsetData: {fileID: 0}
   listenerMask: 1
---- !u!114 &1982143484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1982143473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 129ff98a95e78bc419ba776bd4cf3f7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InitializationSettings: {fileID: 11400000, guid: b95248587b832cb41a6550e07faa600d, type: 2}
-  basePath: 
-  language: 
-  defaultPoolSize: 0
-  lowerPoolSize: 0
-  streamingPoolSize: 0
-  memoryCutoffThreshold: 0
-  monitorPoolSize: 0
-  monitorQueuePoolSize: 0
-  callbackManagerBufferSize: 0
-  spatialAudioPoolSize: 0
-  maxSoundPropagationDepth: 0
-  engineLogging: 0
 --- !u!114 &1982143485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2603,3 +2625,4 @@ SceneRoots:
   - {fileID: 737318624}
   - {fileID: 685246000}
   - {fileID: 447267687}
+  - {fileID: 1490118447}

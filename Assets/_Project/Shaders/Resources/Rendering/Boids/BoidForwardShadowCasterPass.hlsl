@@ -36,7 +36,7 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
     Boid boid = _BoidBuffer[instance_id];
     
     float3 meshPositionWS = boid.pos;
-    float4 rotation = UnpackQuaternion(boid.rotation);
+    float4 rotation = boid.rotation;//UnpackQuaternion(boid.rotation);
 
     float3x3 rotMatrix = QuaternionToMatrix(rotation);
 	//rotMatrix = transpose(rotMatrix);

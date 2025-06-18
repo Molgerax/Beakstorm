@@ -8,6 +8,8 @@ namespace Beakstorm.SceneManagement
     {
         #region Serialize Fields
 
+        [SerializeField] private SceneLoadCollection collection;
+        
         [SerializeField] private SceneReference[] scenesToLoad;
         [SerializeField] private bool loadAdditively;
         [SerializeField] private bool setFirstSceneActive;
@@ -27,8 +29,16 @@ namespace Beakstorm.SceneManagement
 
         public void LoadScene()
         {
-            _sceneLoadData = new SceneLoadData(scenesToLoad, setFirstSceneActive, loadAdditively);
-            sceneLoadChannel.Raise(_sceneLoadData);
+            if (collection)
+            {
+                _sceneLoadData = collection.SceneLoadData;
+                sceneLoadChannel.Raise(_sceneLoadData);
+            }
+            else
+            {
+                _sceneLoadData = new SceneLoadData(scenesToLoad, setFirstSceneActive, loadAdditively);
+                sceneLoadChannel.Raise(_sceneLoadData);
+            }
         }
 
         #endregion

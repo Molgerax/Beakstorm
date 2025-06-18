@@ -26,14 +26,6 @@ namespace Beakstorm.Analytics
         private void Start()
         {
             ResetValues();
-            
-            Aptabase.TrackEvent("hardware_analysis", new Dictionary<string, object>()
-            {
-                {"graphicsDevice", SystemInfo.graphicsDeviceName},
-                {"graphicsDeviceVendor", SystemInfo.graphicsDeviceVendor},
-                {"graphicsMemorySize", $"{SystemInfo.graphicsMemorySize}MB"},
-                {"graphicsBufferMaxSize", GetBytes(SystemInfo.maxGraphicsBufferSize)},
-            });
         }
 
         private void Update()

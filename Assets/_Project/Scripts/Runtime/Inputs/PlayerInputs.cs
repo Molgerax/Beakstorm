@@ -34,7 +34,9 @@ namespace Beakstorm.Inputs
         public InputAction selectPheromoneAction;
 
         public Action PauseAction;
-        
+
+        public bool UseButtonsInMenu { get; private set; } = true;
+
         #endregion
 
         #region Private Fields
@@ -101,6 +103,9 @@ namespace Beakstorm.Inputs
             
             _inputs.Player.Pause.AddListener(OnPauseButton);
             _inputs.UI.Pause.AddListener(OnPauseButton);
+            
+            _inputs.UI.Navigate.AddListener(OnMoveUI);
+            _inputs.UI.Point.AddListener(OnPointUI);
         }
 
         #endregion
@@ -148,6 +153,16 @@ namespace Beakstorm.Inputs
             if (!context.performed) return;
             
             PauseAction?.Invoke();
+        }
+
+        public void OnMoveUI(InputAction.CallbackContext context)
+        {
+            UseButtonsInMenu = true;
+        }
+        
+        public void OnPointUI(InputAction.CallbackContext context)
+        {
+            UseButtonsInMenu = false;
         }
 
         #endregion
