@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d712b5b8fcd4b4b49802e46658f97487, type: 3}
   m_Name: ConstantPheromone
   m_EditorClassIdentifier: 
-  pheromoneEmission: 256
+  pheromoneEmission: 384
   pheromoneEmissionCurve:
     serializedVersion: 2
     m_Curve:
@@ -37,7 +37,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  pheromoneLife: 3
+  pheromoneLife: 5
   pheromoneLifeCurve:
     serializedVersion: 2
     m_Curve:
@@ -62,5 +62,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  projectileLifeTime: 3
-  gravity: 5
+  projectileLifeTime: 5
+  gravity: 1

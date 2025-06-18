@@ -2125,10 +2125,8 @@ MonoBehaviour:
   maxHealth: 100
   weapons:
   - {fileID: 11400000, guid: 848899affe973bf47b013bbab7f99edc, type: 2}
-  - {fileID: 11400000, guid: 00293372832f14248b9698242dcaefcf, type: 2}
   - {fileID: 11400000, guid: b96d0a59e46c4cf49919838ac0a61d73, type: 2}
   - {fileID: 11400000, guid: 2b763d6de748faf4294d1c981112eba6, type: 2}
-  - {fileID: 11400000, guid: fade88fdeec5e594d821d2ad086adb8d, type: 2}
   onDamageTaken:
     _PersistentCalls:
     - _Target: {fileID: 1043443545}
