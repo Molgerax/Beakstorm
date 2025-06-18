@@ -1,4 +1,5 @@
 using Beakstorm.Inputs;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -24,6 +25,16 @@ namespace Beakstorm.UI.Menus
 
         private void Update()
         {
+            if (EventSystem.current)
+            {
+                if (EventSystem.current.currentSelectedGameObject)
+                {
+                    if (EventSystem.current.currentSelectedGameObject.TryGetComponent(out TMP_InputField field))
+                        return;
+                    
+                }
+            }
+            
             UsesController(CheckForPointer());
         }
 

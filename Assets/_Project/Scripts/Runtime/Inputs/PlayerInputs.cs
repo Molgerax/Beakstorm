@@ -130,6 +130,16 @@ namespace Beakstorm.Inputs
         }
 
 
+        public void EnableNavigation()
+        {
+            _inputs.UI.Navigate.Enable();
+        }
+        
+        
+        public void DisableNavigation()
+        {
+            _inputs.UI.Navigate.Disable();
+        }
 
         #region Input Callbacks
 

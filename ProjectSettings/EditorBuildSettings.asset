@@ -41,6 +41,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Encounters/Tutorial.unity
     guid: c67a981f4cc39d54481bf343437d6464
+  - enabled: 1
+    path: Assets/_Project/Scenes/GameManagement/Menus/_EvaluationMenu.unity
+    guid: 0ab3152f4d1220f4397647cd736428d5
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e60fc8aa09731434f8a2133b3fb99879, type: 2}
   m_UseUCBPForAssetBundles: 0
