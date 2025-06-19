@@ -1654,7 +1654,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Start A
+  m_text: 'Play <b>A
 
 '
   m_isRightToLeft: 0
@@ -1894,7 +1894,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Start B
+  m_text: 'Play <b>B
 
 '
   m_isRightToLeft: 0

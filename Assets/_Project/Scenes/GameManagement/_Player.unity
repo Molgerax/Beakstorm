@@ -365,7 +365,6 @@ GameObject:
   - component: {fileID: 447267689}
   - component: {fileID: 447267688}
   - component: {fileID: 447267686}
-  - component: {fileID: 447267690}
   m_Layer: 0
   m_Name: SceneLoader_OnDeath
   m_TagString: Untagged
@@ -455,9 +454,6 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-    - _Target: {fileID: 447267690}
-      _MemberName: LogGameOver
-      _PersistentArguments: []
     - _Target: {fileID: 1982143473}
       _MemberName: SetActive
       _PersistentArguments:
@@ -469,18 +465,6 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
---- !u!114 &447267690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 447267685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e7a5ec85b2041a5b134146adc688972, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &544057735
 GameObject:
   m_ObjectHideFlags: 0

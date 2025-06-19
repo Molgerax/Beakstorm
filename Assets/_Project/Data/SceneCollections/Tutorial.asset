@@ -17,13 +17,13 @@ MonoBehaviour:
     guid: d8b9408c4b11b9941b7bb78395692637
   - asset: {fileID: 102900000, guid: a7e9b15eccbf3864b99ac2f2607adda5, type: 3}
     guid: a7e9b15eccbf3864b99ac2f2607adda5
-  - asset: {fileID: 102900000, guid: 4747b48565139b949818ef16b3ff465e, type: 3}
-    guid: 4747b48565139b949818ef16b3ff465e
   - asset: {fileID: 102900000, guid: 375d37e5f92c1db4dafac9b8d188290a, type: 3}
     guid: 375d37e5f92c1db4dafac9b8d188290a
   - asset: {fileID: 102900000, guid: cf0611d3f3f63354794049e75ffe8d73, type: 3}
     guid: cf0611d3f3f63354794049e75ffe8d73
   - asset: {fileID: 102900000, guid: c67a981f4cc39d54481bf343437d6464, type: 3}
     guid: c67a981f4cc39d54481bf343437d6464
+  - asset: {fileID: 102900000, guid: 4747b48565139b949818ef16b3ff465e, type: 3}
+    guid: 4747b48565139b949818ef16b3ff465e
   loadAdditively: 0
   setFirstSceneActive: 1
