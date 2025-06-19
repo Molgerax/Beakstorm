@@ -487,7 +487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d292d83b1a8f4013ac070cb2b2e8e74c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCount: 32768
+  maxCount: 65536
   boidComputeShader: {fileID: 7200000, guid: 9575fa828d4faa844afdd0c9389b3a9c, type: 3}
   mesh: {fileID: 3475534928989439400, guid: 9b7a6cdb75cef4244896b58ae0af9c2b, type: 3}
   material: {fileID: 2100000, guid: 47e7f82be5f348d42940c13ab860fd18, type: 2}
