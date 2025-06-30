@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DynaMak.Utility
+namespace Beakstorm.Utility
 {
     public class CameraDepthTextureMode : MonoBehaviour
     {
