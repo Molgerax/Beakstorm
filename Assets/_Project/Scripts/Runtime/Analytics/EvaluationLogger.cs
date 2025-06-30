@@ -57,6 +57,8 @@ namespace Beakstorm.Analytics
                 {"preferenceFeedback", preferenceFeedback},
                 {"otherFeedback", otherFeedback},
             });
+            
+            Aptabase.Flush();
         }
     }
 }

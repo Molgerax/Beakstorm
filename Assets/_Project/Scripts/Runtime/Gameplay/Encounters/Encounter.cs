@@ -82,6 +82,7 @@ namespace Beakstorm.Gameplay.Encounters
                 {"system", UseAttractorSystem.UseAttractorsString}
             };
             Aptabase.TrackEvent("encounter_completed", dict);
+            Aptabase.Flush();
         }
     }
 }

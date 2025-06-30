@@ -13,6 +13,7 @@ namespace Beakstorm.Analytics
             {
                 {"system", UseAttractorSystem.UseAttractorsString}
             });
+            Aptabase.Flush();
         }
     }
 }
