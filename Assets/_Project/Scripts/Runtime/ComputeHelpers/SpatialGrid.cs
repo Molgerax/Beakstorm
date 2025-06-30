@@ -5,9 +5,6 @@ using UnityEngine.Rendering;
 
 namespace Beakstorm.ComputeHelpers
 {
-    /// <summary>
-    /// Static class to perform Bitonic Merge Sort for Spatial Hash Grids via compute shader.
-    /// </summary>
     public class SpatialGrid : IDisposable
     {
         private readonly ComputeShader _cs;

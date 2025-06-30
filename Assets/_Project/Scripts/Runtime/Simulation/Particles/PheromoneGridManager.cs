@@ -56,11 +56,7 @@ namespace Beakstorm.Simulation.Particles
         public static PheromoneGridManager Instance;
 
         public bool Initialized => _initialized;
-        public GraphicsBuffer SpatialIndicesBuffer => _hash?.GridBuffer;
         public GraphicsBuffer GridOffsetsBuffer => _hash?.GridOffsetBuffer;
-        public GraphicsBuffer PositionBuffer => AgentBufferRead;
-        public GraphicsBuffer OldPositionBuffer => AgentBufferRead;
-        public GraphicsBuffer DataBuffer => AgentBufferRead;
 
         public GraphicsBuffer InstancedArgsBuffer => _instancedDrawingArgsBuffer;
         

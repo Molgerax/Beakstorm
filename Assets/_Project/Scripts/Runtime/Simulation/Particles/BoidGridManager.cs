@@ -7,13 +7,8 @@ using UnityEngine.Rendering;
 
 namespace Beakstorm.Simulation.Particles
 {
-    /// <summary>
-    /// Pulled heavily from: https://github.com/abecombe/VFXGraphStudy/blob/main/Assets/Scenes/Flocking/Scripts/Flocking.cs
-    /// </summary>
     public class BoidGridManager : MonoBehaviour, IGridParticleSimulation
     {
-        private const int THREAD_GROUP_SIZE = 256;
-
         [SerializeField] 
         private int maxCount = 256;
         [SerializeField]
@@ -60,11 +55,7 @@ namespace Beakstorm.Simulation.Particles
 
         public static BoidGridManager Instance;
 
-        public GraphicsBuffer SpatialIndicesBuffer => _hash?.GridBuffer;
         public GraphicsBuffer GridOffsetsBuffer => _hash?.GridOffsetBuffer;
-        public GraphicsBuffer PositionBuffer => _boidBufferRead;
-        public GraphicsBuffer OldPositionBuffer => _boidBufferRead;
-        public GraphicsBuffer DataBuffer => _boidBufferRead;
         public int AgentCount => _capacity;
         public float CellSize => GetHashCellSize();
         public Vector3 SimulationCenter => transform.position;
