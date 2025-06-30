@@ -9,9 +9,19 @@ namespace Beakstorm.Simulation.Collisions.SDF
     /// </summary>
     public static class BVH<TBounds, TSdfData> where TBounds : IBounds, ISdfData<TSdfData>
     {
+        private const int MaxDepth = 8;
         private static int _nodeIndex;
         
-        public static int ConstructBVH(TBounds[] items, int length, ref BVHItem[] allItems, ref Node[] nodeList, ref TSdfData[] result)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="items">Array of items.</param>
+        /// <param name="itemCount">Count of items within the array, as not read from unwritten array elements.</param>
+        /// <param name="bvhItemArray">Array used for the BVH construction process.</param>
+        /// <param name="nodeArray">Node array used to iteratively traverse the BVH.</param>
+        /// <param name="sdfDataArray">Array of data that is ordered so that data can be accessed by traversing the NodeArray.</param>
+        /// <returns></returns>
+        public static int ConstructBVH(TBounds[] items, int itemCount, ref BVHItem[] bvhItemArray, ref Node[] nodeArray, ref TSdfData[] sdfDataArray)
         {
             if (items == null || items.Length == 0)
                 return 0;
@@ -19,35 +29,34 @@ namespace Beakstorm.Simulation.Collisions.SDF
             BoundingBox bounds = new BoundingBox();
             _nodeIndex = 0;
             
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < itemCount; i++)
             {
                 float3 min = items[i].BoundsMin();
                 float3 max = items[i].BoundsMax();
-                float3 center = (max + min) / 2;
-                allItems[i] = new BVHItem(center, min, max, i);
+                bvhItemArray[i] = new BVHItem(min, max, i);
                 bounds.GrowToInclude(min, max);
             }
 
-            AddToNodeList(ref nodeList, new Node(bounds));
-            Split(ref nodeList, allItems, 0, 0, length);
+            AddToNodeList(ref nodeArray, new Node(bounds));
+            Split(ref nodeArray, bvhItemArray, 0, 0, itemCount);
 
-            for (int i = 0; i < allItems.Length; i++)
+            for (int i = 0; i < bvhItemArray.Length; i++)
             {
-                BVHItem item = allItems[i];
-                result[i] = items[item.Index].SdfData();
+                BVHItem item = bvhItemArray[i];
+                sdfDataArray[i] = items[item.Index].SdfData();
             }
 
             return _nodeIndex;
         }
 
-        private static void Split(ref Node[] nodeList, BVHItem[] allItems, int parentIndex, int globalStart, int itemNum, int depth = 0)
+        
+        private static void Split(ref Node[] nodeArray, BVHItem[] bvhItemArray, int parentIndex, int globalStart, int itemNum, int depth = 0)
         {
-            const int MaxDepth = 8;
-            Node parent = nodeList[parentIndex];
+            Node parent = nodeArray[parentIndex];
             float3 size = parent.CalculateBoundsSize();
             float parentCost = NodeCost(size, itemNum);
 
-            ChooseSplit(allItems, parent, globalStart, itemNum, out int splitAxis, out float splitPos, out float cost);
+            ChooseSplit(bvhItemArray, parent, globalStart, itemNum, out int splitAxis, out float splitPos, out float cost);
 
             if (cost < parentCost && depth < MaxDepth)
             {
@@ -57,13 +66,13 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
                 for (int i = globalStart; i < globalStart + itemNum; i++)
                 {
-                    BVHItem item = allItems[i];
+                    BVHItem item = bvhItemArray[i];
                     if (item.Center[splitAxis] < splitPos)
                     {
                         boundsLeft.GrowToInclude(item.Min, item.Max);
-                        BVHItem swap = allItems[globalStart + numLeft];
-                        allItems[globalStart + numLeft] = item;
-                        allItems[i] = swap;
+                        BVHItem swap = bvhItemArray[globalStart + numLeft];
+                        bvhItemArray[globalStart + numLeft] = item;
+                        bvhItemArray[i] = swap;
                         numLeft++;
                     }
                     else
@@ -76,24 +85,34 @@ namespace Beakstorm.Simulation.Collisions.SDF
                 int startLeft = globalStart + 0;
                 int startRight = globalStart + numLeft;
 
-                int childIndexLeft = AddToNodeList(ref nodeList, new(boundsLeft, startLeft, 0));
-                int childIndexRight = AddToNodeList(ref nodeList, new(boundsRight, startRight, 0));
+                int childIndexLeft = AddToNodeList(ref nodeArray, new(boundsLeft, startLeft, 0));
+                int childIndexRight = AddToNodeList(ref nodeArray, new(boundsRight, startRight, 0));
 
                 parent.StartIndex = childIndexLeft;
-                nodeList[parentIndex] = parent;
+                nodeArray[parentIndex] = parent;
                 
-                Split(ref nodeList, allItems, childIndexLeft, globalStart, numLeft, depth + 1);
-                Split(ref nodeList, allItems, childIndexRight, globalStart + numLeft, numRight, depth + 1);
+                Split(ref nodeArray, bvhItemArray, childIndexLeft, globalStart, numLeft, depth + 1);
+                Split(ref nodeArray, bvhItemArray, childIndexRight, globalStart + numLeft, numRight, depth + 1);
             }
             else
             {
                 parent.StartIndex = globalStart;
                 parent.ItemCount = itemNum;
-                nodeList[parentIndex] = parent;
+                nodeArray[parentIndex] = parent;
             }
         }
 
-        private static void ChooseSplit(BVHItem[] allItems, Node node, int start, int count, out int bestAxis, out float bestPos, out float bestCost)
+        /// <summary>
+        /// Chooses the most optimal plane along which to split the current node
+        /// </summary>
+        /// <param name="bvhItemArray"></param>
+        /// <param name="node">Parent node to split</param>
+        /// <param name="start">Index of the first BVHItem</param>
+        /// <param name="count">Number of items in the parent node</param>
+        /// <param name="bestAxis"></param>
+        /// <param name="bestPos"></param>
+        /// <param name="bestCost"></param>
+        private static void ChooseSplit(BVHItem[] bvhItemArray, Node node, int start, int count, out int bestAxis, out float bestPos, out float bestCost)
         { 
             const int numSplitTests = 5;
 
@@ -109,7 +128,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
                 {
                     float splitT = (i + 1) / (numSplitTests + 1f);
                     float splitPos = Mathf.Lerp(node.BoundsMin[bestAxis], node.BoundsMax[bestAxis], splitT);
-                    float cost = EvaluateSplit(allItems, axis, splitPos, start, count);
+                    float cost = EvaluateSplit(bvhItemArray, axis, splitPos, start, count);
                     if (cost < bestCost)
                     {
                         bestCost = cost;
@@ -159,10 +178,12 @@ namespace Beakstorm.Simulation.Collisions.SDF
             return costA + costB;
         }
         
-        private static float NodeCost(float3 size, int numTriangles)
+        
+        private static float NodeCost(float3 size, int numItems)
         {
             float halfArea = size.x * size.y + size.x * size.z + size.y * size.z;
-            return halfArea * numTriangles;
+            float volume = size.x * size.y * size.z;
+            return volume * numItems;
         }
     }
 
@@ -213,17 +234,25 @@ namespace Beakstorm.Simulation.Collisions.SDF
     
     public readonly struct BVHItem
     {
-        public readonly float3 Center;
         public readonly float3 Min;
         public readonly float3 Max;
         public readonly int Index;
 
-        public BVHItem(float3 center, float3 min, float3 max, int index)
+        public float3 Center => (Min + Max) / 2f;
+
+        public BVHItem(float3 min, float3 max, int index)
         {
-            Center = center;
             Min = min;
             Max = max;
             Index = index;
+        }
+
+        public bool IntersectsWith(BVHItem other)
+        {
+            float3 p = new float3(1,1,1) - math.step(other.Max, Min);
+            float3 q = math.step(other.Min, Max);
+
+            return math.all(p) && math.all(q);
         }
     }
 }

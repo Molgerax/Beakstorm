@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using Beakstorm.Simulation.Collisions.SDF.Shapes;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Beakstorm.Simulation.Collisions.SDF
@@ -84,6 +87,109 @@ namespace Beakstorm.Simulation.Collisions.SDF
             _initialized = false;
         }
 
+        public float DistanceToBoundingBox(float3 pos, float3 bmin, float3 bmax)
+        {
+            float3 c = (bmax + bmin) / 2;
+            float3 b = (bmax - bmin) / 2;
+
+            float3 q = math.abs(pos - c) - b;
+            return (float)math.length(math.max(q, 0.0)) + math.min(math.max(q.x, math.max(q.y, q.z)), 0);
+        }
+
+
+        public int TestBvh(Vector3 pos, int nodeOffset, out float dist, out Vector3 normal, bool gradientNormal = false)
+        {
+            int hits = 0;
+            dist = Single.PositiveInfinity;
+            normal = Vector3.up;
+
+            float distX,distY,distZ;
+            distX = distY = distZ = dist;
+
+            
+            if (_nodeList == null || _dataArray == null)
+                return -1;
+            
+            int[] stack = new int[32];
+            uint stackIndex = 0;
+            stack[stackIndex++] = nodeOffset + 0;
+
+            int limiter = 0;
+    
+            while (stackIndex > 0 && limiter < 1024)
+            {
+                stackIndex = math.min(31, stackIndex);
+                limiter++;
+        
+                Node node = _nodeList[stack[--stackIndex]];
+                bool isLeaf = node.ItemCount > 0;
+
+                if (isLeaf)
+                {
+                    for (int i = 0; i < node.ItemCount; i++)
+                    {
+                        AbstractSdfData data = _dataArray[node.StartIndex + i];
+                        TestSdf(pos, data, out float testDist, out Vector3 testNormal);
+
+                        TestSdf(pos + Vector3.right * 0.01f, data, out float testDistX, out _);
+                        TestSdf(pos + Vector3.up * 0.01f, data, out float testDistY, out _);
+                        TestSdf(pos + Vector3.forward * 0.01f, data, out float testDistZ, out _);
+
+                        distX = math.min(distX, testDistX);
+                        distY = math.min(distY, testDistY);
+                        distZ = math.min(distZ, testDistZ);
+                        
+                        
+                        if (testDist < dist)
+                        {
+                            dist = testDist;
+                            normal = testNormal;
+                        }
+                        
+                        if (testDist <= 0)
+                            hits++;
+                    }
+                }
+                else
+                {
+                    int childIndexA = nodeOffset + node.StartIndex + 0;
+                    int childIndexB = nodeOffset + node.StartIndex + 1;
+                    Node childA = _nodeList[childIndexA];
+                    Node childB = _nodeList[childIndexB];
+
+                    float dstA = DistanceToBoundingBox(pos, childA.BoundsMin, childA.BoundsMax);
+                    float dstB = DistanceToBoundingBox(pos, childB.BoundsMin, childB.BoundsMax);
+						
+                    // We want to look at closest child node first, so push it last
+                    bool isNearestA = dstA <= dstB;
+                    float dstNear = isNearestA ? dstA : dstB;
+                    float dstFar = isNearestA ? dstB : dstA;
+                    int childIndexNear = isNearestA ? childIndexA : childIndexB;
+                    int childIndexFar = isNearestA ? childIndexB : childIndexA;
+
+                    if (dstFar < math.max(0,dist)) stack[stackIndex++] = childIndexFar;
+                    if (dstNear < math.max(0,dist)) stack[stackIndex++] = childIndexNear;
+                }
+            }
+
+            if (gradientNormal)
+                normal = Vector3.Normalize(new(distX - dist, distY - dist, distZ - dist));
+            return hits;
+        }
+        
+        
+        public bool TestSdf(Vector3 pos, AbstractSdfData data, out float dist, out Vector3 normal)
+        {
+            uint id = data.Type & 0x0F;
+
+            if (id == (uint) SdfShapeType.Box)
+                return SdfBox.TestSdf(pos, data, out dist, out normal);
+            if (id == (uint) SdfShapeType.Sphere)
+                return SdfSphere.TestSdf(pos, data, out dist, out normal);
+
+            return AbstractSdfShape.TestSdf(pos, data, out dist, out normal);
+        }
+        
         private void ConstructBvh()
         {
             if (_shapes == null || _shapes.Length == 0 || SdfBuffer == null)
@@ -243,7 +349,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
         }
         
-        public static class PropertyIDs
+        private static class PropertyIDs
         {
             public static readonly int NodeBuffer = Shader.PropertyToID("_NodeBuffer");
             public static readonly int SdfBuffer = Shader.PropertyToID("_SdfBuffer");

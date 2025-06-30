@@ -71,5 +71,31 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             new(-1, +1, -1),
             new(+1, -1, +1),
         };
+        
+        public static float3 GetLargest(float3 value)
+        {
+            float3 firstTest = math.step(value.yzx, value);
+            float3 secondTest = math.step(value.zxy, value);
+            return firstTest * secondTest;
+        }
+        
+        public new static bool TestSdf(float3 pos, AbstractSdfData data, out float dist, out Vector3 normal)
+        {
+            normal = Vector3.up;
+            
+            float3x3 rot = new float3x3(data.XAxis, data.YAxis, data.ZAxis);
+    
+            float3 q = math.mul(rot, pos - data.Translate);
+            float3 diff = math.abs(q) - data.Data;
+    
+            dist = math.length(math.max(diff, 0)) + math.min(math.max(diff.x, math.max(diff.y, diff.z)), 0);
+    
+            float3 norm = (GetLargest(diff) + math.max(diff, 0)) * math.sign(q);
+            if (math.dot(norm, norm) == 0)
+                norm = new float3(0,1,0);
+            normal = math.mul(math.transpose(rot), math.normalize(norm));
+
+            return dist <= 0;
+        }
     }
 }

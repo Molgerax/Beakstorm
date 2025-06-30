@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -45,6 +46,13 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         protected virtual void OnEnable() => SdfShapeManager.AddShape(this);
         protected virtual void OnDisable() => SdfShapeManager.RemoveShape(this);
+
+        public static bool TestSdf(Vector3 pos, AbstractSdfData data, out float dist, out Vector3 normal)
+        {
+            dist = Single.PositiveInfinity;
+            normal = new(1, 0, 1);
+            return false;
+        }
     }
 
 

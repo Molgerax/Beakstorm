@@ -32,5 +32,22 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             Gizmos.color = new(1, 0, 0, 0.5f);
             Gizmos.DrawWireSphere(T.position, AdjustedRadius());
         }
+        
+        
+        public new static bool TestSdf(float3 pos, AbstractSdfData data, out float dist, out Vector3 normal)
+        {
+            dist = -data.Data.x;
+            normal = Vector3.up;
+
+            float3 diff = pos - data.Translate;
+            if (math.dot(diff, diff) == 0)
+                return true;
+    
+            float len = math.length(diff);
+            dist = len - data.Data.x;
+    
+            normal = diff / len;
+            return dist <= 0;
+        }
     }
 }
