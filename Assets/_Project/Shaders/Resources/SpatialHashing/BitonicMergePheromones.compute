@@ -1,5 +1,6 @@
 #pragma kernel SortKernel
-#pragma kernel CalculateOffsetsKernel
+
+#define THREAD_GROUP_SIZE 128
 
 struct Pheromone
 {
@@ -7,60 +8,39 @@ struct Pheromone
     float dist;
 };
 
-RWStructuredBuffer<Pheromone> _Entries;
-const uint _EntryCount;
-const uint _GroupWidth;
-const uint _GroupHeight;
-const uint _StepIndex;
+RWStructuredBuffer<Pheromone> _SortBuffer;
+uint _Count;
+uint _GroupWidth;
+uint _StepIndex;
 
-// Sort the given entries by their keys (smallest to largest)
+// Sort the given entries by their distance (smallest to largest)
 // This is done using bitonic merge sort, and takes multiple iterations
-[numthreads(128, 1, 1)]
+[numthreads(THREAD_GROUP_SIZE, 1, 1)]
 void SortKernel(uint3 id : SV_DispatchThreadID)
 {
     uint i = id.x;
 
-    uint hIndex = i & (_GroupWidth - 1);
-    uint indexLeft = hIndex + (_GroupHeight + 1) * (i / _GroupWidth);
-    uint rightStepSize = _StepIndex == 0 ? _GroupHeight - 2 * hIndex : (_GroupHeight + 1) / 2;
-    uint indexRight = indexLeft + rightStepSize;
+    uint groupIndex = (i / _GroupWidth);
+    uint indexInGroup = i - groupIndex * _GroupWidth;
+    uint indexLeft = indexInGroup + _GroupWidth * 2 * (groupIndex);
 
-	// Exit if out of bounds (for non-power of 2 input sizes)
-    if (indexRight >= _EntryCount)
+    uint stepSize = _GroupWidth;
+    if (_StepIndex == 0)
+        stepSize = 2 * (_GroupWidth - indexInGroup) - 1;
+    
+    uint indexRight = indexLeft + stepSize;
+
+	// Exit if out of bounds
+    if (indexRight >= _Count)
         return;
 
-    Pheromone valueLeft = _Entries[indexLeft];
-    Pheromone valueRight = _Entries[indexRight];
+    Pheromone valueLeft = _SortBuffer[indexLeft];
+    Pheromone valueRight = _SortBuffer[indexRight];
     
-	// Swap entries if value is descending
+	// Swap entries if value is descending or if value is completely out of order
     if ((valueLeft.dist < valueRight.dist && valueLeft.dist < 1000 && valueRight.dist < 1000))
     {
-        _Entries[indexLeft] = valueRight;
-        _Entries[indexRight] = valueLeft;
+        _SortBuffer[indexLeft] = valueRight;
+        _SortBuffer[indexRight] = valueLeft;
     }
-}
-
-// Calculate offsets into the sorted buffer (used for spatial hashing).
-// For example if the sorted buffer looks like -> Sorted: {0001223333}
-// The resulting offsets would be -> Offsets: {0003446666}
-// This means that, if for instance we look up Sorted[8] (which has a value of 3), we could then look up 
-// Offsets[8] to get a value of 6, which is the index where the group of 3's begins in the Sorted buffer.
-// NOTE: offsets buffer must filled with values equal to (or greater than) its length
-RWStructuredBuffer<uint> _Offsets;
-
-[numthreads(128, 1, 1)]
-void CalculateOffsetsKernel(uint3 id : SV_DispatchThreadID)
-{
-    if (id.x >= _EntryCount)
-    {
-        return;
-    }
-    uint i = id.x;
-
-    //uint key = _Entries[i].key;
-    //uint keyPrev = i == 0 ? 9999999 : _Entries[i - 1].key;
-    //if (key != keyPrev)
-    //{
-    //    _Offsets[key] = i;
-    //}
 }

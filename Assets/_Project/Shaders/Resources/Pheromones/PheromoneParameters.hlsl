@@ -1,7 +1,6 @@
 #ifndef _INCLUDE_PHEROMONE_PARAMETERS_
 #define _INCLUDE_PHEROMONE_PARAMETERS_
 
-#include "../SpatialHashing/SpatialHashGrids.hlsl"
 #include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
 
 struct Pheromone
@@ -54,7 +53,7 @@ RWStructuredBuffer<SortEntry> _PheromoneSortingBuffer;
 
 RWStructuredBuffer<uint> _InstancedArgsBuffer;
 
-SPATIAL_HASH_BUFFERS(_Pheromone)
+StructuredBuffer<uint> _PheromoneSpatialOffsets;
 
 SamplerState sampler_linear_clamp;
 

@@ -1,15 +1,25 @@
 #pragma kernel CollectValues
 
-#include "../SpatialHashing/SpatialHashGrids.hlsl"
-
+#include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
 
 struct ParticleCell
 {
     float3 position;
-    float3 velocity;
-    float4 data;
     uint count;
+    float3 velocity;
+    uint padding;
+    float4 data;
 };
+
+struct Boid
+{
+    float3 pos;
+    float exposure;
+    float3 oldPos;
+    float data;
+    float4 rotation;
+};
+
 
 RWStructuredBuffer<ParticleCell> _CellBuffer;
 
@@ -17,21 +27,11 @@ RWStructuredBuffer<ParticleCell> _CellBuffer;
 float _Time;
 float _DeltaTime;
 
-
+uint3 _Dimensions;
 uint _TotalCount;
-float3 _SimulationCenter;
-float3 _SimulationSpace;
 
-StructuredBuffer<float3> _ParticlePositionBuffer;
-StructuredBuffer<float3> _ParticleOldPositionBuffer;
-StructuredBuffer<float4> _ParticleDataBuffer;
-uint _ParticleCount;
-float _HashCellSize;
-
-
-
-SPATIAL_HASH_BUFFERS(_)
-
+StructuredBuffer<Boid> _ParticleBuffer;
+StructuredBuffer<uint> _GridOffsetBuffer;
 
 uint3 id1Dto3D(uint id, uint3 resolution)
 {
@@ -57,53 +57,38 @@ void CollectValues(uint3 id : SV_DispatchThreadID)
     if (index >= _TotalCount)
         return;
 
-    int3 cellCount = (ceil(_SimulationSpace / _HashCellSize));
+    int3 cellCount = _Dimensions;
 
     int3 cellId = id1Dto3D(index, cellCount);
     
-    float3 pos = ((cellId + 0.5) / (cellCount) * 1 - 0.5) * _SimulationSpace + floor(_SimulationCenter / _HashCellSize) * _HashCellSize; 
+    float3 pos = ((cellId + 0.5) / (cellCount) * 1 - 0.5) * _SimulationSize + floor(_SimulationCenter / _HashCellSize) * _HashCellSize; 
     
-    // Neighborhood Search using Spatial Hash Grids
-    int3 originCell = GetCell3D(pos, _HashCellSize);
-    
-    
-    uint hashCell = HashCell3D(originCell);
-    uint key = KeyFromHash(hashCell, _ParticleCount);
-    uint currIndex = _SpatialOffsets[key];
-
+    // Neighborhood Search using Spatial Grids
     uint count = 0;
     ParticleCell cell = (ParticleCell)0;
+   
+
+
+    int3 originCell = GetGridCellId(pos, _HashCellSize, _SimulationCenter, _SimulationSize);
+    uint3 cellDimensions = _CellDimensions;
     
-    while (currIndex < _ParticleCount)
+    uint key = KeyFromCellId(originCell, cellDimensions);
+    uint currIndex = _GridOffsetBuffer[key-1];
+    uint nextIndex = _GridOffsetBuffer[key+0];
+    
+    while (currIndex < nextIndex)
     {
-        uint3 indexData = _SpatialIndices[currIndex];
-        currIndex++;
-        // Exit if no longer looking at correct bin
-        if (indexData[2] != key)
-            break;
-		// Skip if hash does not match
-        if (indexData[1] != hashCell)
-            continue;
-        
-        uint neighborIndex = indexData[0];
-        float3 particlePos = _ParticlePositionBuffer[neighborIndex]; 
+        Boid boid = _ParticleBuffer[currIndex]; 
 
-        int3 cellDiff = GetCell3D(particlePos, _HashCellSize) - originCell;
-        
-        if (dot(cellDiff, cellDiff) != 0)
-            continue;
-
-        float3 particleOldPos = _ParticleOldPositionBuffer[neighborIndex];
-        float3 velocity = (particlePos - particleOldPos) / max(_DeltaTime, 0.01);
-        float4 data = _ParticleDataBuffer[neighborIndex];
-        
-        cell.position += particlePos;
+        float3 velocity = (boid.pos - boid.oldPos) / max(_DeltaTime, 0.01);
+    
+        cell.position += boid.pos;
         cell.velocity += velocity;
-        cell.data += data;
-        
+        cell.data += float4(boid.exposure, boid.data, 0, 0);
+    
         cell.count++;
     }
-
+    
     if (cell.count > 0)
     {
         cell.position /= cell.count;

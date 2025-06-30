@@ -8,7 +8,7 @@ namespace Beakstorm.ComputeHelpers
     /// <summary>
     /// Static class to perform Bitonic Merge Sort for Spatial Hash Grids via compute shader.
     /// </summary>
-    public class SpatialHashCellOrdered : IDisposable
+    public class SpatialGrid : IDisposable
     {
         private readonly ComputeShader _cs;
         private readonly IGridParticleSimulation _simulation;
@@ -43,7 +43,7 @@ namespace Beakstorm.ComputeHelpers
 
         private LocalKeyword _aliveCountKeyword;
 
-        public SpatialHashCellOrdered(ComputeShader cs, IGridParticleSimulation simulation, GraphicsBuffer aliveCountBuffer = null)
+        public SpatialGrid(ComputeShader cs, IGridParticleSimulation simulation, GraphicsBuffer aliveCountBuffer = null)
         {
             _cs = cs;
             _simulation = simulation;

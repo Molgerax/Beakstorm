@@ -61,7 +61,7 @@ namespace Beakstorm.Simulation.Particles
         public static BoidGridManager Instance;
 
         public GraphicsBuffer SpatialIndicesBuffer => _hash?.GridBuffer;
-        public GraphicsBuffer SpatialOffsetsBuffer => _hash?.GridOffsetBuffer;
+        public GraphicsBuffer GridOffsetsBuffer => _hash?.GridOffsetBuffer;
         public GraphicsBuffer PositionBuffer => _boidBufferRead;
         public GraphicsBuffer OldPositionBuffer => _boidBufferRead;
         public GraphicsBuffer DataBuffer => _boidBufferRead;
@@ -72,8 +72,8 @@ namespace Beakstorm.Simulation.Particles
 
         private Vector4 _whistleSource;
 
-        private SpatialHashCellOrdered _hash;
-        public SpatialHashCellOrdered Hash => _hash;
+        private SpatialGrid _hash;
+        public SpatialGrid Hash => _hash;
 
         private bool _swapBuffers;
 
@@ -156,7 +156,7 @@ namespace Beakstorm.Simulation.Particles
             _boidBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, AgentBufferStride * sizeof(float));
             _boidBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, AgentBufferStride * sizeof(float));
 
-            _hash = new SpatialHashCellOrdered(cellShader, this);
+            _hash = new SpatialGrid(cellShader, this);
             
             int initKernel = boidComputeShader.FindKernel("Init");
             RunSimulation(initKernel, SimulationTime.DeltaTime);
@@ -208,9 +208,9 @@ namespace Beakstorm.Simulation.Particles
 
             if (SdfShapeManager.Instance)
             {
-                boidComputeShader.SetBuffer(kernelId, SdfShapeManager.PropertyIDs.NodeBuffer, SdfShapeManager.Instance.NodeBuffer);
-                boidComputeShader.SetBuffer(kernelId, SdfShapeManager.PropertyIDs.SdfBuffer, SdfShapeManager.Instance.SdfBuffer);
-                boidComputeShader.SetInt(SdfShapeManager.PropertyIDs.NodeCount, SdfShapeManager.Instance.NodeCount);
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.NodeBuffer, SdfShapeManager.Instance.NodeBuffer);
+                boidComputeShader.SetBuffer(kernelId, PropertyIDs.SdfBuffer, SdfShapeManager.Instance.SdfBuffer);
+                boidComputeShader.SetInt(PropertyIDs.NodeCount, SdfShapeManager.Instance.NodeCount);
             }
 
             if (PheromoneGridManager.Instance)
@@ -309,7 +309,10 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int PheromoneCellDimensions = Shader.PropertyToID("_PheromoneCellDimensions");
             public static readonly int PheromoneArgs = Shader.PropertyToID("_PheromoneArgs");
             
-            
+            public static readonly int NodeBuffer = Shader.PropertyToID("_NodeBuffer");
+            public static readonly int SdfBuffer = Shader.PropertyToID("_SdfBuffer");
+            public static readonly int NodeCount = Shader.PropertyToID("_NodeCount");
+
             public static readonly int AttractorBuffer = Shader.PropertyToID("_AttractorBuffer");
             public static readonly int AttractorCount = Shader.PropertyToID("_AttractorCount");
 
