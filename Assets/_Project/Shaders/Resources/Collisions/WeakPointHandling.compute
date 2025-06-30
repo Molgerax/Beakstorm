@@ -1,7 +1,7 @@
 #pragma kernel FlushDamage
 #pragma kernel CollideBoids
 
-#include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
+#include "../SpatialGrid/SpatialGridSampling.hlsl"
 
 StructuredBuffer<float4> _WeakPointBuffer;
 RWStructuredBuffer<int> _DamageBuffer;

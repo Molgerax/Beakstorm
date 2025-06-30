@@ -1,8 +1,6 @@
 #ifndef _INCLUDE_BOID_PARAMETERS_
 #define _INCLUDE_BOID_PARAMETERS_
 
-#include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
-
 uint _TotalCount;
 
 float _Time;

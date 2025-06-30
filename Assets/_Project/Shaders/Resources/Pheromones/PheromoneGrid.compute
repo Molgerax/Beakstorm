@@ -5,7 +5,7 @@
 #pragma kernel Clear
 #pragma kernel PrepareSort
 
-#include "../SpatialHashing/RandomFunctions.hlsl"
+#include "../RandomFunctions.hlsl"
 
 #include "PheromoneParameters.hlsl"
 #include "PheromoneMath.hlsl"
@@ -250,8 +250,8 @@ void Update (uint3 id : SV_DispatchThreadID)
 
     //acceleration -= velocity * 0.5;
     
-    velocity += acceleration * _DeltaTime;
-    //velocity = acceleration * 5;
+    //velocity += acceleration * _DeltaTime;
+    velocity = acceleration * 5;
 
     currentPosition += velocity * _DeltaTime;
     

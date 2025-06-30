@@ -2,8 +2,8 @@
 #pragma kernel Init
 
 
-#include "../SpatialHashing/RandomFunctions.hlsl"
-#include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
+#include "../RandomFunctions.hlsl"
+#include "../SpatialGrid/SpatialGridSampling.hlsl"
 
 #include "../Collisions/SdfCollisions.hlsl"
 #include "../Pheromones/PheromoneMath.hlsl"

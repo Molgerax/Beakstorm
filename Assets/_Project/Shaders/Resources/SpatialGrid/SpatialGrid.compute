@@ -7,7 +7,7 @@
 
 #pragma multi_compile _ ALIVE_COUNT
 
-#include "SpatialHashGridsCellOrdering.hlsl"
+#include "SpatialGridSampling.hlsl"
 
 #define THREAD_BLOCK_SIZE 1024
 

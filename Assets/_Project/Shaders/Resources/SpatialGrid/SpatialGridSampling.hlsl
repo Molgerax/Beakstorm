@@ -1,5 +1,5 @@
-#ifndef _INCLUDE_SPATIAL_HASH_GRIDS_CELL_ORDERING_
-#define _INCLUDE_SPATIAL_HASH_GRIDS_CELL_ORDERING_
+#ifndef _INCLUDE_SPATIAL_GRID_SAMPLING_
+#define _INCLUDE_SPATIAL_GRID_SAMPLING_
 
 // --Parameters for Spatial Hash usage--
 uint _AgentCount;

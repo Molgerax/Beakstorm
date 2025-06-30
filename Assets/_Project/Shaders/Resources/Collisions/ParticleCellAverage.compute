@@ -1,6 +1,6 @@
 #pragma kernel CollectValues
 
-#include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
+#include "../SpatialGrid/SpatialGridSampling.hlsl"
 
 struct ParticleCell
 {

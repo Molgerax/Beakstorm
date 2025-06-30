@@ -1,7 +1,7 @@
 #ifndef _INCLUDE_PHEROMONE_PARAMETERS_
 #define _INCLUDE_PHEROMONE_PARAMETERS_
 
-#include "../SpatialHashing/SpatialHashGridsCellOrdering.hlsl"
+#include "../SpatialGrid/SpatialGridSampling.hlsl"
 
 struct Pheromone
 {
