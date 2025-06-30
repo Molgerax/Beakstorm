@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BeakStorm_Pheromones_Grid Instanced URP
+  m_Name: BeakStorm_Pheromones_Grid Instanced URP_NoSort
   m_Shader: {fileID: 4800000, guid: a617e33784a1b7344b9dffbdaeda9f7c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -45,7 +45,7 @@ Material:
     m_Colors:
     - _Color: {r: 0.362, g: 0.0047169924, b: 0.0047169924, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 0}
-    - _MainColor: {r: 1, g: 0, b: 0, a: 0.2}
-    - _OffColor: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 0}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+    - _OffColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

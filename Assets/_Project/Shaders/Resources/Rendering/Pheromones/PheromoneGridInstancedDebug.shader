@@ -1,4 +1,4 @@
-Shader "BeakStorm/Pheromones/Grid Instanced URP"
+Shader "BeakStorm/Pheromones/Grid InstancedDebug URP"
 {
     Properties
     {

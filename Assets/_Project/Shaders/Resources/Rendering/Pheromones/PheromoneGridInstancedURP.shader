@@ -14,6 +14,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
     	_VertexColorToEmissive("Vertex Color Mask for Emission", Range(0.0,1.0)) = 1
     	_Size("Size", Float) = 1
     	
+    	[Toggle] _SORT("Use Sorting Buffer", Integer) = 1
     }
     
     HLSLINCLUDE
@@ -27,7 +28,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
     #pragma shader_feature _ _SHADOWMODE_ON
 	#pragma multi_compile_fwdbase nolightmap nodirlightmap nodynlightmap novertexlight
     #pragma multi_compile_fwdadd_fullshadows
-    
+    #pragma shader_feature _ _SORT_ON
     
     struct v2f
     {
@@ -158,9 +159,14 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 
 		InitIndirectDrawArgs(0);
         uint instanceID = GetIndirectInstanceID(instance_id);
-		SortEntry entry = _PheromoneSortingBuffer[instanceID];
-		Pheromone pheromone = _PheromoneBuffer[entry.index];
+		uint index = instanceID;
 		
+		#if _SORT_ON
+		SortEntry entry = _PheromoneSortingBuffer[instanceID];
+		index = entry.index;
+		#endif
+		
+		Pheromone pheromone = _PheromoneBuffer[index];
 		if (pheromone.life <= 0)
 			return (Interpolators)(1.0 / 0.0);
 		
@@ -213,8 +219,14 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 	
 		InitIndirectDrawArgs(0);
         uint instanceID = GetIndirectInstanceID(instance_id);
+		uint index = instanceID;
+		
+		#if _SORT_ON
 		SortEntry entry = _PheromoneSortingBuffer[instanceID];
-		Pheromone pheromone = _PheromoneBuffer[entry.index];
+		index = entry.index;
+		#endif
+		
+		Pheromone pheromone = _PheromoneBuffer[index];
 
 		float3 meshPositionWS = pheromone.pos;
 
@@ -268,13 +280,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 
 
 		float3 col = 0;
-		col.x = frac(input.color.x);
-		col.y = frac(input.color.x * 2);
-		col.z = frac(input.color.x * 4);
-		col = 1;
-		//col = hsv2rgb(float3(input.color.x, 1, 1));
 		col = input.color.rgb;
 		col = 1;
+		//col = hsv2rgb(float3(input.color.g, 1, 1));
 
 		half4 pheromoneColor = lerp(_OffColor, _MainColor, input.color.g);
 		
@@ -341,8 +349,14 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 	
 		InitIndirectDrawArgs(0);
         uint instanceID = GetIndirectInstanceID(instance_id);
+		uint index = instanceID;
+		
+		#if _SORT_ON
 		SortEntry entry = _PheromoneSortingBuffer[instanceID];
-		Pheromone pheromone = _PheromoneBuffer[entry.index];
+		index = entry.index;
+		#endif
+		
+		Pheromone pheromone = _PheromoneBuffer[index];
 		
 	    float3 meshPositionWS = pheromone.pos;
 	    
