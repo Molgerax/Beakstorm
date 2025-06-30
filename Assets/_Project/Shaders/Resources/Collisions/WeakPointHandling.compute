@@ -82,8 +82,8 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
         int3 offset3D = GetIntegerOffsets3D(sideLength, iterator) + cellOffset;
         
         uint key = KeyFromCellId(originCell + offset3D, cellDimensions);
-        uint currIndex = _GridOffsetBuffer[key+0];
-        uint nextIndex = _GridOffsetBuffer[key+1];
+        uint currIndex = _GridOffsetBuffer[key-1];
+        uint nextIndex = _GridOffsetBuffer[key+0];
     
         while (currIndex < nextIndex)
         {
