@@ -7,7 +7,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
     [ExecuteAlways]
     public abstract class AbstractSdfShape : MonoBehaviour,  IBounds, ISdfData<AbstractSdfData>
     {
-        [SerializeField] private SdfMaterialType materialType = SdfMaterialType.Metal;
+        [SerializeField] private SdfMaterialType materialType = SdfMaterialType.None;
         
         protected abstract SdfShapeType Type();
 
@@ -67,11 +67,12 @@ namespace Beakstorm.Simulation.Collisions.SDF
     
     public enum SdfMaterialType
     {
-        Metal = 0,
-        Stone = 1,
-        Wood = 2,
-        Fabric = 3,
-        Glass = 4,
+        None = 0,
+        Weak = 1,
+        Metal = 2,
+        Wood = 3,
+        Fabric = 4,
+        Glass = 5,
     }
     
     public struct AbstractSdfData

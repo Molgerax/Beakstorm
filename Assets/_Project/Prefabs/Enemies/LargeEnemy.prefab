@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8830c653d6fdbbf44ba062a1bcb01d64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialType: 0
+  materialType: 2
   radius: 0.5
   height: 2
 --- !u!1 &8591765711633159958

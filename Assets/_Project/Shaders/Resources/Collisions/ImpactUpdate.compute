@@ -1,0 +1,39 @@
+#pragma kernel Clear
+#pragma kernel Update
+
+#define THREAD_GROUP_SIZE 256
+
+#include "ImpactUtility.hlsl"
+
+float _DeltaTime;
+
+[numthreads(THREAD_GROUP_SIZE,1,1)]
+void Clear(uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.x;
+
+    if (index >= _ImpactCount)
+        return;
+
+    _ImpactBufferWrite[index] = (Impact)0;
+}
+
+
+[numthreads(THREAD_GROUP_SIZE,1,1)]
+void Update(uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.x;
+
+    if (index >= _ImpactCount)
+        return;
+
+    if (index >= _ImpactArgsBuffer[1])
+        return;
+
+    Impact impact = _ImpactBufferRead[index];
+
+    impact.time -= _DeltaTime;
+
+    if (impact.time > 0)
+        AddImpact(impact);
+}

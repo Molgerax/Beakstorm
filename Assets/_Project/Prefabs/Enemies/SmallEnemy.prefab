@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 254cbd5711bea7c4eb0384f5338abbc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialType: 0
+  materialType: 2
   scale:
     x: 1
     y: 1
@@ -425,8 +425,7 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 3737224284858463794}
-  completionPercentage:
-    _PersistentCalls: []
+  autoStart: 1
 --- !u!54 &6932584481282226778
 Rigidbody:
   m_ObjectHideFlags: 0

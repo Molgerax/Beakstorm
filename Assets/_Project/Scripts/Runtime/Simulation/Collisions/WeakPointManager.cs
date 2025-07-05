@@ -14,6 +14,8 @@ namespace Beakstorm.Simulation.Collisions
     {
         [SerializeField] private ComputeShader compute;
 
+        [SerializeField] private ImpactParticleManager impact;
+        
         [SerializeField] private bool logDebugInfo = false;
 
         public static WeakPointManager Instance;
@@ -202,28 +204,28 @@ namespace Beakstorm.Simulation.Collisions
             manager.Hash.SetShaderProperties(compute);
             compute.SetBuffer(kernel, PropertyIDs.GridOffsetBuffer, manager.Hash.GridOffsetBuffer);
             compute.SetBuffer(kernel, PropertyIDs.BoidBuffer, manager.AgentBufferRead);
+
+            if (impact && impact.Initialized)
+            {
+                impact.SetImpactBuffer(compute, kernel);
+            }
             
             compute.DispatchExact(kernel, _bufferSize);
         }
         
         
-        
-        public static class PropertyIDs
+        private static class PropertyIDs
         {
             public static readonly int TotalCount              = Shader.PropertyToID("_TotalCount");
             public static readonly int HashCellSize            = Shader.PropertyToID("_HashCellSize");
             
             public static readonly int Time                    = Shader.PropertyToID("_Time");
             public static readonly int DeltaTime               = Shader.PropertyToID("_DeltaTime");
-            public static readonly int PositionBuffer          = Shader.PropertyToID("_PositionBuffer");
-            public static readonly int OldPositionBuffer       = Shader.PropertyToID("_OldPositionBuffer");
             public static readonly int WeakPointBuffer          = Shader.PropertyToID("_WeakPointBuffer");
             public static readonly int DamageBuffer            = Shader.PropertyToID("_DamageBuffer");
             public static readonly int FlushDamageBuffer            = Shader.PropertyToID("_FlushDamageBuffer");
             public static readonly int WeakPointCount              = Shader.PropertyToID("_WeakPointCount");
             
-            public static readonly int SpatialIndices              = Shader.PropertyToID("_BoidSpatialIndices");
-            public static readonly int SpatialOffsets              = Shader.PropertyToID("_BoidSpatialOffsets");
             public static readonly int GridOffsetBuffer              = Shader.PropertyToID("_GridOffsetBuffer");
             public static readonly int BoidBuffer              = Shader.PropertyToID("_BoidBuffer");
         }

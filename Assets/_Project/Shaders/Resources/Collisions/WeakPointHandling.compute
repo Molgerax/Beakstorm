@@ -2,6 +2,8 @@
 #pragma kernel CollideBoids
 
 #include "../SpatialGrid/SpatialGridSampling.hlsl"
+#include "ImpactUtility.hlsl"
+
 
 StructuredBuffer<float4> _WeakPointBuffer;
 RWStructuredBuffer<int> _DamageBuffer;
@@ -99,11 +101,19 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
                 continue;
             
             float3 velocity = (boid.pos - boid.oldPos) / _DeltaTime;
-            float sqrMag = dot(velocity, velocity);
             
             float3 oldOffset = boid.oldPos - positionA;
             if (dot(oldOffset, oldOffset) > radius * radius)
-                _DamageBuffer[index] += clamp(floor(sqrt(sqrMag) / 10), 0, 10);
+            {
+                uint damage = CalculateDamage(velocity);
+                _DamageBuffer[index] += damage;
+                float dist = length(offset);
+                if (dist == 0)
+                    continue;
+
+                float3 norm = offset / dist;
+                AddImpact(positionA + norm * radius, norm, damage);
+            }
         }
     }
 }

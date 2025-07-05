@@ -6,6 +6,7 @@
 #include "../SpatialGrid/SpatialGridSampling.hlsl"
 
 #include "../Collisions/SdfCollisions.hlsl"
+#include "../Collisions/ImpactUtility.hlsl"
 #include "../Pheromones/PheromoneMath.hlsl"
 
 #include "../Rendering/QuaternionUtility.hlsl"
@@ -106,9 +107,15 @@ void collideSdf(inout float3 pos, inout float3 oldPos, SdfQueryInfo sdf, float b
     }
     float3 vel = pos - oldPos;
     float3 newVel = vel - (1+bounce) * dot(vel, normal) * normal;
+
     
+    float3 impactPos = pos - normal * dist;
     pos -= (1+bounce) * normal * dist;
     oldPos = pos - newVel;
+
+    float3 velocity = vel / _DeltaTime;
+    uint damage = CalculateDamage(velocity);
+    AddImpact(CreateImpact(impactPos, normal, sdf.matIndex, damage, 0.2));
 }
 
 float3 centerForce(float3 pos, uint index)

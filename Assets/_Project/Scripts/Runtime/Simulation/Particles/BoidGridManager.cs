@@ -1,5 +1,6 @@
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Pausing;
+using Beakstorm.Simulation.Collisions;
 using Beakstorm.Simulation.Collisions.SDF;
 using Beakstorm.Utility;
 using UnityEngine;
@@ -28,6 +29,9 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField]
         private Vector3 simulationSpace = Vector3.one;
 
+        [SerializeField] 
+        private ImpactParticleManager impact;
+        
         [Header("Spatial Subdivision")]
         [SerializeField]
         [Min(0.1f)]
@@ -229,6 +233,12 @@ namespace Beakstorm.Simulation.Particles
                 else
                     boidComputeShader.SetInt(PropertyIDs.AttractorCount, 0);
             }
+
+            if (impact)
+            {
+                impact.SetImpactBuffer(boidComputeShader, kernelId);
+            }
+            
             boidComputeShader.SetInts(PropertyIDs.Dimensions, _hash.Dimensions);
             boidComputeShader.SetBuffer(kernelId, PropertyIDs.SpatialOffsets, _hash.GridOffsetBuffer);
 
