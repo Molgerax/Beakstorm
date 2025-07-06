@@ -16,6 +16,8 @@ StructuredBuffer<Impact> _ImpactBufferRead;
 StructuredBuffer<uint> _ImpactArgsBuffer;
 uint _ImpactCount;
 
+uint _MaxFrames;
+
 uint CalculateDamage(float3 velocity)
 {
     float sqrSpeed = dot(velocity, velocity);
@@ -44,11 +46,16 @@ Impact CreateImpact(float3 pos, float3 normal, uint matIndex, uint damage, float
     impact.normal = normal;
     impact.time = time;
 
-    uint maxTime = time * 64;
+    uint maxTime = (uint)(time * 64) & 0xFF;
     
     impact.data = (maxTime << 16) | (matIndex << 8) | (damage & 0xFF); 
     
     return impact;
+}
+
+Impact CreateImpact(float3 pos, float3 normal, uint matIndex, uint damage)
+{
+    return CreateImpact(pos, normal, matIndex, damage, _MaxFrames * 0.05);
 }
 
 void AddImpact(Impact impact)
@@ -69,7 +76,7 @@ void AddImpact(Impact impact)
 
 void AddImpact(float3 pos, float3 normal, uint damage)
 {
-    Impact impact = CreateImpact(pos, normal, 1, damage, 0.2);
+    Impact impact = CreateImpact(pos, normal, 1, damage);
     AddImpact(impact);
 }
 

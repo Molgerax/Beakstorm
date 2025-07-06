@@ -13,6 +13,8 @@ Shader "BeakStorm/Impacts/Instanced URP"
         [NoScaleOffset] _EmissiveMap("Emission Map", 2D) = "white" {}
     	_VertexColorToEmissive("Vertex Color Mask for Emission", Range(0.0,1.0)) = 1
     	_Size("Size", Float) = 1
+    	
+    	_UvOffset("UV Offset", Range(-0.5,0.5)) = 0
     }
     
     HLSLINCLUDE
@@ -48,6 +50,10 @@ Shader "BeakStorm/Impacts/Instanced URP"
     //Properties
     int _SubMeshId;
 
+    TEXTURE2D(_SpriteSheet);
+    //CBUFFER_START(UnityPerObject)
+	//CBUFFER_END
+    
     CBUFFER_START(UnityPerMaterial)
     
     TEXTURE2D(_MainTex);
@@ -62,7 +68,12 @@ Shader "BeakStorm/Impacts/Instanced URP"
     float3 _EmissiveColor;
 	float _VertexColorToEmissive;
 	float _Size;
+
+    float _UvOffset;
     
+	int _SpriteCount;
+    int _SpriteFrameCount;
+    int _SpriteHeight;
     
     StructuredBuffer<Impact> _ImpactBuffer;
  
@@ -75,6 +86,7 @@ Shader "BeakStorm/Impacts/Instanced URP"
 	
 	// Textures
 	SAMPLER(sampler_MainTex);
+	SAMPLER(sampler_SpriteSheet);
 	
 	float4 _ColorMap_ST; // This is automatically set by Unity. Used in TRANSFORM_TEX to apply UV tiling
 	float4 _ColorTint;
@@ -113,6 +125,17 @@ Shader "BeakStorm/Impacts/Instanced URP"
 		return hsv.z * lerp(K.xxx, clamp(p - K.xxx, 0.0, 1.0), hsv.y);
 	}
 
+
+    float2 GetSpriteUV(float2 uv, int spriteId, int frame)
+	{
+		float height = 1.0 / _SpriteCount;
+		uv.x /= _SpriteFrameCount;
+		uv.y /= _SpriteCount;
+
+		uv.x += (1.0 / _SpriteFrameCount) * frame;
+		uv.y += height * spriteId;
+		return uv;
+	}
     
 
     
@@ -147,6 +170,8 @@ Shader "BeakStorm/Impacts/Instanced URP"
 		t = lerp(f, g, 1-ot);
 
 		t = (t * 2 - 1);
+
+		//t = 1;
 		
 		return t * _Size * dmg;
 	}
@@ -170,7 +195,7 @@ Shader "BeakStorm/Impacts/Instanced URP"
 
 		float data = damage / 10.0;
 
-		float3 offset = float3(0.35,0,0);
+		float3 offset = float3(_UvOffset,0,0);
 		float3 vpos = input.positionOS.xyz + offset;
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
@@ -180,12 +205,25 @@ Shader "BeakStorm/Impacts/Instanced URP"
 		
 		float3 up = impact.normal;
 		float3 right = cross(up, cameraDiff);
-		if (dot(right, right) == 0)
+		//if (dot(right, right) == 0)
 		{
 			up = cameraY;
 			right = cameraX;
 		}
 		float3 fwd = cross(up, right);
+
+		float random = GenerateHashedRandomFloat(asuint(impact.position.x) + asuint(impact.position.y) + asuint(impact.position.z));
+		
+		float angle = (random * 2 - 1) * 6.28;
+		float sine, cosine;
+		sincos(angle, sine, cosine);
+		
+		float3x3 angleRot = float3x3(
+			float3(cosine, sine, 0),
+			float3(-sine, cosine, 0),
+			float3(0, 0, 1));
+
+		vpos = mul(angleRot, vpos);
 		
 		float3x3 tilt = float3x3(
 			normalize(up),
@@ -196,14 +234,24 @@ Shader "BeakStorm/Impacts/Instanced URP"
 		vpos = mul(tilt, vpos);
 		
 		float3 worldPos = meshPositionWS + vpos * GetSize(impact);
-		
+
 		output.positionCS = TransformWorldToHClip(worldPos);
+
+		output.positionCS.z += 0.01;
 		
 		float3 color = hsv2rgb(float3(data * 0.25, 1, 1));
 		color = saturate(data);
+
+		float maxTime = GetMaxTime(impact);
+		float t = 1 - (impact.time / maxTime);
+
+		int frame = floor(t * _SpriteFrameCount);
+
+		float2 uv = GetSpriteUV(input.uv, matIndex - 1, frame);
+		//uv = input.uv;
 		
 		output.color = float4(color, GetSize(impact));
-		output.uv = input.uv;
+		output.uv = uv;
 		output.screenUV = GetNormalizedScreenSpaceUV(output.positionCS);
 	
 		output.instanceID = instance_id;
@@ -231,7 +279,7 @@ Shader "BeakStorm/Impacts/Instanced URP"
 
 		float data = damage / 10.0;
 		
-		float3 vpos = input.positionOS.xyz * GetSize(impact);
+		float3 vpos = input.positionOS.xyz + float3(_UvOffset,0,0);
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
 		float3 cameraZ = unity_CameraToWorld._m02_m12_m22;
@@ -252,7 +300,7 @@ Shader "BeakStorm/Impacts/Instanced URP"
 
 		vpos = mul(tilt, vpos);
 		
-		float3 worldPos = meshPositionWS + vpos;
+		float3 worldPos = meshPositionWS + vpos * GetSize(impact);
 		
 		float4 outPos = TransformWorldToHClip(worldPos);
 		
@@ -276,7 +324,7 @@ Shader "BeakStorm/Impacts/Instanced URP"
 		float2 uv = input.uv;
 
 		float2 offset = uv * 2 - 1;
-		float4 colorSample = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
+		float4 colorSample = SAMPLE_TEXTURE2D(_SpriteSheet, sampler_SpriteSheet, uv);
 		
 		if (colorSample.a < 0.1)
 			discard;
@@ -294,7 +342,8 @@ Shader "BeakStorm/Impacts/Instanced URP"
 
 		half4 impactColor = lerp(_OffColor, _MainColor, input.color.r);
 		
-		col *= impactColor.rgb;
+		//col *= impactColor.rgb;
+		col *= colorSample.rgb;
 		return float4(col, 1);
 		return float4(normal * 0.5 + 0.5, input.color.x);
 		
@@ -355,7 +404,7 @@ Shader "BeakStorm/Impacts/Instanced URP"
 
 		float data = damage / 10.0;
 		
-		float3 vpos = input.positionOS.xyz * GetSize(impact);
+		float3 vpos = input.positionOS.xyz + float3(_UvOffset,0,0);
 		float3 cameraX = unity_CameraToWorld._m00_m10_m20;
 		float3 cameraY = unity_CameraToWorld._m01_m11_m21;
 		float3 cameraZ = unity_CameraToWorld._m02_m12_m22;
@@ -376,7 +425,7 @@ Shader "BeakStorm/Impacts/Instanced URP"
 
 		vpos = mul(tilt, vpos);
 		
-		float3 worldPos = meshPositionWS + vpos;
+		float3 worldPos = meshPositionWS + vpos * GetSize(impact);
 	    
 	    output.positionCS = GetShadowCasterPositionCS(worldPos, input.normalOS);
 	
@@ -395,7 +444,7 @@ Shader "BeakStorm/Impacts/Instanced URP"
   
     SubShader
     {
-    	Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Geometry+100"}
+    	Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Overlay"}
     	
         Pass //Base with Ambient Light
     	{

@@ -38,11 +38,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _Size: 16
+    - _UvOffset: 0
     - _VertexColorToBase: 1
     - _VertexColorToEmissive: 1
     m_Colors:
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 0}
-    - _MainColor: {r: 1, g: 0, b: 0, a: 1}
-    - _OffColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MainColor: {r: 1, g: 0.601208, b: 0, a: 1}
+    - _OffColor: {r: 0.36862746, g: 0.36862746, b: 0.36862746, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

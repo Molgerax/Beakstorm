@@ -1,5 +1,6 @@
 using System;
 using Beakstorm.Pausing;
+using Beakstorm.Simulation.Collisions.Impacts;
 using Beakstorm.Utility;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,6 +16,9 @@ namespace Beakstorm.Simulation.Collisions
 
         [SerializeField] private Mesh mesh;
         [SerializeField] private Material material;
+
+        [SerializeField] private ImpactSpriteSheet spriteSheet;
+        
         
         private int _impactCount;
 
@@ -98,6 +102,8 @@ namespace Beakstorm.Simulation.Collisions
             
             compute.SetInt(PropertyIDs.ImpactCount, ImpactCount);
             compute.SetFloat(PropertyIDs.DeltaTime, deltaTime);
+
+            compute.SetInt(PropertyIDs.MaxFrames, spriteSheet.MaxFrames);
             
             compute.Dispatch(kernel, _impactCount / THREAD_GROUP_SIZE, 1, 1);
             CopyWriteCount();
@@ -125,6 +131,7 @@ namespace Beakstorm.Simulation.Collisions
         {
             cs.SetBuffer(kernel, PropertyIDs.ImpactBufferWrite, ImpactBufferWrite);
             cs.SetInt(PropertyIDs.ImpactCount, ImpactCount);
+            cs.SetInt(PropertyIDs.MaxFrames, spriteSheet.MaxFrames);
         }
         
         private void RenderMeshes()
@@ -135,6 +142,11 @@ namespace Beakstorm.Simulation.Collisions
             _propertyBlock ??= new MaterialPropertyBlock();
             _propertyBlock.SetBuffer(PropertyIDs.ImpactBuffer, ImpactBufferWrite);
 
+            if (spriteSheet)
+                spriteSheet.SetMaterialPropertyBlock(material);
+
+            
+            
             RenderParams rp = new RenderParams(material)
             {
                 camera = null,
@@ -163,6 +175,7 @@ namespace Beakstorm.Simulation.Collisions
             public static readonly int ImpactArgsBuffer = Shader.PropertyToID("_ImpactArgsBuffer");
             
             public static readonly int DeltaTime = Shader.PropertyToID("_DeltaTime");
+            public static readonly int MaxFrames = Shader.PropertyToID("_MaxFrames");
         }
     }
 }

@@ -115,7 +115,7 @@ void collideSdf(inout float3 pos, inout float3 oldPos, SdfQueryInfo sdf, float b
 
     float3 velocity = vel / _DeltaTime;
     uint damage = CalculateDamage(velocity);
-    AddImpact(CreateImpact(impactPos, normal, sdf.matIndex, damage, 0.2));
+    AddImpact(CreateImpact(impactPos, normal, sdf.matIndex, damage));
 }
 
 float3 centerForce(float3 pos, uint index)
