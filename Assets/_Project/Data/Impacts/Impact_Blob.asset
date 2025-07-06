@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0bd49df900107446ae5426678319787, type: 3}
+  m_Name: Impact_Blob
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 2800000, guid: f5d6dd6e62dafbc40b786d7076296bdc, type: 3}
+  - {fileID: 2800000, guid: 2357f0212aae9d14391c1aeaa7ebec60, type: 3}
+  - {fileID: 2800000, guid: 2357f0212aae9d14391c1aeaa7ebec60, type: 3}
+  - {fileID: 2800000, guid: e63046eabde561c42a0a3f3166b1eb74, type: 3}
+  frameCount: 1

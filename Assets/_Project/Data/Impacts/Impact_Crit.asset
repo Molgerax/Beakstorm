@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0bd49df900107446ae5426678319787, type: 3}
+  m_Name: Impact_Crit
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 2800000, guid: fc8353923cb6e0347b0cf3749bc3e807, type: 3}
+  - {fileID: 2800000, guid: f0160e6f208c3f1468086315d648f69c, type: 3}
+  - {fileID: 2800000, guid: d01f43eb05aa05e4792410c190b64bf5, type: 3}
+  frameCount: 1

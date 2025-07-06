@@ -622,6 +622,7 @@ MonoBehaviour:
   compute: {fileID: 7200000, guid: d9b611a48c92b2740a4fe88736642172, type: 3}
   mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 5703681b7ff606c4ea951fd91e610f84, type: 2}
+  spriteSheet: {fileID: 11400000, guid: 17ff93bcb269e314394d69d6ace3f6d7, type: 2}
 --- !u!4 &1908763087
 Transform:
   m_ObjectHideFlags: 0
