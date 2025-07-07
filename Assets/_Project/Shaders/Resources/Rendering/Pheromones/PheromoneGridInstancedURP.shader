@@ -13,6 +13,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
         [NoScaleOffset] _EmissiveMap("Emission Map", 2D) = "white" {}
     	_VertexColorToEmissive("Vertex Color Mask for Emission", Range(0.0,1.0)) = 1
     	_Size("Size", Float) = 1
+    	_ZFade("ZFade", Range(0.001,1)) = 0.1
     	
     	[Toggle] _SORT("Use Sorting Buffer", Integer) = 1
     }
@@ -20,7 +21,8 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
     HLSLINCLUDE
 
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-
+	#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+    
     #define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs
     #include "UnityIndirect.cginc"
     
@@ -63,6 +65,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
     float3 _EmissiveColor;
 	float _VertexColorToEmissive;
 	float _Size;
+	float _ZFade; 
     
     struct Pheromone
 	{
@@ -88,7 +91,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 	
 	    // Pull in URP library functions and our own common functions
 	#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-	
+
+	TEXTURE2D(_CameraDepthAttachment);
+    
 	// Textures
 	SAMPLER(sampler_MainTex);
 	
@@ -119,6 +124,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float2 screenUV		: TEXCOORD1;
 		float3 positionWS	: TEXCOORD2;
 		uint instanceID		: SV_InstanceID;
+		float depth : TEXCOORD3;
 	};
 	
 	float3 hsv2rgb(float3 hsv)
@@ -129,7 +135,15 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		return hsv.z * lerp(K.xxx, clamp(p - K.xxx, 0.0, 1.0), hsv.y);
 	}
 
-    
+    float LinearDepthToNonLinear(float linear01Depth, float4 zBufferParam){
+		// Inverse of Linear01Depth
+		return (1.0 - (linear01Depth * zBufferParam.y)) / (linear01Depth * zBufferParam.x);
+	}
+	
+	float EyeDepthToNonLinear(float eyeDepth, float4 zBufferParam){
+		// Inverse of LinearEyeDepth
+		return (1.0 - (eyeDepth * zBufferParam.w)) / (eyeDepth * zBufferParam.z);
+	}
 
     
 	float NumberToDots(float number, float2 uv)
@@ -205,11 +219,14 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		
 		output.color = float4(color, GetSize(pheromone));
 		output.uv = input.uv;
-		output.screenUV = GetNormalizedScreenSpaceUV(output.positionCS);
-	
+		output.screenUV = (output.positionCS.xy / output.positionCS.w) * 0.5 + 0.5;
 		output.instanceID = instance_id;
+
+		float depth = -TransformWorldToView(worldPos).z;
+
+		//depth = LinearDepthToNonLinear(output.positionCS.z / output.positionCS.w, _ZBufferParams);
+		output.depth = depth;
 		
-	
 		return output;
 	}
 	
@@ -264,6 +281,16 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float2 offset = uv * 2 - 1;
 		float4 colorSample = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
 
+		float2 screenUv = GetNormalizedScreenSpaceUV(input.positionCS);
+		
+		float sceneDepth = SampleSceneDepth(screenUv);
+		//sceneDepth = SAMPLE_TEXTURE2D(_CameraDepthAttachment, sampler_LinearClamp, screenUv);
+
+		//sceneDepth = LinearDepthToEyeDepth(sceneDepth);
+		sceneDepth = LinearEyeDepth(sceneDepth, _ZBufferParams);
+
+		float zFade = saturate(_ZFade * (-input.depth + sceneDepth));
+		
 		if (dot(offset, offset) > 1)
 			discard;
 
@@ -292,6 +319,8 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float alpha = saturate(normal.z * input.color.z * input.color.z);
 		alpha *= colorSample.a;
 		alpha *= pheromoneColor.a;
+
+		alpha *= zFade;
 		
 		//col = NumberToDots(input.color, uv);
 		//col = 1;
@@ -301,6 +330,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float3 gi = SAMPLE_GI(input.lightmapUV, 0, normalWS);
 		//col = saturate(col + gi);
 		col = lerp(gi, col, lightStrength);
+
+		//col = zFade;
+		
 		return float4(col, alpha);
 		return float4(normal * 0.5 + 0.5, input.color.x);
 		
@@ -391,9 +423,57 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 	        Tags { "LightMode" = "UniversalForward" "RenderType"="Transparent"}
 	
 	        ZWrite Off
-    		Blend SrcAlpha OneMinusSrcAlpha
+    		Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
+    		//BlendOp Add, Multiply
+    		
     		Cull Back
+    		ZTest LEqual
+        	
+        	HLSLPROGRAM
+
+        	//#define _SPECULAR_COLOR
+        	
+        	#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile _ EVALUATE_SH_MIXED EVALUATE_SH_VERTEX
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+
+        	#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES
+        	#pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+            #pragma multi_compile _ _LIGHT_LAYERS
+            #pragma multi_compile _ _FORWARD_PLUS
+            #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+            #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+
+        	
+            #pragma multi_compile_fragment _ DEBUG_DISPLAY
+    		#pragma vertex Vertex
+			#pragma fragment Fragment
+        	
+        	ENDHLSL
+		}
+    	
+    	Pass //Base with Ambient Light
+    	{
+    		Name "ForwardLit Stenci"
+	        Tags { "LightMode" = "UniversalForwardStencil" "RenderType"="Transparent"}
 	
+	        ZWrite Off
+    		Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
+    		//BlendOp Add, Multiply
+    		
+    		Cull Back
+    		ZTest LEqual
+	
+    		Stencil 
+    		{
+    			Ref 1
+    			Comp NotEqual
+            }	
         	
         	HLSLPROGRAM
 
