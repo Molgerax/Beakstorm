@@ -105,6 +105,26 @@ namespace Beakstorm.ComputeHelpers
             cs.SetVector(PropertyIDs.SimulationSize, _size);
         }
         
+        public void SetShaderProperties(Material mat)
+        {
+            mat.SetInt(PropertyIDs.AgentCount, _agentCount);
+            mat.SetInt(PropertyIDs.CellCount, _cellCount);
+            mat.SetVector(PropertyIDs.CellDimensions, new Vector3(_cellDimensions.x, _cellDimensions.y, _cellDimensions.z));
+            mat.SetFloat(PropertyIDs.HashCellSize, _cellSize);
+            mat.SetVector(PropertyIDs.SimulationCenter, _center);
+            mat.SetVector(PropertyIDs.SimulationSize, _size);
+        }
+        
+        public void SetShaderProperties(MaterialPropertyBlock propBlock)
+        {
+            propBlock.SetInt(PropertyIDs.AgentCount, _agentCount);
+            propBlock.SetInt(PropertyIDs.CellCount, _cellCount);
+            propBlock.SetVector(PropertyIDs.CellDimensions, new Vector3(_cellDimensions.x, _cellDimensions.y, _cellDimensions.z));
+            propBlock.SetFloat(PropertyIDs.HashCellSize, _cellSize);
+            propBlock.SetVector(PropertyIDs.SimulationCenter, _center);
+            propBlock.SetVector(PropertyIDs.SimulationSize, _size);
+        }
+        
         private void UpdateGrid()
         {
             int kernelId = _cs.FindKernel("UpdateGrid"); 

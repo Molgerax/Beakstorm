@@ -353,6 +353,10 @@ namespace Beakstorm.Simulation.Particles
             _propertyBlock ??= new MaterialPropertyBlock();
             _propertyBlock.SetBuffer(PropertyIDs.PheromoneBuffer, AgentBufferRead);
             _propertyBlock.SetBuffer(PropertyIDs.PheromoneSortingBuffer, _pheromoneSorted);
+            _propertyBlock.SetBuffer(PropertyIDs.InstancedArgsBuffer, _instancedDrawingArgsBuffer);
+            
+            _hash.SetShaderProperties(_propertyBlock);
+            
 
             RenderParams rp = new RenderParams(material)
             {

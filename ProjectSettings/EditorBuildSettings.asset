@@ -47,6 +47,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/GameManagement/Menus/_IntroMenu.unity
     guid: 96df9a0f82d7cd548a504fe66178db32
+  - enabled: 1
+    path: Assets/_Project/Scenes/GameManagement/_SimulationManagers_Low.unity
+    guid: 3bb7ffa706dccf5448b399f407b73d27
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e60fc8aa09731434f8a2133b3fb99879, type: 2}
   m_UseUCBPForAssetBundles: 0

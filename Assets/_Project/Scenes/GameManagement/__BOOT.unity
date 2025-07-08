@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 61a7632d4bd5b37489b68af6d353f4c4, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: ac1d8abcc2fad634a8773659c953ce9b, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ca253e5e8171ad43b47aa3f66cce3b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetFrameRate: 60
+  targetFrameRate: 120
 --- !u!1 &1149043598
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,7 +596,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -661,6 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6a7fe767e168444baeb0cb185076e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  depthTextureMode: 1
 --- !u!114 &1219178960
 MonoBehaviour:
   m_ObjectHideFlags: 0

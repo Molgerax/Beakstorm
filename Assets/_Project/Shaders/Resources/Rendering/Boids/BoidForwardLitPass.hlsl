@@ -126,7 +126,8 @@ float4 Fragment(Interpolators input) : SV_TARGET{
 	surfaceInput.albedo = colorSample.rgb * _Color.rgb * input.color.rgb;
 	surfaceInput.alpha = colorSample.a * _Color.a;
 	surfaceInput.specular = 1;
-	surfaceInput.smoothness = 0.5;
+	surfaceInput.smoothness = lerp(0.5, 1, input.color.r);
+	surfaceInput.metallic = lerp(0, 1, input.color.r);
 	surfaceInput.occlusion = 1;
 	
 	#if defined(_SCREEN_SPACE_OCCLUSION) && !defined(_SURFACE_TYPE_TRANSPARENT)
