@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: NeutralBoidState
   m_EditorClassIdentifier: 
   separation: 1
-  alignment: 0.694
-  cohesion: 0.62
-  detection: 0
-  separationRadius: 3.55
-  alignmentRadius: 6.12
-  cohesionRadius: 7.36
-  detectionRadius: 8
+  alignment: 0.768
+  cohesion: 0.379
+  detection: 0.643
+  separationRadius: 4.74
+  alignmentRadius: 6.95
+  cohesionRadius: 10
+  detectionRadius: 10
   minSpeed: 0
   maxSpeed: 30
   maxForce: 100
