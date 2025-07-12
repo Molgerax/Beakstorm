@@ -1,5 +1,18 @@
 Shader "Beakstorm/Pheromone/Blit"
 {
+
+    HLSLINCLUDE
+
+    float _BlendStrength;
+
+
+    inline float4 ApplyBlendStrength(float4 col)
+    {
+        return col * _BlendStrength;
+    }
+    
+    ENDHLSL
+    
     SubShader
     {
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline"}
@@ -53,6 +66,8 @@ Shader "Beakstorm/Pheromone/Blit"
                 #ifdef _LINEAR_TO_SRGB_CONVERSION
                 col = LinearToSRGB(col);
                 #endif
+
+                col = ApplyBlendStrength(col);
                 
                 return col;
             }
@@ -177,6 +192,51 @@ Shader "Beakstorm/Pheromone/Blit"
 
                 
                 return output;
+            }
+            ENDHLSL
+        }
+        
+        Pass
+        {
+            Name "BlitNoEdge"
+            ZTest Always
+            ZWrite Off
+            Cull Off
+            
+            //Blend SrcAlpha OneMinusSrcAlpha, Zero OneMinusSrcAlpha
+            Blend One OneMinusSrcAlpha
+
+            
+            HLSLPROGRAM
+            #pragma vertex Vert
+            #pragma fragment Fragment
+            #pragma multi_compile_fragment _ _LINEAR_TO_SRGB_CONVERSION
+            #pragma multi_compile_fragment _ DEBUG_DISPLAY
+
+            // Core.hlsl for XR dependencies
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Debug/DebuggingFullscreen.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
+
+            SAMPLER(sampler_BlitTexture);
+            TEXTURE2D(_EdgeTexture);
+
+            half4 Fragment(Varyings input) : SV_Target
+            {
+                float2 uv = input.texcoord;
+
+                
+                float4 col = SAMPLE_TEXTURE2D(_BlitTexture, sampler_BlitTexture, uv);
+                float alpha = col.a;
+
+                #ifdef _LINEAR_TO_SRGB_CONVERSION
+                col = LinearToSRGB(col);
+                #endif
+
+                col = ApplyBlendStrength(col);
+                
+                return col;
             }
             ENDHLSL
         }

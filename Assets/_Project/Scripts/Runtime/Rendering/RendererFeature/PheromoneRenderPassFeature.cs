@@ -18,6 +18,7 @@ namespace Beakstorm.Rendering.RendererFeature
             
             private int _downSample;
             private int _layerMask;
+            private float _blendStrength;
             private float _sobelCutoff;
             private bool _renderSecond;
             private Material _blitMaterial;
@@ -37,11 +38,12 @@ namespace Beakstorm.Rendering.RendererFeature
                 public int DownSample;
             }
 
-            public void Setup(Material blitMaterial, int layerMask, int downSample, float sobelCutoff, bool renderSecond)
+            public void Setup(Material blitMaterial, int layerMask, int downSample, float blendStrength, float sobelCutoff, bool renderSecond)
             {
                 _blitMaterial = blitMaterial;
                 _downSample = 1 << (downSample);
                 _layerMask = layerMask;
+                _blendStrength = blendStrength;
                 _sobelCutoff = sobelCutoff;
                 _renderSecond = renderSecond;
             }
@@ -133,6 +135,12 @@ namespace Beakstorm.Rendering.RendererFeature
                 UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
                 
                 RenderTextureDescriptor desc = cameraData.cameraTargetDescriptor;
+                RenderTextureDescriptor descFull = desc;
+                descFull.depthStencilFormat = GraphicsFormat.None;
+                
+                TextureHandle destinationFullRes =
+                    UniversalRenderer.CreateRenderGraphTexture(renderGraph, descFull, "Destination FullRes Texture", true);
+
                 desc.width /= _downSample;
                 desc.height /= _downSample;
                 RenderTextureDescriptor depthDesc = desc;    
@@ -161,6 +169,7 @@ namespace Beakstorm.Rendering.RendererFeature
                 renderGraph.AddBlitPass(blitDepth);
                 
                 _blitMaterial.SetFloat("_SobelCutoff", _sobelCutoff);
+                _blitMaterial.SetFloat("_BlendStrength", _blendStrength);
                 
                 // This adds a raster render pass to the graph, specifying the name and the data type that will be passed to the ExecutePass function.
                 using (var builder = renderGraph.AddRasterRenderPass<PassData>(k_PassName, out var passData))
@@ -196,10 +205,7 @@ namespace Beakstorm.Rendering.RendererFeature
                 RenderGraphUtils.BlitMaterialParameters edgeBlit = 
                     new RenderGraphUtils.BlitMaterialParameters(destination, edges, _blitMaterial, 2);
                 renderGraph.AddBlitPass(edgeBlit);
-
-                RenderGraphUtils.BlitMaterialParameters blit =
-                    new RenderGraphUtils.BlitMaterialParameters(destination, resourceData.cameraColor, _blitMaterial, 0);
-
+                
                 AddBlitPass(renderGraph, destination, resourceData.cameraColor, resourceData.cameraDepth, _blitMaterial, "Blit With Edge", 0, edges);
                 
                 if (!_renderSecond)
@@ -220,7 +226,7 @@ namespace Beakstorm.Rendering.RendererFeature
                     
                     // This sets the render target of the pass to the active color texture. Change it to your own render target as needed.
                     //builder.SetRenderAttachment(resourceData.activeColorTexture, 0);
-                    builder.SetRenderAttachment(resourceData.cameraColor, 0, AccessFlags.ReadWrite);
+                    builder.SetRenderAttachment(destinationFullRes, 0, AccessFlags.ReadWrite);
                     builder.SetRenderAttachmentDepth(resourceData.cameraDepth, AccessFlags.Read);
 
                     passData.LowResDepth = lowDepth2;
@@ -234,7 +240,10 @@ namespace Beakstorm.Rendering.RendererFeature
                     //resourceData.cameraColor = destination;
                 }
                 
-                //renderGraph.AddBlitPass(blit);
+                RenderGraphUtils.BlitMaterialParameters blit =
+                    new RenderGraphUtils.BlitMaterialParameters(destinationFullRes, resourceData.cameraColor, _blitMaterial, 3);
+                
+                renderGraph.AddBlitPass(blit);
             }
         }
         
@@ -243,6 +252,9 @@ namespace Beakstorm.Rendering.RendererFeature
         [Range(0, 3)] private int downSampleFactor = 1;
 
         [SerializeField] private Material blitMaterial;
+        
+        [SerializeField, Range(0, 1f)] 
+        private float blendStrength = 1;
         
         [SerializeField, Range(0, 1f)] 
         private float sobelCutoff;
@@ -266,7 +278,7 @@ namespace Beakstorm.Rendering.RendererFeature
         // This method is called when setting up the renderer once per-camera.
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
-            m_ScriptablePass.Setup(blitMaterial, layerMask, downSampleFactor, sobelCutoff, renderSecond);
+            m_ScriptablePass.Setup(blitMaterial, layerMask, downSampleFactor, blendStrength, sobelCutoff, renderSecond);
             renderer.EnqueuePass(m_ScriptablePass);
         }
     }
