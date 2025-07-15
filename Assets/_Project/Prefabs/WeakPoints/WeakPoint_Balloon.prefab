@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6946547328022132843}
-  - component: {fileID: 8761654235262798898}
+  - component: {fileID: 93691353566164661}
   - component: {fileID: 2543976353914413433}
   - component: {fileID: 2909501407152813230}
   - component: {fileID: 8062433636948956559}
@@ -68,7 +68,7 @@ Transform:
   - {fileID: 8682381353215138128}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8761654235262798898
+--- !u!114 &93691353566164661
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80,9 +80,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b8243064419c7047b74e99d20bb095a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 250
   currentHealth: 0
-  radius: 0.5
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 0}
@@ -98,6 +97,9 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 2902308931138649375}
+  offset: {x: 0, y: 13.66, z: 0}
+  radius: 10.2
+  meshRenderer: {fileID: 5572208652208514414}
 --- !u!135 &2543976353914413433
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -230,6 +232,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac9742790ea2f954d9ede02c91cd2340, type: 3}
+--- !u!23 &5572208652208514414 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: ac9742790ea2f954d9ede02c91cd2340, type: 3}
+  m_PrefabInstance: {fileID: 6527373505969633770}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6710181903982452225 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ac9742790ea2f954d9ede02c91cd2340, type: 3}

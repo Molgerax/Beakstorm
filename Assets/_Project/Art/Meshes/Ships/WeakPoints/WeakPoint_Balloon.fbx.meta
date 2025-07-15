@@ -3,7 +3,22 @@ guid: ac9742790ea2f954d9ede02c91cd2340
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: m_cloth
+    second: {fileID: 2100000, guid: 4dfb57a49bcf69543818600b170ef672, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: m_metal_accent
+    second: {fileID: 2100000, guid: d62e846475ee4db45b4f5deacdb87d5f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: m_rope
+    second: {fileID: 2100000, guid: 93d116b213a7e2448a690227e43624d7, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

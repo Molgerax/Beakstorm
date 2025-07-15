@@ -7,17 +7,38 @@ namespace Beakstorm.Simulation.Collisions
     {
         [SerializeField] private int maxHealth = 100;
         [SerializeField] private int currentHealth;
+        [SerializeField] public UltEvent onHealthZero;
+        
+        [Header("Transform")]
+        [SerializeField] private Vector3 offset;
         [SerializeField] private float radius = 1;
 
-        [SerializeField] public UltEvent onHealthZero;
+        [SerializeField] private Renderer meshRenderer;
 
-        public Vector4 PositionRadius => new(transform.position.x, transform.position.y, transform.position.z, radius);
+
+        public Vector4 PositionRadius
+        {
+            get
+            {
+                Vector3 pos = Position;
+                return new(pos.x, pos.y, pos.z, Radius);
+            }
+        }
+
+        public float Radius => radius * AverageScale();
+
+        private float AverageScale()
+        {
+            Vector3 lossyScale = transform.lossyScale;
+            return (lossyScale.x + lossyScale.y + lossyScale.z) / 3f;
+        }
+
+        public Vector3 Position => transform.TransformPoint(offset);
         public int MaxHealth => maxHealth;
         public int CurrentHealth => currentHealth;
         public float CurrentHealth01 => (float) currentHealth / maxHealth;
         public bool IsDestroyed => currentHealth <= 0;
 
-        private MeshRenderer _renderer;
         private MaterialPropertyBlock _propBlock;
         
         private void OnEnable()
@@ -26,7 +47,11 @@ namespace Beakstorm.Simulation.Collisions
             Subscribe();
             
             _propBlock ??= new MaterialPropertyBlock();
-            _renderer = GetComponent<MeshRenderer>();
+            
+            if (!meshRenderer)
+                meshRenderer = GetComponent<MeshRenderer>();
+            
+            UpdateRenderer();
         }
 
         private void OnDisable()
@@ -50,15 +75,21 @@ namespace Beakstorm.Simulation.Collisions
         {
             currentHealth -= value;
 
-            if (_renderer)
-            {
-                _renderer.GetPropertyBlock(_propBlock);
-                _propBlock.SetColor("_BaseColor", new Color(CurrentHealth01, 0, 0, 1));
-                _renderer.SetPropertyBlock(_propBlock);
-            }
+            UpdateRenderer();
             
             if (currentHealth <= 0)
                 HealthZero();
+        }
+
+        private void UpdateRenderer()
+        {
+            if (meshRenderer)
+            {
+                meshRenderer.GetPropertyBlock(_propBlock);
+                //_propBlock.SetColor("_BaseColor", new Color(CurrentHealth01, 0, 0, 1));
+                _propBlock.SetFloat("_Health", CurrentHealth01);
+                meshRenderer.SetPropertyBlock(_propBlock);
+            }
         }
         
         public void HealthZero()
@@ -71,7 +102,7 @@ namespace Beakstorm.Simulation.Collisions
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, radius);
+            Gizmos.DrawWireSphere(Position, Radius);
         }
     }
 }

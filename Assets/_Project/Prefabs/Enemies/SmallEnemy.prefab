@@ -941,10 +941,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8761654235262798898, guid: 0fbf932d55e428e4399662504a3cbad6, type: 3}
-      propertyPath: radius
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8761654235262798898, guid: 0fbf932d55e428e4399662504a3cbad6, type: 3}
       propertyPath: maxHealth
       value: 100
       objectReference: {fileID: 0}
