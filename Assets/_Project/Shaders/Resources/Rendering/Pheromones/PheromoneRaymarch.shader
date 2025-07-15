@@ -1,4 +1,4 @@
-Shader "BeakStorm/Pheromones/Grid Instanced URP"
+Shader "BeakStorm/Pheromones/Raymarch"
 {
     Properties
     {
@@ -22,6 +22,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 	#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+
+	#include "../../Pheromones/PheromoneMath.hlsl"
+	#include "../../SpatialGrid/SpatialGridSampling.hlsl"
     
     #define UNITY_INDIRECT_DRAW_ARGS IndirectDrawIndexedArgs
     #include "UnityIndirect.cginc"
@@ -84,9 +87,59 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
     
     StructuredBuffer<Pheromone> _PheromoneBuffer;
     StructuredBuffer<SortEntry> _PheromoneSortingBuffer;
- 
+
+    StructuredBuffer<uint> _PheromoneSpatialOffsets;
+	StructuredBuffer<uint> _InstancedArgsBuffer;
+    
+	float _SmoothingRadius;
+    
     CBUFFER_END
 
+
+    
+	float PheromoneDensity(float3 pos)
+	{
+	    int numNeighbors = 0;
+	    float density = 0;
+	    
+	    int3 originCell = GetGridCellId(pos, _HashCellSize, _SimulationCenter, _SimulationSize);
+	    
+	    int sideLength = GetCellCoverageSideLength(_SmoothingRadius, _HashCellSize);
+	    int3 cellOffset = GetCellOffset(pos, sideLength, _HashCellSize);
+	    
+	    uint maxPheromones = _InstancedArgsBuffer[1];
+	    
+	    for(int iterator = 0; iterator < sideLength * sideLength * sideLength; iterator++)
+	    {
+	        int3 offset3D = GetIntegerOffsets3D(sideLength, iterator) + cellOffset;
+	    
+	        uint key = KeyFromCellId(originCell + offset3D, _CellDimensions);
+	        uint currIndex = _PheromoneSpatialOffsets[key-1];
+	        uint nextIndex = _PheromoneSpatialOffsets[key+0];
+	    
+	        while (currIndex < nextIndex && currIndex < maxPheromones)
+	        {
+	            Pheromone p2 = _PheromoneBuffer[currIndex];
+	            currIndex++;
+	        
+	            if (p2.life <= 0)
+	                continue;
+	        
+	            float3 offset = p2.pos - pos;
+	            float distSquared = dot(offset, offset);
+	        
+	            if (distSquared > _SmoothingRadius * _SmoothingRadius)
+	                continue;
+	            numNeighbors++;
+	
+	            float d = GetDensityFromParticle(pos, p2.pos, _SmoothingRadius);
+	        
+	            density += d;
+	        }
+	    }
+	    
+	    return density;
+	}
     
 	
 	    // Pull in URP library functions and our own common functions
@@ -297,16 +350,11 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float3 normal = 0;
 		normal.xy = offset;
 		normal.z = sqrt(1 - dot(offset, offset));
-		
+
 		Light light = GetMainLight();
-		float3 lightDirection = TransformWorldToViewDir(light.direction);
-		//lightDirection = light.direction;
-		float lightStrength = dot(normal, lightDirection) * 0.5 + 0.5;
+		float lightStrength = dot(normal, light.direction) * 0.5 + 0.5;
 		
 		float thickness = normal.z * input.color.w * 2;
-
-		float transmittance = 1;
-
 		
 		float3 normalWS = TransformViewToWorldDir(normal);
 
@@ -326,11 +374,6 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		alpha *= pheromoneColor.a;
 
 		alpha *= zFade;
-
-
-		transmittance = exp(-thickness * (1-alpha));
-
-		lightStrength = transmittance;
 		
 		//col = NumberToDots(input.color, uv);
 		//col = 1;
@@ -341,10 +384,6 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		//col = saturate(col + gi);
 		col = lerp(gi, col, lightStrength);
 
-		//col = transmittance;
-		
-		//col = lightStrength;
-		
 		//col = zFade;
 		
 		return float4(col, alpha);

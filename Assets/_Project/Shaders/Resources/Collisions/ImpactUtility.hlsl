@@ -21,7 +21,8 @@ uint _MaxFrames;
 uint CalculateDamage(float3 velocity)
 {
     float sqrSpeed = dot(velocity, velocity);
-    return clamp(floor(sqrt(sqrSpeed) / 5), 0, 10);
+    int damage = floor((sqrt(sqrSpeed) - 10) / 10);
+    return clamp(damage, 0, 10);
 }
 
 uint GetMaterialIndex(Impact impact)
