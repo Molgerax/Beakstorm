@@ -124,6 +124,7 @@ namespace Beakstorm.Simulation.Particles
         private void OnDestroy()
         {
             ReleaseBuffers();
+            Instance = null;
         }
         
         
@@ -183,13 +184,13 @@ namespace Beakstorm.Simulation.Particles
                 return;
             }
 
-            boidComputeShader.SetInt(PropertyIDs.TotalCount, _capacity);
+            boidComputeShader.SetInt(PropertyIDs.AgentCount, _capacity);
             boidComputeShader.SetFloat(PropertyIDs.HashCellSize, hashCellSize);
 
             boidComputeShader.SetVector(PropertyIDs.WorldPos, transform.position);
             boidComputeShader.SetMatrix(PropertyIDs.WorldMatrix, transform.localToWorldMatrix);
             boidComputeShader.SetVector(PropertyIDs.SimulationCenter, SimulationCenter);
-            boidComputeShader.SetVector(PropertyIDs.SimulationSpace, SimulationSize);
+            boidComputeShader.SetVector(PropertyIDs.SimulationSize, SimulationSize);
             boidComputeShader.SetVector(PropertyIDs.WhistleSource, _whistleSource);
 
             boidComputeShader.SetFloat(PropertyIDs.Time, Time.time);
@@ -281,14 +282,14 @@ namespace Beakstorm.Simulation.Particles
             Gizmos.DrawWireCube(Vector3.zero, simulationSpace);
         }
 
-        public static class PropertyIDs
+        private static class PropertyIDs
         {
-            public static readonly int TotalCount = Shader.PropertyToID("_TotalCount");
+            public static readonly int AgentCount = Shader.PropertyToID("_AgentCount");
             public static readonly int HashCellSize = Shader.PropertyToID("_HashCellSize");
             public static readonly int WorldPos = Shader.PropertyToID("_WorldPos");
             public static readonly int WorldMatrix = Shader.PropertyToID("_WorldMatrix");
-            public static readonly int SimulationSpace = Shader.PropertyToID("_SimulationSpace");
             public static readonly int SimulationCenter = Shader.PropertyToID("_SimulationCenter");
+            public static readonly int SimulationSize = Shader.PropertyToID("_SimulationSize");
             public static readonly int Time = Shader.PropertyToID("_Time");
             public static readonly int DeltaTime = Shader.PropertyToID("_DeltaTime");
             

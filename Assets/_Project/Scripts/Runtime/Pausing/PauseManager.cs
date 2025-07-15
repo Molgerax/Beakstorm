@@ -26,6 +26,7 @@ namespace Beakstorm.Pausing
         
         private void OnDisable()
         {
+            Unpause();
             PlayerInputs.Instance.PauseAction -= OnPause;
         }
 
