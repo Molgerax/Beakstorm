@@ -17,7 +17,11 @@
 										<Value>528</Value>
 									</ValueList>
 								</Property>
+								<Property Name="SpeakerPanning" Type="int16" Value="1"/>
 							</PropertyList>
+							<PositioningInfo>
+								<Panner Name="" ID="{7F0DB92F-8DC5-472D-87C7-F79537E69F44}"/>
+							</PositioningInfo>
 						</Bus>
 						<Bus Name="3D SFX" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}">
 							<PropertyList>
@@ -26,9 +30,52 @@
 										<Value>528</Value>
 									</ValueList>
 								</Property>
+								<Property Name="BusVolume" Type="Real64">
+									<ValueList>
+										<Value>-17</Value>
+									</ValueList>
+								</Property>
+								<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>6</Value>
+									</ValueList>
+								</Property>
 							</PropertyList>
+							<PositioningInfo>
+								<Panner Name="" ID="{0468FA90-01F1-4A1A-9650-01299991BF8F}"/>
+							</PositioningInfo>
 						</Bus>
 						<Bus Name="2D SFX" ID="{0F61F354-9750-49C2-89EC-5C91E57F5E7C}"/>
+						<AuxBus Name="Reverb" ID="{FECC9F39-F687-4E4A-B887-A72E64B9C945}">
+							<PropertyList>
+								<Property Name="BusChannelConfig" Type="int32">
+									<ValueList>
+										<Value>528</Value>
+									</ValueList>
+								</Property>
+								<Property Name="BusVolume" Type="Real64">
+									<ValueList>
+										<Value>-96</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ObjectLists>
+								<ObjectList Name="Effects">
+									<Reference>
+										<Local>
+											<EffectSlot Name="" ID="{A520133B-0324-4EFB-B8BF-4CF6C2072132}" ShortID="569915614">
+												<ReferenceList>
+													<Reference Name="Effect" PluginName="Wwise Parametric EQ" CompanyID="0" PluginID="105" PluginType="3">
+														<ObjectRef Name="High_Pass_60Hz" ID="{F9627628-0B10-4272-BC30-D4C20423CB38}" WorkUnitID="{E8613F7D-BAD3-45CD-A3ED-505576F31277}"/>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
+						</AuxBus>
 					</ChildrenList>
 				</Bus>
 			</ChildrenList>
