@@ -12,8 +12,18 @@ namespace Beakstorm.Gameplay.Enemies
 
         [SerializeField] private Transform weaponPivot;
 
+        [SerializeField, Range(0, 180)] private float limitAngle = 90;
+        
         private float _chargeTime = 0;
 
+        private Vector3 _initForward;
+        private float _currentAngle;
+
+
+        private void Awake()
+        {
+            _initForward = transform.forward;
+        }
 
         private void OnEnable()
         {
@@ -72,8 +82,10 @@ namespace Beakstorm.Gameplay.Enemies
             Vector3 predictedPos = playerPos + playerVel * Vector3.Distance(playerPos, pos) / weaponData.InitialVelocity;
             
             Vector3 direction = predictedPos - pos;
-            
-            weaponPivot.rotation = Quaternion.LookRotation(direction.normalized);
+
+            Vector3 clampedDirection = Vector3.RotateTowards(_initForward, direction.normalized, limitAngle * Mathf.Deg2Rad, 1);
+
+            weaponPivot.rotation = Quaternion.LookRotation(clampedDirection);
         }
         
         private void Fire()
@@ -83,7 +95,7 @@ namespace Beakstorm.Gameplay.Enemies
             
             if (!PlayerController.Instance)
                 return ;
-            
+
             Vector3 playerPos = PlayerController.Instance.Position;
             Vector3 playerVel = PlayerController.Instance.Velocity;
             
@@ -92,6 +104,10 @@ namespace Beakstorm.Gameplay.Enemies
             Vector3 predictedPos = playerPos + playerVel * Vector3.Distance(playerPos, pos) / weaponData.InitialVelocity;
             
             Vector3 direction = predictedPos - pos;
+            
+            _currentAngle = Vector3.Angle(_initForward, direction);
+            if (_currentAngle > limitAngle)
+                return;
             
             weaponData.Fire(pos, direction.normalized);
         }
@@ -116,8 +132,15 @@ namespace Beakstorm.Gameplay.Enemies
             if (!weaponData)
                 return;
             
+            var position = transform.position;
+            var forward = transform.forward;
+            
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, weaponData.DetectionRange);
+            Gizmos.DrawWireSphere(position, weaponData.DetectionRange);
+            
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(position, forward * 5);
+            Gizmos.DrawRay(position, Quaternion.AngleAxis(limitAngle, transform.right) * forward * 5);
         }
     }
 }
