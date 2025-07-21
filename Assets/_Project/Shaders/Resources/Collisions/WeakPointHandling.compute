@@ -1,8 +1,11 @@
 #pragma kernel FlushDamage
+#pragma kernel Clear
 #pragma kernel CollideBoids
 
 #include "../SpatialGrid/SpatialGridSampling.hlsl"
 #include "ImpactUtility.hlsl"
+
+#define THREAD_GROUP_SIZE 16
 
 
 StructuredBuffer<float4> _WeakPointBuffer;
@@ -14,7 +17,7 @@ float _Time;
 float _DeltaTime;
 
 
-[numthreads(16,1,1)]
+[numthreads(THREAD_GROUP_SIZE,1,1)]
 void FlushDamage(uint3 id : SV_DispatchThreadID)
 {
     int index = id.x;
@@ -22,9 +25,24 @@ void FlushDamage(uint3 id : SV_DispatchThreadID)
     if (index >= _WeakPointCount)
         return;
 
-    int dmg = _DamageBuffer[index] - _FlushDamageBuffer[index];
+    int flushDamage = _FlushDamageBuffer[index];
+    int dmg = _DamageBuffer[index] - flushDamage;
+
+    if (flushDamage >= 10000)
+        dmg = 0;
     
     _DamageBuffer[index] = max(0, dmg);
+}
+
+[numthreads(THREAD_GROUP_SIZE,1,1)]
+void Clear(uint3 id : SV_DispatchThreadID)
+{
+    int index = id.x;
+
+    if (index >= _WeakPointCount)
+        return;
+
+    _DamageBuffer[index] = 0;
 }
 
 
@@ -53,7 +71,7 @@ float lineSphereIntersection(float3 p1, float3 p2, float3 p3, float r)
     return b * b - 4 * a * c;
 }
 
-[numthreads(16,1,1)]
+[numthreads(THREAD_GROUP_SIZE,1,1)]
 void CollideBoids(uint3 id : SV_DispatchThreadID)
 {
     int index = id.x;
@@ -69,6 +87,12 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
     float4 posR = _WeakPointBuffer.Load(index);
     float3 positionA = posR.xyz;
     float radius = posR.w;
+
+    if (dot(posR, posR) == 0)
+    {
+        _DamageBuffer[index] = 0;
+        return;
+    }
     
     int3 originCell = GetGridCellId(positionA, _HashCellSize, _SimulationCenter, _SimulationSize);
     uint3 cellDimensions = _CellDimensions;
@@ -105,8 +129,9 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
             float3 oldOffset = boid.oldPos - positionA;
             if (dot(oldOffset, oldOffset) > radius * radius)
             {
-                uint damage = CalculateDamage(velocity);
+                uint damage = CalculateDamage(velocity) * 100;
                 _DamageBuffer[index] += damage;
+                
                 float dist = length(offset);
                 if (dist == 0)
                     continue;

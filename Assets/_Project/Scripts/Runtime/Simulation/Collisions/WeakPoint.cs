@@ -8,6 +8,7 @@ namespace Beakstorm.Simulation.Collisions
         [SerializeField] private int maxHealth = 100;
         [SerializeField] private int currentHealth;
         [SerializeField] public UltEvent onHealthZero;
+        [SerializeField] private UltEvent onDamageTaken;
         
         [Header("Transform")]
         [SerializeField] private Vector3 offset;
@@ -73,6 +74,9 @@ namespace Beakstorm.Simulation.Collisions
         
         public void ApplyDamage(int value)
         {
+            if (value > 0)
+                onDamageTaken?.Invoke();
+            
             currentHealth -= value;
 
             UpdateRenderer();

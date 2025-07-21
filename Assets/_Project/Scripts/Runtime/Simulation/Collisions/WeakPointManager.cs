@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Beakstorm.ComputeHelpers;
@@ -17,6 +18,7 @@ namespace Beakstorm.Simulation.Collisions
         [SerializeField] private ImpactParticleManager impact;
         
         [SerializeField] private bool logDebugInfo = false;
+        [SerializeField] private bool logDebugInfoPos = false;
 
         public static WeakPointManager Instance;
         
@@ -25,6 +27,7 @@ namespace Beakstorm.Simulation.Collisions
         public GraphicsBuffer DamageBuffer;
         private GraphicsBuffer _flushDamageBuffer;
         
+        private WeakPoint[] _weakPoints = new WeakPoint[16];
         private Vector4[] _weakPointPositions = new Vector4[16];
         private int _bufferSize = 16;
 
@@ -33,6 +36,8 @@ namespace Beakstorm.Simulation.Collisions
 
         private StringBuilder _logBuilder;
 
+        private int WeakPointCount => Mathf.Min(WeakPoints.Count, _bufferSize);
+        
         private void Awake()
         {
             Instance = this;
@@ -68,7 +73,6 @@ namespace Beakstorm.Simulation.Collisions
 
         private void Update()
         {
-            UpdateBufferSize();
             UpdatePositions();
             
             RequestDamageValues();
@@ -78,27 +82,27 @@ namespace Beakstorm.Simulation.Collisions
 
         private void UpdatePositions()
         {
-            if (logDebugInfo)
+            if (logDebugInfoPos)
             {
                 _logBuilder ??= new StringBuilder();
                 _logBuilder.Append("Weak Point Positions:\n");
             }
             
-            for (int i = 0; i < WeakPoints.Count; i++)
+            for (int i = 0; i < WeakPointCount; i++)
             {
-                _weakPointPositions[i] = WeakPoints[i].PositionRadius;
+                WeakPoint wp = _weakPoints[i];
+                _weakPointPositions[i] = wp ? wp.PositionRadius : Vector4.zero;
 
-                if (logDebugInfo)
+                if (logDebugInfoPos)
                     _logBuilder.Append($"{i}: {_weakPointPositions[i]}\n");
             }
             WeakPointBuffer.SetData(_weakPointPositions);
 
-            if (logDebugInfo)
+            if (logDebugInfoPos)
             {
                 Debug.Log(_logBuilder, this);
                 _logBuilder.Clear();
             }
-            
         }
 
 
@@ -117,12 +121,22 @@ namespace Beakstorm.Simulation.Collisions
                 if (!_request.hasError)
                 {
                     bool flush = false;
-                    for (int i = 0; i < WeakPoints.Count; i++)
+                    int count = WeakPointCount;
+                    for (int i = 0; i < count; i++)
                     {
+                        WeakPoint weakPoint = _weakPoints[i];
                         int damage = _damageArray[i];
+                        
+                        if (!weakPoint)
+                        {
+                            if (logDebugInfo)
+                                _logBuilder.Append($"{i}: {damage} - Destroyed\n");
+                            continue;
+                        }
+                        
                         if (damage > 0)
                         {
-                            WeakPoints[i].ApplyDamage(damage);
+                            weakPoint.ApplyDamage(damage);
                             flush = true;
                         }
 
@@ -135,6 +149,10 @@ namespace Beakstorm.Simulation.Collisions
                     if (flush)
                         FlushDamage();
                 }
+                
+                UpdateBufferSize();
+                CacheWeakPoints();
+                
                 _request = AsyncGPUReadback.RequestIntoNativeArray(ref _damageArray, DamageBuffer);
                 
                 if (logDebugInfo)
@@ -144,12 +162,23 @@ namespace Beakstorm.Simulation.Collisions
                 }
             }
         }
+
+        private void CacheWeakPoints()
+        {
+            for (int i = 0; i < WeakPointCount; i++)
+            {
+                _weakPoints[i] = WeakPoints[i];
+            }
+        }
         
         private void UpdateBufferSize()
         {
             if (WeakPoints.Count > _bufferSize)
             {
-                _bufferSize *= 2;
+                while (WeakPoints.Count > _bufferSize)
+                {
+                    _bufferSize *= 2;
+                }
                 
                 WeakPointBuffer?.Dispose();
                 WeakPointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 4);
@@ -160,11 +189,15 @@ namespace Beakstorm.Simulation.Collisions
                 _flushDamageBuffer?.Dispose();
                 _flushDamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
 
+                ClearBuffer(DamageBuffer);
+                
                 // TODO: time this, can lead to problems
+                // Not anymore tho?
                 _damageArray.Dispose();
                 _damageArray = new NativeArray<int>(_bufferSize, Allocator.Persistent);
-                
+
                 _weakPointPositions = new Vector4[_bufferSize];
+                _weakPoints = new WeakPoint[_bufferSize];
             }
         }
 
@@ -175,12 +208,21 @@ namespace Beakstorm.Simulation.Collisions
             int kernel = compute.FindKernel("FlushDamage");
             compute.SetBuffer(kernel, PropertyIDs.DamageBuffer, DamageBuffer);
             compute.SetBuffer(kernel, PropertyIDs.FlushDamageBuffer, _flushDamageBuffer);
-            compute.SetInt(PropertyIDs.WeakPointCount, WeakPoints.Count);
+            compute.SetInt(PropertyIDs.WeakPointCount, WeakPointCount);
             
-            compute.Dispatch(kernel, 1, 1, 1);
+            compute.DispatchExact(kernel, _bufferSize);
+        }
+
+
+        private void ClearBuffer(GraphicsBuffer buffer)
+        {
+            int kernel = compute.FindKernel("Clear");
+            compute.SetBuffer(kernel, PropertyIDs.DamageBuffer, buffer);
+            compute.SetInt(PropertyIDs.WeakPointCount, _bufferSize);
+            
+            compute.DispatchExact(kernel, _bufferSize);
         }
         
-
         private void CollideBoids()
         {
             BoidGridManager manager = BoidGridManager.Instance;
@@ -193,7 +235,7 @@ namespace Beakstorm.Simulation.Collisions
             
             compute.SetBuffer(kernel, PropertyIDs.WeakPointBuffer, WeakPointBuffer);
             compute.SetBuffer(kernel, PropertyIDs.DamageBuffer, DamageBuffer);
-            compute.SetInt(PropertyIDs.WeakPointCount, WeakPoints.Count);
+            compute.SetInt(PropertyIDs.WeakPointCount, WeakPointCount);
             
             compute.SetFloat(PropertyIDs.Time, Time.time);
             compute.SetFloat(PropertyIDs.DeltaTime, SimulationTime.DeltaTime);
@@ -216,18 +258,18 @@ namespace Beakstorm.Simulation.Collisions
         
         private static class PropertyIDs
         {
-            public static readonly int TotalCount              = Shader.PropertyToID("_TotalCount");
-            public static readonly int HashCellSize            = Shader.PropertyToID("_HashCellSize");
+            public static readonly int TotalCount = Shader.PropertyToID("_TotalCount");
+            public static readonly int HashCellSize = Shader.PropertyToID("_HashCellSize");
             
-            public static readonly int Time                    = Shader.PropertyToID("_Time");
-            public static readonly int DeltaTime               = Shader.PropertyToID("_DeltaTime");
-            public static readonly int WeakPointBuffer          = Shader.PropertyToID("_WeakPointBuffer");
-            public static readonly int DamageBuffer            = Shader.PropertyToID("_DamageBuffer");
-            public static readonly int FlushDamageBuffer            = Shader.PropertyToID("_FlushDamageBuffer");
-            public static readonly int WeakPointCount              = Shader.PropertyToID("_WeakPointCount");
+            public static readonly int Time = Shader.PropertyToID("_Time");
+            public static readonly int DeltaTime = Shader.PropertyToID("_DeltaTime");
+            public static readonly int WeakPointBuffer = Shader.PropertyToID("_WeakPointBuffer");
+            public static readonly int DamageBuffer = Shader.PropertyToID("_DamageBuffer");
+            public static readonly int FlushDamageBuffer = Shader.PropertyToID("_FlushDamageBuffer");
+            public static readonly int WeakPointCount = Shader.PropertyToID("_WeakPointCount");
             
-            public static readonly int GridOffsetBuffer              = Shader.PropertyToID("_GridOffsetBuffer");
-            public static readonly int BoidBuffer              = Shader.PropertyToID("_BoidBuffer");
+            public static readonly int GridOffsetBuffer = Shader.PropertyToID("_GridOffsetBuffer");
+            public static readonly int BoidBuffer = Shader.PropertyToID("_BoidBuffer");
         }
     }
 }
