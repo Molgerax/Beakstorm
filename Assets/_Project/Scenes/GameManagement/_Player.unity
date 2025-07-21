@@ -277,6 +277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 119709469}
   - component: {fileID: 119709471}
+  - component: {fileID: 119709472}
   m_Layer: 6
   m_Name: PheromoneGun
   m_TagString: Untagged
@@ -315,6 +316,24 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
+  onShoot:
+    _PersistentCalls:
+    - _Target: {fileID: 119709472}
+      _MemberName: PostEvent
+      _PersistentArguments: []
+--- !u!114 &119709472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119709468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: play_pheroShoot
 --- !u!1 &271261459
 GameObject:
   m_ObjectHideFlags: 0
@@ -2047,9 +2066,10 @@ GameObject:
   - component: {fileID: 1982143479}
   - component: {fileID: 1982143483}
   - component: {fileID: 1982143482}
-  - component: {fileID: 1982143481}
   - component: {fileID: 1982143485}
   - component: {fileID: 1982143486}
+  - component: {fileID: 1982143487}
+  - component: {fileID: 1982143488}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -2109,8 +2129,9 @@ MonoBehaviour:
   maxHealth: 100
   weapons:
   - {fileID: 11400000, guid: 848899affe973bf47b013bbab7f99edc, type: 2}
-  - {fileID: 11400000, guid: b96d0a59e46c4cf49919838ac0a61d73, type: 2}
   - {fileID: 11400000, guid: 2b763d6de748faf4294d1c981112eba6, type: 2}
+  - {fileID: 11400000, guid: b96d0a59e46c4cf49919838ac0a61d73, type: 2}
+  - {fileID: 11400000, guid: fade88fdeec5e594d821d2ad086adb8d, type: 2}
   onDamageTaken:
     _PersistentCalls:
     - _Target: {fileID: 1043443545}
@@ -2179,31 +2200,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1982143481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1982143473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d4904cb736549a48ae8b2628a36c631, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerList: f7e1664c
-  useOtherObject: 0
-  data:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: c0ab9d4747f4aee48b4e6d3f4c5c58c1, type: 2}
-  decodeBank: 0
-  overrideLoadSetting: 0
-  loadAsynchronous: 0
-  saveDecodedBank: 0
-  unloadTriggerList: 958ca0ea
-  bankNameInternal: 
-  valueGuidInternal: 
 --- !u!114 &1982143482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2282,6 +2278,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   multiPositionArray: []
 --- !u!114 &1982143486
 MonoBehaviour:
@@ -2321,7 +2318,77 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   multiPositionArray: []
+--- !u!114 &1982143487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982143473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e46560c136c5044bbc5699bda5f46c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 41214fa38e6e84b42b5bc22b38d7cf34, type: 2}
+  useCallbacks: 0
+  stopSoundOnDestroy: 1
+  Callbacks: []
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  eventIdInternal: 0
+  valueGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
+  MultiPositionType: 1
+  multiPositionTypeLabel: 0
+  attenuationSphereColor: {r: 1, g: 0, b: 0, a: 0.1}
+  LargeModePositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  multiPositionArray: []
+--- !u!114 &1982143488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982143473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5131ac029a2c8a24a961e70c668a1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: 958ca0ea
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2c6d88007966e744e93cc1cd85e1a33b, type: 2}
+  useCallbacks: 0
+  stopSoundOnDestroy: 1
+  Callbacks: []
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  eventIdInternal: 0
+  valueGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
 --- !u!1 &2017315458
 GameObject:
   m_ObjectHideFlags: 0

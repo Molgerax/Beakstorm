@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42273bd057b99f24f942511bac8e0feb, type: 3}
   m_Name: EnemyWeaponProjectile
   m_EditorClassIdentifier: 
-  chargeTime: 0.21
-  detectionRange: 100
+  chargeTime: 0.4
+  detectionRange: 175
   weaponSpread: 10
   initialVelocity: 237.5
   projectilePrefab: {fileID: 5012512307083224738, guid: bb217b280b976084b8519755fe9150c1, type: 3}

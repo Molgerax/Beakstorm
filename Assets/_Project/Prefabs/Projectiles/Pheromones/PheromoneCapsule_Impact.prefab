@@ -174,8 +174,7 @@ MonoBehaviour:
     - _Target: {fileID: 5012512307083224738}
       _MemberName: Deactivate
       _PersistentArguments: []
-  completionPercentage:
-    _PersistentCalls: []
+  autoStart: 1
 --- !u!114 &238433144582504019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,7 +260,7 @@ MonoBehaviour:
       _MemberName: Emit
       _PersistentArguments:
       - _Type: 3
-        _Int: 4096
+        _Int: 2048
         _String: 
         _X: 0
         _Y: 0
