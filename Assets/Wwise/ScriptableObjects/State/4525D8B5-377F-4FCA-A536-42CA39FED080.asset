@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: debab8e955e9c854e9a16ade1e440598, type: 3}
+  m_Name: 4525D8B5-377F-4FCA-A536-42CA39FED080
+  m_EditorClassIdentifier: 
+  objectName: war1
+  id: 1873893370
+  guid: 4525D8B5-377F-4FCA-A536-42CA39FED080
+  WwiseStateGroupReference: {fileID: 11400000, guid: 182fcaf0fea4c714896f24daf67dda6e, type: 2}

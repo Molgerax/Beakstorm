@@ -44,14 +44,30 @@ namespace AK
             namespace STATE
             {
                 static const AkUniqueID NONE = 748895195U;
-                static const AkUniqueID REST = 2277599019U;
-                static const AkUniqueID WAVE1 = 2453122375U;
-                static const AkUniqueID WAVE2 = 2453122372U;
-                static const AkUniqueID WAVE3 = 2453122373U;
-                static const AkUniqueID WAVE4 = 2453122370U;
-                static const AkUniqueID WAVE5 = 2453122371U;
+                static const AkUniqueID PEACE1 = 1350254358U;
+                static const AkUniqueID PEACE2 = 1350254357U;
+                static const AkUniqueID PEACE3 = 1350254356U;
+                static const AkUniqueID PEACE4 = 1350254355U;
+                static const AkUniqueID PEACE5 = 1350254354U;
+                static const AkUniqueID WAR1 = 1873893370U;
+                static const AkUniqueID WAR2 = 1873893369U;
+                static const AkUniqueID WAR3 = 1873893368U;
+                static const AkUniqueID WAR4 = 1873893375U;
+                static const AkUniqueID WAR5 = 1873893374U;
             } // namespace STATE
         } // namespace WAVE_STATE
+
+        namespace WAVE_TYPE
+        {
+            static const AkUniqueID GROUP = 3590821249U;
+
+            namespace STATE
+            {
+                static const AkUniqueID NONE = 748895195U;
+                static const AkUniqueID PEACE = 103389341U;
+                static const AkUniqueID WAR = 1113986025U;
+            } // namespace STATE
+        } // namespace WAVE_TYPE
 
     } // namespace STATES
 
@@ -80,6 +96,11 @@ namespace AK
         static const AkUniqueID _3D_SFX = 3938878469U;
         static const AkUniqueID MASTER_BINAURAL = 3007728267U;
     } // namespace BUSSES
+
+    namespace AUX_BUSSES
+    {
+        static const AkUniqueID REVERB = 348963605U;
+    } // namespace AUX_BUSSES
 
     namespace AUDIO_DEVICES
     {
