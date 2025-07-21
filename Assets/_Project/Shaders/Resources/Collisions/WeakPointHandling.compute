@@ -129,7 +129,7 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
             float3 oldOffset = boid.oldPos - positionA;
             if (dot(oldOffset, oldOffset) > radius * radius)
             {
-                uint damage = CalculateDamage(velocity) * 100;
+                uint damage = CalculateDamage(velocity);
                 _DamageBuffer[index] += damage;
                 
                 float dist = length(offset);
