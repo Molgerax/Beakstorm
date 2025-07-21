@@ -72,6 +72,9 @@ Beakstorm_WwiseProject/*_WwiseProject.*.validationcache
 Beakstorm_WwiseProject/*_WwiseProject.*.wsettings
 Beakstorm_WwiseProject/**/*.akd
 
+Beakstorm_WwiseProject/Originals/
+Beakstorm_WwiseProject/GeneratedSoundBanks/
+
 # build stuff (unsure?)
 # Assets/Wwise/Deployment/Plugins/Windows/**/*.meta
 
