@@ -71,13 +71,14 @@ namespace Beakstorm.Gameplay.Player.Weapons
             }
         }
         
-        public virtual void Fire(Vector3 position, Vector3 direction)
+        public virtual bool Fire(Vector3 position, Vector3 direction)
         {
             if (_fireCooldown > 0)
-                return;
+                return false;
         
             FireSingleProjectile(position, direction);
             _fireCooldown = FireDelay;
+            return true;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using Beakstorm.Inputs;
 using Beakstorm.Simulation.Particles;
+using UltEvents;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,8 @@ namespace Beakstorm.Gameplay.Player
     {
         [SerializeField, Range(0, 5f)] private float shootOffset = 3f;
         [SerializeField] private LayerMask layerMask;
+
+        [SerializeField] private UltEvent onShoot;
         
         private PlayerInputs _inputs;
         private Camera _camera;
@@ -61,7 +64,8 @@ namespace Beakstorm.Gameplay.Player
 
             pos += dir * shootOffset;
             
-            PlayerController.Instance.SelectedWeapon.Fire(pos, dir);
+            if (PlayerController.Instance.SelectedWeapon.Fire(pos, dir))
+                onShoot?.Invoke();
         }
 
         private Vector3 GetShootDirection(Vector3 shootPosition)
