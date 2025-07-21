@@ -300,7 +300,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		
 		Light light = GetMainLight();
 		float3 lightDirection = TransformWorldToViewDir(light.direction);
-		//lightDirection = light.direction;
+		lightDirection = light.direction;
 		float lightStrength = dot(normal, lightDirection) * 0.5 + 0.5;
 		
 		float thickness = normal.z * input.color.w * 2;
@@ -330,7 +330,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 
 		transmittance = exp(-thickness * (1-alpha));
 
-		lightStrength = transmittance;
+		//lightStrength = transmittance;
 		
 		//col = NumberToDots(input.color, uv);
 		//col = 1;
