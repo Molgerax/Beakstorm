@@ -355,6 +355,8 @@ namespace Beakstorm.Simulation.Particles
             _propertyBlock.SetBuffer(PropertyIDs.PheromoneSortingBuffer, _pheromoneSorted);
             _propertyBlock.SetBuffer(PropertyIDs.InstancedArgsBuffer, _instancedDrawingArgsBuffer);
             
+            _propertyBlock.SetBuffer(PropertyIDs.SpatialOffsets, _hash.GridOffsetBuffer);
+            
             _hash.SetShaderProperties(_propertyBlock);
             
 
