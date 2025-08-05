@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42273bd057b99f24f942511bac8e0feb, type: 3}
-  m_Name: EnemyWeaponProjectile
+  m_Name: EnemyWeaponProjectileHeavy
   m_EditorClassIdentifier: 
-  chargeTime: 1
-  detectionRange: 125
+  chargeTime: 3
+  detectionRange: 200
   weaponSpread: 10
-  initialVelocity: 180
+  initialVelocity: 250
   projectilePrefab: {fileID: 5012512307083224738, guid: bb217b280b976084b8519755fe9150c1, type: 3}

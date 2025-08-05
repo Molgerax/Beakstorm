@@ -1219,6 +1219,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2143519642290741636, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: limitAngle
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2143519642290741636, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: weaponData
+      value: 
+      objectReference: {fileID: 11400000, guid: c9dde0810819f0f4fa5f163b86aaec12, type: 2}
     - target: {fileID: 3493641205500488778, guid: 726560654fc258a41a4e700629f046ce, type: 3}
       propertyPath: m_Name
       value: WeakPoint_Gun
@@ -1314,6 +1322,10 @@ PrefabInstance:
     - target: {fileID: 6554917368369262069, guid: 726560654fc258a41a4e700629f046ce, type: 3}
       propertyPath: limitAngle
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027024351955486803, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: eventName
+      value: play_shipCannonBig
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

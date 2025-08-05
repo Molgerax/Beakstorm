@@ -2,6 +2,7 @@ using System;
 using Beakstorm.Gameplay.Player;
 using Beakstorm.Gameplay.Projectiles;
 using Beakstorm.Pausing;
+using UltEvents;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Enemies
@@ -13,11 +14,13 @@ namespace Beakstorm.Gameplay.Enemies
         [SerializeField] private Transform weaponPivot;
 
         [SerializeField, Range(0, 180)] private float limitAngle = 90;
+        [SerializeField] private UltEvent onFire;
         
         private float _chargeTime = 0;
 
         private Vector3 _initForward;
         private float _currentAngle;
+        
 
 
         private void Awake()
@@ -110,6 +113,8 @@ namespace Beakstorm.Gameplay.Enemies
                 return;
             
             weaponData.Fire(pos, direction.normalized);
+            
+            onFire?.Invoke();
         }
         
         
