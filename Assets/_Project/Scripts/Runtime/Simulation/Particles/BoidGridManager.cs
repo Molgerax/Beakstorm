@@ -25,9 +25,15 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField] 
         private BoidStateSettings exposedState;
 
+        [Header("Noise")] 
+        [SerializeField] private float noiseStrength = 1;
+        [SerializeField] private float noiseScale = 1;
+
         [Header("Collision")]
         [SerializeField]
         private Vector3 simulationSpace = Vector3.one;
+
+        [SerializeField, Min(0f)] private float avoidDistance = 10;
 
         [SerializeField] 
         private ImpactParticleManager impact;
@@ -195,6 +201,10 @@ namespace Beakstorm.Simulation.Particles
 
             boidComputeShader.SetFloat(PropertyIDs.Time, Time.time);
             boidComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
+            
+            boidComputeShader.SetFloat(PropertyIDs.AvoidDistance, avoidDistance);
+            boidComputeShader.SetFloat(PropertyIDs.NoiseStrength, noiseStrength);
+            boidComputeShader.SetFloat(PropertyIDs.NoiseScale, noiseScale);
 
             boidComputeShader.SetBoidStateSettings("_Neutral", neutralState);
             boidComputeShader.SetBoidStateSettings("_Exposed", exposedState);
@@ -298,6 +308,10 @@ namespace Beakstorm.Simulation.Particles
             
             public static readonly int WhistleSource = Shader.PropertyToID("_WhistleSource");
             public static readonly int Dimensions = Shader.PropertyToID("_Dimensions");
+            
+            public static readonly int AvoidDistance = Shader.PropertyToID("_AvoidDistance");
+            public static readonly int NoiseStrength = Shader.PropertyToID("_NoiseStrength");
+            public static readonly int NoiseScale = Shader.PropertyToID("_NoiseScale");
             
             public static readonly int SpatialOffsets = Shader.PropertyToID("_BoidSpatialOffsets");
             

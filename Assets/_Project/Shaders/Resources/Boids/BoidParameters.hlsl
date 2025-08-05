@@ -9,6 +9,13 @@ float _DeltaTime;
 float3      _WorldPos;
 float4x4    _WorldMatrix;
 
+float _AvoidDistance;
+
+
+float _NoiseStrength;
+float _NoiseScale;
+
+
 RWStructuredBuffer<float3> _PositionBuffer;
 RWStructuredBuffer<float3> _OldPositionBuffer;
 RWStructuredBuffer<float3> _VelocityBuffer;

@@ -11,6 +11,8 @@
 
 #include "../Rendering/QuaternionUtility.hlsl"
 
+#include "Packages/com.unity.visualeffectgraph/Shaders/VFXNoise.hlsl"
+
 #define THREAD_BLOCK_SIZE 256
 
 struct Boid
@@ -134,11 +136,28 @@ float3 whistleForce(float3 pos)
     return limitVector(force, 10);
 }
 
-float3 sdfForce(SdfQueryInfo info)
+float3 noiseForce(float3 pos, float scale, float strength)
 {
+    float4 noise = GeneratePerlinNoise3D(pos * scale) * strength;
+
+    return noise.xyz;
+}
+
+float3 sdfForce(SdfQueryInfo info, float avoidDistance, float maxForce)
+{
+    if (avoidDistance <= 0)
+        return 0;
+    
     float3 f = info.normal;
-    float strength = -min(0, info.dist - 3);
-    return f * strength;
+
+    float dist = saturate(1- (info.dist) / avoidDistance);
+
+    dist *= maxForce;
+    
+    float3 force = clampVector(info.normal, 0, maxForce * 2);
+    float strength = step(info.dist, -3);
+    
+    return clampVector((info.normal) * dist, 0, maxForce * 2);
 }
 
 
@@ -403,6 +422,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     oldPosition = currentPosition;
     
     float4 factors = GetBoidSettings(index);
+    float minSpeed = GetMinSpeed(index);
     float maxSpeed = GetMaxSpeed(index);
     float maxForce = GetMaxForce(index);
     float4 pheromoneSample = PheromoneDensity(currentPosition + velocity * _DeltaTime * 1) * 100;
@@ -415,16 +435,36 @@ void Update (uint3 id : SV_DispatchThreadID)
     //acceleration += centerForce(currentPosition, index);
     //acceleration += sdfForce(sdfInfo);
     acceleration += whistleForce(currentPosition);
+
+
+    float3 noiseCoord = 0;
+    noiseCoord.x = boid.data;
+    noiseCoord.y = _Time;
+
+    float3 noiseF = noiseForce(noiseCoord, _NoiseScale, _NoiseStrength);
+    noiseF = clampVector(noiseF, 0, maxForce);
+    noiseF *= saturate(1 - boid.exposure);
+    
+    acceleration += noiseF;
     
     acceleration += pheromoneForce * saturate(pheromoneSample.w);// * factors.w;
+
+    float3 predictedPosition = currentPosition + _DeltaTime * clampVector(velocity + acceleration * _DeltaTime, minSpeed, maxSpeed);
+    
+    SdfQueryInfo sdfInfo = GetClosestDistance(predictedPosition, 0);
+    acceleration += sdfForce(sdfInfo, _AvoidDistance, maxForce) * saturate(1 - 2 * boid.exposure);
+
     
     velocity += acceleration * _DeltaTime;
-    velocity = clampVector(velocity, GetMinSpeed(index), GetMaxSpeed(index));
-
+    velocity = clampVector(velocity, minSpeed, maxSpeed);
+    
+    //velocity = noiseForce(noiseCoord, _NoiseScale, _NoiseStrength) * saturate(1 - boid.exposure);
+    
+    
     currentPosition += velocity * _DeltaTime;
     //collideBounds(currentPosition, oldPosition);
     
-    SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0);
+    //sdfInfo = GetClosestDistance(currentPosition, 0);
     collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
     
     //currentPosition.y = _WorldPos.y;
@@ -465,9 +505,9 @@ void Update (uint3 id : SV_DispatchThreadID)
     //boid.exposure = 0;
     int3 originCell = (int3) floor((currentPosition - GetBoundsMin()) / _HashCellSize);
     uint key = KeyFromCellId(originCell, _CellDimensions);
-    boid.data = key * 1.0 / (_CellDimensions.x * _CellDimensions.y * _CellDimensions.z);
+    //boid.data = key * 1.0 / (_CellDimensions.x * _CellDimensions.y * _CellDimensions.z);
 
-    boid.data = flockMates;
+    //boid.data = flockMates;
     
     _BoidBuffer[index] = boid;
 }
@@ -509,7 +549,8 @@ void Init(uint3 id : SV_DispatchThreadID)
     boid.pos = currentPosition;
     boid.oldPos = oldPosition;
     boid.exposure = 0;
-    boid.data = 0;
+    boid.data = index;
+    boid.data = (float)index / _AgentCount;
 
     currentVelocity = float3(0,0,1);
 
