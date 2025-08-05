@@ -27,8 +27,10 @@ RWStructuredBuffer<ParticleCell> _CellBuffer;
 float _Time;
 float _DeltaTime;
 
-uint3 _Dimensions;
-uint _TotalCount;
+uint _CaptureCellCount;
+uint _CaptureCellSize;
+uint3 _CaptureDimensions;
+float3 _CaptureCenter;
 
 StructuredBuffer<Boid> _ParticleBuffer;
 StructuredBuffer<uint> _GridOffsetBuffer;
@@ -49,44 +51,52 @@ uint id3Dto1D(uint3 id, uint3 resolution)
 }
 
 
+float3 GetCenterPosition(uint index)
+{
+    int3 cellId = id1Dto3D(index, _CaptureDimensions);
+    
+    float3 pos = ((cellId + 0.5 - _CaptureDimensions * 0.5)) * _HashCellSize * _CaptureCellSize + _CaptureCenter; 
+
+    return pos;
+}
+
 [numthreads(16,1,1)]
 void CollectValues(uint3 id : SV_DispatchThreadID)
 {
     uint index = id.x;
 
-    if (index >= _TotalCount)
+    if (index >= _CaptureCellCount)
         return;
 
-    int3 cellCount = _Dimensions;
-
-    int3 cellId = id1Dto3D(index, cellCount);
-    
-    float3 pos = ((cellId + 0.5) / (cellCount) * 1 - 0.5) * _SimulationSize + floor(_SimulationCenter / _HashCellSize) * _HashCellSize; 
+    float3 pos = GetCenterPosition(index);
     
     // Neighborhood Search using Spatial Grids
-    uint count = 0;
     ParticleCell cell = (ParticleCell)0;
-   
-
 
     int3 originCell = GetGridCellId(pos, _HashCellSize, _SimulationCenter, _SimulationSize);
     uint3 cellDimensions = _CellDimensions;
-    
-    uint key = KeyFromCellId(originCell, cellDimensions);
-    uint currIndex = _GridOffsetBuffer[key-1];
-    uint nextIndex = _GridOffsetBuffer[key+0];
-    
-    while (currIndex < nextIndex)
-    {
-        Boid boid = _ParticleBuffer[currIndex]; 
 
-        float3 velocity = (boid.pos - boid.oldPos) / max(_DeltaTime, 0.01);
+    for(int iterator = 0; iterator < _CaptureCellSize * _CaptureCellSize * _CaptureCellSize; iterator++)
+    {
+        int3 offset3D = GetIntegerOffsets3D(_CaptureCellSize, iterator);
     
-        cell.position += boid.pos;
-        cell.velocity += velocity;
-        cell.data += float4(boid.exposure, boid.data, 0, 0);
+        uint key = KeyFromCellId(originCell + offset3D, cellDimensions);
+        uint currIndex = _GridOffsetBuffer[key-1];
+        uint nextIndex = _GridOffsetBuffer[key+0];
+
+        while (currIndex < nextIndex)
+        {
+            Boid boid = _ParticleBuffer[currIndex];
+            currIndex++;
+
+            float3 velocity = (boid.pos - boid.oldPos) / max(_DeltaTime, 0.01);
     
-        cell.count++;
+            cell.position += boid.pos;
+            cell.velocity += velocity;
+            cell.data += float4(boid.exposure, boid.data, 0, 0);
+    
+            cell.count++;
+        }
     }
     
     if (cell.count > 0)

@@ -1,3 +1,4 @@
+using Beakstorm.ComputeHelpers;
 using UnityEngine;
 
 namespace Beakstorm.Simulation.Particles
@@ -5,6 +6,8 @@ namespace Beakstorm.Simulation.Particles
     public interface IGridParticleSimulation
     {
         public bool Initialized { get; }
+        
+        public SpatialGrid Hash { get; }
         
         public GraphicsBuffer AgentBufferRead {get;}
         public GraphicsBuffer AgentBufferWrite {get;}
