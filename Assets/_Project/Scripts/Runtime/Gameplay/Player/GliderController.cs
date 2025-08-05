@@ -31,6 +31,8 @@ namespace Beakstorm.Gameplay.Player
         
         public float Speed01 => (_speed - minSpeed) / (maxSpeed - minSpeed);
 
+        public float Speed => _speed;
+
         #region Mono Methods
         
         private void Awake()

@@ -6,10 +6,16 @@ namespace Beakstorm.Audio
     {
         [SerializeField] private string eventName = "play_birdAttack";
 
+        private uint _postId = AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
 
         public void PostEvent()
         {
-            AkUnitySoundEngine.PostEvent(eventName, this.gameObject);
+            _postId = AkUnitySoundEngine.PostEvent(eventName, this.gameObject);
+        }
+
+        public void StopEvent()
+        {
+            AkUnitySoundEngine.StopPlayingID(_postId);
         }
     }
 }
