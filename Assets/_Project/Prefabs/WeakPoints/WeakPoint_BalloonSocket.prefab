@@ -117,6 +117,8 @@ GameObject:
   - component: {fileID: 1827350484000538886}
   - component: {fileID: 926679325443426439}
   - component: {fileID: 4687974148623372631}
+  - component: {fileID: 7481132111454077212}
+  - component: {fileID: 1742849945645141869}
   m_Layer: 0
   m_Name: WeakPoint_BalloonSocket
   m_TagString: Untagged
@@ -157,18 +159,9 @@ MonoBehaviour:
   currentHealth: 0
   onHealthZero:
     _PersistentCalls:
-    - _Target: {fileID: 926679325443426439}
-      _MemberName: HandleEvent
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 2902308931138649375}
+    - _Target: {fileID: 1742849945645141869}
+      _MemberName: PostEvent
+      _PersistentArguments: []
     - _Target: {fileID: 0}
       _MemberName: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null.Destroy
@@ -184,18 +177,9 @@ MonoBehaviour:
         _Object: {fileID: 6713312725758719694}
   onDamageTaken:
     _PersistentCalls:
-    - _Target: {fileID: 4687974148623372631}
-      _MemberName: HandleEvent
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 2902308931138649375}
+    - _Target: {fileID: 7481132111454077212}
+      _MemberName: PostEvent
+      _PersistentArguments: []
   offset: {x: 0, y: 14.66, z: 0}
   radius: 10.2
   meshRenderer: {fileID: 5572208652208514414}
@@ -281,6 +265,32 @@ MonoBehaviour:
   eventIdInternal: 0
   valueGuidInternal: 
   m_callbackDataInternal: {fileID: 0}
+--- !u!114 &7481132111454077212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2902308931138649375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: play_birdAttack
+--- !u!114 &1742849945645141869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2902308931138649375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: play_shipDestroySmall
 --- !u!1 &5160215354378138769
 GameObject:
   m_ObjectHideFlags: 0

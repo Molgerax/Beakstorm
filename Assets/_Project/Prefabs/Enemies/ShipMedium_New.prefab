@@ -325,6 +325,7 @@ GameObject:
   - component: {fileID: 7491312894083225664}
   - component: {fileID: 1962246369955853099}
   - component: {fileID: 2527835290116120630}
+  - component: {fileID: 2888495542978631808}
   m_Layer: 0
   m_Name: ShipMedium_New
   m_TagString: Untagged
@@ -393,6 +394,9 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+    - _Target: {fileID: 2888495542978631808}
+      _MemberName: PostEvent
+      _PersistentArguments: []
   emergeTime: 10
 --- !u!114 &5472652922921227751
 MonoBehaviour:
@@ -504,6 +508,19 @@ MonoBehaviour:
   eventIdInternal: 0
   valueGuidInternal: 
   m_callbackDataInternal: {fileID: 0}
+--- !u!114 &2888495542978631808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120369539214848294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: play_shipDestroyBig
 --- !u!1 &6190167627108941131
 GameObject:
   m_ObjectHideFlags: 0

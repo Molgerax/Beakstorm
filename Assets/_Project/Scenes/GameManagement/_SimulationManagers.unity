@@ -569,7 +569,10 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 47e7f82be5f348d42940c13ab860fd18, type: 2}
   neutralState: {fileID: 11400000, guid: f1bb86f32dd7f7b408898680af8e3ea4, type: 2}
   exposedState: {fileID: 11400000, guid: e7aec695776c965488de5bf02150a3a0, type: 2}
+  noiseStrength: 1
+  noiseScale: 1
   simulationSpace: {x: 1024, y: 512, z: 1024}
+  avoidDistance: 10
   impact: {fileID: 1908763086}
   hashCellSize: 1
   hashCellRatio: 1
@@ -734,6 +737,7 @@ MonoBehaviour:
   compute: {fileID: 7200000, guid: 98bc8d03a330868469735f7e7a971b97, type: 3}
   impact: {fileID: 1908763086}
   logDebugInfo: 0
+  logDebugInfoPos: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -2145,6 +2145,7 @@ GameObject:
   - component: {fileID: 1982143474}
   - component: {fileID: 1982143478}
   - component: {fileID: 1982143476}
+  - component: {fileID: 1982143489}
   - component: {fileID: 1982143480}
   - component: {fileID: 1982143479}
   - component: {fileID: 1982143483}
@@ -2290,7 +2291,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982143473}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e61a8be17663d041bd6199d20792d89, type: 3}
   m_Name: 
@@ -2472,6 +2473,23 @@ MonoBehaviour:
   eventIdInternal: 0
   valueGuidInternal: 
   m_callbackDataInternal: {fileID: 0}
+--- !u!114 &1982143489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982143473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 257fe5bdfcb74d028621bb072de01f8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 1982143478}
+  healthParameter: player_Health
+  gliderController: {fileID: 1982143476}
+  speedParameter: player_Speed
+  speedScaling: 25
 --- !u!1 &2017315458
 GameObject:
   m_ObjectHideFlags: 0
@@ -2670,6 +2688,8 @@ GameObject:
   - component: {fileID: 2135799939}
   - component: {fileID: 2135799941}
   - component: {fileID: 2135799940}
+  - component: {fileID: 2135799942}
+  - component: {fileID: 2135799943}
   m_Layer: 6
   m_Name: Emitter
   m_TagString: Untagged
@@ -2719,6 +2739,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 2135799942}
+        m_TargetAssemblyTypeName: Beakstorm.Audio.SoundEvent, Assembly-CSharp
+        m_MethodName: PostEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onEmitStop:
     m_PersistentCalls:
       m_Calls:
@@ -2726,6 +2758,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2135799943}
+        m_TargetAssemblyTypeName: Beakstorm.Audio.SoundEvent, Assembly-CSharp
+        m_MethodName: PostEvent
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2748,6 +2792,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emissionRate: 512
   lifeTime: 8
+--- !u!114 &2135799942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135799938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: play_pheroDragStart
+--- !u!114 &2135799943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135799938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventName: play_pheroDragStop
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

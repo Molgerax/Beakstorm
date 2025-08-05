@@ -883,11 +883,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - {fileID: 249181834}
   - {fileID: 712556125}
   - {fileID: 851598132}
   - {fileID: 1354401699}
   - {fileID: 1215026078}
+  - {fileID: 249181834}
   onDefeatedAll:
     _PersistentCalls:
     - _Target: {fileID: 1995706350}
