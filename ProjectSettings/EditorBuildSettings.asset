@@ -50,6 +50,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/GameManagement/_SimulationManagers_Low.unity
     guid: 3bb7ffa706dccf5448b399f407b73d27
+  - enabled: 1
+    path: Assets/_Project/Scenes/GameManagement/_BirdSounds.unity
+    guid: 76ad298df845265419962704bacc223a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e60fc8aa09731434f8a2133b3fb99879, type: 2}
   m_UseUCBPForAssetBundles: 0

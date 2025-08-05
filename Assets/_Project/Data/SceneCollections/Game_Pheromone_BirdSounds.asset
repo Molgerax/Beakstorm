@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1929e7dc5f448484baa11e592997940a, type: 3}
+  m_Name: Game_Pheromone_BirdSounds
+  m_EditorClassIdentifier: 
+  scenesToLoad:
+  - asset: {fileID: 102900000, guid: d8b9408c4b11b9941b7bb78395692637, type: 3}
+    guid: d8b9408c4b11b9941b7bb78395692637
+  - asset: {fileID: 102900000, guid: a7e9b15eccbf3864b99ac2f2607adda5, type: 3}
+    guid: a7e9b15eccbf3864b99ac2f2607adda5
+  - asset: {fileID: 102900000, guid: 375d37e5f92c1db4dafac9b8d188290a, type: 3}
+    guid: 375d37e5f92c1db4dafac9b8d188290a
+  - asset: {fileID: 102900000, guid: cf0611d3f3f63354794049e75ffe8d73, type: 3}
+    guid: cf0611d3f3f63354794049e75ffe8d73
+  - asset: {fileID: 102900000, guid: bce57ba8687361f48b36b24647246677, type: 3}
+    guid: bce57ba8687361f48b36b24647246677
+  - asset: {fileID: 102900000, guid: 4747b48565139b949818ef16b3ff465e, type: 3}
+    guid: 4747b48565139b949818ef16b3ff465e
+  - asset: {fileID: 102900000, guid: 76ad298df845265419962704bacc223a, type: 3}
+    guid: 76ad298df845265419962704bacc223a
+  loadAdditively: 0
+  setFirstSceneActive: 1
