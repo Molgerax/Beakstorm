@@ -18,6 +18,9 @@ namespace Beakstorm.Gameplay.Enemies
             if (isDefeated)
                 return;
 
+            if (enemyPrefab == null || transform == null)
+                return;
+            
             _enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
             _enemy.Spawn(this);
             isDefeated = false;
