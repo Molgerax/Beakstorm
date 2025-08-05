@@ -208,6 +208,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float3 worldPos = meshPositionWS + cameraX * vpos.x + cameraY * vpos.y;
 		
 		output.positionCS = TransformWorldToHClip(worldPos);
+		output.positionWS = worldPos;
 		
 		float3 color = hsv2rgb(float3(data.w * 0.25, 1, 1));
 		color = saturate(data.www);
@@ -221,6 +222,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		output.uv = input.uv;
 		output.screenUV = (output.positionCS.xy / output.positionCS.w) * 0.5 + 0.5;
 		output.instanceID = instance_id;
+
 
 		float depth = -TransformWorldToView(worldPos).z;
 
@@ -297,8 +299,12 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float3 normal = 0;
 		normal.xy = offset;
 		normal.z = sqrt(1 - dot(offset, offset));
+
+
+		float shadow = 1;
+		float4 shadowCoords = TransformWorldToShadowCoord(input.positionWS);
 		
-		Light light = GetMainLight();
+		Light light = GetMainLight(shadowCoords);
 		float3 lightDirection = TransformWorldToViewDir(light.direction);
 		lightDirection = light.direction;
 		float lightStrength = dot(normal, lightDirection) * 0.5 + 0.5;
@@ -307,6 +313,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 
 		float transmittance = 1;
 
+		shadow = light.shadowAttenuation;
 		
 		float3 normalWS = TransformViewToWorldDir(normal);
 
@@ -327,6 +334,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 
 		alpha *= zFade;
 
+		lightStrength *= shadow;
 
 		transmittance = exp(-thickness * (1-alpha));
 
@@ -339,7 +347,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		col *= light.color;
 		float3 gi = SAMPLE_GI(input.lightmapUV, 0, normalWS);
 		//col = saturate(col + gi);
-		col = lerp(gi, col, lightStrength);
+		float3 shadowColor = lerp(0, gi, saturate(1-normal.z));
+
+		col = lerp(shadowColor, col, lightStrength);
 
 		//col = transmittance;
 		
