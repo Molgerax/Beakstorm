@@ -19,7 +19,7 @@ MonoBehaviour:
   downSampleFactor: 2
   blitMaterial: {fileID: 2100000, guid: fd795acfeea9df940a35acf2600991a9, type: 2}
   blendStrength: 0.8
-  sobelCutoff: 0.1
+  sobelCutoff: 0.2
   renderSecond: 1
 --- !u!114 &11400000
 MonoBehaviour:

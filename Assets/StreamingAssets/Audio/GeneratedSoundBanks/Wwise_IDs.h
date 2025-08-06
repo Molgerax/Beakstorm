@@ -26,6 +26,8 @@ namespace AK
         static const AkUniqueID PLAY_MENUCHOOSE = 1897074628U;
         static const AkUniqueID PLAY_MENUCONFIRM = 3100142473U;
         static const AkUniqueID PLAY_MENUMUSIC_DEPRECATED = 530752644U;
+        static const AkUniqueID PLAY_PHERODRAGLOOP = 854875926U;
+        static const AkUniqueID PLAY_PHERODRAGLOOPSTOP = 1742926398U;
         static const AkUniqueID PLAY_PHERODRAGSTART = 4119062480U;
         static const AkUniqueID PLAY_PHERODRAGSTOP = 3327444668U;
         static const AkUniqueID PLAY_PHEROSHOOT = 4261851675U;

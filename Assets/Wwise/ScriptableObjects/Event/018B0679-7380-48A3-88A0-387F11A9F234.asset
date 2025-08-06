@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e35c576140d60fa409d2076ce1aea69b, type: 3}
-  m_Name: 8FF6B736-2268-41E2-89B2-A6875B2A7CD2
+  m_Name: 018B0679-7380-48A3-88A0-387F11A9F234
   m_EditorClassIdentifier: 
-  objectName: play_shipDestroySmall
-  id: 1935674591
-  guid: 8FF6B736-2268-41E2-89B2-A6875B2A7CD2
+  objectName: play_pheroDragLoopStop
+  id: 1742926398
+  guid: 018B0679-7380-48A3-88A0-387F11A9F234
   IsInUserDefinedSoundBank: 1

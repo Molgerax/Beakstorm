@@ -39,7 +39,7 @@ Material:
     m_Ints:
     - _SORT: 1
     m_Floats:
-    - _Size: 8
+    - _Size: 5
     - _VertexColorToBase: 1
     - _VertexColorToEmissive: 1
     - _ZFade: 1
