@@ -45,7 +45,7 @@ namespace Beakstorm.Audio
             _cachedSpeed = gliderController.Speed;
 
             float speed = gliderController.Speed01;
-            speed = speed * speed;
+            //speed = speed * speed;
             
             AkUnitySoundEngine.SetRTPCValue(speedParameter, speed * speedScaling);
         }

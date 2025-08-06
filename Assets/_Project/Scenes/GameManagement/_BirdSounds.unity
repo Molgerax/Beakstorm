@@ -151,10 +151,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31010eef825c0334fa57770ccaa42392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dopplerRtpc: 
+  dopplerRtpc: dopplerPitch
   dopplerFactor: 1
   exposureCutoff: 0.5
   muteAbove: 1
+  minimumThreshold: 16
+  useMultipleSources: 0
 --- !u!114 &578622523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,10 +269,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31010eef825c0334fa57770ccaa42392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dopplerRtpc: DopplerParam
+  dopplerRtpc: dopplerPitch
   dopplerFactor: 1
   exposureCutoff: 0.5
   muteAbove: 0
+  minimumThreshold: 16
+  useMultipleSources: 0
 --- !u!114 &704911460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,5 +359,5 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 704911463}
   - {fileID: 578622526}
+  - {fileID: 704911463}

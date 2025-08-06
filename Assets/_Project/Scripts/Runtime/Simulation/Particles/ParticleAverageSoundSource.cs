@@ -9,6 +9,10 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField] private float dopplerFactor = 1;
         [SerializeField] private float exposureCutoff = 0f;
         [SerializeField] private bool muteAbove = false;
+
+        [SerializeField] private int minimumThreshold = 16;
+
+        [SerializeField] private bool useMultipleSources;
     
         private AkPositionArray _emitterArray;
         private ushort _emitterCount = 600;
@@ -40,8 +44,8 @@ namespace Beakstorm.Simulation.Particles
             relativeSpeedA = Mathf.Min(relativeSpeedA, (SpeedOfSound / dopplerFactor));
             relativeSpeedB = Mathf.Min(relativeSpeedB, (SpeedOfSound / dopplerFactor));
 
-            float dopplerPitch = (SpeedOfSound + (relativeSpeedB * dopplerFactor)) /
-                                 (SpeedOfSound + (relativeSpeedA * dopplerFactor));
+            float dopplerPitch = (SpeedOfSound + (relativeSpeedA * dopplerFactor)) /
+                                 (SpeedOfSound + (relativeSpeedB * dopplerFactor));
 
             return dopplerPitch;
         }
@@ -69,6 +73,9 @@ namespace Beakstorm.Simulation.Particles
                     if (cellData.Count <= 0 || cellData.Velocity.magnitude == 0)
                         continue;
 
+                    if (cellData.Count < minimumThreshold)
+                        continue;
+                    
                     float exposure = cellData.Data.x;
                     
                     if (exposure > exposureCutoff && muteAbove)
@@ -82,7 +89,7 @@ namespace Beakstorm.Simulation.Particles
                     
                     float exposureFactor = muteAbove ? (exposureCutoff - exposure) / exposureCutoff : (exposure - exposureCutoff) / (1 - exposureCutoff);
                     
-                    int addCount = Mathf.FloorToInt(Mathf.Clamp(cellData.Count * exposureFactor / 64, 1, 4));
+                    int addCount = Mathf.FloorToInt(Mathf.Clamp(cellData.Count * exposureFactor / minimumThreshold, 1, 4));
 
                     Vector3 fwd = cellData.Velocity.normalized;
                     Vector3 right = Vector3.Cross(Vector3.up, fwd);
@@ -98,11 +105,16 @@ namespace Beakstorm.Simulation.Particles
                 }
             }
 
-            AkUnitySoundEngine.SetMultiplePositions(gameObject, _emitterArray, (ushort)_emitterArray.Count,
-                AkMultiPositionType.MultiPositionType_MultiSources);
-            
-            //AkUnitySoundEngine.SetMultiplePositions(gameObject, _emitterArray, (ushort)_emitterArray.Count,
-            //    AkMultiPositionType.MultiPositionType_MultiDirections);
+            if (useMultipleSources)
+            {
+                AkUnitySoundEngine.SetMultiplePositions(gameObject, _emitterArray, (ushort)_emitterArray.Count,
+                    AkMultiPositionType.MultiPositionType_MultiSources);
+            }
+            else
+            {
+                AkUnitySoundEngine.SetMultiplePositions(gameObject, _emitterArray, (ushort)_emitterArray.Count, 
+                    AkMultiPositionType.MultiPositionType_MultiDirections);
+            }
 
             velocity /= boidCount;
             position /= boidCount;

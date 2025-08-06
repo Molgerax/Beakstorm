@@ -2472,7 +2472,7 @@ MonoBehaviour:
   healthParameter: player_Health
   gliderController: {fileID: 1982143476}
   speedParameter: player_Speed
-  speedScaling: 25
+  speedScaling: 100
 --- !u!1 &2017315458
 GameObject:
   m_ObjectHideFlags: 0

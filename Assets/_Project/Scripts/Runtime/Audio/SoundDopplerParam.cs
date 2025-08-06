@@ -5,7 +5,7 @@ namespace Beakstorm.Audio
 {
     public class SoundDopplerParam : MonoBehaviour
     {
-        [SerializeField] private string dopplerRtpc = "DopplerParam";
+        [SerializeField] private AK.Wwise.RTPC doppler;
         [SerializeField] private float dopplerFactor = 1f;
 
         private uint _postId = AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
@@ -25,14 +25,13 @@ namespace Beakstorm.Audio
             if (!PlayerController.Instance)
                 return;
             
-            if (string.IsNullOrEmpty(dopplerRtpc))
+            if (!doppler.IsValid())
                 return;
             
-            float doppler = CalculateDoppler(PlayerController.Instance.Position, PlayerController.Instance.Velocity,
+            float dopplerPitch = CalculateDoppler(PlayerController.Instance.Position, PlayerController.Instance.Velocity,
                 _position, _velocity, dopplerFactor);
 
-            AkUnitySoundEngine.SetRTPCValue(dopplerRtpc, doppler, gameObject);
-
+            doppler.SetValue(gameObject, dopplerPitch);
         }
         
         private void UpdatePosition()
@@ -54,8 +53,8 @@ namespace Beakstorm.Audio
             relativeSpeedA = Mathf.Min(relativeSpeedA, (SpeedOfSound / dopplerFactor));
             relativeSpeedB = Mathf.Min(relativeSpeedB, (SpeedOfSound / dopplerFactor));
 
-            float dopplerPitch = (SpeedOfSound + (relativeSpeedB * dopplerFactor)) /
-                                 (SpeedOfSound + (relativeSpeedA * dopplerFactor));
+            float dopplerPitch = (SpeedOfSound + (relativeSpeedA * dopplerFactor)) /
+                                 (SpeedOfSound + (relativeSpeedB * dopplerFactor));
 
             return dopplerPitch;
         }
