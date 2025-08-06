@@ -16,14 +16,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Pause 2" ID="{D247EA30-2153-4B8A-96F4-D671A3F11D49}" ShortID="757802403">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -102,14 +102,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Pause 3" ID="{FC497EE5-706F-4CDC-B989-D65DD2EE0CAF}" ShortID="136253986">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -188,14 +188,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Pause 1" ID="{17C8EA3C-FA1F-4D83-AE75-7F9A4D539F1B}" ShortID="567012211">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -276,14 +276,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Peace 1" ID="{3200997A-0149-457A-BB06-7EA1D19B8788}" ShortID="644888107">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -367,14 +367,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Peace 2" ID="{1840B73F-2F2D-43B9-9D1D-3FE9D1C9C604}" ShortID="84215485">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -458,14 +458,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Peace 3" ID="{5ABD5089-DE4E-419F-BF92-508FD1E5BFAE}" ShortID="609294713">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -549,14 +549,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="War 1" ID="{D95B1F9E-8FAE-4A4A-9DAD-6EF489DFE81D}" ShortID="450491320">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -640,14 +640,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="War 2" ID="{5B9002EB-FBE2-4352-8822-E50F1CEEF705}" ShortID="110854339">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -731,14 +731,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="War 3" ID="{1335EB23-26C4-4683-A4A0-5C3B1FE00329}" ShortID="869989002">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -828,7 +828,7 @@
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 								</Reference>
 								<Reference Name="OutputBus">
-									<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+									<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 								</Reference>
 								<Reference Name="TransitionRoot">
 									<Custom>
@@ -1133,8 +1133,6 @@
 														<Property Name="EnableDestinationFadeIn" Type="bool" Value="True"/>
 														<Property Name="EnableSourceFadeOut" Type="bool" Value="True"/>
 														<Property Name="ExitSourceAt" Type="int16" Value="2"/>
-														<Property Name="PlayDestinationPreEntry" Type="bool" Value="False"/>
-														<Property Name="PlaySourcePostExit" Type="bool" Value="False"/>
 														<Property Name="SourceContextType" Type="int16" Value="2"/>
 														<Property Name="UseTransitionObject" Type="bool" Value="True"/>
 													</PropertyList>
@@ -1150,6 +1148,27 @@
 														<TransitionObjectRef Name="Peace2War_3_Mixed_Ver1-0" ID="{C685FC3D-7CF3-4115-A7C6-6F5B7236ABF7}" WorkUnitID="{998C2AED-EDDA-4D88-942A-4D4672A92FD1}"/>
 													</TransitionInfo>
 												</MusicTransition>
+												<MusicTransition Name="Transition" ID="{CA8A462C-7708-48E2-AA69-63F0AF1A706D}">
+													<PropertyList>
+														<Property Name="DestinationContextType" Type="int16" Value="2"/>
+														<Property Name="EnableDestinationFadeIn" Type="bool" Value="True"/>
+														<Property Name="EnableSourceFadeOut" Type="bool" Value="True"/>
+														<Property Name="ExitSourceAt" Type="int16" Value="2"/>
+														<Property Name="SourceContextType" Type="int16" Value="2"/>
+														<Property Name="UseTransitionObject" Type="bool" Value="True"/>
+													</PropertyList>
+													<ReferenceList>
+														<Reference Name="DestinationContextObject">
+															<ObjectRef Name="War_5_Mixed_Ver1-0" ID="{0F47BCB0-5C1A-4C89-9F17-4C5442724996}" WorkUnitID="{998C2AED-EDDA-4D88-942A-4D4672A92FD1}"/>
+														</Reference>
+														<Reference Name="SourceContextObject">
+															<ObjectRef Name="War_4_Mixed_Ver1-0" ID="{BEB0468C-0716-476B-9F61-8F27CAD9D56E}" WorkUnitID="{998C2AED-EDDA-4D88-942A-4D4672A92FD1}"/>
+														</Reference>
+													</ReferenceList>
+													<TransitionInfo>
+														<TransitionObjectRef Name="Peace2War_4_Mixed_Ver1-0" ID="{16B6E214-B380-4E56-9939-C23578E043E2}" WorkUnitID="{998C2AED-EDDA-4D88-942A-4D4672A92FD1}"/>
+													</TransitionInfo>
+												</MusicTransition>
 											</ChildrenList>
 											<TransitionInfo/>
 										</MusicTransition>
@@ -1158,12 +1177,19 @@
 							</ReferenceList>
 							<ChildrenList>
 								<MusicSwitchContainer Name="piece" ID="{19D5FC0C-8DF5-43A7-9D02-18BFDCA66399}" ShortID="879870772">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-12</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 										<Reference Name="TransitionRoot">
 											<Custom>
@@ -1188,7 +1214,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -1237,14 +1263,14 @@
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
 														<MusicTrack Name="Peace_1_Mixed_Ver1-0" ID="{9721BA57-5965-49BF-B021-E2BDEAC39685}" ShortID="798591831">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
@@ -1322,7 +1348,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -1371,14 +1397,14 @@
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
 														<MusicTrack Name="Peace_2_Mixed_Ver1-0" ID="{CDF7C1D1-41DE-4E7F-841A-D5BB6EC941BC}" ShortID="703531744">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
@@ -1456,7 +1482,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -1505,14 +1531,14 @@
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
 														<MusicTrack Name="Peace_3_Mixed_Ver1-0" ID="{7A843D25-7FA9-481C-B3B7-346CA93029EF}" ShortID="690954616">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
@@ -1590,7 +1616,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -1639,14 +1665,14 @@
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
 														<MusicTrack Name="Peace_4_Mixed_Ver1-0" ID="{F4ECDED4-7FE6-4338-B9A1-34868B357093}" ShortID="379120142">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
@@ -1724,7 +1750,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -1773,14 +1799,14 @@
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
 														<MusicTrack Name="Peace_5_Mixed_Ver1-0" ID="{4626D6E4-9F5D-405E-9811-D483BF35E606}" ShortID="333350832">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
@@ -1977,7 +2003,7 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 										<Reference Name="TransitionRoot">
 											<Custom>
@@ -2002,7 +2028,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -2051,18 +2077,18 @@
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
-														<MusicTrack Name="War_1_Mixed_Ver1-0" ID="{AE9A82E1-6A22-4977-998D-399290A93DBA}" ShortID="748179618">
+														<MusicTrack Name="War_1_Mixed_Ver1-2" ID="{E6C9634B-7C28-4A5A-85D6-662AD3DC144D}" ShortID="859105176">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
-																		<MusicTransition Name="Root" ID="{569DCC19-0808-400B-A7D3-DD7C805E8231}">
+																		<MusicTransition Name="Root" ID="{DED12A56-6A9B-4A00-ACE0-785E2EA2F950}">
 																			<PropertyList>
 																				<Property Name="IsFolder" Type="bool" Value="True"/>
 																			</PropertyList>
@@ -2072,11 +2098,11 @@
 																</Reference>
 															</ReferenceList>
 															<ChildrenList>
-																<AudioFileSource Name="War_1_Mixed_Ver1-0" ID="{05BEF81A-2F78-4875-9F59-6C63C46D50D9}">
+																<AudioFileSource Name="War_1_Mixed_Ver1-2" ID="{F6E39DF5-7533-4E56-A03A-4684A7A653A2}">
 																	<Language>SFX</Language>
-																	<AudioFile>War_1_Mixed_Ver1-0.wav</AudioFile>
+																	<AudioFile>War_1_Mixed_Ver1-2.wav</AudioFile>
 																	<MediaIDList>
-																		<MediaID ID="639959967"/>
+																		<MediaID ID="447387258"/>
 																	</MediaIDList>
 																</AudioFileSource>
 															</ChildrenList>
@@ -2084,18 +2110,18 @@
 																<ObjectList Name="Sequences">
 																	<Reference>
 																		<Local>
-																			<MusicTrackSequence Name="" ID="{C4D26419-2CFB-420E-BBB0-01470A0A7F75}">
+																			<MusicTrackSequence Name="" ID="{98F5C2C4-E7DA-4BFB-8107-C96A750D32A9}">
 																				<ObjectLists>
 																					<ObjectList Name="Clips">
 																						<Reference>
 																							<Local>
-																								<MusicClip Name="War_1_Mixed_Ver1-0" ID="{7611CB2A-A6D6-4BAC-A2E9-06AF50612186}">
+																								<MusicClip Name="War_1_Mixed_Ver1-2" ID="{A569D23E-B316-4E7D-9090-CA3861B96C6F}">
 																									<PropertyList>
-																										<Property Name="EndTrimOffset" Type="Real64" Value="46725.6666666667"/>
+																										<Property Name="EndTrimOffset" Type="Real64" Value="42477.875"/>
 																										<Property Name="FadeInMode" Type="int16" Value="0"/>
 																										<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																									</PropertyList>
-																									<AudioSourceRef Name="War_1_Mixed_Ver1-0" ID="{05BEF81A-2F78-4875-9F59-6C63C46D50D9}"/>
+																									<AudioSourceRef Name="War_1_Mixed_Ver1-2" ID="{F6E39DF5-7533-4E56-A03A-4684A7A653A2}"/>
 																								</MusicClip>
 																							</Local>
 																						</Reference>
@@ -2136,7 +2162,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -2185,18 +2211,18 @@
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
-														<MusicTrack Name="War_2_Mixed_Ver1-0" ID="{53E2F0A8-FFC5-4BA6-A78D-EB3AAB6464BA}" ShortID="987814275">
+														<MusicTrack Name="War_2_Mixed_Ver1-2" ID="{9CE9C04E-962A-40D6-9168-B5F2482C6FF3}" ShortID="637994794">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
-																		<MusicTransition Name="Root" ID="{BE38EB11-CEC0-4C7A-9C52-6F8EEC328954}">
+																		<MusicTransition Name="Root" ID="{8DB3E6F2-D8FB-4F36-8CFB-7368EBCCF20F}">
 																			<PropertyList>
 																				<Property Name="IsFolder" Type="bool" Value="True"/>
 																			</PropertyList>
@@ -2206,11 +2232,11 @@
 																</Reference>
 															</ReferenceList>
 															<ChildrenList>
-																<AudioFileSource Name="War_2_Mixed_Ver1-0" ID="{AC1770E9-6335-44FD-AB12-82558F844238}">
+																<AudioFileSource Name="War_2_Mixed_Ver1-2" ID="{A8A7F50F-9A3C-4FA1-96EC-490C77053546}">
 																	<Language>SFX</Language>
-																	<AudioFile>War_2_Mixed_Ver1-0.wav</AudioFile>
+																	<AudioFile>War_2_Mixed_Ver1-2.wav</AudioFile>
 																	<MediaIDList>
-																		<MediaID ID="811423189"/>
+																		<MediaID ID="381298041"/>
 																	</MediaIDList>
 																</AudioFileSource>
 															</ChildrenList>
@@ -2218,18 +2244,18 @@
 																<ObjectList Name="Sequences">
 																	<Reference>
 																		<Local>
-																			<MusicTrackSequence Name="" ID="{4027E43F-26EB-4138-82BA-37A47EF955EE}">
+																			<MusicTrackSequence Name="" ID="{F52551FF-E04D-470C-B70D-F81957B1CD17}">
 																				<ObjectLists>
 																					<ObjectList Name="Clips">
 																						<Reference>
 																							<Local>
-																								<MusicClip Name="War_2_Mixed_Ver1-0" ID="{0F5B4541-0E89-403A-BDC5-D5F5AAC3760F}">
+																								<MusicClip Name="War_2_Mixed_Ver1-2" ID="{27DFA29C-6FE5-4164-ADAA-5D649BEA3CF4}">
 																									<PropertyList>
-																										<Property Name="EndTrimOffset" Type="Real64" Value="46725.6666666667"/>
+																										<Property Name="EndTrimOffset" Type="Real64" Value="42477.875"/>
 																										<Property Name="FadeInMode" Type="int16" Value="0"/>
 																										<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																									</PropertyList>
-																									<AudioSourceRef Name="War_2_Mixed_Ver1-0" ID="{AC1770E9-6335-44FD-AB12-82558F844238}"/>
+																									<AudioSourceRef Name="War_2_Mixed_Ver1-2" ID="{A8A7F50F-9A3C-4FA1-96EC-490C77053546}"/>
 																								</MusicClip>
 																							</Local>
 																						</Reference>
@@ -2270,7 +2296,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -2319,18 +2345,18 @@
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
-														<MusicTrack Name="War_3_Mixed_Ver1-0" ID="{15B5E74E-76E4-4665-B9E6-6BFE30C548D4}" ShortID="406435050">
+														<MusicTrack Name="War_3_Mixed_Ver1-2" ID="{92B3896D-3346-45C4-841E-295BB2E4BCE3}" ShortID="26668569">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
-																		<MusicTransition Name="Root" ID="{FE43F843-3617-40A6-92CC-C84FDC0EC46D}">
+																		<MusicTransition Name="Root" ID="{0BA2796A-5D2B-4529-AEE1-B5BEACB244CB}">
 																			<PropertyList>
 																				<Property Name="IsFolder" Type="bool" Value="True"/>
 																			</PropertyList>
@@ -2340,11 +2366,11 @@
 																</Reference>
 															</ReferenceList>
 															<ChildrenList>
-																<AudioFileSource Name="War_3_Mixed_Ver1-0" ID="{E90F1351-3B53-4E92-8D1F-10AFC3B49ABC}">
+																<AudioFileSource Name="War_3_Mixed_Ver1-2" ID="{C38D5F1E-D5FE-45D5-8AD2-84248590F5C4}">
 																	<Language>SFX</Language>
-																	<AudioFile>War_3_Mixed_Ver1-0.wav</AudioFile>
+																	<AudioFile>War_3_Mixed_Ver1-2.wav</AudioFile>
 																	<MediaIDList>
-																		<MediaID ID="743598766"/>
+																		<MediaID ID="487972321"/>
 																	</MediaIDList>
 																</AudioFileSource>
 															</ChildrenList>
@@ -2352,18 +2378,18 @@
 																<ObjectList Name="Sequences">
 																	<Reference>
 																		<Local>
-																			<MusicTrackSequence Name="" ID="{DB684F8C-255E-4707-B997-AD17058C9AE3}">
+																			<MusicTrackSequence Name="" ID="{AA7C14E2-BA12-4F75-A9FC-24AE406FCB1A}">
 																				<ObjectLists>
 																					<ObjectList Name="Clips">
 																						<Reference>
 																							<Local>
-																								<MusicClip Name="War_3_Mixed_Ver1-0" ID="{7D2F8F25-0152-45D6-B20B-76B198834CA8}">
+																								<MusicClip Name="War_3_Mixed_Ver1-2" ID="{6B6254AC-8C6E-4B7C-B848-00D4BF11ADA1}">
 																									<PropertyList>
-																										<Property Name="EndTrimOffset" Type="Real64" Value="46725.6666666667"/>
+																										<Property Name="EndTrimOffset" Type="Real64" Value="42477.875"/>
 																										<Property Name="FadeInMode" Type="int16" Value="0"/>
 																										<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																									</PropertyList>
-																									<AudioSourceRef Name="War_3_Mixed_Ver1-0" ID="{E90F1351-3B53-4E92-8D1F-10AFC3B49ABC}"/>
+																									<AudioSourceRef Name="War_3_Mixed_Ver1-2" ID="{C38D5F1E-D5FE-45D5-8AD2-84248590F5C4}"/>
 																								</MusicClip>
 																							</Local>
 																						</Reference>
@@ -2404,7 +2430,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -2453,18 +2479,18 @@
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
-														<MusicTrack Name="War_4_Mixed_Ver1-0" ID="{00121288-F1A9-4196-A444-CC9606880A30}" ShortID="543527857">
+														<MusicTrack Name="War_4_Mixed_Ver1-2" ID="{54B6F095-FC43-4D66-911F-51E746589C5D}" ShortID="399810054">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
-																		<MusicTransition Name="Root" ID="{FCF9054D-7444-4F37-9089-4CFF21184F07}">
+																		<MusicTransition Name="Root" ID="{CFD3B570-1D16-4C38-A0B0-755E05B96711}">
 																			<PropertyList>
 																				<Property Name="IsFolder" Type="bool" Value="True"/>
 																			</PropertyList>
@@ -2474,11 +2500,11 @@
 																</Reference>
 															</ReferenceList>
 															<ChildrenList>
-																<AudioFileSource Name="War_4_Mixed_Ver1-0" ID="{FF887049-548C-47E1-8407-A533ACD220F1}">
+																<AudioFileSource Name="War_4_Mixed_Ver1-2" ID="{77DA85B6-C9C4-47B4-BA2E-A06E0B82465A}">
 																	<Language>SFX</Language>
-																	<AudioFile>War_4_Mixed_Ver1-0.wav</AudioFile>
+																	<AudioFile>War_4_Mixed_Ver1-2.wav</AudioFile>
 																	<MediaIDList>
-																		<MediaID ID="491384235"/>
+																		<MediaID ID="12999981"/>
 																	</MediaIDList>
 																</AudioFileSource>
 															</ChildrenList>
@@ -2486,18 +2512,18 @@
 																<ObjectList Name="Sequences">
 																	<Reference>
 																		<Local>
-																			<MusicTrackSequence Name="" ID="{D93A409F-2D7A-428A-8614-786C21025641}">
+																			<MusicTrackSequence Name="" ID="{827E7C50-C54C-4409-BAAB-12FF66F79630}">
 																				<ObjectLists>
 																					<ObjectList Name="Clips">
 																						<Reference>
 																							<Local>
-																								<MusicClip Name="War_4_Mixed_Ver1-0" ID="{F3D9AE66-E685-4084-92AA-82C24992E898}">
+																								<MusicClip Name="War_4_Mixed_Ver1-2" ID="{B5FC3A29-BB39-486E-82EC-C0CA0D0DB654}">
 																									<PropertyList>
-																										<Property Name="EndTrimOffset" Type="Real64" Value="46725.6666666667"/>
+																										<Property Name="EndTrimOffset" Type="Real64" Value="42477.875"/>
 																										<Property Name="FadeInMode" Type="int16" Value="0"/>
 																										<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																									</PropertyList>
-																									<AudioSourceRef Name="War_4_Mixed_Ver1-0" ID="{FF887049-548C-47E1-8407-A533ACD220F1}"/>
+																									<AudioSourceRef Name="War_4_Mixed_Ver1-2" ID="{77DA85B6-C9C4-47B4-BA2E-A06E0B82465A}"/>
 																								</MusicClip>
 																							</Local>
 																						</Reference>
@@ -2538,7 +2564,7 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="PlaylistRoot">
 													<Custom>
@@ -2580,25 +2606,25 @@
 											<ChildrenList>
 												<MusicSegment Name="War_5_Mixed_Ver1-0" ID="{0F47BCB0-5C1A-4C89-9F17-4C5442724996}" ShortID="826015218">
 													<PropertyList>
-														<Property Name="EndPosition" Type="Real64" Value="42477.8761061947"/>
+														<Property Name="EndPosition" Type="Real64" Value="43539.8333333333"/>
 													</PropertyList>
 													<ReferenceList>
 														<Reference Name="Conversion">
 															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 														</Reference>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 													</ReferenceList>
 													<ChildrenList>
-														<MusicTrack Name="War_5_Mixed_Ver1-0" ID="{FEB34479-77EB-48D4-B54C-001DD4F52963}" ShortID="255428080">
+														<MusicTrack Name="War_5_Mixed_Ver1-2" ID="{2C881AAE-D861-46A3-B689-0C0D90BB7EF2}" ShortID="274258686">
 															<ReferenceList>
 																<Reference Name="OutputBus">
-																	<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+																	<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 																</Reference>
 																<Reference Name="TransitionRoot">
 																	<Custom>
-																		<MusicTransition Name="Root" ID="{58977B7F-2C55-4860-B681-0B06925192C9}">
+																		<MusicTransition Name="Root" ID="{24C5EA0C-2626-4EBD-9987-C52B2092B18A}">
 																			<PropertyList>
 																				<Property Name="IsFolder" Type="bool" Value="True"/>
 																			</PropertyList>
@@ -2608,11 +2634,11 @@
 																</Reference>
 															</ReferenceList>
 															<ChildrenList>
-																<AudioFileSource Name="War_5_Mixed_Ver1-0" ID="{6D011B8A-1ED2-4000-9DF3-5A90593DA307}">
+																<AudioFileSource Name="War_5_Mixed_Ver1-2" ID="{1C720D46-227C-4D19-91A7-8768ABA93173}">
 																	<Language>SFX</Language>
-																	<AudioFile>War_5_Mixed_Ver1-0.wav</AudioFile>
+																	<AudioFile>War_5_Mixed_Ver1-2.wav</AudioFile>
 																	<MediaIDList>
-																		<MediaID ID="103295842"/>
+																		<MediaID ID="32052660"/>
 																	</MediaIDList>
 																</AudioFileSource>
 															</ChildrenList>
@@ -2620,18 +2646,18 @@
 																<ObjectList Name="Sequences">
 																	<Reference>
 																		<Local>
-																			<MusicTrackSequence Name="" ID="{B5A84836-DD32-4CC6-A873-ECE39EF80686}">
+																			<MusicTrackSequence Name="" ID="{8CB2C975-9A05-4C19-93AB-CA3D9383736C}">
 																				<ObjectLists>
 																					<ObjectList Name="Clips">
 																						<Reference>
 																							<Local>
-																								<MusicClip Name="War_5_Mixed_Ver1-0" ID="{C0735E31-DDDC-4F56-809F-D7618B28956B}">
+																								<MusicClip Name="War_5_Mixed_Ver1-2" ID="{A2DCAFB0-7446-4A76-A8A9-4A143451A85C}">
 																									<PropertyList>
 																										<Property Name="EndTrimOffset" Type="Real64" Value="42477.875"/>
 																										<Property Name="FadeInMode" Type="int16" Value="0"/>
 																										<Property Name="FadeOutMode" Type="int16" Value="0"/>
 																									</PropertyList>
-																									<AudioSourceRef Name="War_5_Mixed_Ver1-0" ID="{6D011B8A-1ED2-4000-9DF3-5A90593DA307}"/>
+																									<AudioSourceRef Name="War_5_Mixed_Ver1-2" ID="{1C720D46-227C-4D19-91A7-8768ABA93173}"/>
 																								</MusicClip>
 																							</Local>
 																						</Reference>
@@ -2786,12 +2812,19 @@
 									</ObjectLists>
 								</MusicSwitchContainer>
 								<MusicPlaylistContainer Name="Peace" ID="{509E481F-3042-4402-8CEB-270CA936BDE9}" ShortID="546720167">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-6</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 										<Reference Name="PlaylistRoot">
 											<Custom>
@@ -2886,14 +2919,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="Peace_1_Mixed_Ver1-0" ID="{764ECB85-1AE5-4CF7-BBBC-DEB319059B6E}" ShortID="533163859">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -2972,14 +3005,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="Peace_2_Mixed_Ver1-0" ID="{C2A360B8-1948-45FA-A150-5BDD941ADC4B}" ShortID="106513785">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -3058,14 +3091,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="Peace_3_Mixed_Ver1-0" ID="{F2644C94-C579-4B58-ACBC-01088FFB5861}" ShortID="604837533">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -3144,14 +3177,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="Peace_4_Mixed_Ver1-0" ID="{8A4A72EF-33B7-4CF9-89CB-4EDAE402940D}" ShortID="723581802">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -3230,14 +3263,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="Peace_5_Mixed_Ver1-0" ID="{18E4F24A-2383-4E09-8FA2-60598E46A623}" ShortID="468599194">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -3315,7 +3348,7 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 										<Reference Name="PlaylistRoot">
 											<Custom>
@@ -3410,14 +3443,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="War_1_Mixed_Ver1-0" ID="{18AF3DB3-30E5-4026-ABF5-3F6A45B32151}" ShortID="739739432">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -3496,14 +3529,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="War_2_Mixed_Ver1-0" ID="{C93BC174-97FE-4AED-A561-1B876192B262}" ShortID="661423970">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -3582,14 +3615,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="War_3_Mixed_Ver1-0" ID="{13194DE9-A3D2-47E1-8994-D640C6F2BF3F}" ShortID="1034035632">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -3668,14 +3701,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="War_4_Mixed_Ver1-0" ID="{BC1768F5-12E8-43FC-9502-7F1CB7AE328F}" ShortID="426717274">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -3754,14 +3787,14 @@
 													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 												</Reference>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 											</ReferenceList>
 											<ChildrenList>
 												<MusicTrack Name="War_5_Mixed_Ver1-0" ID="{CB0C00A2-0830-4160-AEE7-105D6B53F7D7}" ShortID="559468299">
 													<ReferenceList>
 														<Reference Name="OutputBus">
-															<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+															<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 														</Reference>
 														<Reference Name="TransitionRoot">
 															<Custom>
@@ -4094,14 +4127,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Peace2War_1_Mixed_Ver1-0" ID="{9DC01A43-DF6C-4503-B89E-352746F5FA8E}" ShortID="419479999">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -4185,14 +4218,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Peace2War_2_Mixed_Ver1-0" ID="{20D7156A-971A-4B3B-BF84-FDFE48C0B784}" ShortID="172776996">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -4276,14 +4309,21 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Peace2War_3_Mixed_Ver1-0" ID="{BEADA71C-694F-4439-A8D7-C93795D7D9CB}" ShortID="294582359">
+											<PropertyList>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>-3</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -4423,14 +4463,21 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Peace2War_4_Mixed_Ver1-0" ID="{6746A89C-E541-46EC-8EAB-D590ABF71AB2}" ShortID="615697800">
+											<PropertyList>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>-12</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -4509,14 +4556,21 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="Peace2War_5_Mixed_Ver1-0" ID="{47C4D7F0-B88A-48D4-AFDD-2E5727D252A1}" ShortID="189702722">
+											<PropertyList>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>-6</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -4595,14 +4649,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="War2Peace_1_Mix_Ver1-0" ID="{CE579EE2-AB0D-4AF7-A0FA-F7D2DAE99D01}" ShortID="865919978">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -4681,14 +4735,14 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="War2Peace_2_Mix_Ver1-0" ID="{C8948A73-0515-4A9B-89BA-E1ED9E66F450}" ShortID="729329445">
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -4767,14 +4821,21 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="War2Peace_3_Mix_Ver1-0" ID="{2BC91673-A663-4A5F-ACFB-F30330A3A93C}" ShortID="1065200113">
+											<PropertyList>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>-3</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -4853,14 +4914,21 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="War2Peace_4_Mix_Ver1-0" ID="{ACECE0A4-C236-4925-A900-F1C812C9E888}" ShortID="391517612">
+											<PropertyList>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>-3</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>
@@ -4939,14 +5007,21 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="3D Music" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+											<ObjectRef Name="Music Ambi" ID="{3DD21B80-E3F9-4DEB-B0F9-290236454EBD}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
 										<MusicTrack Name="War2Peace_5_Mix_Ver1-0" ID="{77D30F69-7226-40C0-A524-8570E7A329F0}" ShortID="277862054">
+											<PropertyList>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>-3</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
 											<ReferenceList>
 												<Reference Name="OutputBus">
-													<ObjectRef Name="Master Binaural" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 												</Reference>
 												<Reference Name="TransitionRoot">
 													<Custom>

@@ -15,17 +15,73 @@
 						</Module>
 						<Module>
 							<ObjectRef Name="play_gliderHum" ID="{B1B2C1C7-D181-4A6E-A351-FAD333E7FC15}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
-							<Position X="1" Y="0"/>
+							<Position X="0" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_menuAtmo" ID="{BA1D51D8-3C2E-472C-BF4B-432C2CBFC36A}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="0" Y="4"/>
 						</Module>
 						<Module>
 							<ObjectRef Name="play_birdStatic" ID="{633555D6-2C6D-4619-9CC9-2301EB60DE90}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_birdAttack" ID="{475EC075-A4E2-4EBC-BDA4-6D8BBFBD4E09}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
 							<Position X="1" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_birdFollow" ID="{8A7CBEDB-D2C0-4E39-A42B-27EF3E51460F}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="1" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_menuBack" ID="{90153DE6-B8A5-4D80-95A8-EC460080C525}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="1" Y="4"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_pheroShoot" ID="{391ACA4A-5704-4657-92FA-AE6AD59B8D4F}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="2" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_pheroDragStart" ID="{AAC72AD1-B504-451F-AF8C-44EE5A1ED14C}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="2" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_pheroDragStop" ID="{0F7168B5-7BAF-459C-8797-705804041C44}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="2" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_menuChoose" ID="{258DD3B3-7409-454C-B822-5340821B1054}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="2" Y="4"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_shipStaticBig" ID="{02A07C88-BA95-4FDE-8B54-D4105F030C80}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="3" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_shipDestroyBig" ID="{DB96070E-B423-4C7A-B910-83254A8A4F02}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="3" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_shipStaticSmall" ID="{C5E530F5-0D37-4545-9A90-3F92F99C3DEB}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="3" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_shipDestroySmall" ID="{8FF6B736-2268-41E2-89B2-A6875B2A7CD2}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="3" Y="3"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_menuConfirm" ID="{09E20CD4-F00D-43B7-BE44-E035BEF23FCB}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="3" Y="4"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="play_damage" ID="{4878B6FF-3DBE-4F93-A917-B07F841B27E4}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="4" Y="0"/>
 						</Module>
 					</ModuleList>
 					<RTPCValueList ShowAll="true">
 						<RTPCValue>
 							<GameParameterRef Name="player_Speed" ID="{B0151E82-E880-4947-A00B-3878AB2D1C2F}"/>
-							<Value>100</Value>
+							<Value>60</Value>
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="player_Health" ID="{CA5D07C3-BA4F-4E3A-8E89-B274F80AC0E3}"/>
@@ -33,8 +89,8 @@
 						</RTPCValue>
 					</RTPCValueList>
 					<CurrentStateList ShowAll="true">
-						<CurrentStateRef Name="War" ID="{B8BC0ECB-3879-4460-9265-01B20C11329E}"/>
-						<CurrentStateRef Name="war1" ID="{4525D8B5-377F-4FCA-A536-42CA39FED080}"/>
+						<CurrentStateRef Name="Peace" ID="{AF76E1E0-F187-432D-A7AB-7B55C076E89B}"/>
+						<CurrentStateRef Name="war4" ID="{8D036A0F-71FA-4167-872D-2F6BD678BE04}"/>
 					</CurrentStateList>
 					<CurrentSwitchList ShowAll="true"/>
 				</SoundcasterSession>

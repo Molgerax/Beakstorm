@@ -17,6 +17,9 @@
 				<Event Name="play_levelAtmo" ID="{3083773F-BDA6-4629-9181-3456407EDC26}">
 					<ChildrenList>
 						<Action Name="" ID="{738B7D19-B29D-4BB8-BD7C-A3ADD53AB8F8}" ShortID="1008933168">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="strasse_1" ID="{880DE4D4-D8E0-4F72-BFB0-C60DDC6A1990}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
@@ -24,6 +27,9 @@
 							</ReferenceList>
 						</Action>
 						<Action Name="" ID="{652E5DD0-F565-4507-B16E-E25B8E46AAAB}" ShortID="880932481">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="strasse_2" ID="{0DCBA1C9-364F-457D-B2AD-3456E0B0D67A}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
@@ -31,6 +37,9 @@
 							</ReferenceList>
 						</Action>
 						<Action Name="" ID="{F017859E-3CBF-4195-87F6-27B749F1BB60}" ShortID="285231071">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="wald_birds_1" ID="{0AC221DA-B91E-4A29-844F-87B7DC974AFB}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
@@ -38,6 +47,9 @@
 							</ReferenceList>
 						</Action>
 						<Action Name="" ID="{6395BE29-EBDD-4B27-9104-1D1D85653AFE}" ShortID="560172834">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="wald_birds_2" ID="{BC8831E0-AB4C-4EA1-A679-4B600DE9EB5C}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
@@ -45,6 +57,9 @@
 							</ReferenceList>
 						</Action>
 						<Action Name="" ID="{4C59A672-F17C-4C85-9A74-9A1FB08D01D8}" ShortID="369016351">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="level_atmo" ID="{820D4C7A-6D55-485C-B891-D4100E04CE52}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
@@ -53,7 +68,7 @@
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="play_birdTarget" ID="{6859B005-A6FB-4D44-ABD0-AC41370B8E2D}">
+				<Event Name="play_birdTarget_deprecated" ID="{6859B005-A6FB-4D44-ABD0-AC41370B8E2D}">
 					<ChildrenList>
 						<Action Name="" ID="{FEC3CABB-5A49-4A35-86C7-B18756E5E5B6}" ShortID="555774557">
 							<ReferenceList>
@@ -66,10 +81,17 @@
 				</Event>
 				<Event Name="play_birdAttack" ID="{475EC075-A4E2-4EBC-BDA4-6D8BBFBD4E09}">
 					<ChildrenList>
-						<Action Name="" ID="{1248506A-C64F-4780-94D4-7C0752F60502}" ShortID="289319056">
+						<Action Name="" ID="{90C54C8E-FD9A-4375-8E2E-4CD886173A8D}" ShortID="684027458">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Breaking Impact Texture" ID="{89317CF8-159E-4740-B1CD-9F61930F98A3}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+									<ObjectRef Name="Münzen Impact Layer" ID="{FE0B55E5-89E4-416B-A2D7-02F60D72DBEA}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{74FA1CBD-F16E-4E37-9A27-1167E6F3E0CA}" ShortID="555846315">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Bird_Attack" ID="{54F17C9B-9DB3-446A-8630-7D2B9DD3AA2D}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -88,28 +110,45 @@
 				</Event>
 				<Event Name="play_birdFollow" ID="{8A7CBEDB-D2C0-4E39-A42B-27EF3E51460F}">
 					<ChildrenList>
-						<Action Name="" ID="{492FD224-A498-4E23-A1E1-6E1A12534D68}" ShortID="737237596">
+						<Action Name="" ID="{787100CD-9C26-4794-B8F2-D410C4CECB1F}" ShortID="809510746">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Breaking Impact Texture" ID="{89317CF8-159E-4740-B1CD-9F61930F98A3}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+									<ObjectRef Name="bird_follow" ID="{0EB52E9C-5B4C-4D33-8D7C-41F0A636A7AA}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="play_shipStaticBig" ID="{02A07C88-BA95-4FDE-8B54-D4105F030C80}"/>
-				<Event Name="play_shipCannon" ID="{761E02DC-A217-4203-B3E7-FF5CEC0F556D}">
+				<Event Name="play_shipStaticBig" ID="{02A07C88-BA95-4FDE-8B54-D4105F030C80}">
 					<ChildrenList>
-						<Action Name="" ID="{BEBE5AA3-8732-4461-89C4-9DE4DC456789}" ShortID="69571765">
+						<Action Name="" ID="{8EF09C6A-4620-451B-BB1F-46E4FD73A36E}" ShortID="606714990">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Breaking Impact Texture" ID="{89317CF8-159E-4740-B1CD-9F61930F98A3}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+									<ObjectRef Name="EnemyShipEngineChopper" ID="{21351CE5-3CB6-4ED4-81E3-AC76497E96C9}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="play_shipHorn" ID="{E8A606D4-A984-453C-8364-12C3F700B116}">
+				<Event Name="play_shipCannonBig" ID="{761E02DC-A217-4203-B3E7-FF5CEC0F556D}">
+					<ChildrenList>
+						<Action Name="" ID="{7141E12C-D8A1-4053-9A3B-CA7E9210914F}" ShortID="807895656">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="808 - Insta" ID="{6F0B7486-2317-4F64-9B7D-1EACC4384E74}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{B56C856D-4916-480C-A20F-59C941B7BDD7}" ShortID="59219996">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="gc -808 1" ID="{09CCA4AA-D366-4ECF-AEEE-69216B7A4F5C}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_shipHorn_deprecated" ID="{E8A606D4-A984-453C-8364-12C3F700B116}">
 					<ChildrenList>
 						<Action Name="" ID="{ED01EF60-6AAE-415C-84E2-C926212BC355}" ShortID="554135200">
 							<ReferenceList>
@@ -120,12 +159,33 @@
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="play_shipDestroy" ID="{8FF6B736-2268-41E2-89B2-A6875B2A7CD2}">
+				<Event Name="play_shipDestroySmall" ID="{8FF6B736-2268-41E2-89B2-A6875B2A7CD2}">
 					<ChildrenList>
-						<Action Name="" ID="{EF6BAAA9-EB2A-49D7-A379-6FD2BA1FBAE9}" ShortID="300963012">
+						<Action Name="" ID="{98924632-DBA6-4550-A23D-66371CCD73B8}" ShortID="114250489">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Breaking Impact Texture" ID="{89317CF8-159E-4740-B1CD-9F61930F98A3}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+									<ObjectRef Name="BeatBoxExplosion" ID="{15A6948D-C57D-4E6A-915D-BBD2A235B887}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{782B1680-F1FF-4D44-AB07-F4652263A365}" ShortID="330874348">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="rascheln explosion tail" ID="{E265F0F8-29C4-43E4-A74F-F5E8FBAE79BB}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{D8A70529-8163-46FE-8BFE-BE9041CA130B}" ShortID="836894997">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BulletImpactBody01" ID="{DE6AD88F-D245-4A6C-894C-8578B68A07A7}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{0E18AF7A-DDB4-48B2-8A9B-40E15A8DF5D8}" ShortID="87076817">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Keys3" ID="{07C77A24-6F57-4B20-9564-23F28FF7B99D}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -143,16 +203,6 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
-						<Action Name="" ID="{F84B1786-1B71-4DDD-94B8-409AEE0F5893}" ShortID="547448187">
-							<PropertyList>
-								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="Engine1" ID="{619F4AFF-A152-4E9C-A5E7-16BB35D0AF6B}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
 						<Action Name="" ID="{FE6AED04-9D00-4CAD-B197-5A2705DF2F93}" ShortID="402476623">
 							<PropertyList>
 								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
@@ -160,6 +210,26 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="GliderStatic1" ID="{E18FE6BD-9A22-457B-A2D4-8FA843C95E0E}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{0F901B82-FD29-49A5-A556-3AEB34E003EE}" ShortID="984995380">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Engine2" ID="{DB9DF480-FCED-4EAC-9AEA-B9ED60AF2E45}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{629FBB12-3FDA-41BD-8722-90C44399CBDB}" ShortID="459229318">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="hum_layer" ID="{20FF1A73-53A5-4DA2-828E-DF3B473FD982}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -178,18 +248,175 @@
 				</Event>
 				<Event Name="play_pheroShoot" ID="{391ACA4A-5704-4657-92FA-AE6AD59B8D4F}">
 					<ChildrenList>
-						<Action Name="" ID="{20311D42-930A-4FE3-A7CA-4522617F80A3}" ShortID="954696756">
+						<Action Name="" ID="{06C74C2A-6E28-4FCD-A659-091177B77360}" ShortID="622152062">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Breaking Impact Texture" ID="{89317CF8-159E-4740-B1CD-9F61930F98A3}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+									<ObjectRef Name="Canon layer" ID="{E5BFD419-A88F-434F-8F75-1060A45DF5AF}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{0A095257-8622-4BAB-AF80-EFE17DC495B7}" ShortID="218420140">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Phero_Shoot" ID="{B48789A3-C6F7-4B7E-A8D6-C1F5377EA4CF}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="play_pheroDrag" ID="{AAC72AD1-B504-451F-AF8C-44EE5A1ED14C}">
+				<Event Name="play_pheroDragStart" ID="{AAC72AD1-B504-451F-AF8C-44EE5A1ED14C}">
 					<ChildrenList>
-						<Action Name="" ID="{87000020-74BA-44A0-BC07-A198A6497381}" ShortID="394564579">
+						<Action Name="" ID="{43FEBA86-3DFD-4FCF-9610-E4425D86EFAB}" ShortID="1059236120">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Drag of some sort" ID="{BB6B1A8C-5671-4305-9058-A2DF1C27F39A}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{E9964100-5894-47D5-BAC3-8DB4D0215CE4}" ShortID="457666711">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Phero_Drag" ID="{766F3AB7-9BA0-4F57-B851-2EF01CA6D6ED}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{F791791A-C4D8-4D26-9043-EECAA67E2867}" ShortID="56519893">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Holzfrosch" ID="{DA18C128-9794-4383-BB2D-0CDB51D0C141}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_menuMusic_deprecated" ID="{9304A74D-D480-4FAE-AEE2-FD823775742E}"/>
+				<Event Name="play_menuChoose" ID="{258DD3B3-7409-454C-B822-5340821B1054}">
+					<ChildrenList>
+						<Action Name="" ID="{8F3B808E-1D10-41E0-8F02-1D2C784A99EE}" ShortID="338400706">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="NicePerc" ID="{530A57ED-03DE-4790-A7D7-AA36A94D2B54}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_menuConfirm" ID="{09E20CD4-F00D-43B7-BE44-E035BEF23FCB}">
+					<ChildrenList>
+						<Action Name="" ID="{1A4607AD-5697-4DC7-9405-7E8F060737D3}" ShortID="334142964">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="woodPerc2" ID="{127078CF-362D-46D4-AF34-EC28C90F2E9A}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_menuBack" ID="{90153DE6-B8A5-4D80-95A8-EC460080C525}">
+					<ChildrenList>
+						<Action Name="" ID="{6DC75C2F-15B4-4B3D-A94B-CCDEEB4C20AC}" ShortID="810858108">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="HolzfroschPerc" ID="{5A57F25B-E1DF-4078-8EA1-A3A7706FE766}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_menuAtmo" ID="{BA1D51D8-3C2E-472C-BF4B-432C2CBFC36A}">
+					<ChildrenList>
+						<Action Name="" ID="{796429FA-43A0-4522-98BD-F3B008745556}" ShortID="495298189">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="wald_birds_1" ID="{0AC221DA-B91E-4A29-844F-87B7DC974AFB}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{C86C6487-923C-4104-B65C-475696C65A55}" ShortID="258408004">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="wald_birds_2" ID="{BC8831E0-AB4C-4EA1-A679-4B600DE9EB5C}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_shipStaticSmall" ID="{C5E530F5-0D37-4545-9A90-3F92F99C3DEB}">
+					<ChildrenList>
+						<Action Name="" ID="{5EF94A13-048E-4D04-AC06-F7A52A9B02B4}" ShortID="281995417">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="ship_static_small" ID="{737704D6-8169-485B-87F7-4F08F772840D}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_pheroDragStop" ID="{0F7168B5-7BAF-459C-8797-705804041C44}">
+					<ChildrenList>
+						<Action Name="" ID="{206022BC-A723-427E-873F-6402388E7F99}" ShortID="947375735">
+							<PropertyList>
+								<Property Name="Delay" Type="Real64" Value="0.1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="PlasticPerc" ID="{DD7D064D-1026-474D-B067-F2ED95FF4319}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{B94D6C4B-5421-4063-AB74-1580D5546000}" ShortID="368595015">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Canon_Layer_Reverse" ID="{D7128C28-5EA2-4C24-917F-5FB222467DB1}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{DDE3B30A-921F-4D9A-9E30-18B33EDB06D0}" ShortID="968126695">
+							<PropertyList>
+								<Property Name="Delay" Type="Real64" Value="0.1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="woodPerc" ID="{5FBED7D7-13D3-40FB-96D4-1CF11F5706FE}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_shipDestroyBig" ID="{DB96070E-B423-4C7A-B910-83254A8A4F02}">
+					<ChildrenList>
+						<Action Name="" ID="{8410B5C2-80AF-42D7-8AA6-8A845A6D2D53}" ShortID="880509591">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="ExplosionShip" ID="{FAC6228B-B600-4E1B-906A-CB4A59225F7A}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{9F3D010B-8A30-48C0-A42B-A0110922D751}" ShortID="426556253">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="BulletImpactBody02" ID="{0E204D4E-8A05-4B18-8A55-8DB05E0608E0}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{75CF42F3-6831-4A4C-9BF2-CF929A611813}" ShortID="428598050">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="gc -808 1" ID="{09CCA4AA-D366-4ECF-AEEE-69216B7A4F5C}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_shipCannonSmall" ID="{8C0ABA2E-B8AD-4BAF-BA8E-858325700539}">
+					<ChildrenList>
+						<Action Name="" ID="{10900E67-8AD2-4F37-B429-9E903C4D4F37}" ShortID="383834608">
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Breaking Impact Texture" ID="{89317CF8-159E-4740-B1CD-9F61930F98A3}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
@@ -198,12 +425,38 @@
 						</Action>
 					</ChildrenList>
 				</Event>
-				<Event Name="play_menuMusic" ID="{9304A74D-D480-4FAE-AEE2-FD823775742E}"/>
-				<Event Name="play_menuChoose" ID="{258DD3B3-7409-454C-B822-5340821B1054}"/>
-				<Event Name="play_menuConfirm" ID="{09E20CD4-F00D-43B7-BE44-E035BEF23FCB}"/>
-				<Event Name="play_menuBack" ID="{90153DE6-B8A5-4D80-95A8-EC460080C525}"/>
-				<Event Name="play_menuAtmo" ID="{BA1D51D8-3C2E-472C-BF4B-432C2CBFC36A}"/>
-				<Event Name="play_shipStaticSmall" ID="{C5E530F5-0D37-4545-9A90-3F92F99C3DEB}"/>
+				<Event Name="play_damage" ID="{4878B6FF-3DBE-4F93-A917-B07F841B27E4}">
+					<ChildrenList>
+						<Action Name="" ID="{3033F3BD-C543-4689-9340-1485521CAFE6}" ShortID="84687287">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Breaking Impact Texture2" ID="{C575D238-36F4-457B-96EA-6914D632F383}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{16260528-1899-4A7D-BA9C-E35D88EABA39}" ShortID="103136025">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Münzen Impact Layer" ID="{FE0B55E5-89E4-416B-A2D7-02F60D72DBEA}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{8CC15047-CC10-4D12-BAF3-B0308287DD33}" ShortID="878276976">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="NicePerc" ID="{530A57ED-03DE-4790-A7D7-AA36A94D2B54}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{2FD234E6-BD0E-48AA-A290-02B4DAE07803}" ShortID="735469707">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="808 - Insta" ID="{6F0B7486-2317-4F64-9B7D-1EACC4384E74}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

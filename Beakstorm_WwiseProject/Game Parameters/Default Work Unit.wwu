@@ -3,11 +3,7 @@
 	<GameParameters>
 		<WorkUnit Name="Default Work Unit" ID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}" PersistMode="Standalone">
 			<ChildrenList>
-				<GameParameter Name="player_Speed" ID="{B0151E82-E880-4947-A00B-3878AB2D1C2F}">
-					<PropertyList>
-						<Property Name="InitialValue" Type="Real64" Value="0"/>
-					</PropertyList>
-				</GameParameter>
+				<GameParameter Name="player_Speed" ID="{B0151E82-E880-4947-A00B-3878AB2D1C2F}"/>
 				<GameParameter Name="player_Health" ID="{CA5D07C3-BA4F-4E3A-8E89-B274F80AC0E3}">
 					<PropertyList>
 						<Property Name="InitialValue" Type="Real64" Value="0"/>

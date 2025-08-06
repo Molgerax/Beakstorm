@@ -23,6 +23,11 @@
 					</PropertyList>
 				</AudioDevice>
 				<AudioDevice Name="No_Output" ID="{B60EF149-55A9-4F3C-8CDA-AD85681C9813}" PluginName="No Output" CompanyID="0" PluginID="181" PluginType="7"/>
+				<AudioDevice Name="ASIO_Output" ID="{C6A0BF86-9375-489E-A29E-DC335F213855}" PluginName="ASIO Output" CompanyID="0" PluginID="168" PluginType="7">
+					<PropertyList>
+						<Property Name="ChannelConfig" Type="int32" Value="761524492"/>
+					</PropertyList>
+				</AudioDevice>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioDevices>
