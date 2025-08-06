@@ -3113,7 +3113,7 @@
 								</Property>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
-										<Value>-13</Value>
+										<Value>-18</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
@@ -4962,7 +4962,7 @@
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Attenuation">
-									<ObjectRef Name="Volume" ID="{C3414127-8209-4BCC-90AA-7CA87898C250}" WorkUnitID="{E0C745CC-245A-4E48-9A22-3A8327AE1B66}"/>
+									<ObjectRef Name="Volume_Birds" ID="{56A31C2D-FE63-4F3C-BF13-1A13139459E1}" WorkUnitID="{E0C745CC-245A-4E48-9A22-3A8327AE1B66}"/>
 								</Reference>
 								<Reference Name="Conversion">
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
@@ -5319,6 +5319,19 @@
 								</Panner>
 							</PositioningInfo>
 							<ObjectLists>
+								<ObjectList Name="Effects">
+									<Reference>
+										<Local>
+											<EffectSlot Name="" ID="{5A225349-EF9B-4EB4-B5FE-620841EC04C1}" ShortID="739892139">
+												<ReferenceList>
+													<Reference Name="Effect" PluginName="Wwise Peak Limiter" CompanyID="0" PluginID="110" PluginType="3">
+														<ObjectRef Name="Brick_Wall_Minus_6dB_Peak_Fast_Release" ID="{3FF9AD86-E377-40F8-970F-3D4EE73288B5}" WorkUnitID="{E8613F7D-BAD3-45CD-A3ED-505576F31277}"/>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</Local>
+									</Reference>
+								</ObjectList>
 								<ObjectList Name="RTPC">
 									<Reference>
 										<Local>
