@@ -101,8 +101,8 @@
 						</RTPCValue>
 					</RTPCValueList>
 					<CurrentStateList ShowAll="true">
-						<CurrentStateRef Name="War" ID="{B8BC0ECB-3879-4460-9265-01B20C11329E}"/>
-						<CurrentStateRef Name="war1" ID="{4525D8B5-377F-4FCA-A536-42CA39FED080}"/>
+						<CurrentStateRef Name="Peace" ID="{AF76E1E0-F187-432D-A7AB-7B55C076E89B}"/>
+						<CurrentStateRef Name="peace1" ID="{0AA86CC1-E11A-4EF8-B23A-90BE0DD050FD}"/>
 					</CurrentStateList>
 					<CurrentSwitchList ShowAll="true"/>
 				</SoundcasterSession>

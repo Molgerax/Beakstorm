@@ -321,6 +321,11 @@
 						<Action Name="" ID="{796429FA-43A0-4522-98BD-F3B008745556}" ShortID="495298189">
 							<PropertyList>
 								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Inclusion" Type="bool">
+									<ValueList>
+										<Value>False</Value>
+									</ValueList>
+								</Property>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
@@ -331,10 +336,25 @@
 						<Action Name="" ID="{C86C6487-923C-4104-B65C-475696C65A55}" ShortID="258408004">
 							<PropertyList>
 								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+								<Property Name="Inclusion" Type="bool">
+									<ValueList>
+										<Value>False</Value>
+									</ValueList>
+								</Property>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="wald_birds_2" ID="{BC8831E0-AB4C-4EA1-A679-4B600DE9EB5C}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{E26AA399-D3CD-45FB-BEC4-78314EC55FC8}" ShortID="884344453">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="level_atmo" ID="{820D4C7A-6D55-485C-B891-D4100E04CE52}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
