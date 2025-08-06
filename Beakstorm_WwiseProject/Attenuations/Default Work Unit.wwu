@@ -18,8 +18,8 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>10.33798</XPos>
-											<YPos>-4.08681</YPos>
+											<XPos>60.03977</XPos>
+											<YPos>-4.06525</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
@@ -51,6 +51,11 @@
 											<XPos>0</XPos>
 											<YPos>0</YPos>
 											<Flags>5</Flags>
+										</Point>
+										<Point>
+											<XPos>60.13917</XPos>
+											<YPos>40</YPos>
+											<Flags>0</Flags>
 										</Point>
 										<Point>
 											<XPos>100</XPos>

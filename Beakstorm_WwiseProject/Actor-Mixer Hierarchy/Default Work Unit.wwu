@@ -4200,6 +4200,45 @@
 									</PropertyList>
 								</Panner>
 							</PositioningInfo>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<Reference>
+										<Local>
+											<RTPC Name="" ID="{BCF8851E-397D-42E6-BCC7-7AA0C15B84C8}" ShortID="564103489">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="Pitch"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="dopplerPitch" ID="{72E92ADE-BE1F-4B70-8891-60E3CDC00CF9}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{3B1F1B32-7A7F-4250-91BE-510550E86FB0}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>-300</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>2</XPos>
+																		<YPos>300</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
 						</BlendContainer>
 						<Sound Name="hum_layer" ID="{20FF1A73-53A5-4DA2-828E-DF3B473FD982}" ShortID="826894102">
 							<PropertyList>
@@ -4377,6 +4416,45 @@
 									</PropertyList>
 								</Panner>
 							</PositioningInfo>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<Reference>
+										<Local>
+											<RTPC Name="" ID="{B9E8B1D2-230E-4AE9-933E-BB8CF76B59AD}" ShortID="894115034">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="Pitch"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="dopplerPitch" ID="{72E92ADE-BE1F-4B70-8891-60E3CDC00CF9}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{39FA4A18-3491-437B-98B6-7171664D5FA7}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>-300</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>2</XPos>
+																		<YPos>300</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="ship_static_small" ID="{6DCCBE5F-6D66-4525-AF7A-DF0BB18825E5}" Platform="Linked"/>
 							</ActiveSourceList>
@@ -4428,6 +4506,45 @@
 							<PositioningInfo>
 								<Panner Name="" ID="{98BF4513-0B80-430A-9211-5064B313CEA6}"/>
 							</PositioningInfo>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<Reference>
+										<Local>
+											<RTPC Name="" ID="{CB46A5AA-50CA-41F7-991C-97D2999B6221}" ShortID="301415705">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="Pitch"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="dopplerPitch" ID="{72E92ADE-BE1F-4B70-8891-60E3CDC00CF9}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{11F8792A-A0B2-4F67-B5CB-F7497BAA1032}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>-300</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>2</XPos>
+																		<YPos>300</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
 							<ActiveSourceList>
 								<ActiveSource Name="EnemyShipEngineChopper" ID="{EBDFB3B7-9849-4806-9A13-629D2F0971B9}" Platform="Linked"/>
 							</ActiveSourceList>

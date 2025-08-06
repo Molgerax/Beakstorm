@@ -16,7 +16,8 @@ namespace AK
         static const AkUniqueID PLAY_BIRDATTACK = 2435460859U;
         static const AkUniqueID PLAY_BIRDFOLLOW = 217586636U;
         static const AkUniqueID PLAY_BIRDSTATIC = 4227130709U;
-        static const AkUniqueID PLAY_BIRDTARGET = 1602214372U;
+        static const AkUniqueID PLAY_BIRDTARGET_DEPRECATED = 4054685192U;
+        static const AkUniqueID PLAY_DAMAGE = 784302017U;
         static const AkUniqueID PLAY_GLIDERHUM = 1912775917U;
         static const AkUniqueID PLAY_LEVELATMO = 1661723931U;
         static const AkUniqueID PLAY_LEVELMUSIC = 2671044069U;
@@ -24,12 +25,15 @@ namespace AK
         static const AkUniqueID PLAY_MENUBACK = 1113566242U;
         static const AkUniqueID PLAY_MENUCHOOSE = 1897074628U;
         static const AkUniqueID PLAY_MENUCONFIRM = 3100142473U;
-        static const AkUniqueID PLAY_MENUMUSIC = 2570041344U;
-        static const AkUniqueID PLAY_PHERODRAG = 1867351924U;
+        static const AkUniqueID PLAY_MENUMUSIC_DEPRECATED = 530752644U;
+        static const AkUniqueID PLAY_PHERODRAGSTART = 4119062480U;
+        static const AkUniqueID PLAY_PHERODRAGSTOP = 3327444668U;
         static const AkUniqueID PLAY_PHEROSHOOT = 4261851675U;
-        static const AkUniqueID PLAY_SHIPCANNON = 275388915U;
-        static const AkUniqueID PLAY_SHIPDESTROY = 792515034U;
-        static const AkUniqueID PLAY_SHIPHORN = 463795711U;
+        static const AkUniqueID PLAY_SHIPCANNONBIG = 1568592687U;
+        static const AkUniqueID PLAY_SHIPCANNONSMALL = 3378048096U;
+        static const AkUniqueID PLAY_SHIPDESTROYBIG = 1353941456U;
+        static const AkUniqueID PLAY_SHIPDESTROYSMALL = 1935674591U;
+        static const AkUniqueID PLAY_SHIPHORN_DEPRECATED = 4218965445U;
         static const AkUniqueID PLAY_SHIPSTATICBIG = 236989436U;
         static const AkUniqueID PLAY_SHIPSTATICSMALL = 264564891U;
         static const AkUniqueID STOP_ALL = 452547817U;
@@ -73,6 +77,7 @@ namespace AK
 
     namespace GAME_PARAMETERS
     {
+        static const AkUniqueID DOPPLERPITCH = 331339483U;
         static const AkUniqueID PLAYER_HEALTH = 215992295U;
         static const AkUniqueID PLAYER_SPEED = 1062779386U;
     } // namespace GAME_PARAMETERS
@@ -93,8 +98,10 @@ namespace AK
     {
         static const AkUniqueID _2D_SFX = 1191978290U;
         static const AkUniqueID _3D_MUSIC = 2352922065U;
-        static const AkUniqueID _3D_SFX = 3938878469U;
-        static const AkUniqueID MASTER_BINAURAL = 3007728267U;
+        static const AkUniqueID _3D_SF = 2123328431U;
+        static const AkUniqueID MASTER = 4056684167U;
+        static const AkUniqueID MUSIC_AMBI = 2660909127U;
+        static const AkUniqueID SFX_AMBI = 644840319U;
     } // namespace BUSSES
 
     namespace AUX_BUSSES
@@ -104,6 +111,7 @@ namespace AK
 
     namespace AUDIO_DEVICES
     {
+        static const AkUniqueID ASIO_OUTPUT = 2712377323U;
         static const AkUniqueID NO_OUTPUT = 2317455096U;
         static const AkUniqueID SYSTEM = 3859886410U;
     } // namespace AUDIO_DEVICES
