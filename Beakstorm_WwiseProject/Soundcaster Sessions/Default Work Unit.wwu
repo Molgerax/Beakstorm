@@ -81,7 +81,7 @@
 					<RTPCValueList ShowAll="true">
 						<RTPCValue>
 							<GameParameterRef Name="player_Speed" ID="{B0151E82-E880-4947-A00B-3878AB2D1C2F}"/>
-							<Value>60</Value>
+							<Value>0</Value>
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="player_Health" ID="{CA5D07C3-BA4F-4E3A-8E89-B274F80AC0E3}"/>
@@ -89,8 +89,8 @@
 						</RTPCValue>
 					</RTPCValueList>
 					<CurrentStateList ShowAll="true">
-						<CurrentStateRef Name="Peace" ID="{AF76E1E0-F187-432D-A7AB-7B55C076E89B}"/>
-						<CurrentStateRef Name="war4" ID="{8D036A0F-71FA-4167-872D-2F6BD678BE04}"/>
+						<CurrentStateRef Name="War" ID="{B8BC0ECB-3879-4460-9265-01B20C11329E}"/>
+						<CurrentStateRef Name="war1" ID="{4525D8B5-377F-4FCA-A536-42CA39FED080}"/>
 					</CurrentStateList>
 					<CurrentSwitchList ShowAll="true"/>
 				</SoundcasterSession>
