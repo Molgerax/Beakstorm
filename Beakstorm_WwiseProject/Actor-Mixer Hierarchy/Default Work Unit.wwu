@@ -33,31 +33,6 @@
 				</Sound>
 				<Folder Name="One-Shots" ID="{3B6459A3-B797-4F47-B40C-EE2E82A44DD2}" ShortID="687635174">
 					<ChildrenList>
-						<Sound Name="CracklePerc1" ID="{10093972-AEED-4E0A-A8A1-832720E6DF28}" ShortID="936613706">
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="CracklePerc1" ID="{E8D52545-28DF-4FC0-AB0B-C3EDB70DD7AD}">
-									<PropertyList>
-										<Property Name="ChannelConfigOverride" Type="int64" Value="520"/>
-									</PropertyList>
-									<Language>SFX</Language>
-									<AudioFile>CracklePerc1.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="973950756"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="CracklePerc1" ID="{E8D52545-28DF-4FC0-AB0B-C3EDB70DD7AD}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
 						<Sound Name="BeatBoxExplosion" ID="{15A6948D-C57D-4E6A-915D-BBD2A235B887}" ShortID="292753510">
 							<PropertyList>
 								<Property Name="3DSpatialization" Type="int16" Value="1"/>
@@ -914,28 +889,6 @@
 								<ActiveSource Name="NicePerc" ID="{478ED76E-5D74-4F69-B259-810ED8DD8FA2}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
-						<Sound Name="Perc Layer" ID="{6876B59F-952C-433C-92BB-5104C623C0B9}" ShortID="781681756">
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="Perc Layer" ID="{C62E59EE-95E8-4BE7-8093-F76DEF047F28}">
-									<Language>SFX</Language>
-									<AudioFile>Perc Layer.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="329053187"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="Perc Layer" ID="{C62E59EE-95E8-4BE7-8093-F76DEF047F28}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
 						<Sound Name="PlasticPerc" ID="{DD7D064D-1026-474D-B067-F2ED95FF4319}" ShortID="1066968066">
 							<PropertyList>
 								<Property Name="MakeUpGain" Type="Real64">
@@ -1511,50 +1464,6 @@
 							</ChildrenList>
 							<ActiveSourceList>
 								<ActiveSource Name="Canon_Layer_Reverse" ID="{598FD28B-C253-4BF6-A530-1D24B5827B26}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
-						<Sound Name="BulletFlyby01" ID="{255A4D78-76AB-432C-AC9E-40D30992EA12}" ShortID="945530577">
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="BulletFlyby01" ID="{E2230965-61E1-4BF4-BADF-5E24CBEC687C}">
-									<Language>SFX</Language>
-									<AudioFile>BulletFlyby01.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="619468922"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="BulletFlyby01" ID="{E2230965-61E1-4BF4-BADF-5E24CBEC687C}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
-						<Sound Name="BulletFlyby02" ID="{718088FD-B875-4C03-BAB1-60E102888F7A}" ShortID="892276331">
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="BulletFlyby02" ID="{B67D9669-CB49-46A5-9175-23A9CBAF8E76}">
-									<Language>SFX</Language>
-									<AudioFile>BulletFlyby02.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="10976043"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="BulletFlyby02" ID="{B67D9669-CB49-46A5-9175-23A9CBAF8E76}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
 						<RandomSequenceContainer Name="Bird_Attack" ID="{54F17C9B-9DB3-446A-8630-7D2B9DD3AA2D}" ShortID="408783952">
@@ -2288,12 +2197,12 @@
 							<PropertyList>
 								<Property Name="Pitch" Type="int32">
 									<ValueList>
-										<Value>490</Value>
+										<Value>1420</Value>
 									</ValueList>
 								</Property>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
-										<Value>7</Value>
+										<Value>12</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
@@ -2310,7 +2219,7 @@
 									<PropertyList>
 										<Property Name="FadeOutDuration" Type="Real64" Value="0.0849062037686447"/>
 										<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
-										<Property Name="TrimEnd" Type="Real64" Value="0.0849062037686447"/>
+										<Property Name="TrimEnd" Type="Real64" Value="0.263920633270241"/>
 									</PropertyList>
 									<Language>SFX</Language>
 									<AudioFile>808 - Insta.wav</AudioFile>
@@ -2365,6 +2274,986 @@
 								<ActiveSource Name="808 - Insta" ID="{7324252B-484E-4256-8D27-BC98C4FC594C}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
+						<BlendContainer Name="Cannon_Small" ID="{B7E4D1B8-50BE-4AF3-9635-67A4D9A5BA71}" ShortID="411473140">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="BlendBehavior" Type="int16" Value="1"/>
+								<Property Name="Pitch" Type="int32">
+									<ValueList>
+										<Value>-400</Value>
+									</ValueList>
+								</Property>
+								<Property Name="SpeakerPanning" Type="int16" Value="2"/>
+								<Property Name="UserAuxSendVolume0" Type="Real64">
+									<ValueList>
+										<Value>-23</Value>
+									</ValueList>
+								</Property>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-3</Value>
+									</ValueList>
+									<ModifierList>
+										<ModifierInfo>
+											<Modifier Name="" ID="{C8747A36-241B-497F-9EB6-DC9FCBEC75C3}">
+												<PropertyList>
+													<Property Name="Enabled" Type="bool" Value="True"/>
+													<Property Name="Max" Type="Real64" Value="0.5"/>
+													<Property Name="Min" Type="Real64" Value="-0.5"/>
+												</PropertyList>
+											</Modifier>
+										</ModifierInfo>
+									</ModifierList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Attenuation">
+									<ObjectRef Name="Volume" ID="{C3414127-8209-4BCC-90AA-7CA87898C250}" WorkUnitID="{E0C745CC-245A-4E48-9A22-3A8327AE1B66}"/>
+								</Reference>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+								</Reference>
+								<Reference Name="UserAuxSend0">
+									<ObjectRef Name="Reverb" ID="{FECC9F39-F687-4E4A-B887-A72E64B9C945}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<RandomSequenceContainer Name="SmallCannon" ID="{31466A0B-1DD3-46B7-AA53-99B63D86CFA1}" ShortID="310550388">
+									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="2"/>
+										<Property Name="Highpass" Type="int16">
+											<ValueList>
+												<Value>36</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Lowpass" Type="int16">
+											<ValueList>
+												<Value>22</Value>
+											</ValueList>
+										</Property>
+										<Property Name="MakeUpGain" Type="Real64">
+											<ValueList>
+												<Value>12</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Pitch" Type="int32">
+											<ValueList>
+												<Value>970</Value>
+											</ValueList>
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{C70861A6-8B90-47BF-9BAD-03A08726CBEC}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="100"/>
+															<Property Name="Min" Type="Real64" Value="-100"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
+										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
+										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="3"/>
+										<Property Name="PlayMechanismSpecialTransitionsValue" Type="Real64" Value="0.05"/>
+										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
+										<Property Name="SpeakerPanning" Type="int16" Value="2"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>6</Value>
+											</ValueList>
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{7A4F49EE-E5E3-4538-AEA1-7CD007063D5E}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="0.5"/>
+															<Property Name="Min" Type="Real64" Value="-0.5"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Attenuation">
+											<ObjectRef Name="Volume" ID="{C3414127-8209-4BCC-90AA-7CA87898C250}" WorkUnitID="{E0C745CC-245A-4E48-9A22-3A8327AE1B66}"/>
+										</Reference>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="BulletFlyby01" ID="{255A4D78-76AB-432C-AC9E-40D30992EA12}" ShortID="945530577">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="BulletFlyby01" ID="{E2230965-61E1-4BF4-BADF-5E24CBEC687C}">
+													<PropertyList>
+														<Property Name="FadeInDuration" Type="Real64" Value="0.0232525941547363"/>
+														<Property Name="FadeOutDuration" Type="Real64" Value="0.0710865021301938"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.15346712142126"/>
+														<Property Name="TrimEnd" Type="Real64" Value="0.265079598159526"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>BulletFlyby01.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="619468922"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="BulletFlyby01" ID="{E2230965-61E1-4BF4-BADF-5E24CBEC687C}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="BulletFlyby02" ID="{718088FD-B875-4C03-BAB1-60E102888F7A}" ShortID="892276331">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="BulletFlyby02" ID="{B67D9669-CB49-46A5-9175-23A9CBAF8E76}">
+													<PropertyList>
+														<Property Name="FadeInDuration" Type="Real64" Value="0.0132871969348419"/>
+														<Property Name="FadeOutDuration" Type="Real64" Value="0.0708650610479931"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.13951556781584"/>
+														<Property Name="TrimEnd" Type="Real64" Value="0.210380628863833"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>BulletFlyby02.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="10976043"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="BulletFlyby02" ID="{B67D9669-CB49-46A5-9175-23A9CBAF8E76}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+									<PositioningInfo>
+										<Panner Name="" ID="{AC93A6D7-2A95-4345-A21B-90A8F75016D2}"/>
+									</PositioningInfo>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{EC325CBE-6D00-4516-B2AE-F44E0C4291B7}" ShortID="359238799">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Pitch"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="dopplerPitch" ID="{72E92ADE-BE1F-4B70-8891-60E3CDC00CF9}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{4578E7D7-6243-4101-88C3-33A7F14EF60D}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="65537"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>-600</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>2</XPos>
+																				<YPos>600</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
+								</RandomSequenceContainer>
+								<RandomSequenceContainer Name="Cannon_Shot" ID="{D40C5478-580C-4131-B54B-BD8B5394B548}" ShortID="358195408">
+									<PropertyList>
+										<Property Name="Highpass" Type="int16">
+											<ValueList>
+												<Value>32</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{C10A1424-7AEA-4381-BF9B-E2AD4587D506}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
+										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
+										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="3"/>
+										<Property Name="PlayMechanismSpecialTransitionsValue" Type="Real64" Value="0.05"/>
+										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
+										<Property Name="Volume" Type="Real64">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{E8DBFA25-4D19-4EC7-A475-C4CE0931B515}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="0.5"/>
+															<Property Name="Min" Type="Real64" Value="-0.5"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="Perc Layer" ID="{6876B59F-952C-433C-92BB-5104C623C0B9}" ShortID="781681756">
+											<PropertyList>
+												<Property Name="MakeUpGain" Type="Real64">
+													<ValueList>
+														<Value>21</Value>
+													</ValueList>
+												</Property>
+												<Property Name="Pitch" Type="int32">
+													<ModifierList>
+														<ModifierInfo>
+															<Modifier Name="" ID="{10C0A395-FA0D-485F-B791-3CDB8BFCDE16}">
+																<PropertyList>
+																	<Property Name="Enabled" Type="bool" Value="True"/>
+																	<Property Name="Max" Type="Real64" Value="100"/>
+																	<Property Name="Min" Type="Real64" Value="-100"/>
+																</PropertyList>
+															</Modifier>
+														</ModifierInfo>
+													</ModifierList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="Perc Layer" ID="{C62E59EE-95E8-4BE7-8093-F76DEF047F28}">
+													<PropertyList>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.0507021094688494"/>
+														<Property Name="TrimEnd" Type="Real64" Value="0.153917126953562"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>Perc Layer.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="329053187"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="Perc Layer" ID="{C62E59EE-95E8-4BE7-8093-F76DEF047F28}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="CracklePerc1" ID="{10093972-AEED-4E0A-A8A1-832720E6DF28}" ShortID="936613706">
+											<PropertyList>
+												<Property Name="MakeUpGain" Type="Real64">
+													<ValueList>
+														<Value>38</Value>
+													</ValueList>
+												</Property>
+												<Property Name="Pitch" Type="int32">
+													<ValueList>
+														<Value>-550</Value>
+													</ValueList>
+													<ModifierList>
+														<ModifierInfo>
+															<Modifier Name="" ID="{112117BA-B3F5-4A3C-A9AA-E5A0B691AE18}">
+																<PropertyList>
+																	<Property Name="Enabled" Type="bool" Value="True"/>
+																	<Property Name="Max" Type="Real64" Value="50"/>
+																	<Property Name="Min" Type="Real64" Value="-50"/>
+																</PropertyList>
+															</Modifier>
+														</ModifierInfo>
+													</ModifierList>
+												</Property>
+												<Property Name="Weight" Type="Real64">
+													<ValueList>
+														<Value>29</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="CracklePerc1" ID="{E8D52545-28DF-4FC0-AB0B-C3EDB70DD7AD}">
+													<PropertyList>
+														<Property Name="ChannelConfigOverride" Type="int64" Value="520"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.0570991268894939"/>
+														<Property Name="TrimEnd" Type="Real64" Value="0.199150620552781"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>CracklePerc1.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="973950756"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ObjectLists>
+												<ObjectList Name="Effects">
+													<Reference>
+														<Local>
+															<EffectSlot Name="" ID="{4AC1FC64-D512-454D-B8B6-AFC5A9108303}" ShortID="540601187">
+																<ReferenceList>
+																	<Reference Name="Effect">
+																		<Custom>
+																			<Effect Name="Guitar Distortion (Custom)" ID="{7DE9B572-A675-409E-A497-FEBB645B108C}" ShortID="740078215" PluginName="Wwise Guitar Distortion" CompanyID="0" PluginID="126" PluginType="3">
+																				<PropertyList>
+																					<Property Name="DistortionDrive" Type="Real32" Value="61"/>
+																					<Property Name="DistortionType" Type="int32" Value="3"/>
+																				</PropertyList>
+																			</Effect>
+																		</Custom>
+																	</Reference>
+																</ReferenceList>
+															</EffectSlot>
+														</Local>
+													</Reference>
+													<Reference>
+														<Local>
+															<EffectSlot Name="" ID="{25DE9743-1E6F-4EEA-886D-AAD349A01BC1}" ShortID="756713423">
+																<ReferenceList>
+																	<Reference Name="Effect">
+																		<Custom>
+																			<Effect Name="Compressor (Custom)" ID="{BBE350B2-172E-45B0-A566-4FA20BCCBDB9}" ShortID="216471740" PluginName="Wwise Compressor" CompanyID="0" PluginID="108" PluginType="3">
+																				<PropertyList>
+																					<Property Name="AttackTime" Type="Real32" Value="0.12"/>
+																					<Property Name="OutputGain" Type="Real32" Value="4.9"/>
+																					<Property Name="Ratio" Type="Real32" Value="13.7"/>
+																					<Property Name="Threshold" Type="Real32" Value="-23.1"/>
+																				</PropertyList>
+																			</Effect>
+																		</Custom>
+																	</Reference>
+																</ReferenceList>
+															</EffectSlot>
+														</Local>
+													</Reference>
+												</ObjectList>
+											</ObjectLists>
+											<ActiveSourceList>
+												<ActiveSource Name="CracklePerc1" ID="{E8D52545-28DF-4FC0-AB0B-C3EDB70DD7AD}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+									<ObjectLists>
+										<ObjectList Name="Effects">
+											<Reference>
+												<Local>
+													<EffectSlot Name="" ID="{16B1E5B4-2C9F-46EE-99CA-C731B958617B}" ShortID="104980985">
+														<ReferenceList>
+															<Reference Name="Effect">
+																<Custom>
+																	<Effect Name="Guitar Distortion (Custom)" ID="{57DA6E95-B9CF-4DE0-ABC0-2A77A903C853}" ShortID="250674703" PluginName="Wwise Guitar Distortion" CompanyID="0" PluginID="126" PluginType="3">
+																		<PropertyList>
+																			<Property Name="DistortionDrive" Type="Real32" Value="61"/>
+																			<Property Name="DistortionType" Type="int32" Value="3"/>
+																		</PropertyList>
+																	</Effect>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</EffectSlot>
+												</Local>
+											</Reference>
+											<Reference>
+												<Local>
+													<EffectSlot Name="" ID="{D52F611B-27E0-4B8A-8745-9898F6B28018}" ShortID="1026424461">
+														<ReferenceList>
+															<Reference Name="Effect">
+																<Custom>
+																	<Effect Name="Compressor (Custom)" ID="{D18B9A36-332C-4D99-99EA-0A8071104E36}" ShortID="118810570" PluginName="Wwise Compressor" CompanyID="0" PluginID="108" PluginType="3">
+																		<PropertyList>
+																			<Property Name="AttackTime" Type="Real32" Value="0.12"/>
+																			<Property Name="OutputGain" Type="Real32" Value="4.9"/>
+																			<Property Name="Ratio" Type="Real32" Value="13.7"/>
+																			<Property Name="Threshold" Type="Real32" Value="-23.1"/>
+																		</PropertyList>
+																	</Effect>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</EffectSlot>
+												</Local>
+											</Reference>
+										</ObjectList>
+										<ObjectList Name="RTPC">
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{57C0CA0F-2E1E-427E-8FC9-B410AAF3E547}" ShortID="936964875">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="Pitch"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="dopplerPitch" ID="{72E92ADE-BE1F-4B70-8891-60E3CDC00CF9}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{729A73CB-BA0E-4EFC-B0FC-4E2EA7B775BF}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="65537"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>-600</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>2</XPos>
+																				<YPos>600</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
+								</RandomSequenceContainer>
+								<RandomSequenceContainer Name="Bang" ID="{4A416DE2-8229-4109-9646-E944A60FC8A4}" ShortID="435836965">
+									<PropertyList>
+										<Property Name="MakeUpGain" Type="Real64">
+											<ValueList>
+												<Value>20</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Pitch" Type="int32">
+											<ValueList>
+												<Value>-910</Value>
+											</ValueList>
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{458A2C98-751E-44E1-8F3C-BCE83F7CA0EE}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="50"/>
+															<Property Name="Min" Type="Real64" Value="-50"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+										<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
+										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
+										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="3"/>
+										<Property Name="PlayMechanismSpecialTransitionsValue" Type="Real64" Value="0.075"/>
+										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>3</Value>
+											</ValueList>
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{7C82553D-807B-40E4-8B74-305E25BCDBCC}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="0.5"/>
+															<Property Name="Min" Type="Real64" Value="-0.5"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<Sound Name="innen_mono_Knall1" ID="{3D2D2F5B-1100-493C-8250-59513BB731DB}" ShortID="362495339">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="innen_mono_Knall1" ID="{1E2426F7-060D-4F1E-8736-96E932C3E65F}">
+													<PropertyList>
+														<Property Name="FadeOutDuration" Type="Real64" Value="0.102810326660931"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimEnd" Type="Real64" Value="0.19898179991812"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>innen_mono_Knall1.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="808216572"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="innen_mono_Knall1" ID="{1E2426F7-060D-4F1E-8736-96E932C3E65F}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="innen_mono_Knall2" ID="{6C39919D-332F-431D-85B7-92FB162FF218}" ShortID="909380035">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="innen_mono_Knall2" ID="{830FB0A0-8EED-43DA-B269-A245E33B871C}">
+													<PropertyList>
+														<Property Name="FadeOutDuration" Type="Real64" Value="0.0136803127349573"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.0649843138754489"/>
+														<Property Name="TrimEnd" Type="Real64" Value="0.199382802883817"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>innen_mono_Knall2.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="38667440"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="innen_mono_Knall2" ID="{830FB0A0-8EED-43DA-B269-A245E33B871C}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="innen_mono_Knall3" ID="{E6AD4D84-A6BC-4C10-8C4F-EF2831110D4D}" ShortID="97622728">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="innen_mono_Knall3" ID="{7CE13860-39B8-4D41-89CC-6B203479A567}">
+													<PropertyList>
+														<Property Name="FadeOutDuration" Type="Real64" Value="0.0741844332536491"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimEnd" Type="Real64" Value="0.203970275235708"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>innen_mono_Knall3.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="416806772"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="innen_mono_Knall3" ID="{7CE13860-39B8-4D41-89CC-6B203479A567}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="innen_mono_Knall4" ID="{FACCE2C6-F06B-4341-AF30-521FCAEAD2F1}" ShortID="113861184">
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="innen_mono_Knall4" ID="{345A3762-EC99-4100-9DFB-3B0210D7E861}">
+													<PropertyList>
+														<Property Name="FadeOutDuration" Type="Real64" Value="0.0288194671985725"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.0930656633528659"/>
+														<Property Name="TrimEnd" Type="Real64" Value="0.201296932804975"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>innen_mono_Knall4.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="455424568"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="innen_mono_Knall4" ID="{345A3762-EC99-4100-9DFB-3B0210D7E861}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+										<Sound Name="innen_mono_Knall5" ID="{1C7DF32B-6762-4839-9EEE-1448ACC3AE7C}" ShortID="69926933">
+											<PropertyList>
+												<Property Name="Weight" Type="Real64">
+													<ValueList>
+														<Value>26</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="innen_mono_Knall5" ID="{F968A86A-8BE2-462C-9202-6770A327E7BE}">
+													<PropertyList>
+														<Property Name="FadeOutDuration" Type="Real64" Value="0.118665059141694"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimEnd" Type="Real64" Value="0.200896661856427"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>innen_mono_Knall5.wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="184194663"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="innen_mono_Knall5" ID="{F968A86A-8BE2-462C-9202-6770A327E7BE}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
+									</ChildrenList>
+								</RandomSequenceContainer>
+							</ChildrenList>
+							<PositioningInfo>
+								<Panner Name="" ID="{11B9496B-06A7-4C9E-9A76-3A0C86F82006}"/>
+							</PositioningInfo>
+							<ObjectLists>
+								<ObjectList Name="Effects">
+									<Reference>
+										<Local>
+											<EffectSlot Name="" ID="{0336C13E-0912-40B2-9452-8A8808800DA9}" ShortID="246988278">
+												<ReferenceList>
+													<Reference Name="Effect">
+														<Custom>
+															<Effect Name="Guitar Distortion (Custom)" ID="{A46F24DA-89AC-4F11-9D7A-D280F7654D4C}" ShortID="692517215" PluginName="Wwise Guitar Distortion" CompanyID="0" PluginID="126" PluginType="3">
+																<PropertyList>
+																	<Property Name="DistortionDrive" Type="Real32" Value="61"/>
+																	<Property Name="DistortionType" Type="int32" Value="1"/>
+																</PropertyList>
+															</Effect>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</Local>
+									</Reference>
+									<Reference>
+										<Local>
+											<EffectSlot Name="" ID="{E10AF521-B155-46AC-AC9D-193042E53935}" ShortID="521020932">
+												<ReferenceList>
+													<Reference Name="Effect">
+														<Custom>
+															<Effect Name="Compressor (Custom)" ID="{915FFFCE-BD85-4D1D-A92E-71F2225DD04C}" ShortID="829862873" PluginName="Wwise Compressor" CompanyID="0" PluginID="108" PluginType="3">
+																<PropertyList>
+																	<Property Name="AttackTime" Type="Real32" Value="0.09"/>
+																	<Property Name="OutputGain" Type="Real32" Value="4.9"/>
+																	<Property Name="Ratio" Type="Real32" Value="13.7"/>
+																	<Property Name="Threshold" Type="Real32" Value="-23.1"/>
+																</PropertyList>
+															</Effect>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
+							<BlendTrackList>
+								<BlendTrack Name="New Blend Track" ID="{1BD73EC4-6CF9-4CE7-8AC4-28B86C7EA032}" ShortID="587517367"/>
+							</BlendTrackList>
+						</BlendContainer>
+						<BlendContainer Name="Cannon_Big" ID="{3531EFF2-AA7E-42BC-B93F-29C51DAFDEA4}" ShortID="508939449">
+							<PropertyList>
+								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="MakeUpGain" Type="Real64">
+									<ValueList>
+										<Value>27</Value>
+									</ValueList>
+								</Property>
+								<Property Name="Pitch" Type="int32">
+									<ValueList>
+										<Value>-1080</Value>
+									</ValueList>
+								</Property>
+								<Property Name="SpeakerPanning" Type="int16" Value="2"/>
+								<Property Name="UserAuxSendVolume0" Type="Real64">
+									<ValueList>
+										<Value>-17</Value>
+									</ValueList>
+								</Property>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>4</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Attenuation">
+									<ObjectRef Name="Volume" ID="{C3414127-8209-4BCC-90AA-7CA87898C250}" WorkUnitID="{E0C745CC-245A-4E48-9A22-3A8327AE1B66}"/>
+								</Reference>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+								</Reference>
+								<Reference Name="UserAuxSend0">
+									<ObjectRef Name="Reverb" ID="{FECC9F39-F687-4E4A-B887-A72E64B9C945}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="innen_mono_GitarrePerkussion16" ID="{0223C8CE-7ADA-402A-B151-A254ABAABD08}" ShortID="540084589">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="innen_mono_GitarrePerkussion16" ID="{E2506C77-4AAB-4F75-BBBA-9A6B39615CB1}">
+											<PropertyList>
+												<Property Name="FadeOutDuration" Type="Real64" Value="0.042241350589739"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimEnd" Type="Real64" Value="0.199473026649625"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>innen_mono_GitarrePerkussion16.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="758193110"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="innen_mono_GitarrePerkussion16" ID="{E2506C77-4AAB-4F75-BBBA-9A6B39615CB1}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="innen_mono_GitarrePerkussion17" ID="{83C7A432-294A-46CD-883B-8D5E1D4D7DE1}" ShortID="263196093">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="innen_mono_GitarrePerkussion17" ID="{A90015C3-A09B-466A-9F8B-425EC8DA7553}">
+											<PropertyList>
+												<Property Name="FadeOutDuration" Type="Real64" Value="0.0509584053164947"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimEnd" Type="Real64" Value="0.197575573079726"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>innen_mono_GitarrePerkussion17.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="592788045"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="innen_mono_GitarrePerkussion17" ID="{A90015C3-A09B-466A-9F8B-425EC8DA7553}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="innen_mono_GitarrePerkussion18" ID="{A9B6AEEB-321E-4709-A3F9-0C087A8471D3}" ShortID="838041140">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="innen_mono_GitarrePerkussion18" ID="{A8992C3E-93CB-49D6-A77E-CB8669CA6D30}">
+											<PropertyList>
+												<Property Name="FadeOutDuration" Type="Real64" Value="0.0764369222119605"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.0402299590589266"/>
+												<Property Name="TrimEnd" Type="Real64" Value="0.300383710837007"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>innen_mono_GitarrePerkussion18.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="510907991"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="innen_mono_GitarrePerkussion18" ID="{A8992C3E-93CB-49D6-A77E-CB8669CA6D30}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="innen_mono_GitarrePerkussion20" ID="{2127DA75-62B7-47B5-82C6-0FB4EFBAF4B6}" ShortID="388083294">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="innen_mono_GitarrePerkussion20" ID="{EF11227E-C4AB-4BC9-9D86-413C12794368}">
+											<PropertyList>
+												<Property Name="FadeOutDuration" Type="Real64" Value="0.0905177271489866"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimEnd" Type="Real64" Value="0.201150573440077"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>innen_mono_GitarrePerkussion20.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="475355937"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="innen_mono_GitarrePerkussion20" ID="{EF11227E-C4AB-4BC9-9D86-413C12794368}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Clap - Emerald" ID="{9BA4C417-FC68-4B65-AE26-2EBCAAB9D28A}" ShortID="164767620">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Clap - Emerald" ID="{5191D87C-594B-467C-808C-5E31484D3A10}">
+											<Language>SFX</Language>
+											<AudioFile>Clap - Emerald.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="346524997"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Clap - Emerald" ID="{5191D87C-594B-467C-808C-5E31484D3A10}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="SNARE" ID="{8F57B80F-0FE7-4CF7-AFA3-1CADC795989C}" ShortID="263412802">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="SNARE" ID="{20B4AEB5-62A5-43F1-9892-3E4ECCC8C63D}">
+											<Language>SFX</Language>
+											<AudioFile>SNARE.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="1069164938"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="SNARE" ID="{20B4AEB5-62A5-43F1-9892-3E4ECCC8C63D}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<PositioningInfo>
+								<Panner Name="" ID="{20B11DEE-47E5-4F2F-8339-C169EC3575DE}"/>
+							</PositioningInfo>
+							<ObjectLists>
+								<ObjectList Name="Effects">
+									<Reference>
+										<Local>
+											<EffectSlot Name="" ID="{6255081F-09D0-47F6-A07C-67B7DD492995}" ShortID="171725114">
+												<ReferenceList>
+													<Reference Name="Effect">
+														<Custom>
+															<Effect Name="Guitar Distortion (Custom)" ID="{5D80C070-13A5-43A7-8C22-DDFCB9977220}" ShortID="700265266" PluginName="Wwise Guitar Distortion" CompanyID="0" PluginID="126" PluginType="3">
+																<PropertyList>
+																	<Property Name="DistortionDrive" Type="Real32" Value="61"/>
+																	<Property Name="DistortionType" Type="int32" Value="1"/>
+																</PropertyList>
+															</Effect>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</Local>
+									</Reference>
+									<Reference>
+										<Local>
+											<EffectSlot Name="" ID="{151B431B-FBC6-4806-9E68-D3817BAC0685}" ShortID="370135679">
+												<ReferenceList>
+													<Reference Name="Effect">
+														<Custom>
+															<Effect Name="Compressor (Custom)" ID="{E7AABC17-2737-4030-93BD-B97F66A283A7}" ShortID="1057612973" PluginName="Wwise Compressor" CompanyID="0" PluginID="108" PluginType="3">
+																<PropertyList>
+																	<Property Name="AttackTime" Type="Real32" Value="0"/>
+																	<Property Name="OutputGain" Type="Real32" Value="4.9"/>
+																	<Property Name="Ratio" Type="Real32" Value="13.7"/>
+																	<Property Name="Threshold" Type="Real32" Value="-23.1"/>
+																</PropertyList>
+															</Effect>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
+						</BlendContainer>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="Raw" ID="{FE425D0E-C277-4A21-92CF-FB6ED18E7534}" ShortID="406060599">
@@ -3413,7 +4302,7 @@
 								<Property Name="SpeakerPanning" Type="int16" Value="1"/>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
-										<Value>20</Value>
+										<Value>17</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
@@ -3589,7 +4478,7 @@
 								<Property Name="SpeakerPanning" Type="int16" Value="1"/>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
-										<Value>-9</Value>
+										<Value>-12</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
@@ -3715,7 +4604,7 @@
 								<Property Name="SpeakerPanning" Type="int16" Value="1"/>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
-										<Value>-13</Value>
+										<Value>-18</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>
@@ -4221,12 +5110,12 @@
 																<PointList>
 																	<Point>
 																		<XPos>0</XPos>
-																		<YPos>-300</YPos>
+																		<YPos>-600</YPos>
 																		<Flags>5</Flags>
 																	</Point>
 																	<Point>
 																		<XPos>2</XPos>
-																		<YPos>300</YPos>
+																		<YPos>600</YPos>
 																		<Flags>37</Flags>
 																	</Point>
 																</PointList>
@@ -4256,7 +5145,7 @@
 								<Property Name="SpeakerPanning" Type="int16" Value="1"/>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
-										<Value>21</Value>
+										<Value>16</Value>
 									</ValueList>
 								</Property>
 							</PropertyList>

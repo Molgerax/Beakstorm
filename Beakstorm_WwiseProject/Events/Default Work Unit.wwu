@@ -132,17 +132,10 @@
 				</Event>
 				<Event Name="play_shipCannonBig" ID="{761E02DC-A217-4203-B3E7-FF5CEC0F556D}">
 					<ChildrenList>
-						<Action Name="" ID="{7141E12C-D8A1-4053-9A3B-CA7E9210914F}" ShortID="807895656">
+						<Action Name="" ID="{F66F9B91-DAE2-4A50-B18F-35E880A2C44F}" ShortID="482557396">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="808 - Insta" ID="{6F0B7486-2317-4F64-9B7D-1EACC4384E74}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
-						<Action Name="" ID="{B56C856D-4916-480C-A20F-59C941B7BDD7}" ShortID="59219996">
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="gc -808 1" ID="{09CCA4AA-D366-4ECF-AEEE-69216B7A4F5C}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+									<ObjectRef Name="Cannon_Big" ID="{3531EFF2-AA7E-42BC-B93F-29C51DAFDEA4}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -412,14 +405,28 @@
 								</Reference>
 							</ReferenceList>
 						</Action>
+						<Action Name="" ID="{24FB0638-1214-4672-903C-1D3290BA6F68}" ShortID="104582166">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SNARE" ID="{8F57B80F-0FE7-4CF7-AFA3-1CADC795989C}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{6A18C092-7EE0-441A-959E-C5EC1943F339}" ShortID="150593141">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Clap - Emerald" ID="{9BA4C417-FC68-4B65-AE26-2EBCAAB9D28A}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 					</ChildrenList>
 				</Event>
 				<Event Name="play_shipCannonSmall" ID="{8C0ABA2E-B8AD-4BAF-BA8E-858325700539}">
 					<ChildrenList>
-						<Action Name="" ID="{10900E67-8AD2-4F37-B429-9E903C4D4F37}" ShortID="383834608">
+						<Action Name="" ID="{61CFE749-9F94-4273-B304-B7FF0FE654E2}" ShortID="174379874">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Breaking Impact Texture" ID="{89317CF8-159E-4740-B1CD-9F61930F98A3}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+									<ObjectRef Name="Cannon_Small" ID="{B7E4D1B8-50BE-4AF3-9635-67A4D9A5BA71}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

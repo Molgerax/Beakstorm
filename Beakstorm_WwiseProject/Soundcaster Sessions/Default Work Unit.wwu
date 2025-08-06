@@ -84,6 +84,10 @@
 							<Value>0</Value>
 						</RTPCValue>
 						<RTPCValue>
+							<GameParameterRef Name="dopplerPitch" ID="{72E92ADE-BE1F-4B70-8891-60E3CDC00CF9}"/>
+							<Value>0</Value>
+						</RTPCValue>
+						<RTPCValue>
 							<GameParameterRef Name="player_Health" ID="{CA5D07C3-BA4F-4E3A-8E89-B274F80AC0E3}"/>
 							<Value>100</Value>
 						</RTPCValue>
