@@ -622,8 +622,8 @@
 									<PropertyList>
 										<Property Name="FilterTypeBand1" Type="int32" Value="1"/>
 										<Property Name="FilterTypeBand3" Type="int32" Value="0"/>
-										<Property Name="FrequencyBand3" Type="Real32" Value="20000"/>
-										<Property Name="OnOffBand1" Type="bool" Value="False"/>
+										<Property Name="FrequencyBand1" Type="Real32" Value="470"/>
+										<Property Name="FrequencyBand3" Type="Real32" Value="4608"/>
 										<Property Name="OnOffBand2" Type="bool" Value="False"/>
 									</PropertyList>
 								</Effect>
@@ -1561,8 +1561,9 @@
 										<Property Name="DelayTime" Type="Real32" Value="0.5"/>
 										<Property Name="FeedBackLevel" Type="Real32" Value="0.8"/>
 										<Property Name="ModDepth" Type="Real32" Value="70"/>
-										<Property Name="ModFrequency" Type="Real32" Value="2"/>
+										<Property Name="ModFrequency" Type="Real32" Value="0.3"/>
 										<Property Name="ModPWM" Type="Real32" Value="0"/>
+										<Property Name="WetDryMix" Type="Real32" Value="34"/>
 									</PropertyList>
 								</Effect>
 								<Effect Name="Bass" ID="{AB3CE4D4-B0DD-4FC2-AC1D-30EB749C5911}" PluginName="Wwise Flanger" CompanyID="0" PluginID="125" PluginType="3">

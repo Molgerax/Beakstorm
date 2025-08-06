@@ -1017,50 +1017,6 @@
 								<ActiveSource Name="rascheln explosion tail" ID="{A9292758-B3FD-4E25-9902-BCD5D781F15B}" Platform="Linked"/>
 							</ActiveSourceList>
 						</Sound>
-						<Sound Name="Rascheln" ID="{89B36603-B064-4E4B-BF68-9D5018FB82DA}" ShortID="222080039">
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="Rascheln" ID="{72559C4A-8FD9-4C04-A86B-B587DB849C6D}">
-									<Language>SFX</Language>
-									<AudioFile>Rascheln.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="319742636"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="Rascheln" ID="{72559C4A-8FD9-4C04-A86B-B587DB849C6D}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
-						<Sound Name="starkes rascheln oder wind zb" ID="{A54E9837-8FF0-423A-A722-A531474A1BFA}" ShortID="285624285">
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<AudioFileSource Name="starkes rascheln oder wind zb" ID="{130FE426-C48C-495A-9839-41B53BCF0FFA}">
-									<Language>SFX</Language>
-									<AudioFile>starkes rascheln oder wind zb.wav</AudioFile>
-									<MediaIDList>
-										<MediaID ID="584432788"/>
-									</MediaIDList>
-								</AudioFileSource>
-							</ChildrenList>
-							<ActiveSourceList>
-								<ActiveSource Name="starkes rascheln oder wind zb" ID="{130FE426-C48C-495A-9839-41B53BCF0FFA}" Platform="Linked"/>
-							</ActiveSourceList>
-						</Sound>
 						<Sound Name="woodPerc2" ID="{127078CF-362D-46D4-AF34-EC28C90F2E9A}" ShortID="224987661">
 							<PropertyList>
 								<Property Name="Volume" Type="Real64">
@@ -1281,119 +1237,6 @@
 							<PositioningInfo>
 								<Panner Name="" ID="{71F9B8C6-AF1A-417A-9F95-44F0348861F6}"/>
 							</PositioningInfo>
-						</RandomSequenceContainer>
-						<RandomSequenceContainer Name="Phero_Drag" ID="{766F3AB7-9BA0-4F57-B851-2EF01CA6D6ED}" ShortID="428160990">
-							<PropertyList>
-								<Property Name="MakeUpGain" Type="Real64">
-									<ValueList>
-										<Value>6</Value>
-									</ValueList>
-								</Property>
-								<Property Name="Volume" Type="Real64">
-									<ValueList>
-										<Value>13</Value>
-									</ValueList>
-								</Property>
-							</PropertyList>
-							<ReferenceList>
-								<Reference Name="Conversion">
-									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
-								</Reference>
-								<Reference Name="OutputBus">
-									<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
-								</Reference>
-							</ReferenceList>
-							<ChildrenList>
-								<Sound Name="Drag1" ID="{CD9FF940-2A80-44F1-BADD-D5AB69091A9E}" ShortID="349510430">
-									<PropertyList>
-										<Property Name="IsLoopingInfinite" Type="bool" Value="False"/>
-										<Property Name="Pitch" Type="int32">
-											<ModifierList>
-												<ModifierInfo>
-													<Modifier Name="" ID="{E30C489B-6490-4EEC-8CDC-CF30DAAA04D9}">
-														<PropertyList>
-															<Property Name="Enabled" Type="bool" Value="True"/>
-															<Property Name="Max" Type="Real64" Value="50"/>
-															<Property Name="Min" Type="Real64" Value="-50"/>
-														</PropertyList>
-													</Modifier>
-												</ModifierInfo>
-											</ModifierList>
-										</Property>
-									</PropertyList>
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="3D SF" ID="{06694E10-7CD3-45D8-A7C2-16BF61EC7FF4}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="Drag1" ID="{90677FD5-A944-4E74-B3ED-5EB5CAD40E08}">
-											<PropertyList>
-												<Property Name="FadeInDuration" Type="Real64" Value="0.0527742406308029"/>
-												<Property Name="FadeOutDuration" Type="Real64" Value="0.127430483474378"/>
-												<Property Name="LoopBegin" Type="Real64" Value="0.141012530870388"/>
-												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
-												<Property Name="TrimEnd" Type="Real64" Value="0.439723641032584"/>
-											</PropertyList>
-											<Language>SFX</Language>
-											<AudioFile>Drag1.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="368428185"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="Drag1" ID="{90677FD5-A944-4E74-B3ED-5EB5CAD40E08}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
-								<Sound Name="Drag3" ID="{8C9CB477-3053-41F7-A177-209B0FC73BF2}" ShortID="502973628">
-									<PropertyList>
-										<Property Name="Pitch" Type="int32">
-											<ModifierList>
-												<ModifierInfo>
-													<Modifier Name="" ID="{7FC2F227-5DE7-41FD-8D92-EC16F6DB5C3B}">
-														<PropertyList>
-															<Property Name="Enabled" Type="bool" Value="True"/>
-															<Property Name="Max" Type="Real64" Value="50"/>
-															<Property Name="Min" Type="Real64" Value="-50"/>
-														</PropertyList>
-													</Modifier>
-												</ModifierInfo>
-											</ModifierList>
-										</Property>
-									</PropertyList>
-									<ReferenceList>
-										<Reference Name="Conversion">
-											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
-										</Reference>
-										<Reference Name="OutputBus">
-											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
-										</Reference>
-									</ReferenceList>
-									<ChildrenList>
-										<AudioFileSource Name="Drag3" ID="{57C54BF0-BECA-4779-B9C1-EC11E7A0450A}">
-											<PropertyList>
-												<Property Name="FadeInDuration" Type="Real64" Value="0.116562880691469"/>
-												<Property Name="FadeOutDuration" Type="Real64" Value="0.0706357201723208"/>
-												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
-												<Property Name="TrimBegin" Type="Real64" Value="0.345928549148876"/>
-												<Property Name="TrimEnd" Type="Real64" Value="1.15876213547658"/>
-											</PropertyList>
-											<Language>SFX</Language>
-											<AudioFile>Drag3.wav</AudioFile>
-											<MediaIDList>
-												<MediaID ID="765725891"/>
-											</MediaIDList>
-										</AudioFileSource>
-									</ChildrenList>
-									<ActiveSourceList>
-										<ActiveSource Name="Drag3" ID="{57C54BF0-BECA-4779-B9C1-EC11E7A0450A}" Platform="Linked"/>
-									</ActiveSourceList>
-								</Sound>
-							</ChildrenList>
 						</RandomSequenceContainer>
 						<Sound Name="Drag2" ID="{687A330B-FF18-4AC4-9E86-8DD78A1CDC3F}" ShortID="56788138">
 							<ReferenceList>
@@ -2277,7 +2120,6 @@
 						<BlendContainer Name="Cannon_Small" ID="{B7E4D1B8-50BE-4AF3-9635-67A4D9A5BA71}" ShortID="411473140">
 							<PropertyList>
 								<Property Name="3DSpatialization" Type="int16" Value="1"/>
-								<Property Name="BlendBehavior" Type="int16" Value="1"/>
 								<Property Name="Pitch" Type="int32">
 									<ValueList>
 										<Value>-400</Value>
@@ -2291,7 +2133,7 @@
 								</Property>
 								<Property Name="Volume" Type="Real64">
 									<ValueList>
-										<Value>-3</Value>
+										<Value>-12</Value>
 									</ValueList>
 									<ModifierList>
 										<ModifierInfo>
@@ -2359,7 +2201,6 @@
 										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
 										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="3"/>
 										<Property Name="PlayMechanismSpecialTransitionsValue" Type="Real64" Value="0.05"/>
-										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
 										<Property Name="SpeakerPanning" Type="int16" Value="2"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
@@ -2514,7 +2355,6 @@
 										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
 										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="3"/>
 										<Property Name="PlayMechanismSpecialTransitionsValue" Type="Real64" Value="0.05"/>
-										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
 										<Property Name="Volume" Type="Real64">
 											<ModifierList>
 												<ModifierInfo>
@@ -2627,7 +2467,7 @@
 													<PropertyList>
 														<Property Name="ChannelConfigOverride" Type="int64" Value="520"/>
 														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
-														<Property Name="TrimBegin" Type="Real64" Value="0.0570991268894939"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.101664299095928"/>
 														<Property Name="TrimEnd" Type="Real64" Value="0.199150620552781"/>
 													</PropertyList>
 													<Language>SFX</Language>
@@ -2791,7 +2631,6 @@
 										<Property Name="PlayMechanismSpecialTransitions" Type="bool" Value="True"/>
 										<Property Name="PlayMechanismSpecialTransitionsType" Type="int16" Value="3"/>
 										<Property Name="PlayMechanismSpecialTransitionsValue" Type="Real64" Value="0.075"/>
-										<Property Name="PlayMechanismStepOrContinuous" Type="int16" Value="0"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
 												<Value>3</Value>
@@ -3254,6 +3093,396 @@
 								</ObjectList>
 							</ObjectLists>
 						</BlendContainer>
+						<BlendContainer Name="Phero_Drag_Loop" ID="{FF5AE700-65FB-44BF-A4D3-030142D3DB88}" ShortID="413344122">
+							<PropertyList>
+								<Property Name="BlendBehavior" Type="int16" Value="1"/>
+								<Property Name="Pitch" Type="int32">
+									<ValueList>
+										<Value>1370</Value>
+									</ValueList>
+									<ModifierList>
+										<ModifierInfo>
+											<Modifier Name="" ID="{63F8EE24-CD08-4B45-B175-A2E203ADDE0E}"/>
+										</ModifierInfo>
+									</ModifierList>
+								</Property>
+								<Property Name="UserAuxSendVolume0" Type="Real64">
+									<ValueList>
+										<Value>-7</Value>
+									</ValueList>
+								</Property>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>-13</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+								</Reference>
+								<Reference Name="UserAuxSend0">
+									<ObjectRef Name="Reverb" ID="{FECC9F39-F687-4E4A-B887-A72E64B9C945}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="starkes rascheln oder wind zb" ID="{A54E9837-8FF0-423A-A722-A531474A1BFA}" ShortID="285624285">
+									<PropertyList>
+										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+										<Property Name="MakeUpGain" Type="Real64">
+											<ValueList>
+												<Value>27</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Pitch" Type="int32">
+											<ValueList>
+												<Value>1730</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-3</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="starkes rascheln oder wind zb" ID="{130FE426-C48C-495A-9839-41B53BCF0FFA}">
+											<PropertyList>
+												<Property Name="ChannelConfigOverride" Type="int64" Value="520"/>
+												<Property Name="CrossfadeDuration" Type="Real64" Value="1106.334"/>
+												<Property Name="LoopBegin" Type="Real64" Value="0.588003072771647"/>
+												<Property Name="LoopEnd" Type="Real64" Value="11.4800590614222"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>starkes rascheln oder wind zb.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="584432788"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="starkes rascheln oder wind zb" ID="{130FE426-C48C-495A-9839-41B53BCF0FFA}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Rascheln" ID="{89B36603-B064-4E4B-BF68-9D5018FB82DA}" ShortID="222080039">
+									<PropertyList>
+										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+										<Property Name="MakeUpGain" Type="Real64">
+											<ValueList>
+												<Value>50</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Pitch" Type="int32">
+											<ValueList>
+												<Value>-2400</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-96</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Rascheln" ID="{72559C4A-8FD9-4C04-A86B-B587DB849C6D}">
+											<PropertyList>
+												<Property Name="ChannelConfigOverride" Type="int64" Value="520"/>
+												<Property Name="CrossfadeDuration" Type="Real64" Value="1195.782"/>
+												<Property Name="LoopBegin" Type="Real64" Value="1.28402017251644"/>
+												<Property Name="LoopEnd" Type="Real64" Value="6.90759205053697"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.615523063465353"/>
+												<Property Name="TrimEnd" Type="Real64" Value="8.30666876859849"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>Rascheln.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="319742636"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Rascheln" ID="{72559C4A-8FD9-4C04-A86B-B587DB849C6D}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Pink Noise" ID="{6BAE09F7-45E8-4040-BD14-F3392171F22A}" ShortID="87341881">
+									<PropertyList>
+										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+										<Property Name="MakeUpGain" Type="Real64">
+											<ValueList>
+												<Value>31</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Pitch" Type="int32">
+											<ValueList>
+												<Value>850</Value>
+											</ValueList>
+										</Property>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>2</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Pink Noise" ID="{76E0EA25-FE35-4CA0-A609-92A814ED770F}">
+											<PropertyList>
+												<Property Name="ChannelConfigOverride" Type="int64" Value="514"/>
+												<Property Name="CrossfadeDuration" Type="Real64" Value="280.001"/>
+												<Property Name="FadeInDuration" Type="Real64" Value="0.38736802093465"/>
+												<Property Name="LoopBegin" Type="Real64" Value="0.302671418432895"/>
+												<Property Name="LoopEnd" Type="Real64" Value="5.19585927474232"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>Pink Noise.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="541614030"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Pink Noise" ID="{76E0EA25-FE35-4CA0-A609-92A814ED770F}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="White Noise" ID="{70429C63-8493-45A7-A1D4-10C2DC2CAA03}" ShortID="815540059">
+									<PropertyList>
+										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
+										<Property Name="MakeUpGain" Type="Real64">
+											<ValueList>
+												<Value>34</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="White Noise" ID="{16CA5D44-368D-46FC-B760-A02179E4B152}">
+											<PropertyList>
+												<Property Name="ChannelConfigOverride" Type="int64" Value="514"/>
+												<Property Name="CrossfadeDuration" Type="Real64" Value="445.638"/>
+												<Property Name="FadeInDuration" Type="Real64" Value="0.489778820375335"/>
+												<Property Name="LoopBegin" Type="Real64" Value="0.340985254691689"/>
+												<Property Name="LoopEnd" Type="Real64" Value="4.38941018766756"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>White Noise.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="202427075"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="White Noise" ID="{16CA5D44-368D-46FC-B760-A02179E4B152}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<ObjectLists>
+								<ObjectList Name="Effects">
+									<Reference>
+										<Local>
+											<EffectSlot Name="" ID="{E8192920-E79B-4D85-9BB9-E0BA57A470A9}" ShortID="578657094">
+												<ReferenceList>
+													<Reference Name="Effect">
+														<Custom>
+															<Effect Name="Guitar Distortion (Custom)" ID="{9EE95DA8-CD2F-4A9B-BBE2-D5A52ECE6860}" ShortID="815916726" PluginName="Wwise Guitar Distortion" CompanyID="0" PluginID="126" PluginType="3">
+																<PropertyList>
+																	<Property Name="DistortionDrive" Type="Real32" Value="48"/>
+																	<Property Name="DistortionTone" Type="Real32" Value="100"/>
+																	<Property Name="DistortionType" Type="int32" Value="4"/>
+																</PropertyList>
+															</Effect>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</Local>
+									</Reference>
+									<Reference>
+										<Local>
+											<EffectSlot Name="" ID="{5B2C9325-B587-40A6-8EBC-DCB8989E06D1}" ShortID="913543083">
+												<ReferenceList>
+													<Reference Name="Effect">
+														<Custom>
+															<Effect Name="Compressor (Custom)" ID="{39E278D9-5320-4CB4-B451-4A5389A45DF5}" ShortID="965445606" PluginName="Wwise Compressor" CompanyID="0" PluginID="108" PluginType="3">
+																<PropertyList>
+																	<Property Name="AttackTime" Type="Real32" Value="0"/>
+																	<Property Name="OutputGain" Type="Real32" Value="13"/>
+																	<Property Name="Ratio" Type="Real32" Value="13.7"/>
+																	<Property Name="Threshold" Type="Real32" Value="-39.7"/>
+																</PropertyList>
+															</Effect>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</Local>
+									</Reference>
+									<Reference>
+										<Local>
+											<EffectSlot Name="" ID="{0B1B81F3-CBEA-4297-9439-8E72F263D431}" ShortID="892495752">
+												<ReferenceList>
+													<Reference Name="Effect" PluginName="Wwise Parametric EQ" CompanyID="0" PluginID="105" PluginType="3">
+														<ObjectRef Name="Low_Pass_20KHz" ID="{830124FB-B9D5-4AE8-846E-E94A74652666}" WorkUnitID="{E8613F7D-BAD3-45CD-A3ED-505576F31277}"/>
+													</Reference>
+												</ReferenceList>
+											</EffectSlot>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
+						</BlendContainer>
+						<RandomSequenceContainer Name="Phero_Drag" ID="{766F3AB7-9BA0-4F57-B851-2EF01CA6D6ED}" ShortID="428160990">
+							<PropertyList>
+								<Property Name="MakeUpGain" Type="Real64">
+									<ValueList>
+										<Value>6</Value>
+									</ValueList>
+								</Property>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>20</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<Sound Name="Drag1" ID="{CD9FF940-2A80-44F1-BADD-D5AB69091A9E}" ShortID="349510430">
+									<PropertyList>
+										<Property Name="IsLoopingInfinite" Type="bool" Value="False"/>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{E30C489B-6490-4EEC-8CDC-CF30DAAA04D9}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="50"/>
+															<Property Name="Min" Type="Real64" Value="-50"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="3D SF" ID="{06694E10-7CD3-45D8-A7C2-16BF61EC7FF4}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Drag1" ID="{90677FD5-A944-4E74-B3ED-5EB5CAD40E08}">
+											<PropertyList>
+												<Property Name="FadeInDuration" Type="Real64" Value="0.0527742406308029"/>
+												<Property Name="FadeOutDuration" Type="Real64" Value="0.127430483474378"/>
+												<Property Name="LoopBegin" Type="Real64" Value="0.141012530870388"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimEnd" Type="Real64" Value="0.439723641032584"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>Drag1.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="368428185"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Drag1" ID="{90677FD5-A944-4E74-B3ED-5EB5CAD40E08}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Drag3" ID="{8C9CB477-3053-41F7-A177-209B0FC73BF2}" ShortID="502973628">
+									<PropertyList>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{7FC2F227-5DE7-41FD-8D92-EC16F6DB5C3B}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="50"/>
+															<Property Name="Min" Type="Real64" Value="-50"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Drag3" ID="{57C54BF0-BECA-4779-B9C1-EC11E7A0450A}">
+											<PropertyList>
+												<Property Name="FadeInDuration" Type="Real64" Value="0.116562880691469"/>
+												<Property Name="FadeOutDuration" Type="Real64" Value="0.0706357201723208"/>
+												<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+												<Property Name="TrimBegin" Type="Real64" Value="0.345928549148876"/>
+												<Property Name="TrimEnd" Type="Real64" Value="1.15876213547658"/>
+											</PropertyList>
+											<Language>SFX</Language>
+											<AudioFile>Drag3.wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="765725891"/>
+											</MediaIDList>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Drag3" ID="{57C54BF0-BECA-4779-B9C1-EC11E7A0450A}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+							</ChildrenList>
+							<PositioningInfo>
+								<Panner Name="" ID="{69F7432F-0EC2-4397-9FE0-4659F98014FF}"/>
+							</PositioningInfo>
+						</RandomSequenceContainer>
 					</ChildrenList>
 				</Folder>
 				<Folder Name="Raw" ID="{FE425D0E-C277-4A21-92CF-FB6ED18E7534}" ShortID="406060599">

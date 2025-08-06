@@ -464,6 +464,34 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="play_pheroDragLoop" ID="{9D0F689D-9D49-49F2-9D9E-30690291040C}">
+					<ChildrenList>
+						<Action Name="" ID="{F8ECA1FC-0256-45CB-BB9B-0E5B57B2E0CA}" ShortID="574801265">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Phero_Drag_Loop" ID="{FF5AE700-65FB-44BF-A4D3-030142D3DB88}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_pheroDragLoopStop" ID="{018B0679-7380-48A3-88A0-387F11A9F234}">
+					<ChildrenList>
+						<Action Name="" ID="{72C80CB7-9DB4-43A0-B4D1-4F8720DBABCA}" ShortID="638482266">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Phero_Drag_Loop" ID="{FF5AE700-65FB-44BF-A4D3-030142D3DB88}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

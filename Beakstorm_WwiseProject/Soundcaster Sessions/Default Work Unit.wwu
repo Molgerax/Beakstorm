@@ -34,6 +34,10 @@
 							<Position X="1" Y="2"/>
 						</Module>
 						<Module>
+							<ObjectRef Name="play_pheroDragLoopStop" ID="{018B0679-7380-48A3-88A0-387F11A9F234}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
+							<Position X="1" Y="3"/>
+						</Module>
+						<Module>
 							<ObjectRef Name="play_menuBack" ID="{90153DE6-B8A5-4D80-95A8-EC460080C525}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
 							<Position X="1" Y="4"/>
 						</Module>
@@ -48,6 +52,10 @@
 						<Module>
 							<ObjectRef Name="play_pheroDragStop" ID="{0F7168B5-7BAF-459C-8797-705804041C44}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
 							<Position X="2" Y="2"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Phero_Drag_Loop" ID="{FF5AE700-65FB-44BF-A4D3-030142D3DB88}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+							<Position X="2" Y="3"/>
 						</Module>
 						<Module>
 							<ObjectRef Name="play_menuChoose" ID="{258DD3B3-7409-454C-B822-5340821B1054}" WorkUnitID="{387DD6CF-CE22-43B2-85D3-EBB8FBF52943}"/>
