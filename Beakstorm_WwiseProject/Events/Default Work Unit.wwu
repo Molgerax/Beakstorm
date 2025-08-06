@@ -110,10 +110,10 @@
 				</Event>
 				<Event Name="play_birdFollow" ID="{8A7CBEDB-D2C0-4E39-A42B-27EF3E51460F}">
 					<ChildrenList>
-						<Action Name="" ID="{787100CD-9C26-4794-B8F2-D410C4CECB1F}" ShortID="809510746">
+						<Action Name="" ID="{7F4EF046-FE1C-4748-A3D4-3449E3A7A7DD}" ShortID="705273113">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="bird_follow" ID="{0EB52E9C-5B4C-4D33-8D7C-41F0A636A7AA}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+									<ObjectRef Name="bird_follow" ID="{FC4E317D-A9BC-46AF-A797-A61E0ACBB240}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -179,6 +179,27 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Keys3" ID="{07C77A24-6F57-4B20-9564-23F28FF7B99D}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{7C1B538D-FCC8-479E-8991-19E755B0BDC3}" ShortID="723010202">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SNARE" ID="{8F57B80F-0FE7-4CF7-AFA3-1CADC795989C}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{692F4D62-CEA1-4F3D-8394-A6936FB1FD74}" ShortID="981008945">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="KICK-1" ID="{0E6F2248-6810-48DC-B25E-0C7E2785795E}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{24A6FF1C-2FAA-4F10-B118-1DC3C845B059}" ShortID="647773308">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Clap - Emerald" ID="{9BA4C417-FC68-4B65-AE26-2EBCAAB9D28A}" WorkUnitID="{ED588D88-76CC-4EC4-B7D3-5D0C9593D5A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
@@ -488,7 +509,7 @@
 					<ChildrenList>
 						<Action Name="" ID="{F8ECA1FC-0256-45CB-BB9B-0E5B57B2E0CA}" ShortID="574801265">
 							<PropertyList>
-								<Property Name="FadeTime" Type="Real64" Value="0.1"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.2"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
@@ -503,6 +524,7 @@
 						<Action Name="" ID="{72C80CB7-9DB4-43A0-B4D1-4F8720DBABCA}" ShortID="638482266">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.2"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">

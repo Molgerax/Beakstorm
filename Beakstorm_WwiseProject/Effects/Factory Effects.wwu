@@ -192,7 +192,7 @@
 							<PropertyList>
 								<Property Name="Ratio" Type="Real32" Value="50"/>
 								<Property Name="ReleaseTime" Type="Real32" Value="0.02"/>
-								<Property Name="Threshold" Type="Real32" Value="-1"/>
+								<Property Name="Threshold" Type="Real32" Value="-6"/>
 							</PropertyList>
 						</Effect>
 						<Effect Name="Brick_Wall_Minus_1dB_Peak_Slow_Release" ID="{9FB8DC2B-7F1C-4E4E-8FA5-50872652D2DD}" PluginName="Wwise Peak Limiter" CompanyID="0" PluginID="110" PluginType="3">
@@ -626,6 +626,80 @@
 										<Property Name="FrequencyBand3" Type="Real32" Value="4608"/>
 										<Property Name="OnOffBand2" Type="bool" Value="False"/>
 									</PropertyList>
+									<ObjectLists>
+										<ObjectList Name="RTPC">
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{2B0FFE30-33F5-44A3-AFBF-9AFF0C2EDF75}" ShortID="71584542">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="FrequencyBand1"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="player_Speed" ID="{B0151E82-E880-4947-A00B-3878AB2D1C2F}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{196D7630-B314-4A85-B438-26E11AD72384}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="5"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>300</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>100</XPos>
+																				<YPos>813.47616</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+											<Reference>
+												<Local>
+													<RTPC Name="" ID="{ADBFA662-1C28-4384-A6D3-563C57CDD350}" ShortID="164118050">
+														<PropertyList>
+															<Property Name="PropertyName" Type="string" Value="FrequencyBand3"/>
+														</PropertyList>
+														<ReferenceList>
+															<Reference Name="ControlInput">
+																<ObjectRef Name="player_Speed" ID="{B0151E82-E880-4947-A00B-3878AB2D1C2F}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+															</Reference>
+															<Reference Name="Curve">
+																<Custom>
+																	<Curve Name="" ID="{74378503-783D-4237-86C1-7C39997B85F2}">
+																		<PropertyList>
+																			<Property Name="Flags" Type="int32" Value="5"/>
+																		</PropertyList>
+																		<PointList>
+																			<Point>
+																				<XPos>0</XPos>
+																				<YPos>7172.415</YPos>
+																				<Flags>5</Flags>
+																			</Point>
+																			<Point>
+																				<XPos>100</XPos>
+																				<YPos>12000</YPos>
+																				<Flags>37</Flags>
+																			</Point>
+																		</PointList>
+																	</Curve>
+																</Custom>
+															</Reference>
+														</ReferenceList>
+													</RTPC>
+												</Local>
+											</Reference>
+										</ObjectList>
+									</ObjectLists>
 								</Effect>
 							</ChildrenList>
 						</Folder>

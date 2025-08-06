@@ -89,7 +89,7 @@
 					<RTPCValueList ShowAll="true">
 						<RTPCValue>
 							<GameParameterRef Name="player_Speed" ID="{B0151E82-E880-4947-A00B-3878AB2D1C2F}"/>
-							<Value>0</Value>
+							<Value>91</Value>
 						</RTPCValue>
 						<RTPCValue>
 							<GameParameterRef Name="dopplerPitch" ID="{72E92ADE-BE1F-4B70-8891-60E3CDC00CF9}"/>
@@ -101,8 +101,8 @@
 						</RTPCValue>
 					</RTPCValueList>
 					<CurrentStateList ShowAll="true">
-						<CurrentStateRef Name="Peace" ID="{AF76E1E0-F187-432D-A7AB-7B55C076E89B}"/>
-						<CurrentStateRef Name="peace1" ID="{0AA86CC1-E11A-4EF8-B23A-90BE0DD050FD}"/>
+						<CurrentStateRef Name="War" ID="{B8BC0ECB-3879-4460-9265-01B20C11329E}"/>
+						<CurrentStateRef Name="war3" ID="{F27E4BEC-E205-4237-AE7F-9AD9402D82B8}"/>
 					</CurrentStateList>
 					<CurrentSwitchList ShowAll="true"/>
 				</SoundcasterSession>
