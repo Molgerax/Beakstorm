@@ -14,5 +14,14 @@ namespace Beakstorm.Gameplay.Projectiles
         {
             _pool = ProjectileManager.Instance.GetPool(projectilePrefab);
         }
+
+        public void Spawn()
+        {
+            Projectile projectile = GetProjectile();
+            var t = transform;
+            var projectileTransform = projectile.transform;
+            projectileTransform.position = t.position;
+            projectileTransform.rotation = t.rotation;
+        }
     }
 }
