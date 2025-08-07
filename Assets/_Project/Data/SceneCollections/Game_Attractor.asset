@@ -21,6 +21,8 @@ MonoBehaviour:
     guid: f4e9a2a90fa15844a8f19b3dc5dfaf77
   - asset: {fileID: 102900000, guid: cf0611d3f3f63354794049e75ffe8d73, type: 3}
     guid: cf0611d3f3f63354794049e75ffe8d73
+  - asset: {fileID: 102900000, guid: 26d57c928dd64894bbb4abe181eefac8, type: 3}
+    guid: 26d57c928dd64894bbb4abe181eefac8
   - asset: {fileID: 102900000, guid: bce57ba8687361f48b36b24647246677, type: 3}
     guid: bce57ba8687361f48b36b24647246677
   - asset: {fileID: 102900000, guid: 4747b48565139b949818ef16b3ff465e, type: 3}

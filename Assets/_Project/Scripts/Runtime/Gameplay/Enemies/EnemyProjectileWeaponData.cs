@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Beakstorm.Gameplay.Enemies
 {
-    [CreateAssetMenu(menuName = "Beakstorm/EnemyWeaponData/Projectile", fileName = "EnemyWeaponData")]
+    [CreateAssetMenu(menuName = "Beakstorm/Enemies/Weapon/Projectile", fileName = "EnemyWeaponData")]
     public class EnemyProjectileWeaponData : EnemyWeaponData
     {
         [SerializeField] protected Projectile projectilePrefab;

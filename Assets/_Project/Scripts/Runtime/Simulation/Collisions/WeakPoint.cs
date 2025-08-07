@@ -1,3 +1,4 @@
+using System;
 using UltEvents;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Beakstorm.Simulation.Collisions
     {
         [SerializeField] private int maxHealth = 100;
         [SerializeField] private int currentHealth;
+        [SerializeField] private UltEvent onInitialize;
         [SerializeField] public UltEvent onHealthZero;
         [SerializeField] private UltEvent onDamageTaken;
         
@@ -42,10 +44,11 @@ namespace Beakstorm.Simulation.Collisions
 
         private MaterialPropertyBlock _propBlock;
         
-        private void OnEnable()
+        public void Initialize()
         {
             currentHealth = maxHealth;
             Subscribe();
+            onInitialize?.Invoke();
             
             _propBlock ??= new MaterialPropertyBlock();
             
@@ -53,6 +56,11 @@ namespace Beakstorm.Simulation.Collisions
                 meshRenderer = GetComponent<MeshRenderer>();
             
             UpdateRenderer();
+        }
+
+        private void OnEnable()
+        {
+            Initialize();
         }
 
         private void OnDisable()

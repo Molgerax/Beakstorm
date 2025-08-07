@@ -209,6 +209,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1215026079}
     m_Modifications:
     - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
+      propertyPath: enemySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
+    - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
       propertyPath: spawnDelay
       value: 10
       objectReference: {fileID: 0}
@@ -593,6 +597,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 851598133}
     m_Modifications:
+    - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
+      propertyPath: enemySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
     - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
       propertyPath: spawnDelay
       value: 10
@@ -1620,6 +1628,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 249181835}
     m_Modifications:
     - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
+      propertyPath: enemySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
+    - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
       propertyPath: spawnDelay
       value: 10
       objectReference: {fileID: 0}
@@ -2225,6 +2237,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1215026079}
     m_Modifications:
     - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
+      propertyPath: enemySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
+    - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
       propertyPath: spawnDelay
       value: 10
       objectReference: {fileID: 0}
@@ -2348,6 +2364,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1215026079}
     m_Modifications:
     - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
+      propertyPath: enemySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
+    - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
       propertyPath: spawnDelay
       value: 10
       objectReference: {fileID: 0}
@@ -2432,6 +2452,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 851598133}
     m_Modifications:
+    - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
+      propertyPath: enemySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
     - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
       propertyPath: spawnDelay
       value: 10
@@ -2603,6 +2627,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 249181835}
     m_Modifications:
     - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
+      propertyPath: enemySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
+    - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
       propertyPath: spawnDelay
       value: 10
       objectReference: {fileID: 0}
@@ -2687,6 +2715,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 851598133}
     m_Modifications:
+    - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
+      propertyPath: enemySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
     - target: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
       propertyPath: spawnDelay
       value: 10

@@ -6,7 +6,7 @@ namespace Beakstorm.Gameplay.Enemies
     [ExecuteInEditMode]
     public class EnemySpawner : MonoBehaviour
     {
-        [SerializeField] private EnemyController enemyPrefab;
+        [SerializeField] private EnemySO enemySo;
 
         [HideInInspector] public bool isDefeated;
 
@@ -18,11 +18,12 @@ namespace Beakstorm.Gameplay.Enemies
             if (isDefeated)
                 return;
 
-            if (enemyPrefab == null || transform == null)
+            if (enemySo == null || transform == null)
                 return;
             
-            _enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
-            _enemy.Spawn(this);
+            _enemy = EnemyPoolManager.Instance.GetEnemy(enemySo);
+            _enemy.Spawn(transform);
+            _enemy.OnHealthZero += OnDefeat;
             isDefeated = false;
         }
 
@@ -39,10 +40,13 @@ namespace Beakstorm.Gameplay.Enemies
         {
             if (UnityEditor.EditorApplication.isPlaying)
                 return;
-                
+            
+            if (enemySo == null)
+                return;
+            
             if (!_preview)
             {
-                _preview = Instantiate(enemyPrefab, transform.position, transform.rotation, transform);
+                _preview = Instantiate(enemySo.Prefab, transform.position, transform.rotation, transform);
                 UnityEditor.SceneVisibilityManager.instance.DisablePicking(_preview.gameObject, true);
 
                 HideAndDontSaveRecursive(_preview.transform);
@@ -64,7 +68,8 @@ namespace Beakstorm.Gameplay.Enemies
             if (UnityEditor.EditorApplication.isPlaying)
                 return;
 
-            DestroyImmediate(_preview);
+            if (_preview)
+                DestroyImmediate(_preview);
         }
 #endif
     }
