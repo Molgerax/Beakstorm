@@ -266,6 +266,8 @@ void Update (uint3 id : SV_DispatchThreadID)
     pheromone.oldPos = oldPosition;
 
     pheromone.life = (pheromone.life - _DeltaTime);
+
+    pheromone.life -= max(0, -sdfInfo.dist);
     
     float4 data = pheromone.data;
     //data.xyz = densityGradient;

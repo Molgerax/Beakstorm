@@ -1998,7 +1998,7 @@ MonoBehaviour:
   - spawner: {fileID: 626573111}
     waitCondition: 1
     spawnDelay: 0.5
-  - spawner: {fileID: 626573111}
+  - spawner: {fileID: 1487443157}
     waitCondition: 0
     spawnDelay: 0
   - spawner: {fileID: 143022765}
@@ -2155,6 +2155,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3293789775566533627, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
   m_PrefabInstance: {fileID: 1487443155}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1487443157 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1945563530742777572, guid: 9f7f7d4a8dcc2b645aaba2a06424c4e9, type: 3}
+  m_PrefabInstance: {fileID: 1487443155}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 520ed8a8babaf9f4bad0eb74b43fd3c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1547416796
 PrefabInstance:
   m_ObjectHideFlags: 0

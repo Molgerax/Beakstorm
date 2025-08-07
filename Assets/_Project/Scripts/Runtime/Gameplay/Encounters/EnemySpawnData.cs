@@ -11,6 +11,7 @@ namespace Beakstorm.Gameplay.Encounters
         [SerializeField] public WaitCondition waitCondition;
         [SerializeField] public float spawnDelay;
 
+        [System.NonSerialized]
         private AwaitableCompletionSource _completionSource;
         
         public EnemySpawnData(EnemySpawner spawner)
