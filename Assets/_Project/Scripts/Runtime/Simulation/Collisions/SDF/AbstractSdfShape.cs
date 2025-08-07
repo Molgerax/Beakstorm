@@ -73,6 +73,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
         Wood = 3,
         Fabric = 4,
         Glass = 5,
+        PheromoneOnly = 6,
     }
     
     public struct AbstractSdfData

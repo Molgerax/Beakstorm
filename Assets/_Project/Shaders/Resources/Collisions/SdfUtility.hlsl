@@ -9,6 +9,8 @@
 #define SDF_CONE 3
 #define SDF_TORUS 4
 
+#define PHEROMONE_ONLY 6
+
 struct AbstractSdfData
 {
     float3 XAxis;

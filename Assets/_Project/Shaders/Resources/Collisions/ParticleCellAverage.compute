@@ -76,7 +76,7 @@ void CollectValues(uint3 id : SV_DispatchThreadID)
     int3 originCell = GetGridCellId(pos, _HashCellSize, _SimulationCenter, _SimulationSize);
     uint3 cellDimensions = _CellDimensions;
 
-    for(int iterator = 0; iterator < _CaptureCellSize * _CaptureCellSize * _CaptureCellSize; iterator++)
+    for(uint iterator = 0; iterator < _CaptureCellSize * _CaptureCellSize * _CaptureCellSize; iterator++)
     {
         int3 offset3D = GetIntegerOffsets3D(_CaptureCellSize, iterator);
     

@@ -55,12 +55,12 @@ float3 limitVector(float3 v, float maxLength)
     return (v / len) * min(len, maxLength);
 }
 
-float3 clampVector(float3 v, float min, float max)
+float3 clampVector(float3 v, float minV, float maxV)
 {
     if (dot(v, v) == 0)
         return 0;
     float len = length(v);
-    return (v / len) * clamp(len, min, max);
+    return (v / max(len, 0.0001)) * clamp(len, minV, maxV);
 }
 
 float3 calcSteerForce(float3 steer, float3 currentVelocity, float maxSpeed, float maxForce)
@@ -451,7 +451,7 @@ void Update (uint3 id : SV_DispatchThreadID)
 
     float3 predictedPosition = currentPosition + _DeltaTime * clampVector(velocity + acceleration * _DeltaTime, minSpeed, maxSpeed);
     
-    SdfQueryInfo sdfInfo = GetClosestDistance(predictedPosition, 0);
+    SdfQueryInfo sdfInfo = GetClosestDistance(predictedPosition, 0, 1 << PHEROMONE_ONLY);
     acceleration += sdfForce(sdfInfo, _AvoidDistance, maxForce) * saturate(1 - 2 * boid.exposure);
 
     
