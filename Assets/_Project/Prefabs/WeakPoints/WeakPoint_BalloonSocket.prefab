@@ -157,24 +157,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 250
   currentHealth: 0
+  onInitialize:
+    _PersistentCalls:
+    - _Target: {fileID: 6713312725758719694}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 1742849945645141869}
       _MemberName: PostEvent
       _PersistentArguments: []
-    - _Target: {fileID: 0}
-      _MemberName: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null.Destroy
+    - _Target: {fileID: 6713312725758719694}
+      _MemberName: SetActive
       _PersistentArguments:
-      - _Type: 13
+      - _Type: 1
         _Int: 0
-        _String: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        _String: 
         _X: 0
         _Y: 0
         _Z: 0
         _W: 0
-        _Object: {fileID: 6713312725758719694}
+        _Object: {fileID: 0}
+    - _Target: {fileID: 5378271003728026186}
+      _MemberName: Spawn
+      _PersistentArguments: []
   onDamageTaken:
     _PersistentCalls:
     - _Target: {fileID: 7481132111454077212}
@@ -347,6 +361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1378333731376682538}
   - component: {fileID: 6309769765859144730}
+  - component: {fileID: 5378271003728026186}
   m_Layer: 0
   m_Name: Balloon
   m_TagString: Untagged
@@ -393,6 +408,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5378271003728026186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6713312725758719694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 390b8762f5bab554a9ccc23b9a575cfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 9048738148542107558, guid: 88ae72df74790da4ba585e51a16fa7c2, type: 3}
 --- !u!1 &7311155271921037546
 GameObject:
   m_ObjectHideFlags: 0

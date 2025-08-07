@@ -327,8 +327,9 @@ GameObject:
   - component: {fileID: 2527835290116120630}
   - component: {fileID: 2888495542978631808}
   - component: {fileID: 2041375153937746087}
+  - component: {fileID: 1606014307207864514}
   m_Layer: 0
-  m_Name: ShipMedium_New
+  m_Name: MediumEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,6 +369,30 @@ MonoBehaviour:
   - {fileID: 919479703494422753}
   - {fileID: 5305400654267221693}
   - {fileID: 4358201497809065098}
+  onInitialize:
+    _PersistentCalls:
+    - _Target: {fileID: 7491312894083225664}
+      _MemberName: set_isKinematic
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 7491312894083225664}
+      _MemberName: set_useGravity
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 5472652922921227751}
@@ -415,19 +440,9 @@ MonoBehaviour:
   resetOnDisable: 1
   onTimerElapsed:
     _PersistentCalls:
-    - _Target: {fileID: 0}
-      _MemberName: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null.Destroy
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 6120369539214848294}
+    - _Target: {fileID: 6341619872662283019}
+      _MemberName: Despawn
+      _PersistentArguments: []
   autoStart: 0
 --- !u!54 &7491312894083225664
 Rigidbody:
@@ -539,6 +554,35 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: f102139739c1711489d4cded2741c110, type: 2}
   dopplerFactor: 1
+--- !u!114 &1606014307207864514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120369539214848294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5131ac029a2c8a24a961e70c668a1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: d96bb42a
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2c6d88007966e744e93cc1cd85e1a33b, type: 2}
+  useCallbacks: 0
+  stopSoundOnDestroy: 0
+  Callbacks: []
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  eventIdInternal: 0
+  valueGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
 --- !u!1 &6190167627108941131
 GameObject:
   m_ObjectHideFlags: 0

@@ -323,6 +323,7 @@ GameObject:
   - component: {fileID: 2428484907551404036}
   - component: {fileID: 1007151257905948717}
   - component: {fileID: 7800676448054899758}
+  - component: {fileID: 3249268495890703638}
   m_Layer: 0
   m_Name: SmallEnemy
   m_TagString: Untagged
@@ -361,10 +362,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weakPoints:
   - {fileID: 3245368031143416853}
-  onHealthZero:
+  onInitialize:
     _PersistentCalls:
-    - _Target: {fileID: 507460526144245535}
-      _MemberName: set_enabled
+    - _Target: {fileID: 6932584481282226778}
+      _MemberName: set_isKinematic
       _PersistentArguments:
       - _Type: 1
         _Int: 1
@@ -374,6 +375,22 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+    - _Target: {fileID: 6932584481282226778}
+      _MemberName: set_useGravity
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  onHealthZero:
+    _PersistentCalls:
+    - _Target: {fileID: 507460526144245535}
+      _MemberName: StartTimer
+      _PersistentArguments: []
     - _Target: {fileID: 6932584481282226778}
       _MemberName: set_isKinematic
       _PersistentArguments:
@@ -404,7 +421,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3737224284858463794}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd3b0a907c5d89d4d861f66bb01a1108, type: 3}
   m_Name: 
@@ -413,20 +430,10 @@ MonoBehaviour:
   resetOnDisable: 1
   onTimerElapsed:
     _PersistentCalls:
-    - _Target: {fileID: 0}
-      _MemberName: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null.Destroy
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 3737224284858463794}
-  autoStart: 1
+    - _Target: {fileID: 8579736343862981193}
+      _MemberName: Despawn
+      _PersistentArguments: []
+  autoStart: 0
 --- !u!54 &6932584481282226778
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -523,8 +530,36 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: f102139739c1711489d4cded2741c110, type: 2}
-  dopplerRtpc: 
   dopplerFactor: 1
+--- !u!114 &3249268495890703638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3737224284858463794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5131ac029a2c8a24a961e70c668a1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: d96bb42a
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2c6d88007966e744e93cc1cd85e1a33b, type: 2}
+  useCallbacks: 0
+  stopSoundOnDestroy: 0
+  Callbacks: []
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  eventIdInternal: 0
+  valueGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
 --- !u!1 &4344682737701587972
 GameObject:
   m_ObjectHideFlags: 0

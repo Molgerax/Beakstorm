@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 1962246369955853099}
   - component: {fileID: 2527835290116120630}
   - component: {fileID: 688029778326270792}
+  - component: {fileID: 2234103722265727884}
   m_Layer: 0
   m_Name: LargeEnemy
   m_TagString: Untagged
@@ -95,19 +96,9 @@ MonoBehaviour:
   - {fileID: 4373642563856320343}
   onHealthZero:
     _PersistentCalls:
-    - _Target: {fileID: 0}
-      _MemberName: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null.Destroy
-      _PersistentArguments:
-      - _Type: 13
-        _Int: 0
-        _String: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 6120369539214848294}
+    - _Target: {fileID: 6341619872662283019}
+      _MemberName: Despawn
+      _PersistentArguments: []
   emergeTime: 10
 --- !u!114 &1962246369955853099
 MonoBehaviour:
@@ -179,6 +170,35 @@ MonoBehaviour:
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: f102139739c1711489d4cded2741c110, type: 2}
   dopplerFactor: 1
+--- !u!114 &2234103722265727884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120369539214848294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5131ac029a2c8a24a961e70c668a1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: d96bb42a
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  data:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 2c6d88007966e744e93cc1cd85e1a33b, type: 2}
+  useCallbacks: 0
+  stopSoundOnDestroy: 0
+  Callbacks: []
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  eventIdInternal: 0
+  valueGuidInternal: 
+  m_callbackDataInternal: {fileID: 0}
 --- !u!1 &7086835390173058031
 GameObject:
   m_ObjectHideFlags: 0

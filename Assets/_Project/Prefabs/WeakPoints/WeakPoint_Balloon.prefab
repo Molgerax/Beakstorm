@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 4687974148623372631}
   - component: {fileID: 4205085438788729216}
   - component: {fileID: 1972482355209672741}
+  - component: {fileID: 8865828029389523695}
   m_Layer: 0
   m_Name: WeakPoint_Balloon
   m_TagString: Untagged
@@ -134,24 +135,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 250
   currentHealth: 0
+  onInitialize:
+    _PersistentCalls:
+    - _Target: {fileID: 2902308931138649375}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 1972482355209672741}
       _MemberName: PostEvent
       _PersistentArguments: []
-    - _Target: {fileID: 0}
-      _MemberName: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null.Destroy
+    - _Target: {fileID: 2902308931138649375}
+      _MemberName: SetActive
       _PersistentArguments:
-      - _Type: 13
+      - _Type: 1
         _Int: 0
-        _String: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        _String: 
         _X: 0
         _Y: 0
         _Z: 0
         _W: 0
-        _Object: {fileID: 2902308931138649375}
+        _Object: {fileID: 0}
+    - _Target: {fileID: 8865828029389523695}
+      _MemberName: Spawn
+      _PersistentArguments: []
   onDamageTaken:
     _PersistentCalls:
     - _Target: {fileID: 4205085438788729216}
@@ -289,6 +304,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventName: play_shipDestroySmall
+--- !u!114 &8865828029389523695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2902308931138649375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 390b8762f5bab554a9ccc23b9a575cfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 9048738148542107558, guid: 88ae72df74790da4ba585e51a16fa7c2, type: 3}
 --- !u!1 &5160215354378138769
 GameObject:
   m_ObjectHideFlags: 0

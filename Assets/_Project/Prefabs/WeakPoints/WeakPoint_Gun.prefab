@@ -277,24 +277,35 @@ MonoBehaviour:
     - _Target: {fileID: 882930798857488143}
       _MemberName: PostEvent
       _PersistentArguments: []
-    - _Target: {fileID: 0}
-      _MemberName: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null.Destroy
+    - _Target: {fileID: 7496872214227653802}
+      _MemberName: SetActive
       _PersistentArguments:
-      - _Type: 13
+      - _Type: 1
         _Int: 0
-        _String: UnityEngine.Object, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral,
-          PublicKeyToken=null
+        _String: 
         _X: 0
         _Y: 0
         _Z: 0
         _W: 0
-        _Object: {fileID: 7496872214227653802}
+        _Object: {fileID: 0}
   onDamageTaken:
     _PersistentCalls:
     - _Target: {fileID: 5374600801469922370}
       _MemberName: PostEvent
       _PersistentArguments: []
+  onInitialize:
+    _PersistentCalls:
+    - _Target: {fileID: 7496872214227653802}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   offset: {x: 0, y: 0, z: 0}
   radius: 0.5
   meshRenderer: {fileID: 6040831352328345187}
