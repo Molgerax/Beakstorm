@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d712b5b8fcd4b4b49802e46658f97487, type: 3}
   m_Name: ReversePheromone
   m_EditorClassIdentifier: 
-  pheromoneEmission: 256
+  pheromoneEmission: 512
   pheromoneEmissionCurve:
     serializedVersion: 2
     m_Curve:

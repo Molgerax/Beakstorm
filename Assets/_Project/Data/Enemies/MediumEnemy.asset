@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: MediumEnemy
   m_EditorClassIdentifier: 
   prefab: {fileID: 6341619872662283019, guid: 1972ec8ecbdb700468a044cbe1902126, type: 3}
-  dangerRating: 0
+  dangerRating: 3

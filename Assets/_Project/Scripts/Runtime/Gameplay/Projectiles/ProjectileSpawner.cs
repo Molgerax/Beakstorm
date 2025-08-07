@@ -12,7 +12,7 @@ namespace Beakstorm.Gameplay.Projectiles
         
         private void Awake()
         {
-            _pool = ProjectileManager.GetPool(projectilePrefab);
+            _pool = ProjectileManager.Instance.GetPool(projectilePrefab);
         }
     }
 }

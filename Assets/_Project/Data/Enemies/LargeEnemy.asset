@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: LargeEnemy
   m_EditorClassIdentifier: 
   prefab: {fileID: 6341619872662283019, guid: bafb506ea784dd04aa041eff92bbeb60, type: 3}
-  dangerRating: 0
+  dangerRating: 4

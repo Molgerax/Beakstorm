@@ -16,21 +16,23 @@ namespace Beakstorm.Gameplay.Enemies
 
         private void OnDestroy()
         {
-            if (Instance != this)
-                return;
+            foreach (var enemyPool in _enemyPools)
+            {
+                enemyPool.Value?.Dispose();
+            }
             
-            
-            Instance = null;
+            if (Instance == this)
+                Instance = null;
         }
 
         public EnemyPool GetEnemyPool(EnemySO enemySo)
         {
-            if (_enemyPools.ContainsKey(enemySo))
-                return _enemyPools[enemySo];
+            if (_enemyPools.TryGetValue(enemySo, out EnemyPool pool))
+                return pool;
 
-            var enemyPool = new EnemyPool(enemySo, this);
-            _enemyPools.Add(enemySo, enemyPool);
-            return enemyPool;
+            pool = new EnemyPool(enemySo, this);
+            _enemyPools.Add(enemySo, pool);
+            return pool;
         }
 
         public EnemyController GetEnemy(EnemySO enemySo)

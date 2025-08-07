@@ -19,8 +19,6 @@ namespace Beakstorm.Gameplay.Player.Weapons
         [SerializeField] protected Projectile projectilePrefab;
         [SerializeField] protected PheromoneBehaviourData behaviourData;
 
-        protected ProjectilePool _pool;
-
         protected float _fireCooldown;
         
         public Sprite DisplaySprite => displaySprite;
@@ -30,10 +28,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
 
         public float Cooldown01 => _fireCooldown / fireDelay;
 
-        public virtual void OnMonoEnable()
-        {
-            _pool = ProjectileManager.GetPool(projectilePrefab);
-        }
+        public virtual void OnMonoEnable() {}
 
         public virtual void OnMonoDisable() {}
 
@@ -44,7 +39,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
         
         protected virtual void FireSingleProjectile(Vector3 position, Vector3 direction)
         {
-            var projectileInstance = _pool.GetProjectile();
+            var projectileInstance = ProjectileManager.Instance.GetProjectile(projectilePrefab);
             var projTransform = projectileInstance.transform;
             projTransform.position = position;
 

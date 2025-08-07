@@ -5,45 +5,40 @@ namespace Beakstorm.Gameplay.Projectiles
 {
     public class ProjectileManager : MonoBehaviour
     {
-        private static ProjectileManager _instance;
-        public static ProjectileManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    var gameObject = new GameObject($"{nameof(ProjectileManager)}");
-                    _instance = gameObject.AddComponent<ProjectileManager>();
-                }
-                return _instance;
-            }
-        }
-        
-        private Dictionary<Projectile, ProjectilePool> ProjectilePools = new();
+        public static ProjectileManager Instance;
+
+        private Dictionary<Projectile, ProjectilePool> _projectilePools = new();
 
         private void Awake()
         {
-            _instance = this;
+            Instance = this;
         }
 
         private void OnDestroy()
         {
-            foreach (var projectilePool in ProjectilePools)
+            foreach (var projectilePool in _projectilePools)
             {
                 projectilePool.Value?.Dispose();
             }
+
+            if (Instance == this)
+                Instance = null;
         }
 
-        public static ProjectilePool GetPool(Projectile prefab)
+        public ProjectilePool GetPool(Projectile prefab)
         {
-            ProjectilePool pool;
-            
-            if (Instance.ProjectilePools.TryGetValue(prefab, out pool))
+            if (_projectilePools.TryGetValue(prefab, out ProjectilePool pool))
                 return pool;
             
-            pool = new ProjectilePool(prefab);
-            Instance.ProjectilePools.Add(prefab, pool);
+            pool = new ProjectilePool(prefab, this);
+            _projectilePools.Add(prefab, pool);
             return pool;
+        }
+        
+        public Projectile GetProjectile(Projectile prefab)
+        {
+            var pool = GetPool(prefab);
+            return pool.GetProjectile();
         }
     }
 }

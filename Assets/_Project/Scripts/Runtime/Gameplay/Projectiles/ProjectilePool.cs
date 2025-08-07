@@ -15,7 +15,7 @@ namespace Beakstorm.Gameplay.Projectiles
         public Projectile GetProjectile() => _objectPool.Get();
 
 
-        public ProjectilePool(Projectile prefab)
+        public ProjectilePool(Projectile prefab, ProjectileManager manager)
         {
             _prefab = prefab;
             var defaultCapacity = prefab.DefaultCapacity;
@@ -23,6 +23,7 @@ namespace Beakstorm.Gameplay.Projectiles
             
             
             var poolParent = new GameObject($"{_prefab.gameObject.name}_Pool");
+            poolParent.transform.parent = manager.transform;
             _poolParentTransform = poolParent.transform;
 
             _objectPool = new ObjectPool<Projectile>(CreateProjectile, OnGetFromPool, OnReleaseToPool,

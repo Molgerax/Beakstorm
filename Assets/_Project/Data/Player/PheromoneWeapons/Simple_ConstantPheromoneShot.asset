@@ -18,4 +18,4 @@ MonoBehaviour:
   ammoCost: 1
   initialVelocity: 65
   projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
-  behaviourData: {fileID: 11400000, guid: e39530744feb0a040a132e93892be009, type: 2}
+  behaviourData: {fileID: 11400000, guid: 33a83646f9fabf347b953f479d7bf422, type: 2}

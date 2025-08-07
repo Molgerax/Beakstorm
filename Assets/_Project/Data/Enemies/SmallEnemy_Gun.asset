@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SmallEnemy_Gun
   m_EditorClassIdentifier: 
   prefab: {fileID: 2582224459211729238, guid: 913a821c31a294648b252b73bdf8fa3f, type: 3}
-  dangerRating: 0
+  dangerRating: 1

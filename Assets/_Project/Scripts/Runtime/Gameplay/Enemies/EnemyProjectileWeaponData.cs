@@ -23,7 +23,7 @@ namespace Beakstorm.Gameplay.Enemies
 
         public override void OnMonoEnable()
         {
-            _pool = ProjectileManager.GetPool(projectilePrefab);
+            _pool = ProjectileManager.Instance.GetPool(projectilePrefab);
         }
     }
 }
