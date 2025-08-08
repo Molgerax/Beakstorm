@@ -376,6 +376,9 @@ float4 PheromoneDensity(float3 pos)
         
             if (p2.life <= 0)
                 continue;
+
+            if (p2.data.z <= 0)
+                continue;
         
             float3 offset = p2.pos - pos;
             float distSquared = dot(offset, offset);

@@ -194,7 +194,7 @@ float4 PressureForce(uint index, Pheromone pheromone)
             numNeighbors++;
 
             float d = GetDensityFromParticle(positionA, positionB, _SmoothingRadius);
-            float3 g = GetDensityDerivativeFromParticle(positionA, positionB, _SmoothingRadius);
+            float3 g = GetDensityDerivativeFromParticlePressure(positionA, positionB, _SmoothingRadius, 1-p2.data.z);
             
             density += d;
             densityGradient += g;
