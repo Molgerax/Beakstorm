@@ -79,10 +79,10 @@ namespace Beakstorm.Simulation.Particles
             _position = transform.position;
         }
 
-        public void Emit(int count, float life)
+        public void Emit(int count, float life, bool visible = true)
         {
             if (PheromoneGridManager.Instance)
-                PheromoneGridManager.Instance.AddEmissionRequest(count, _position, _position , life);
+                PheromoneGridManager.Instance.AddEmissionRequest(count, _position, _position , life, visible);
         }
         
         private void Emit(int count)

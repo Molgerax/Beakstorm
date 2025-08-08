@@ -183,6 +183,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		Pheromone pheromone = _PheromoneBuffer[index];
 		if (pheromone.life <= 0)
 			return (Interpolators)(1.0 / 0.0);
+
+		if (pheromone.data.z == 0)
+			return (Interpolators)(1.0 / 0.0);
 		
 		float3 meshPositionWS = pheromone.pos;
 		float4 data = pheromone.data;
@@ -286,12 +289,16 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		float2 screenUv = GetNormalizedScreenSpaceUV(input.positionCS);
 		
 		float sceneDepth = SampleSceneDepth(screenUv);
-		//sceneDepth = SAMPLE_TEXTURE2D(_CameraDepthAttachment, sampler_LinearClamp, screenUv);
+		sceneDepth = SAMPLE_TEXTURE2D(_CameraDepthAttachment, sampler_LinearClamp, screenUv);
+		//sceneDepth = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_LinearClamp, screenUv);
 
 		//sceneDepth = LinearDepthToEyeDepth(sceneDepth);
 		sceneDepth = LinearEyeDepth(sceneDepth, _ZBufferParams);
 
 		float zFade = saturate(_ZFade * (-input.depth + sceneDepth));
+
+		//if (zFade <= 0)
+		//	discard;
 		
 		if (dot(offset, offset) > 1)
 			discard;
@@ -450,6 +457,8 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
     		Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
     		//BlendOp Add, Multiply
     		
+    		Conservative True
+    		
     		Cull Back
     		ZTest LEqual
         	
@@ -489,6 +498,8 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 	        ZWrite Off
     		Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
     		//BlendOp Add, Multiply
+            
+    		Conservative True
     		
     		Cull Back
     		ZTest LEqual

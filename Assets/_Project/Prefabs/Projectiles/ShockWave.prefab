@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9048738148542107558}
   - component: {fileID: 1249994512668901326}
   - component: {fileID: 1385000201835668070}
+  - component: {fileID: 4525533955241046438}
   m_Layer: 0
   m_Name: ShockWave
   m_TagString: Untagged
@@ -62,7 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d69f75d274ffc0c4c8345e73b28596bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 1
+  duration: 0.1
   size: 35
   falloff:
     serializedVersion: 2
@@ -90,6 +91,33 @@ MonoBehaviour:
     m_RotationOrder: 4
   onFinish:
     _PersistentCalls:
+    - _Target: {fileID: 4525533955241046438}
+      _MemberName: Emit
+      _PersistentArguments:
+      - _Type: 3
+        _Int: 2048
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 5
+        _Int: 0
+        _String: 
+        _X: 2
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
     - _Target: {fileID: 9048738148542107558}
       _MemberName: Deactivate
       _PersistentArguments: []
@@ -100,10 +128,24 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 259314527400215759}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d9274b185c51c04a8558d89b804f2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   materialType: 6
   radius: 1
+--- !u!114 &4525533955241046438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259314527400215759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b814bc75a31064bb2954c0a7c4b570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionRate: 0
+  lifeTime: 1

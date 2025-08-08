@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Beakstorm.ComputeHelpers;
+using Beakstorm.Pausing;
 using Beakstorm.Simulation.Particles;
 using Beakstorm.Utility;
 using Unity.Collections;
@@ -229,8 +230,9 @@ namespace Beakstorm.Simulation.Collisions
             if (!manager || !manager.Initialized)
                 return;
 
-            
-            
+            if (PauseManager.IsPaused)
+                return;
+
             int kernel = compute.FindKernel("CollideBoids");
             
             compute.SetBuffer(kernel, PropertyIDs.WeakPointBuffer, WeakPointBuffer);

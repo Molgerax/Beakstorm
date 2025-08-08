@@ -4,6 +4,7 @@ Shader "Beakstorm/Pheromone/Blit"
     HLSLINCLUDE
 
     float _BlendStrength;
+    float4 _TargetSize;
 
 
     inline float4 ApplyBlendStrength(float4 col)
@@ -54,7 +55,7 @@ Shader "Beakstorm/Pheromone/Blit"
             {
                 float2 uv = input.texcoord;
 
-                float4 edge = SAMPLE_TEXTURE2D(_EdgeTexture, sampler_BlitTexture, uv);
+                float4 edge = SAMPLE_TEXTURE2D_LOD(_EdgeTexture, sampler_PointClamp, uv, 0);
 
                 if (edge.r > 0.0)
                     discard;
@@ -98,29 +99,30 @@ Shader "Beakstorm/Pheromone/Blit"
             half4 Fragment(Varyings input, out float outDepth : SV_Depth) : SV_Target
             {
                 float2 uv = input.texcoord;
+                float2 ratio = _BlitTexture_TexelSize.xy / _TargetSize.xy;
 
-                //float depth = SAMPLE_DEPTH_TEXTURE(_BlitTexture, sampler_BlitTexture, uv);
+                int sampleCount = 8;
+                sampleCount = round(1 / ratio.x);
 
-                int sampleCount = 2;
-
-                float2 factor = _BlitTexture_TexelSize.xy; 
+                //uv += log2(sampleCount) * _BlitTexture_TexelSize.xy * 1;
                 
-                float depth = 0;
-                //depth = SAMPLE_TEXTURE2D_LOD(_BlitTexture, sampler_PointClamp, uv, 0).x;
+                float2 factor = (_TargetSize.xy);
+
+                float depth = 1;
 
                 for (int x = 0; x < sampleCount; x++)
                 {
                     for (int y = 0; y < sampleCount; y++)
                     {
-                        float2 uvTest = (float2(x,y) / (sampleCount - 1) - 0.5) * factor;
+                        float2 uvTest = (float2(x,y) * 2 + 1 - sampleCount) / (sampleCount * 2) * factor;
 
-                        if (sampleCount <= 1)
-                            uvTest = 0;
-
+                        //if (sampleCount <= 1)
+                        //    uvTest = 0;
+                        
                         uvTest += uv;
                         
                         float d = SAMPLE_TEXTURE2D_LOD(_BlitTexture, sampler_PointClamp, uvTest, 0).x;
-                        depth = max(d, depth);
+                        depth = min(d, depth);
                         //depth += d * (1.0 / sampleCount / sampleCount);
                     }
                 }
@@ -157,17 +159,18 @@ Shader "Beakstorm/Pheromone/Blit"
             {
                 float2 uv = input.texcoord;
 
+                //if (_SobelCutoff == 0)
+                //    return 0;
+                
                 float3 offset = 0;
                 offset.x = _BlitTexture_TexelSize.x;
                 offset.y = _BlitTexture_TexelSize.y;
                 
-
-                
-                float4 pixel11 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointRepeat, uv + offset.zz);
-                float4 pixel01 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointRepeat, uv - offset.xz);
-                float4 pixel21 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointRepeat, uv + offset.xz);
-                float4 pixel10 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointRepeat, uv - offset.zy);
-                float4 pixel12 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointRepeat, uv + offset.zy);
+                float4 pixel11 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointClamp, uv + offset.zz);
+                float4 pixel01 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointClamp, uv - offset.xz);
+                float4 pixel21 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointClamp, uv + offset.xz);
+                float4 pixel10 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointClamp, uv - offset.zy);
+                float4 pixel12 = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointClamp, uv + offset.zy);
 
                 float4 sobel =
                     abs(pixel01 - pixel11) + 
@@ -175,15 +178,31 @@ Shader "Beakstorm/Pheromone/Blit"
                     abs(pixel10 - pixel11) + 
                     abs(pixel12 - pixel11);
 
+                float4 sobelX = pixel01 - pixel21;
+                float4 sobelY = pixel10 - pixel12;
+                
                 sobel = pixel01 + pixel10 - pixel21 - pixel12;
-                sobel /= 4;
+                //sobel /= 4;
+
+
+                float4 minPixel = min(1, min(min(pixel01, pixel10), min(pixel21, pixel12)));
+                float4 maxPixel = max(pixel11, max(max(pixel01, pixel10), max(pixel21, pixel12)));
                 
                 float output = max(max(sobel.x, sobel.y), max(sobel.z, sobel.w));
                 output = sobel.a;
-                output = max( abs(pixel01 - pixel21) / 2, abs(pixel10 - pixel12) / 2);
 
+                sobel = saturate(sobel);
+                
+                //output = pow(saturate(output) * 1, 0.5);
+                
+                output = max( abs(pixel01 - pixel21) / 2, abs(pixel10 - pixel12) / 2).a;
+                //output = sobel.a;
+
+                
                 output = 1 - step(output, _SobelCutoff);
-
+                //output += step(minPixel.a, 0) * (1 - _SobelCutoff);
+                output += step(minPixel.a, 0) * (1 - step(pixel11.a, 0)) * (1 - _SobelCutoff);
+                
                 return output;
 
                 output = step(sobel.a, 0);

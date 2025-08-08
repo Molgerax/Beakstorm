@@ -18,6 +18,8 @@ float _LifeTime;
 float _Time;
 float _DeltaTime;
 
+float _Visible;
+
 float _SmoothingRadius;
 
 float3 _WorldPos;

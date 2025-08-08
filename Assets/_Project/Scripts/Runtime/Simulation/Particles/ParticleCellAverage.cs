@@ -1,5 +1,6 @@
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Gameplay.Player;
+using Beakstorm.Pausing;
 using Beakstorm.Utility;
 using Unity.Collections;
 using UnityEngine;
@@ -94,6 +95,9 @@ namespace Beakstorm.Simulation.Particles
         private void RequestGpuData()
         {
             if (CellArray == null)
+                return;
+            
+            if (PauseManager.IsPaused)
                 return;
             
             if (_request.done)

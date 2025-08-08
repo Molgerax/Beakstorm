@@ -160,6 +160,8 @@ namespace Beakstorm.Rendering.RendererFeature
                 TextureHandle lowDepth2 = UniversalRenderer.CreateRenderGraphTexture(renderGraph,
                     depthDesc, "Low Res Depth2", true);
                 
+                _blitMaterial.SetVector("_TargetSize", new Vector4(1f / desc.width, 1f / desc.height, desc.width, desc.height));
+                
                 RenderGraphUtils.BlitMaterialParameters blitDepth =
                     new RenderGraphUtils.BlitMaterialParameters(resourceData.cameraDepth, lowDepth, _blitMaterial, 1);
                 renderGraph.AddBlitPass(blitDepth);
@@ -222,14 +224,14 @@ namespace Beakstorm.Rendering.RendererFeature
                     builder.AllowPassCulling(false);
                     builder.AllowGlobalStateModification(true);
 
-                    builder.UseTexture(lowDepth2);
+                    builder.UseTexture(resourceData.cameraDepthTexture);
                     
                     // This sets the render target of the pass to the active color texture. Change it to your own render target as needed.
                     //builder.SetRenderAttachment(resourceData.activeColorTexture, 0);
                     builder.SetRenderAttachment(destinationFullRes, 0, AccessFlags.ReadWrite);
                     builder.SetRenderAttachmentDepth(resourceData.cameraDepth, AccessFlags.Read);
 
-                    passData.LowResDepth = lowDepth2;
+                    passData.LowResDepth = resourceData.cameraDepthTexture;
                     
                     // Assigns the ExecutePass function to the render pass delegate. This will be called by the render graph when executing the pass.
                     builder.SetRenderFunc((PassData data, RasterGraphContext context) =>

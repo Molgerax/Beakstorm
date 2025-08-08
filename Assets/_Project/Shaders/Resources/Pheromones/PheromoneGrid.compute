@@ -351,7 +351,7 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
 
     float4 data = 0;
     
-    data.z = maxLifeTime;
+    data.z = _Visible;
     data.w = lifeTime / maxLifeTime;
     data.x = 0;
     data.y = index;
@@ -395,6 +395,13 @@ void PrepareSort(uint3 id : SV_DispatchThreadID)
     }
     
     Pheromone p = _PheromoneBufferRead[index];
+
+    if (p.data.z == 0)
+    {
+        _PheromoneSortingBuffer[index] = entry;
+        return;
+    }
+        
     float3 cameraDiff = p.pos - _CameraPos;
     float cameraDist = dot(cameraDiff, _CameraForward);
     

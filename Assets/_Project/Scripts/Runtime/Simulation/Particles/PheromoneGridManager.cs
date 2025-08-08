@@ -83,12 +83,12 @@ namespace Beakstorm.Simulation.Particles
 
         private List<EmissionRequest> _emissionRequests = new List<EmissionRequest>(128);
 
-        public void AddEmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime)
+        public void AddEmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true)
         {
             if (count <= 0 || lifeTime <= 0)
                 return;
             
-            _emissionRequests.Add(new EmissionRequest(count, pos, oldPos, lifeTime));
+            _emissionRequests.Add(new EmissionRequest(count, pos, oldPos, lifeTime, visible));
         }
 
         private void Awake()
@@ -272,7 +272,7 @@ namespace Beakstorm.Simulation.Particles
             for (int i = _emissionRequests.Count - 1; i >= 0; i--)
             {
                 var request = _emissionRequests[i];
-                EmitParticles(request.Count, request.Position, request.OldPosition, request.LifeTime);
+                EmitParticles(request.Count, request.Position, request.OldPosition, request.LifeTime, request.Visible);
                 _emissionRequests.RemoveAt(i);
             }
         }
@@ -288,7 +288,7 @@ namespace Beakstorm.Simulation.Particles
             AgentBufferWrite.SetCounterValue(0);
         }
 
-        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime)
+        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true)
         {
             if (PauseManager.IsPaused)
                 return;
@@ -309,6 +309,8 @@ namespace Beakstorm.Simulation.Particles
             pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
             pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, SimulationTime.DeltaTime);
             pheromoneComputeShader.SetFloat(PropertyIDs.LifeTime, lifeTime);
+
+            pheromoneComputeShader.SetFloat(PropertyIDs.Visible, visible ? 1 : 0);
             
             pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);
             pheromoneComputeShader.SetFloat(PropertyIDs.PressureMultiplier, pressureMultiplier);
@@ -389,13 +391,15 @@ namespace Beakstorm.Simulation.Particles
             public Vector3 Position;
             public Vector3 OldPosition;
             public float LifeTime;
-
-            public EmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime)
+            public bool Visible;
+            
+            public EmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true)
             {
                 Count = count;
                 Position = pos;
                 OldPosition = oldPos;
                 LifeTime = lifeTime;
+                Visible = visible;
             }
         }
 
@@ -483,6 +487,8 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int Time                    = Shader.PropertyToID("_Time");
             public static readonly int DeltaTime               = Shader.PropertyToID("_DeltaTime");
             public static readonly int LifeTime        = Shader.PropertyToID("_LifeTime");
+            
+            public static readonly int Visible        = Shader.PropertyToID("_Visible");
             
             public static readonly int SpawnPos        = Shader.PropertyToID("_SpawnPos");
             public static readonly int SpawnPosOld        = Shader.PropertyToID("_SpawnPosOld");
