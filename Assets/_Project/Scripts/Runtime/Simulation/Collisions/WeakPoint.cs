@@ -11,6 +11,8 @@ namespace Beakstorm.Simulation.Collisions
         [SerializeField] private UltEvent onInitialize;
         [SerializeField] public UltEvent onHealthZero;
         [SerializeField] private UltEvent onDamageTaken;
+
+        [SerializeField] private bool autoInitialize = false;
         
         [Header("Transform")]
         [SerializeField] private Vector3 offset;
@@ -18,6 +20,7 @@ namespace Beakstorm.Simulation.Collisions
 
         [SerializeField] private Renderer meshRenderer;
 
+        private bool _destroyed = true; 
 
         public Vector4 PositionRadius
         {
@@ -46,6 +49,9 @@ namespace Beakstorm.Simulation.Collisions
         
         public void Initialize()
         {
+            if (_destroyed == false)
+                return;
+            
             currentHealth = maxHealth;
             Subscribe();
             onInitialize?.Invoke();
@@ -56,16 +62,20 @@ namespace Beakstorm.Simulation.Collisions
                 meshRenderer = GetComponent<MeshRenderer>();
             
             UpdateRenderer();
+
+            _destroyed = false;
         }
 
         private void OnEnable()
         {
-            Initialize();
+            if (autoInitialize)
+                Initialize();
         }
 
         private void OnDisable()
         {
             Unsubscribe();
+            _destroyed = true;
         }
 
         private void Subscribe()
@@ -82,6 +92,9 @@ namespace Beakstorm.Simulation.Collisions
         
         public void ApplyDamage(int value)
         {
+            if (_destroyed)
+                return;
+            
             if (value > 0)
                 onDamageTaken?.Invoke();
             
@@ -106,6 +119,10 @@ namespace Beakstorm.Simulation.Collisions
         
         public void HealthZero()
         {
+            if (_destroyed)
+                return;
+            _destroyed = true;
+            
             currentHealth = 0;
             onHealthZero?.Invoke();
             Unsubscribe();
