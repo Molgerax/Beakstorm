@@ -104,6 +104,8 @@ jobs:
       #  with:
       #    name: Build-${{ matrix.targetPlatform }}
       #    path: build/${{ matrix.targetPlatform }}
+      - name: Install xmllint
+        run: sudo apt-get install lftp -y
       - name: Sync files to hosting
         uses: GenieTim/ftp-action@v4.0.1
         with:
