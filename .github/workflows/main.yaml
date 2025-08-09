@@ -77,7 +77,7 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
           protocol: ftps
-          local-dir: ./build/${{ matrix.targetPlatform }}
+          local-dir: ./build/${{ matrix.targetPlatform }}/
           server-dir: files/Builds/
 
   deploy2:
