@@ -82,5 +82,20 @@ jobs:
           server-dir: files/Builds/${{ matrix.targetPlatform }}/
           #local-dir: ./Assets/Aptabase/
           #server-dir: files/Builds/
-
+  sound:
+    name: Copy SoundBanks
+    needs: deploy
+    runs-on: self-hosted
+    steps:
+      - name: Run Script
+        run: ../../copy_soundbanks.sh
+        shell: bash
+  sound2:
+    name: Copy SoundBanks2
+    needs: deploy
+    runs-on: self-hosted
+    steps:
+      - name: Run Script
+        run: ../../../copy_soundbanks.sh
+        shell: bash
 
