@@ -114,3 +114,31 @@ jobs:
           password: ${{ secrets.FTP_PW }}
           remoteDir: "files/Builds"
           localDir: "Assets/Aptabase"
+
+  deploy3:
+    name: Deploy Yet Again
+    #needs: buildForAllSupportedPlatforms
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+      - name: Install xmllint
+        run: sudo apt-get install lftp -y
+      - name: Sync files to hosting
+        uses: matteodf/lftp-upload@v1
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PW }}
+          remoteDir: "files/Builds"
+          localDir: "Assets/Aptabase"
+          timeout: "120"
+          retries: "5"
+          multiplier: "2.0"
+          baseInterval: "10"
+
