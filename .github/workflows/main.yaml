@@ -66,6 +66,10 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
+      - name: Limit Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
       - name: Sync files to hosting
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -73,10 +77,11 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
           protocol: ftps
+          local-dir: ./build/${{ matrix.targetPlatform }}
           server-dir: files/Builds/
-          
+
   deploy2:
-    name: Deploy Again
+    name: Deploy2
     needs: buildForAllSupportedPlatforms
     runs-on: ubuntu-latest
     strategy:
@@ -98,11 +103,19 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
-      - name: Sync files to hosting
-        uses: genietim/ftp-action@releases/v4.0.1
+      - name: Limit Node
+        uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USER }}
+          node-version: 16
+      - name: Sync files to hosting
+        uses: SamKirkland/FTP-Deploy-Action@v3.1.2
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
-          remoteDir: "files/Builds"
+          protocol: ftp
+          local-dir: ./build/${{ matrix.targetPlatform }}
+          server-dir: files/Builds2/
+
+
         
