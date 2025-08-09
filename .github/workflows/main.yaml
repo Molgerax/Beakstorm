@@ -45,7 +45,7 @@ jobs:
           retention-days: 2
   deploy:
     name: Deploy
-    #needs: buildForAllSupportedPlatforms
+    needs: buildForAllSupportedPlatforms
     runs-on: self-hosted
     strategy:
       fail-fast: false
@@ -61,11 +61,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@main
-      #- name: Download artifact
-      #  uses: actions/download-artifact@main
-      #  with:
-      #    name: Build-${{ matrix.targetPlatform }}
-      #    path: build/${{ matrix.targetPlatform }}
+      - name: Download artifact
+        uses: actions/download-artifact@main
+        with:
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
       #- name: Limit Node
       #  uses: actions/setup-node@v4
       #  with:
@@ -76,11 +76,11 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
-          protocol: ftp
+          protocol: ftps
           #security: strict
-          #local-dir: ./build/${{ matrix.targetPlatform }}/
-          #server-dir: files/Builds/${{ matrix.targetPlatform }}/
-          local-dir: ./Assets/Aptabase/
-          server-dir: files/Builds/
+          local-dir: ./build/${{ matrix.targetPlatform }}/
+          server-dir: files/Builds/${{ matrix.targetPlatform }}/
+          #local-dir: ./Assets/Aptabase/
+          #server-dir: files/Builds/
 
 
