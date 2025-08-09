@@ -45,7 +45,7 @@ jobs:
           retention-days: 2
   deploy:
     name: Deploy
-    needs: buildForAllSupportedPlatforms
+    #needs: buildForAllSupportedPlatforms
     runs-on: self-hosted
     strategy:
       fail-fast: false
@@ -61,25 +61,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@main
-      - name: Download artifact
-        uses: actions/download-artifact@main
-        with:
-          name: Build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+    #  - name: Download artifact
+    #    uses: actions/download-artifact@main
+    #    with:
+    #      name: Build-${{ matrix.targetPlatform }}
+    #      path: build/${{ matrix.targetPlatform }}
       #- name: Limit Node
       #  uses: actions/setup-node@v4
       #  with:
       #    node-version: 16
       - name: Sync files to hosting
-        uses: SamKirkland/FTP-Deploy-Action@v4.0.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
           protocol: ftps
-          security: strict
-          local-dir: ./build/${{ matrix.targetPlatform }}/
-          #local-dir: ./Assets/Aptabase/
-          server-dir: files/Builds/${{ matrix.targetPlatform }}/
+          #security: strict
+          #local-dir: ./build/${{ matrix.targetPlatform }}/
+          local-dir: ./Assets/Aptabase/
+          #server-dir: files/Builds/${{ matrix.targetPlatform }}/
+          server-dir: files/Builds/
 
 
