@@ -82,7 +82,7 @@ jobs:
           server-dir: files/Builds/
 
   deploy2:
-    name: Deploy2
+    name: Deploy Again
     #needs: buildForAllSupportedPlatforms
     runs-on: ubuntu-latest
     strategy:
@@ -104,20 +104,11 @@ jobs:
       #  with:
       #    name: Build-${{ matrix.targetPlatform }}
       #    path: build/${{ matrix.targetPlatform }}
-      - name: Limit Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 16
       - name: Sync files to hosting
-        uses: SamKirkland/FTP-Deploy-Action@v3.1.2
+        uses: sebastianpopp/ftp-action@releases/v2
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USER }}
+          host: ${{ secrets.FTP_SERVER }}
+          user: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
-          protocol: ftp
-          #local-dir: ./build/${{ matrix.targetPlatform }}
-          local-dir: ./Assets/Aptabase/
-          server-dir: files/Builds2/
-
-
-        
+          remoteDir: "files/Builds"
+          localDir: "Assets/Aptabase"
