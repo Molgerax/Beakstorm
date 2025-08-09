@@ -74,4 +74,35 @@ jobs:
           password: ${{ secrets.FTP_PW }}
           protocol: ftps
           server-dir: files/Builds/
+          
+  deploy2:
+    name: Deploy Again
+    needs: buildForAllSupportedPlatforms
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          #- StandaloneOSX # Build a macOS standalone (Intel 64-bit).
+          #- StandaloneWindows # Build a Windows standalone.
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          #- StandaloneLinux64 # Build a Linux 64-bit standalone.
+          #- iOS # Build an iOS player.
+          #- Android # Build an Android .apk standalone app.
+          #- WebGL # WebGL.
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+      - name: Download artifact
+        uses: actions/download-artifact@main
+        with:
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+      - name: Sync files to hosting
+        uses: genietim/ftp-action@releases/v4
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          user: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PW }}
+          remoteDir: "files/Builds"
         
