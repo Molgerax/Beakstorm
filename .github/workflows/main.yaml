@@ -90,12 +90,3 @@ jobs:
       - name: Run Script
         run: ../../copy_soundbanks.sh
         shell: bash
-  sound2:
-    name: Copy SoundBanks2
-    needs: deploy
-    runs-on: self-hosted
-    steps:
-      - name: Run Script
-        run: ../../../copy_soundbanks.sh
-        shell: bash
-
