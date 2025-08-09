@@ -64,10 +64,10 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@main
         with:
-          name: Beakstorm-${{ matrix.targetPlatform }}
+          name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
       - name: Sync files to hosting
-        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USER }}
