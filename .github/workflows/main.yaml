@@ -105,7 +105,7 @@ jobs:
       #    name: Build-${{ matrix.targetPlatform }}
       #    path: build/${{ matrix.targetPlatform }}
       - name: Sync files to hosting
-        uses: sebastianpopp/ftp-action@releases/v2
+        uses: GenieTim/ftp-action@releases/v4.0.1
         with:
           host: ${{ secrets.FTP_SERVER }}
           user: ${{ secrets.FTP_USER }}
