@@ -99,7 +99,7 @@ jobs:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
       - name: Sync files to hosting
-        uses: genietim/ftp-action@releases/v4
+        uses: genietim/ftp-action@releases/v4.0.1
         with:
           host: ${{ secrets.FTP_SERVER }}
           user: ${{ secrets.FTP_USER }}
