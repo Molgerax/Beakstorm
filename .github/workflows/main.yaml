@@ -77,7 +77,8 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
           protocol: ftps
-          local-dir: ./build/${{ matrix.targetPlatform }}/
+          #local-dir: ./build/${{ matrix.targetPlatform }}
+          local-dir: ./Assets/Aptabase/
           server-dir: files/Builds/
 
   deploy2:
@@ -114,7 +115,8 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
           protocol: ftp
-          local-dir: ./build/${{ matrix.targetPlatform }}
+          #local-dir: ./build/${{ matrix.targetPlatform }}
+          local-dir: ./Assets/Aptabase/
           server-dir: files/Builds2/
 
 
