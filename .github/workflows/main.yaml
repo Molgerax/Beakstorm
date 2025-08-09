@@ -66,12 +66,12 @@ jobs:
       #  with:
       #    name: Build-${{ matrix.targetPlatform }}
       #    path: build/${{ matrix.targetPlatform }}
-      - name: Limit Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 16
+      #- name: Limit Node
+      #  uses: actions/setup-node@v4
+      #  with:
+      #    node-version: 16
       - name: Sync files to hosting
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USER }}
