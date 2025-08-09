@@ -76,7 +76,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PW }}
-          protocol: ftp
+          protocol: ftps
+          security: strict
           #local-dir: ./build/${{ matrix.targetPlatform }}
           local-dir: ./Assets/Aptabase/
           server-dir: files/Builds/
