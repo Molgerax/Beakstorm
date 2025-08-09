@@ -45,7 +45,7 @@ jobs:
           retention-days: 2
   deploy:
     name: Deploy
-    needs: buildForAllSupportedPlatforms
+    #needs: buildForAllSupportedPlatforms
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -82,7 +82,7 @@ jobs:
 
   deploy2:
     name: Deploy2
-    needs: buildForAllSupportedPlatforms
+    #needs: buildForAllSupportedPlatforms
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
