@@ -46,7 +46,7 @@ jobs:
   deploy:
     name: Deploy
     #needs: buildForAllSupportedPlatforms
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix:
@@ -83,68 +83,4 @@ jobs:
           local-dir: ./Assets/Aptabase/
           server-dir: files/Builds/
 
-  deploy2:
-    name: Deploy Again
-    #needs: buildForAllSupportedPlatforms
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          #- StandaloneOSX # Build a macOS standalone (Intel 64-bit).
-          #- StandaloneWindows # Build a Windows standalone.
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          #- StandaloneLinux64 # Build a Linux 64-bit standalone.
-          #- iOS # Build an iOS player.
-          #- Android # Build an Android .apk standalone app.
-          #- WebGL # WebGL.
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@main
-      #- name: Download artifact
-      #  uses: actions/download-artifact@main
-      #  with:
-      #    name: Build-${{ matrix.targetPlatform }}
-      #    path: build/${{ matrix.targetPlatform }}
-      - name: Install xmllint
-        run: sudo apt-get install lftp -y
-      - name: Enforce IPv4 Connectivity
-        uses: ./.github/actions/force-ipv4
-      - name: Sync files to hosting
-        uses: GenieTim/ftp-action@v4.0.1
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PW }}
-          remoteDir: "files/Builds"
-          localDir: "Assets/Aptabase"
-
-  deploy3:
-    name: Deploy Yet Again
-    #needs: buildForAllSupportedPlatforms
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@main
-      - name: Install xmllint
-        run: sudo apt-get install lftp -y
-      - name: Enforce IPv4 Connectivity
-        uses: ./.github/actions/force-ipv4
-      - name: Sync files to hosting
-        uses: matteodf/lftp-upload@v1
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PW }}
-          remoteDir: "files/Builds"
-          localDir: "Assets/Aptabase"
-          timeout: "120"
-          retries: "5"
-          multiplier: "2.0"
-          baseInterval: "10"
 
