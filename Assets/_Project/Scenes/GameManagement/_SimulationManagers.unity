@@ -606,8 +606,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compute: {fileID: 7200000, guid: f5b680bf28d30d849badfce89ad098f9, type: 3}
-  capturingVolume: {x: 5, y: 5, z: 5}
-  cellsPerCapture: 3
+  capturingVolume: {x: 3, y: 3, z: 3}
+  cellsPerCapture: 4
   centerPlayer: 1
   captureCenter: {x: 0, y: 0, z: 0}
 --- !u!1 &1908763085

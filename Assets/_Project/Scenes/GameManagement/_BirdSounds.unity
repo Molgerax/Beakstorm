@@ -155,7 +155,8 @@ MonoBehaviour:
   dopplerFactor: 1
   exposureCutoff: 0.5
   muteAbove: 1
-  minimumThreshold: 16
+  minimumThreshold: 1
+  attenuationMax: 256
   useMultipleSources: 0
 --- !u!114 &578622523
 MonoBehaviour:
@@ -273,7 +274,8 @@ MonoBehaviour:
   dopplerFactor: 1
   exposureCutoff: 0.5
   muteAbove: 0
-  minimumThreshold: 16
+  minimumThreshold: 1
+  attenuationMax: 256
   useMultipleSources: 0
 --- !u!114 &704911460
 MonoBehaviour:

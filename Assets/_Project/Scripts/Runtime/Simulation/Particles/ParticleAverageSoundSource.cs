@@ -1,3 +1,4 @@
+using Beakstorm.Audio;
 using Beakstorm.Gameplay.Player;
 using UnityEngine;
 
@@ -11,11 +12,13 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField] private bool muteAbove = false;
 
         [SerializeField] private int minimumThreshold = 16;
+        
+        [SerializeField, Min(1)] private float attenuationMax = 64;
 
         [SerializeField] private bool useMultipleSources;
     
         private AkPositionArray _emitterArray;
-        private ushort _emitterCount = 600;
+        private ushort _emitterCount = 64;
 
         private void OnEnable()
         {
@@ -62,6 +65,7 @@ namespace Beakstorm.Simulation.Particles
             Vector3 velocity = Vector3.zero;
             Vector3 position = Vector3.zero;
             uint boidCount = 0;
+
             
             for (int i = 0; i < ParticleCellAverage.Instance.CellCount; i++)
             {
@@ -88,31 +92,43 @@ namespace Beakstorm.Simulation.Particles
                     position += cellData.Position * cellData.Count;
                     
                     float exposureFactor = muteAbove ? (exposureCutoff - exposure) / exposureCutoff : (exposure - exposureCutoff) / (1 - exposureCutoff);
-                    
-                    int addCount = Mathf.FloorToInt(Mathf.Clamp(cellData.Count * exposureFactor / minimumThreshold, 1, 4));
 
+                    Vector3 listenerPos = MainListener.Transform.position;
+                    Vector3 diff = cellData.Position - listenerPos;
+
+                    float diffLength = diff.magnitude;
+                    if (diffLength == 0)
+                        continue;
+
+
+                    float quietness = (attenuationMax - (cellData.Count - minimumThreshold) * exposureFactor) / attenuationMax;
+
+                    float customAttenuation = Mathf.Lerp(diffLength, Mathf.Max(120, diffLength), quietness);
+
+                    customAttenuation = diffLength * Mathf.Lerp(1, 16, quietness);
+                    
+                    Vector3 customPosition = cellData.Position;
+                    customPosition = listenerPos + diff.normalized * customAttenuation;
+                    
                     Vector3 fwd = cellData.Velocity.normalized;
                     Vector3 right = Vector3.Cross(Vector3.up, fwd);
                     if (right.sqrMagnitude == 0)
                         right = Vector3.right;
                     Vector3 up = Vector3.Cross(fwd, right).normalized;
 
-                    for (int j = 0; j < addCount; j++)
-                    {
-                        _emitterArray.Add(cellData.Position, fwd, up);
-                        count++;
-                    }
+                    _emitterArray.Add(customPosition, fwd, up);
+                    count++;
                 }
             }
 
             if (useMultipleSources)
             {
-                AkUnitySoundEngine.SetMultiplePositions(gameObject, _emitterArray, (ushort)_emitterArray.Count,
+                AkUnitySoundEngine.SetMultiplePositions(gameObject, _emitterArray, count,
                     AkMultiPositionType.MultiPositionType_MultiSources);
             }
             else
             {
-                AkUnitySoundEngine.SetMultiplePositions(gameObject, _emitterArray, (ushort)_emitterArray.Count, 
+                AkUnitySoundEngine.SetMultiplePositions(gameObject, _emitterArray, count, 
                     AkMultiPositionType.MultiPositionType_MultiDirections);
             }
 
