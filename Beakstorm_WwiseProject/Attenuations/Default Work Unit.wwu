@@ -4,6 +4,9 @@
 		<WorkUnit Name="Default Work Unit" ID="{E0C745CC-245A-4E48-9A22-3A8327AE1B66}" PersistMode="Standalone">
 			<ChildrenList>
 				<Attenuation Name="Volume" ID="{C3414127-8209-4BCC-90AA-7CA87898C250}" ShortID="783849464">
+					<PropertyList>
+						<Property Name="RadiusMax" Type="Real64" Value="200"/>
+					</PropertyList>
 					<CurveUsageInfoList>
 						<VolumeDryUsage>
 							<CurveUsageInfo Platform="Linked" CurveToUse="Custom">
@@ -18,13 +21,18 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>60.03977</XPos>
-											<YPos>-4.06525</YPos>
+											<XPos>99.48782</XPos>
+											<YPos>-2.93881</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>100</XPos>
-											<YPos>-5.19766</YPos>
+											<XPos>175.38461</XPos>
+											<YPos>-9.26433</YPos>
+											<Flags>0</Flags>
+										</Point>
+										<Point>
+											<XPos>200</XPos>
+											<YPos>-48.96251</YPos>
 											<Flags>37</Flags>
 										</Point>
 									</PointList>
@@ -50,12 +58,12 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>60.26895</XPos>
+											<XPos>120.5379</XPos>
 											<YPos>40</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>100</XPos>
+											<XPos>200</XPos>
 											<YPos>50</YPos>
 											<Flags>37</Flags>
 										</Point>
@@ -76,12 +84,12 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>60.13917</XPos>
+											<XPos>120.27834</XPos>
 											<YPos>40</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>100</XPos>
+											<XPos>200</XPos>
 											<YPos>50</YPos>
 											<Flags>37</Flags>
 										</Point>
@@ -153,8 +161,13 @@
 											<Flags>0</Flags>
 										</Point>
 										<Point>
+											<XPos>94.91124</XPos>
+											<YPos>-13.33147</YPos>
+											<Flags>0</Flags>
+										</Point>
+										<Point>
 											<XPos>100</XPos>
-											<YPos>-12.25973</YPos>
+											<YPos>-200</YPos>
 											<Flags>37</Flags>
 										</Point>
 									</PointList>
@@ -264,6 +277,9 @@
 					</CurveUsageInfoList>
 				</Attenuation>
 				<Attenuation Name="Volume_Destroy" ID="{B6C532FF-EB49-44DB-AD6C-387D8CFE105E}" ShortID="960072195">
+					<PropertyList>
+						<Property Name="RadiusMax" Type="Real64" Value="200"/>
+					</PropertyList>
 					<CurveUsageInfoList>
 						<VolumeDryUsage>
 							<CurveUsageInfo Platform="Linked" CurveToUse="Custom">
@@ -278,12 +294,12 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>60.03977</XPos>
+											<XPos>120.07954</XPos>
 											<YPos>-1.85272</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>100</XPos>
+											<XPos>200</XPos>
 											<YPos>-2.46289</YPos>
 											<Flags>37</Flags>
 										</Point>
@@ -310,12 +326,12 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>60.26895</XPos>
+											<XPos>120.5379</XPos>
 											<YPos>40</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>100</XPos>
+											<XPos>200</XPos>
 											<YPos>50</YPos>
 											<Flags>37</Flags>
 										</Point>
@@ -336,12 +352,12 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>60.13917</XPos>
+											<XPos>120.27834</XPos>
 											<YPos>40</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>100</XPos>
+											<XPos>200</XPos>
 											<YPos>50</YPos>
 											<Flags>37</Flags>
 										</Point>

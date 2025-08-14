@@ -952,6 +952,7 @@
 						</Sound>
 						<Sound Name="rascheln explosion tail" ID="{E265F0F8-29C4-43E4-A74F-F5E8FBAE79BB}" ShortID="647749807">
 							<PropertyList>
+								<Property Name="AttenuationDistanceScaling" Type="Real32" Value="2"/>
 								<Property Name="Pitch" Type="int32">
 									<ValueList>
 										<Value>-400</Value>
@@ -2043,6 +2044,7 @@
 						<BlendContainer Name="Cannon_Small" ID="{B7E4D1B8-50BE-4AF3-9635-67A4D9A5BA71}" ShortID="411473140">
 							<PropertyList>
 								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="AttenuationDistanceScaling" Type="Real32" Value="2"/>
 								<Property Name="Pitch" Type="int32">
 									<ValueList>
 										<Value>-400</Value>
@@ -2779,6 +2781,7 @@
 						<BlendContainer Name="Cannon_Big" ID="{3531EFF2-AA7E-42BC-B93F-29C51DAFDEA4}" ShortID="508939449">
 							<PropertyList>
 								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="AttenuationDistanceScaling" Type="Real32" Value="2"/>
 								<Property Name="MakeUpGain" Type="Real64">
 									<ValueList>
 										<Value>27</Value>
@@ -5797,6 +5800,7 @@
 						<Sound Name="ship_static_small" ID="{737704D6-8169-485B-87F7-4F08F772840D}" ShortID="478749754">
 							<PropertyList>
 								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="AttenuationDistanceScaling" Type="Real32" Value="1.5"/>
 								<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 								<Property Name="SpeakerPanning" Type="int16" Value="2"/>
 								<Property Name="Volume" Type="Real64">
@@ -5886,6 +5890,7 @@
 						<Sound Name="EnemyShipEngineChopper" ID="{21351CE5-3CB6-4ED4-81E3-AC76497E96C9}" ShortID="224219617">
 							<PropertyList>
 								<Property Name="3DSpatialization" Type="int16" Value="1"/>
+								<Property Name="AttenuationDistanceScaling" Type="Real32" Value="2"/>
 								<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 								<Property Name="MakeUpGain" Type="Real64">
 									<ValueList>
