@@ -354,9 +354,9 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 		col *= light.color;
 		float3 gi = SAMPLE_GI(input.lightmapUV, 0, normalWS);
 		//col = saturate(col + gi);
-		float3 shadowColor = lerp(0, gi, saturate(1-normal.z));
-
-		col = lerp(shadowColor, col, lightStrength);
+		float3 shadowColor = lerp(0, gi, saturate(1.5-normal.z));
+		shadowColor = gi;
+		col = lerp(shadowColor * col, col, lightStrength);
 
 		//col = transmittance;
 		
