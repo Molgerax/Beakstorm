@@ -78,8 +78,8 @@ namespace Beakstorm.Inputs
             
             moveAction = _inputs.Player.Move;
             lookAction = _inputs.Player.Look;
-            confirmAction = _inputs.Player.Confirm;
-            cancelAction = _inputs.Player.Cancel;
+            confirmAction = _inputs.UI.Click;
+            cancelAction = _inputs.UI.Cancel;
             shootAction = _inputs.Player.Shoot;
             emitAction = _inputs.Player.Emit;
             switchCameraAction = _inputs.Player.SwitchCameraHandling;
