@@ -88,5 +88,5 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Run Script
-        run: ../../copy_soundbanks.sh
+        run: sudo ../../copy_soundbanks.sh
         shell: bash
