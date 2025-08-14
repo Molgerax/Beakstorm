@@ -11,15 +11,33 @@ namespace Beakstorm.Settings
         public float MusicVolume = 1f;
         public float SfxVolume = 1f;
 
-        public void SetMaster(float v) => MasterVolume = v;
-        public void SetMusic(float v) => MusicVolume = v;
-        public void SetSfx(float v) => SfxVolume = v;
-        
+        public void SetMaster(float v)
+        {
+            MasterVolume = v;
+            ApplyMaster();
+        }
+
+        public void SetMusic(float v)
+        {
+            MusicVolume = v;
+            ApplyMusic();
+        }
+
+        public void SetSfx(float v)
+        {
+            SfxVolume = v;
+            ApplySfx();
+        }
+
         public override void Apply()
         {
-            AkUnitySoundEngine.SetRTPCValue("volume_master", MasterVolume);
-            AkUnitySoundEngine.SetRTPCValue("volume_music", MusicVolume);
-            AkUnitySoundEngine.SetRTPCValue("volume_sfx", SfxVolume);
+            ApplyMaster();
+            ApplyMusic();
+            ApplySfx();
         }
+        
+        private void ApplyMaster() => AkUnitySoundEngine.SetRTPCValue("volume_master", MasterVolume);
+        private void ApplyMusic() => AkUnitySoundEngine.SetRTPCValue("volume_music", MusicVolume);
+        private void ApplySfx() => AkUnitySoundEngine.SetRTPCValue("volume_sfx", SfxVolume);
     }
 }

@@ -797,7 +797,10 @@ MonoBehaviour:
       _MemberName: LoadData
       _PersistentArguments: []
   _StartEvent:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 11400000, guid: 3cd5041943017dc4986a6810faf85c55, type: 2}
+      _MemberName: LoadData
+      _PersistentArguments: []
   _EnableEvent:
     _PersistentCalls: []
   _DisableEvent:
@@ -992,7 +995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4904cb736549a48ae8b2628a36c631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerList: f7e1664c
+  triggerList: ae8d9d44
   useOtherObject: 0
   data:
     idInternal: 0
