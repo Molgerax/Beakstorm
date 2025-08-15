@@ -8,8 +8,6 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
     {
         [SerializeField] private WaveDescription[] waves;
 
-        [SerializeField] private int currentIndex;
-        
         private UniTask _task;
         private CancellationTokenSource _tokenSource;
 
@@ -35,8 +33,6 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         {
             for (var index = 0; index < waves.Length; index++)
             {
-                currentIndex = index;
-                
                 WaveDescription wave = waves[index];
                 if (wave.WaveData == null)
                 {

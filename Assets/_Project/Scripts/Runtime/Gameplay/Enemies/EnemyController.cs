@@ -14,6 +14,8 @@ namespace Beakstorm.Gameplay.Enemies
 
         [SerializeField] private float emergeTime = 10;
 
+        [SerializeField, HideInInspector] private Bounds bounds;
+        
         public event Action OnHealthZero;
         
         private int _maxHealth;
@@ -31,6 +33,8 @@ namespace Beakstorm.Gameplay.Enemies
         
         public int Health => _currentHealth;
         public float Health01 => (float) _currentHealth / _maxHealth;
+
+        public Bounds Bounds => bounds;
         
         public void Create(EnemyPool pool)
         {
@@ -91,6 +95,28 @@ namespace Beakstorm.Gameplay.Enemies
             }
 
             OnHealthZero = null;
+        }
+
+        private void OnValidate()
+        {
+            CalculateBounds();
+        }
+
+        private void CalculateBounds()
+        {
+            Bounds b = new Bounds();
+            bool init = false;
+            foreach (var render in GetComponentsInChildren<Renderer>())
+            {
+                if (init == false)
+                {
+                    b = render.bounds;
+                    init = true;
+                }
+                b.Encapsulate(render.bounds);
+            }
+
+            bounds = b;
         }
 
         private void Update()
