@@ -23,11 +23,11 @@ MonoBehaviour:
     transformData:
       Position: {x: -60, y: 20, z: 0}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    waitCondition: 1
-    spawnDelay: 10
+    waitCondition: 0
+    spawnDelay: 0
   - enemy: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
     transformData:
       Position: {x: -10.3, y: 30, z: -90.2}
       Rotation: {x: -0, y: -0, z: -0, w: 1}
-    waitCondition: 0
-    spawnDelay: 0
+    waitCondition: 1
+    spawnDelay: 10

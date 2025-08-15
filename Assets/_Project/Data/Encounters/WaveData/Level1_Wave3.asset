@@ -23,17 +23,17 @@ MonoBehaviour:
     transformData:
       Position: {x: -289.5, y: 81.1, z: -142.4}
       Rotation: {x: -0, y: 1, z: -0, w: 0}
-    waitCondition: 0
-    spawnDelay: 0
+    waitCondition: 1
+    spawnDelay: 0.5
   - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
     transformData:
       Position: {x: -113.4, y: 81.1, z: -218.5}
       Rotation: {x: -0, y: 1, z: -0, w: 0}
     waitCondition: 1
-    spawnDelay: 10
+    spawnDelay: 0.5
   - enemy: {fileID: 11400000, guid: 268eba94870643445be9f363204548d1, type: 2}
     transformData:
       Position: {x: -176.9, y: 0, z: -148.8}
       Rotation: {x: -0, y: 0.5488275, z: -0, w: 0.8359356}
-    waitCondition: 0
-    spawnDelay: 0
+    waitCondition: 1
+    spawnDelay: 10
