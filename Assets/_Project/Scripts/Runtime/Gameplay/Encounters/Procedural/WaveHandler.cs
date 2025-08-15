@@ -125,27 +125,28 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             
             _tokenSource?.Cancel();
             
+            Debug.Log("Successfully defeated wave");
+            
             OnDefeatedAll?.Invoke();
             OnDefeatedAll = null;
         }
 
         private bool CheckEnemies()
         {
-            bool isDefeated = true;
+            bool allDefeated = true;
             
             for (int i = _activeEnemies.Count - 1; i >= 0; i--)
             {
                 var enemy = _activeEnemies[i];
                 if (!enemy)
                 {
-                    //_activeEnemies.RemoveAt(i);
                     continue;
                 }
                 if (enemy.IsDefeated  == false)
-                    isDefeated = false;
+                    allDefeated = false;
             }
             
-            return isDefeated;
+            return allDefeated;
         }
     }
 }

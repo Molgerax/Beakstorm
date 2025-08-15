@@ -1,5 +1,5 @@
-using System.Collections.Generic;
-using Beakstorm.Gameplay.Enemies;
+using System;
+using Beakstorm.Audio;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Encounters.Procedural
@@ -8,10 +8,6 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
     {
         public static EncounterManager Instance;
         
-        private List<EnemyController> _activeEnemies = new List<EnemyController>(16);
-        
-        private WaveDataSO _activeWave;
-
         private WaveHandler _waveHandler;
         
         private void Awake()
@@ -19,6 +15,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             Instance = this;
         }
         
+
         private void OnDestroy()
         {
             if (Instance == this)
@@ -27,9 +24,30 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             _waveHandler?.Dispose();
         }
 
+        public void SetPeace(int intensity)
+        {
+            MusicStateManager.Instance.SetPeace(intensity - 1);
+        }
+
+        public void SetWar(int intensity)
+        {
+            MusicStateManager.Instance.SetWar(intensity - 1);
+        }
+
+        public bool IsWaveActive
+        {
+            get
+            {
+                if (_waveHandler == null)
+                    return false;
+
+                return _waveHandler.Defeated == false;
+            }
+        }
+
         public bool BeginWave(WaveDataSO waveData)
         {
-            if (_waveHandler != null && !_waveHandler.Defeated)
+            if (IsWaveActive)
                 return false;
 
             if (_waveHandler == null)
@@ -38,7 +56,15 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
                 _waveHandler.Reset(this, waveData);
             
             _waveHandler.Spawn();
+            _waveHandler.OnDefeatedAll += WaveHandlerOnDefeatedAll;
             return true;
+        }
+
+        private void WaveHandlerOnDefeatedAll()
+        {
+            Debug.Log("Wave defeated");
+            _waveHandler.Dispose();
+            _waveHandler = null;
         }
     }
 }

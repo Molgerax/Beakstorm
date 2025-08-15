@@ -137,6 +137,8 @@ namespace Beakstorm.Gameplay.Enemies
 
         private void HealthZero()
         {
+            _isDefeated = true;
+            
             if (_spawner)
                 _spawner.OnDefeat();
             
@@ -144,7 +146,6 @@ namespace Beakstorm.Gameplay.Enemies
             onHealthZero?.Invoke();
 
             OnHealthZero = null;
-            _isDefeated = true;
         }
     }
 }
