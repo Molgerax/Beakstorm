@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91d7da3bbe7c4aaa8a1752320077224b, type: 3}
+  m_Name: Level1_Wave3
+  m_EditorClassIdentifier: 
+  spawnDataEntries:
+  - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
+    transformData:
+      Position: {x: -131.4, y: 81.1, z: -30.1}
+      Rotation: {x: -0, y: 1, z: -0, w: 0}
+    waitCondition: 1
+    spawnDelay: 0.5
+  - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
+    transformData:
+      Position: {x: -289.5, y: 81.1, z: -142.4}
+      Rotation: {x: -0, y: 1, z: -0, w: 0}
+    waitCondition: 0
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
+    transformData:
+      Position: {x: -113.4, y: 81.1, z: -218.5}
+      Rotation: {x: -0, y: 1, z: -0, w: 0}
+    waitCondition: 1
+    spawnDelay: 10
+  - enemy: {fileID: 11400000, guid: 268eba94870643445be9f363204548d1, type: 2}
+    transformData:
+      Position: {x: -176.9, y: 0, z: -148.8}
+      Rotation: {x: -0, y: 0.5488275, z: -0, w: 0.8359356}
+    waitCondition: 0
+    spawnDelay: 0
