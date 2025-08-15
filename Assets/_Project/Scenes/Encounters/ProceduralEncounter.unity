@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3b0a907c5d89d4d861f66bb01a1108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 5
+  duration: 0.1
   resetOnDisable: 1
   onTimerElapsed:
     _PersistentCalls:
@@ -286,25 +286,25 @@ MonoBehaviour:
     CalmDuration: 20
   - WaveData: {fileID: 0}
     CalmIndex: 2
-    CalmDuration: 5
+    CalmDuration: 15
   - WaveData: {fileID: 11400000, guid: d6150681c8891d04793447501b3a3525, type: 2}
     CalmIndex: 2
     CalmDuration: 20
   - WaveData: {fileID: 0}
     CalmIndex: 3
-    CalmDuration: 5
+    CalmDuration: 15
   - WaveData: {fileID: 11400000, guid: be98dc46f01d87546b14de21d9de7bb8, type: 2}
     CalmIndex: 3
     CalmDuration: 5
   - WaveData: {fileID: 0}
     CalmIndex: 4
-    CalmDuration: 5
+    CalmDuration: 15
   - WaveData: {fileID: 11400000, guid: 9bea5d91f4d20074b8f0dae7955eda8c, type: 2}
     CalmIndex: 4
     CalmDuration: 10
   - WaveData: {fileID: 0}
     CalmIndex: 5
-    CalmDuration: 5
+    CalmDuration: 15
   - WaveData: {fileID: 11400000, guid: 440bc11be9eddbb4aa55a9b51819dc68, type: 2}
     CalmIndex: 5
     CalmDuration: 10
