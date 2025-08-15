@@ -11,7 +11,7 @@ Shader "BeakStorm/Particles/Boids Instanced URP"
     	[HDR] _EmissiveColor("Emission Color", Color) = (0, 0, 0, 0)
         [NoScaleOffset] _EmissiveMap("Emission Map", 2D) = "white" {}
     	_VertexColorToEmissive("Vertex Color Mask for Emission", Range(0.0,1.0)) = 1
-    	_Size("Size", Range(0.0,1.0)) = 1
+    	_Size("Size", Float) = 1
     	
     }
     

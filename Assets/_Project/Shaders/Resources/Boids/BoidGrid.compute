@@ -420,9 +420,10 @@ void Update (uint3 id : SV_DispatchThreadID)
     float4 rot = boid.rotation;//UnpackQuaternion(boid.rotation);
     float3 normal = RotateVectorByQuaternion(float3(0,1,0), rot);
     float3 forward = RotateVectorByQuaternion(float3(0,0,1), rot);
-    
+
     float3 velocity = (currentPosition - oldPosition) / _DeltaTime;
     oldPosition = currentPosition;
+    float3 oldVelocity = velocity;
     
     float4 factors = GetBoidSettings(index);
     float minSpeed = GetMinSpeed(index);
@@ -487,6 +488,10 @@ void Update (uint3 id : SV_DispatchThreadID)
         newForward = normalize(diff);
     else
         newForward = forward;
+
+    float force = length(velocity - oldVelocity) * _DeltaTime * 5;
+    force += (1 - dot(forward, newForward)) * _DeltaTime * 5;
+    boid.data = frac(boid.data + force);
     
     //rot = QuaternionMultiply(QuaternionFromTo(forward, velocity), rot);
 

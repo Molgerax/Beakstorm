@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BeakStorm_Particles_Boids Instanced URP
+  m_Name: Boids_Model
   m_Shader: {fileID: 4800000, guid: 678e8805c7f1437a8803b9606b33c6f5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,9 +37,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Size: 1
+    - _Size: 2
     - _VertexColorToBase: 1
-    - _VertexColorToEmissive: 0
+    - _VertexColorToEmissive: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 0}

@@ -84,6 +84,11 @@ inline float4 QuaternionConjugate(float4 q)
     return q * float4(-1, -1, -1, 1);
 }
 
+inline float4 QuaternionNormalize(float4 q)
+{
+    return q / dot(q, q);
+}
+
 
 inline float4 QuaternionInverse(float4 q)
 {
@@ -188,7 +193,20 @@ float4 QuaternionLookAt(float3 forward, float3 up)
     return q;
 }
 
-
+float4 QuaternionSlerp(float4 p0, float4 p1, float t)
+{
+    float dotp = dot(normalize(p0), normalize(p1));
+    if ((dotp > 0.9999) || (dotp<-0.9999))
+    {
+        if (t<=0.5)
+            return p0;
+        return p1;
+    }
+    float theta = acos(clamp(dotp,-1,1));
+    float4 P = ((p0*sin((1-t)*theta) + p1*sin(t*theta)) / sin(theta));
+    P.w = 1;
+    return P;
+}
 
 
 float4x4 QuaternionToMatrix(float4 q)

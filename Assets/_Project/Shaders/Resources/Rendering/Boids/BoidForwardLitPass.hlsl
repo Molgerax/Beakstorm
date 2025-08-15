@@ -16,6 +16,7 @@ struct Attributes {
 	float3 positionOS : POSITION; // Position in object space
 	float3 normalOS : NORMAL; // Normal in object space
 	float2 uv : TEXCOORD0; // Material texture UVs
+	float4 color : COLOR; // Color
 };
 
 // This struct is output by the vertex function and input to the fragment function.
@@ -56,15 +57,22 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 
 	float3x3 rotMatrix = QuaternionToMatrix(rotation);
 	//rotMatrix = transpose(rotMatrix);
+
+	float wingFlap = boid.data * PI * 2;
+	float wing = input.color.r;
+	float3 pos = input.positionOS;
+
+	pos.y += wing * sin(wingFlap) * 0.5 * (1 - boid.exposure * 0.5);
+	pos.z -= wing * 0.32 * (boid.exposure);
 	
-	float3 worldPos = mul(rotMatrix, input.positionOS * _Size) + meshPositionWS;
+	float3 worldPos = mul(rotMatrix, pos * _Size) + meshPositionWS;
 	
 	output.positionCS = TransformWorldToHClip(worldPos);
 
-	float3 color = hsv2rgb(float3(boid.data * 0.5, 1, 1));
-	color = saturate(boid.exposure);
+	float4 color = input.color;
+	color.a = saturate(boid.exposure);
 	
-	output.color = float4(color, 1);
+	output.color = color;
 	output.normalWS = mul(rotMatrix, input.normalOS);
 	output.uv = input.uv;
 	output.positionWS = worldPos;
@@ -114,6 +122,15 @@ float4 Fragment(Interpolators input) : SV_TARGET{
 	float4 colorSample = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
 	half3 l = half3(unity_SHAr.w, unity_SHAg.w, unity_SHAb.w);
 
+	float wing = input.color.r;
+	float beak = input.color.g;
+	float exposure = input.color.a;
+
+	beak = lerp(1, beak, _VertexColorToEmissive);
+	
+	float smoothness = lerp(0.5, 1, exposure) * beak;
+	float metallic = lerp(0, 1, exposure) * beak;
+	
 	// For lighting, create the InputData struct, which contains position and orientation data
 	InputData lightingInput = (InputData)0; // Found in URP/ShaderLib/Input.hlsl
 	lightingInput.positionWS = input.positionWS;
@@ -123,11 +140,11 @@ float4 Fragment(Interpolators input) : SV_TARGET{
 	lightingInput.bakedGI = SAMPLE_GI(input.lightmapUV, input.vertexSH, input.normalWS);
 	lightingInput.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
 	SurfaceData surfaceInput = (SurfaceData)0;
-	surfaceInput.albedo = colorSample.rgb * _Color.rgb * input.color.rgb;
-	surfaceInput.alpha = colorSample.a * _Color.a;
+	surfaceInput.albedo = colorSample.rgb * _Color.rgb * exposure * beak;
+	surfaceInput.alpha = 1;
 	surfaceInput.specular = 1;
-	surfaceInput.smoothness = lerp(0.5, 1, input.color.r);
-	surfaceInput.metallic = lerp(0, 1, input.color.r);
+	surfaceInput.smoothness = smoothness;
+	surfaceInput.metallic = metallic;
 	surfaceInput.occlusion = 1;
 	
 	#if defined(_SCREEN_SPACE_OCCLUSION) && !defined(_SURFACE_TYPE_TRANSPARENT)

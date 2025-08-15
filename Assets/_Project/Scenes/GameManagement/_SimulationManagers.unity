@@ -566,7 +566,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCount: 65536
   boidComputeShader: {fileID: 7200000, guid: 5b7c6a4eeb954c08a9746191f87c3628, type: 3}
-  mesh: {fileID: 3475534928989439400, guid: 9b7a6cdb75cef4244896b58ae0af9c2b, type: 3}
+  mesh: {fileID: 1351740085621913091, guid: f9be5eb3dc384e24d8ea031ce9ddecf0, type: 3}
   material: {fileID: 2100000, guid: 47e7f82be5f348d42940c13ab860fd18, type: 2}
   neutralState: {fileID: 11400000, guid: f1bb86f32dd7f7b408898680af8e3ea4, type: 2}
   exposedState: {fileID: 11400000, guid: e7aec695776c965488de5bf02150a3a0, type: 2}
