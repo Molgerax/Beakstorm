@@ -414,6 +414,9 @@ MonoBehaviour:
         _W: 0
         _Object: {fileID: 0}
   emergeTime: 10
+  bounds:
+    m_Center: {x: 0, y: 7.0047092, z: 0}
+    m_Extent: {x: 5.0789433, y: 8.004709, z: 4.837579}
 --- !u!114 &507460526144245535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,7 +500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5131ac029a2c8a24a961e70c668a1c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerList: f7e1664c
+  triggerList: f2d9e0ec
   useOtherObject: 0
   actionOnEventType: 0
   curveInterpolation: 4

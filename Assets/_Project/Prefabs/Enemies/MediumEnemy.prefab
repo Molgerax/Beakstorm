@@ -424,6 +424,9 @@ MonoBehaviour:
       _MemberName: PostEvent
       _PersistentArguments: []
   emergeTime: 10
+  bounds:
+    m_Center: {x: 0.0000038146973, y: 17.361889, z: 1.90308}
+    m_Extent: {x: 61.113586, y: 33.477657, z: 42.012104}
 --- !u!114 &5472652922921227751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,7 +510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5131ac029a2c8a24a961e70c668a1c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerList: f7e1664c
+  triggerList: f2d9e0ec
   useOtherObject: 0
   actionOnEventType: 0
   curveInterpolation: 4

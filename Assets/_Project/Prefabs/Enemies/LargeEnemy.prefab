@@ -94,12 +94,17 @@ MonoBehaviour:
   - {fileID: 6747354435992521276}
   - {fileID: 7584023946244118675}
   - {fileID: 4373642563856320343}
+  onInitialize:
+    _PersistentCalls: []
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 6341619872662283019}
       _MemberName: Despawn
       _PersistentArguments: []
   emergeTime: 10
+  bounds:
+    m_Center: {x: 0, y: 4.5003567, z: -0.0000038146973}
+    m_Extent: {x: 39.598843, y: 19.500362, z: 40.00071}
 --- !u!114 &1962246369955853099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5131ac029a2c8a24a961e70c668a1c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerList: f7e1664c
+  triggerList: f2d9e0ec
   useOtherObject: 0
   actionOnEventType: 0
   curveInterpolation: 4
