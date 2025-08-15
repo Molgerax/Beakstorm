@@ -56,6 +56,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/GameManagement/_ObjectPools.unity
     guid: 26d57c928dd64894bbb4abe181eefac8
+  - enabled: 1
+    path: Assets/_Project/Scenes/Encounters/ProceduralEncounter.unity
+    guid: be7cdc110453d434cab4f246a0f37c17
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e60fc8aa09731434f8a2133b3fb99879, type: 2}
   m_UseUCBPForAssetBundles: 0
