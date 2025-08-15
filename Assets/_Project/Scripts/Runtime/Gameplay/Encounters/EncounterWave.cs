@@ -21,6 +21,8 @@ namespace Beakstorm.Gameplay.Encounters
 
         private int _damageTaken;
 
+        public EnemySpawnData[] SpawnData => spawners;
+
         private CancellationTokenSource _tokenSource;
         
         public async Awaitable SpawnAll()

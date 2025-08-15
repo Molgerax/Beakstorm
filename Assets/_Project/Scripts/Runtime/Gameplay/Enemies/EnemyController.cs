@@ -1,4 +1,5 @@
 using System;
+using Beakstorm.Gameplay.Encounters.Procedural;
 using Beakstorm.Simulation.Collisions;
 using UltEvents;
 using UnityEngine;
@@ -25,6 +26,9 @@ namespace Beakstorm.Gameplay.Enemies
         private EnemyPool _pool;
         private EnemySpawner _spawner;
 
+        private bool _isDefeated;
+        public bool IsDefeated => _isDefeated;
+        
         public int Health => _currentHealth;
         public float Health01 => (float) _currentHealth / _maxHealth;
         
@@ -36,6 +40,7 @@ namespace Beakstorm.Gameplay.Enemies
         }
 
         public void Spawn(Transform spawnPoint) => Spawn(spawnPoint.position, spawnPoint.rotation);
+        public void Spawn(TransformData spawnPoint) => Spawn(spawnPoint.Position, spawnPoint.Rotation);
         public void Spawn(Vector3 position, Quaternion rotation)
         {
             _emergeTimer = emergeTime;
@@ -54,6 +59,7 @@ namespace Beakstorm.Gameplay.Enemies
             }
             
             onInitialize?.Invoke();
+            _isDefeated = false;
         }
 
 
@@ -83,6 +89,8 @@ namespace Beakstorm.Gameplay.Enemies
                 
                 weakPoint.onHealthZero -= CheckHealth;
             }
+
+            OnHealthZero = null;
         }
 
         private void Update()
@@ -136,6 +144,7 @@ namespace Beakstorm.Gameplay.Enemies
             onHealthZero?.Invoke();
 
             OnHealthZero = null;
+            _isDefeated = true;
         }
     }
 }

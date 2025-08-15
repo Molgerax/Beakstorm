@@ -10,6 +10,8 @@ namespace Beakstorm.Gameplay.Enemies
 
         [HideInInspector] public bool isDefeated;
 
+        public EnemySO EnemySo => enemySo;
+        
         public event Action OnDefeatAction;
         private EnemyController _enemy;
 
@@ -20,8 +22,8 @@ namespace Beakstorm.Gameplay.Enemies
 
             if (enemySo == null || transform == null)
                 return;
-            
-            _enemy = EnemyPoolManager.Instance.GetEnemy(enemySo);
+
+            _enemy = enemySo.GetEnemyInstance();
             _enemy.Spawn(transform);
             _enemy.OnHealthZero += OnDefeat;
             isDefeated = false;
