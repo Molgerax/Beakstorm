@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a480dfefa5e3f4a92e7ea3822b3c61, type: 3}
   m_Name: Simple_ConstantPheromoneShot
   m_EditorClassIdentifier: 
-  displaySprite: {fileID: 21300000, guid: 791470bc43b912741bc4904a8c594c71, type: 3}
+  displaySprite: {fileID: 21300000, guid: 2e50e7cd60ce5d143a87bd8caf710824, type: 3}
   displayName: Reverse
   fireDelay: 0.5
   ammoCost: 1
