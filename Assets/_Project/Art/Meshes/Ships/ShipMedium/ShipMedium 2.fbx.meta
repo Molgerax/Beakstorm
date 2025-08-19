@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: a5f299a4bad894f4aaaf6fdd7e00df62
+guid: 33cd1959d8b04ad4f90c3d35d1600e38
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: ShipMedium_texture
-    second: {fileID: 2100000, guid: c2e057d6d978a9d4d96fc53bbf4c1324, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: m_glass
-    second: {fileID: 8379705102195234077, guid: 33cd1959d8b04ad4f90c3d35d1600e38, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
