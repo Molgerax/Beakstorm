@@ -347,6 +347,61 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "Bumpers",
+                    "id": "70896ca7-59b6-4476-9735-b85da7de6d97",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchPheromone",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "e577b739-6339-4ec0-bdaf-e7612e09a09a",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "SwitchPheromone",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "1fd3f912-f70c-4026-a8e5-9ce3090e10f9",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "SwitchPheromone",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "f02cd021-51ee-4932-9b6c-4e9aa11309b3",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "SwitchPheromone",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "770bf9c3-0656-4f48-896d-9059433ae6af",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "SwitchPheromone",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "af6083a9-c0f8-4720-8a3f-45ed35e7a6c8",
                     "path": "<Gamepad>/rightStickPress",
