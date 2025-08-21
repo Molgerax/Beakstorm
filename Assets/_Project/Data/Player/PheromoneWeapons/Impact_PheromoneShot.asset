@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displaySprite: {fileID: 21300000, guid: 8d718230e13fc8e4484ddd2de537b0fa, type: 3}
   displayName: Impact
-  fireDelay: 0.5
+  fireDelay: 2
   ammoCost: 1
   initialVelocity: 100
   projectilePrefab: {fileID: 5012512307083224738, guid: bc7de790a204626479f719529a915965, type: 3}
