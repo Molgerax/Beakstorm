@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "com.aptabase": "https://github.com/aptabase/aptabase-unity.git",
-    "com.audiokinetic.wwise.addressables": "https://github.com/audiokinetic/WwiseUnityAddressables.git#v24.1.4",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.eflatun.scenereference": "git+https://github.com/starikcetin/Eflatun.SceneReference.git#4.1.1",
     "com.febucci.custom-hierarchy": "https://github.com/febucci/unitypackage-custom-hierarchy.git",

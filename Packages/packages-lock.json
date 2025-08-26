@@ -7,15 +7,6 @@
       "dependencies": {},
       "hash": "67cac1c95c8a6f056e308752387dc5dc245267e4"
     },
-    "com.audiokinetic.wwise.addressables": {
-      "version": "https://github.com/audiokinetic/WwiseUnityAddressables.git#v24.1.4",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.addressables": "1.21.20"
-      },
-      "hash": "70b907efdfe7f290be2bafd6abaa1529b0a6246c"
-    },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,
