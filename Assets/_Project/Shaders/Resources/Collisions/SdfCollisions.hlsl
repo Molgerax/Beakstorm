@@ -83,7 +83,7 @@ SdfQueryInfo GetClosestDistance(float3 pos, int nodeOffset, uint ignoreMask = 0)
                 AbstractSdfData data = _SdfBuffer[node.startIndex + i];
                 SdfQueryInfo sdfInfo = TestAgainstSdf(pos, data);
 
-                if (sdfInfo.dist < result.dist && ((1 < sdfInfo.matIndex) & ignoreMask == 0))
+                if (sdfInfo.dist < result.dist && ((1 < sdfInfo.matIndex) & ignoreMask) == 0)
                 {
                     result = sdfInfo;
                 }
