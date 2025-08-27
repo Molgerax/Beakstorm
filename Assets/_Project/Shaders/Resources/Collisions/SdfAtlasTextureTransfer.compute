@@ -1,0 +1,36 @@
+#pragma kernel Clear
+#pragma kernel Transfer
+
+
+#define THREAD_GROUP_SIZE 4
+
+RWTexture3D<float> _SdfAtlasTexture;
+uint3 _SdfAtlasResolution;
+
+Texture3D<float> _SourceTexture;
+uint3 _SourceResolution;
+uint3 _TransferOffset;
+
+
+[numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
+void Clear (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _SdfAtlasResolution.x || id.y >= _SdfAtlasResolution.y || id.z >= _SdfAtlasResolution.z)
+        return;
+    _SdfAtlasTexture[id.xyz] = 0;
+}
+
+
+[numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
+void Transfer (uint3 id : SV_DispatchThreadID)
+{
+    const uint3 voxel = id - _TransferOffset;
+    
+    if (id.x < _TransferOffset.x || id.y < _TransferOffset.y || id.z < _TransferOffset.z)
+        return;
+
+    if (voxel.x >= _SourceResolution.x || voxel.y >= _SourceResolution.y || voxel.z >= _SourceResolution.z)
+        return;
+    
+    _SdfAtlasTexture[voxel] = _SourceTexture[id];
+}

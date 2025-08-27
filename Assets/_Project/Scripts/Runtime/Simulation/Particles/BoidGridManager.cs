@@ -214,9 +214,7 @@ namespace Beakstorm.Simulation.Particles
 
             if (SdfShapeManager.Instance)
             {
-                boidComputeShader.SetBuffer(kernelId, PropertyIDs.NodeBuffer, SdfShapeManager.Instance.NodeBuffer);
-                boidComputeShader.SetBuffer(kernelId, PropertyIDs.SdfBuffer, SdfShapeManager.Instance.SdfBuffer);
-                boidComputeShader.SetInt(PropertyIDs.NodeCount, SdfShapeManager.Instance.NodeCount);
+                SdfShapeManager.Instance.SetShaderProperties(boidComputeShader, kernelId);
             }
 
             if (PheromoneGridManager.Instance)
@@ -324,10 +322,6 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int PheromoneSize = Shader.PropertyToID("_PheromoneSize");
             public static readonly int PheromoneCellDimensions = Shader.PropertyToID("_PheromoneCellDimensions");
             public static readonly int PheromoneArgs = Shader.PropertyToID("_PheromoneArgs");
-            
-            public static readonly int NodeBuffer = Shader.PropertyToID("_NodeBuffer");
-            public static readonly int SdfBuffer = Shader.PropertyToID("_SdfBuffer");
-            public static readonly int NodeCount = Shader.PropertyToID("_NodeCount");
 
             public static readonly int AttractorBuffer = Shader.PropertyToID("_AttractorBuffer");
             public static readonly int AttractorCount = Shader.PropertyToID("_AttractorCount");

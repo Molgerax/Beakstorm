@@ -63,6 +63,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
         Line = 2,
         Cone = 3,
         Torus = 4,
+        Texture = 7,
     }
     
     public enum SdfMaterialType

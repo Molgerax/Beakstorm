@@ -1,4 +1,4 @@
-Shader "Beakstorm/Raymarching/SDF BVH Raymarch"
+Shader "Beakstorm/Raymarching/SDF BVH Slice"
 {
     Properties
     {
@@ -47,6 +47,7 @@ Shader "Beakstorm/Raymarching/SDF BVH Raymarch"
         float4 vertex : SV_POSITION;
         float4 screenPos : TEXCOORD0;
         float3 viewNormal : TEXCOORD1;
+        float3 worldPos : TEXCOORD2;
     };
 
     // Helper Functions
@@ -58,21 +59,13 @@ Shader "Beakstorm/Raymarching/SDF BVH Raymarch"
         v2f o;
         o.vertex = TransformObjectToHClip(v.vertex);
         o.screenPos = ComputeScreenPos(o.vertex);
-
+        o.worldPos = TransformObjectToWorld(v.vertex);
         // Camera space matches OpenGL convention where cam forward is -z. In unity forward is positive z.
         // (https://docs.unity3d.com/ScriptReference/Camera-cameraToWorldMatrix.html)
         float3 viewNormal = mul(unity_CameraInvProjection, float4(v.uv * 2 - 1, 0, -1));
         o.viewNormal = -( GetWorldSpaceViewDir(TransformObjectToWorld(v.vertex)));
         
         return o;
-    }
-
-    SdfQueryInfo GetDistance(float3 pos, uint offset)
-    {
-        SdfQueryInfo info;
-        info.dist = length(pos) - 1;
-        info.normal = normalize(pos);
-        return info;
     }
 
 
@@ -92,65 +85,29 @@ Shader "Beakstorm/Raymarching/SDF BVH Raymarch"
         
         
         int nodeOffset = 0;
-        float2 rayBoxInfo = GetMinimumRayDistance(rayOrigin, rayDir, 0, nodeOffset);
-        
-        float dstToBox = rayBoxInfo.x;
-        float dstInsideBox = rayBoxInfo.y;
-        float dstTravelled = EPSILON;
-        float dstLimit = min(depth - dstToBox - EPSILON, dstInsideBox);
 
         
         // March through volume:
         float3 sdfCol = 0;
+        SdfQueryInfo info = GetClosestDistance(i.worldPos, nodeOffset);
 
-        float dist = 10000;
-
-        int NumStepsTaken = 0;
-        float alpha = 0;
-
-        int MaximumSteps = MAX_STEPS;
-
-        SdfQueryInfo info;
-        info.dist = dist;
-        info.normal = float3(0, 1, 0);
-
-        float closestDist = dist;
+        sdfCol.r = saturate(frac(max(0, info.dist * 1)));
+        sdfCol.g = saturate(frac(max(0, -info.dist * 1)));
+        //sdfCol.b = info.matIndex / 4.0;
         
-        while (dstTravelled < dstLimit && dist > _SurfaceDistance && NumStepsTaken < MaximumSteps)
-        {
-            float3 rayPos = rayOrigin + rayDir * (dstToBox + dstTravelled);
-            info = GetClosestDistance(rayPos, nodeOffset);
-            dist = info.dist;
-            dstTravelled += dist - _SurfaceDistance + EPSILON;
-            NumStepsTaken++;
-            closestDist = min(closestDist, dist);
-            if(dist <= _SurfaceDistance)
-            {
-                sdfCol = saturate( dot(GetMainLight().direction.xyz, info.normal) ) * _Color;
-                alpha = 1;
-            }
-        }
-        if (NumStepsTaken == MaximumSteps)
-        {
-            sdfCol = saturate( dot(GetMainLight().direction.xyz, info.normal) ) * _Color;
-            alpha = saturate(1 - closestDist * 2);
-        }
-
-        clip(alpha);
-
-        return float4(sdfCol, alpha);
+        return float4(sdfCol, 1);
     }
     
     ENDHLSL
     
     SubShader
     {
-        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Opaque" "Queue" = "Overlay"}
-        Cull Front
-        ZTest Always
+        Tags { "RenderPipeline" = "UniversalPipeline" "RenderType" = "Opaque" "Queue" = "Geometry"}
+        Cull Off
+        ZTest LEqual
         ZWrite On 
         
-        Blend SrcAlpha OneMinusSrcAlpha
+        //Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {

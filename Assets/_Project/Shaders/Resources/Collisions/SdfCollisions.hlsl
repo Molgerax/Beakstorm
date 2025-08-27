@@ -40,10 +40,52 @@ StructuredBuffer<BVHNode> _NodeBuffer;
 StructuredBuffer<AbstractSdfData> _SdfBuffer;
 int _NodeCount;
 
+Texture3D<float> _SdfAtlasTexture;
+uint3 _SdfAtlasResolution;
+
+SamplerState sampler_linearClamp;
+SdfQueryInfo sdfTextureAtlasLookUp(float3 p, AbstractSdfData data)
+{
+    SdfQueryInfo result = (SdfQueryInfo)0;
+    result.normal.y = 1;
+    result.matIndex = (data.Type >> 4) & 0x0F;
+
+    float3 uvw = ((p - data.Translate) / data.XAxis) + 0.5;
+
+    float boxDist = sdfBox(data.Translate, data.XAxis * 0.5, p);
+    
+    float3 resolution = floor(data.YAxis);
+    float3 startVoxel = floor(data.Data);
+
+    float3 pixelPos = startVoxel + uvw * (resolution - 1) + 0.5;
+    float3 samplePos = pixelPos / (_SdfAtlasResolution - 1);
+    
+    float dist = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos, 0);
+    float distX = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + float3(0.01,0,0), 0);
+    float distY = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + float3(0,0.01,0), 0);
+    float distZ = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + float3(0,0,0.01), 0);
+    
+    result.normal = (float3(distX - dist, distY - dist, distZ- dist));
+    if (dot(result.normal, result.normal > 0))
+        result.normal = normalize(result.normal);
+    result.dist = dist;
+    
+    if (any(step(uvw, 0)) || any(1 - step(uvw, 1)))
+            result.dist += (boxDist);
+    //result.dist = -1;
+    
+    return result;
+}
+
+
 
 SdfQueryInfo TestAgainstSdf(float3 pos, AbstractSdfData data)
 {
-    return sdfGeneric(pos, data);
+    [branch]
+    if ((data.Type & 0x0F) == SDF_TEXTURE)
+        return sdfTextureAtlasLookUp(pos, data);
+    else
+        return sdfGeneric(pos, data);
 }
 
 float distanceToBoundingBox(float3 pos, float3 bmin, float3 bmax)
@@ -83,7 +125,7 @@ SdfQueryInfo GetClosestDistance(float3 pos, int nodeOffset, uint ignoreMask = 0)
                 AbstractSdfData data = _SdfBuffer[node.startIndex + i];
                 SdfQueryInfo sdfInfo = TestAgainstSdf(pos, data);
 
-                if (sdfInfo.dist < result.dist && ((1 < sdfInfo.matIndex) & ignoreMask) == 0)
+                if (sdfInfo.dist < result.dist && (((1 << sdfInfo.matIndex) & ignoreMask) == 0))
                 {
                     result = sdfInfo;
                 }
