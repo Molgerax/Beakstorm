@@ -24,12 +24,12 @@ void Clear (uint3 id : SV_DispatchThreadID)
 [numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
 void Transfer (uint3 id : SV_DispatchThreadID)
 {
-    const uint3 voxel = id - _TransferOffset;
+    const uint3 voxel = id + _TransferOffset;
     
-    if (id.x < _TransferOffset.x || id.y < _TransferOffset.y || id.z < _TransferOffset.z)
+    if (id.x >= _SourceResolution.x || id.y >= _SourceResolution.y || id.z >= _SourceResolution.z)
         return;
 
-    if (voxel.x >= _SourceResolution.x || voxel.y >= _SourceResolution.y || voxel.z >= _SourceResolution.z)
+    if (voxel.x >= _SdfAtlasResolution.x || voxel.y >= _SdfAtlasResolution.y || voxel.z >= _SdfAtlasResolution.z)
         return;
     
     _SdfAtlasTexture[voxel] = _SourceTexture[id];

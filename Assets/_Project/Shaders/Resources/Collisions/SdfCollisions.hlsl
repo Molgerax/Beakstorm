@@ -43,6 +43,12 @@ int _NodeCount;
 Texture3D<float> _SdfAtlasTexture;
 uint3 _SdfAtlasResolution;
 
+float3 clampSamplePos(float3 pos, float3 startVoxel, float3 resolution, float3 derivative)
+{
+    return clamp(pos, startVoxel + 0.5, startVoxel + resolution - 0.5 - derivative);
+}
+
+SamplerState sampler_pointClamp;
 SamplerState sampler_linearClamp;
 SdfQueryInfo sdfTextureAtlasLookUp(float3 p, AbstractSdfData data)
 {
@@ -50,29 +56,48 @@ SdfQueryInfo sdfTextureAtlasLookUp(float3 p, AbstractSdfData data)
     result.normal.y = 1;
     result.matIndex = (data.Type >> 4) & 0x0F;
 
-    float3 uvw = ((p - data.Translate) / data.XAxis) + 0.5;
+    float3 uvw = saturate(((p - data.Translate) / data.XAxis) + 0.5);
 
     float boxDist = sdfBox(data.Translate, data.XAxis * 0.5, p);
+    float3 boxNormal = sdfBoxNormal(data.Translate, data.XAxis * 0.5, p);
+    if (dot(boxNormal, boxNormal) > 0)
+        boxNormal = normalize(boxNormal);
     
     float3 resolution = floor(data.YAxis);
     float3 startVoxel = floor(data.Data);
 
+    float3 derivative = 0.25;
+    //derivative = 0.01;
+    
     float3 pixelPos = startVoxel + uvw * (resolution - 1) + 0.5;
+    pixelPos = clampSamplePos(pixelPos - 0.5, startVoxel, resolution, derivative);
+
     float3 samplePos = pixelPos / (_SdfAtlasResolution - 1);
     
-    float dist = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos, 0);
-    float distX = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + float3(0.01,0,0), 0);
-    float distY = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + float3(0,0.01,0), 0);
-    float distZ = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + float3(0,0,0.01), 0);
+    float4 offset = 0;
+    offset.xyz = derivative / (_SdfAtlasResolution - 1);
     
-    result.normal = (float3(distX - dist, distY - dist, distZ- dist));
+    float dist  = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos, 0);
+    float distX = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + offset.xww, 0);
+    float distY = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + offset.wyw, 0);
+    float distZ = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + offset.wwz, 0);
+
+    result.normal = (float3(distX - dist, distY - dist, distZ - dist));
     if (dot(result.normal, result.normal > 0))
         result.normal = normalize(result.normal);
+
     result.dist = dist;
+
+    float3 addedDistance = result.dist * result.normal + max(0, boxDist) * boxNormal;
+    //addedDistance = result.dist * boxNormal + max(0, boxDist) * boxNormal;
     
-    if (any(step(uvw, 0)) || any(1 - step(uvw, 1)))
-            result.dist += (boxDist);
-    //result.dist = -1;
+    //if (any(step(uvw, 0) + step(1, uvw)))// || any(step(1, uvw)))
+    if (boxDist > 0)
+    {
+        result.dist = length(addedDistance);
+        result.normal = normalize(addedDistance);
+        //result.dist = 0;
+    }
     
     return result;
 }

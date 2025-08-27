@@ -52,6 +52,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         [ContextMenu("Bake")]
         public void Bake()
         {
+            if (!meshFilter)
+                return;
+        
             MeshToSdfStatic.InputArgs args = new MeshToSdfStatic.InputArgs();
             args.Offset = 0;
             args.Quality = MeshToSdfStatic.FloodFillQuality.Ultra;
@@ -59,6 +62,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             args.FloodMode = MeshToSdfStatic.FloodMode.Linear;
             args.Resolution = Resolution;
             args.DistanceMode = MeshToSdfStatic.DistanceMode.Signed;
+            args.Bounds = CalculateBounds();
 
             MeshToSdfStatic meshToSdf = new MeshToSdfStatic(cs, sdfTexture, args, meshFilter);
             meshToSdf.UpdateSDF();
@@ -76,6 +80,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         private void Update()
         {
+            if (!meshRenderer)
+                return;
+        
             var bounds = CalculateBounds();
             float3 pos = bounds.center;
             float3 scale = bounds.size;
@@ -93,7 +100,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             
             int longestAxis = LongestAxis(bounds.size);
             float voxelSize = (bounds.size[longestAxis]) / Resolution[longestAxis];
-            bounds = new Bounds(bounds.center, (Vector3)Resolution * voxelSize);
+            bounds = new Bounds(bounds.center, ((Vector3)Resolution + Vector3.one * 2) * voxelSize);
             
             _boundsMin = bounds.min;
             _boundsMax = bounds.max;
@@ -112,7 +119,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         {
             Gizmos.color = new(1, 0, 0, 0.5f);
             var bounds = meshRenderer.bounds;
-            Gizmos.DrawWireCube(bounds.center, bounds.size);
+            Gizmos.DrawWireCube((_boundsMin + _boundsMax) / 2, _boundsMax - _boundsMin);
         }
         
         

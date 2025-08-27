@@ -14,6 +14,7 @@ namespace Beakstorm.Simulation.Collisions
             public DistanceMode DistanceMode;
             public float Offset;
             public int FillIterations;
+            public Bounds Bounds;
         }
         
         public MeshToSdfStatic(ComputeShader cs, RenderTexture sdf, InputArgs args, MeshFilter meshFilter)
@@ -43,11 +44,13 @@ namespace Beakstorm.Simulation.Collisions
             offset = args.Offset;
             floodFillIterations = args.FillIterations;
             distanceMode = args.DistanceMode;
+            bounds = args.Bounds;
         }
 
         private Bounds GetBounds()
         {
-            Bounds bounds = new Bounds();
+            Bounds b = bounds;
+            return b;
             
             if (m_MeshFilter)
             {
@@ -59,23 +62,20 @@ namespace Beakstorm.Simulation.Collisions
             if (m_SkinnedMeshRenderer)
                 bounds = m_SkinnedMeshRenderer.bounds;
 
-            bounds.size += Vector3.one * 1f;
-            
-            return bounds;
         }
 
         private float GetVoxelSize()
         {
-            Bounds bounds = GetBounds();
-            int longestAxis = LongestAxis(bounds.size);
-            return (bounds.size[longestAxis]) / resolution[longestAxis];
+            Bounds b = GetBounds();
+            int longestAxis = LongestAxis(b.size);
+            return (b.size[longestAxis]) / resolution[longestAxis];
         }
 
         private Bounds GetAdjustedBounds()
         {
-            Bounds bounds = GetBounds();
+            Bounds b = GetBounds();
             float voxelSize = GetVoxelSize();
-            return new Bounds(bounds.center, (Vector3)resolution * voxelSize);
+            return new Bounds(b.center, (Vector3)resolution * voxelSize);
         }
 
         private int LongestAxis(Vector3 v)
@@ -137,6 +137,8 @@ If you need signed distance or just need a limited shell around your surface, us
         }
 
         public Vector3Int resolution;
+
+        public Bounds bounds;
 
         private RenderTexture _sdfTexture;
         
@@ -258,7 +260,7 @@ If you need signed distance or just need a limited shell around your surface, us
         {
             Vector3Int voxelResolution = resolution;
             int voxelCount = voxelResolution.x * voxelResolution.y * voxelResolution.z;
-            Bounds voxelBounds = GetAdjustedBounds();
+            Bounds voxelBounds = bounds;
             float voxelSize = GetVoxelSize();
             int threadGroupCountVoxels = (int) Mathf.Ceil((float) voxelCount / (float) kThreadCount);
 
