@@ -15,6 +15,7 @@ namespace Beakstorm.Simulation.Collisions
             public float Offset;
             public int FillIterations;
             public Bounds Bounds;
+            public float VoxelSize;
         }
         
         public MeshToSdfStatic(ComputeShader cs, RenderTexture sdf, InputArgs args, MeshFilter meshFilter)
@@ -45,6 +46,7 @@ namespace Beakstorm.Simulation.Collisions
             floodFillIterations = args.FillIterations;
             distanceMode = args.DistanceMode;
             bounds = args.Bounds;
+            voxelSizeIn = args.VoxelSize;
         }
 
         private Bounds GetBounds()
@@ -139,7 +141,8 @@ If you need signed distance or just need a limited shell around your surface, us
         public Vector3Int resolution;
 
         public Bounds bounds;
-
+        public float voxelSizeIn;
+        
         private RenderTexture _sdfTexture;
         
         ComputeShader m_Compute = null;
@@ -261,7 +264,7 @@ If you need signed distance or just need a limited shell around your surface, us
             Vector3Int voxelResolution = resolution;
             int voxelCount = voxelResolution.x * voxelResolution.y * voxelResolution.z;
             Bounds voxelBounds = bounds;
-            float voxelSize = GetVoxelSize();
+            float voxelSize = voxelSizeIn;
             int threadGroupCountVoxels = (int) Mathf.Ceil((float) voxelCount / (float) kThreadCount);
 
             int dispatchSizeX = threadGroupCountVoxels;

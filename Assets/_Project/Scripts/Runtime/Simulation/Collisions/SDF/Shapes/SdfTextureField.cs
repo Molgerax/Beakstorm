@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 {
-    public class SdfTextureField : AbstractSdfShape
+    public class SdfTextureField : AbstractSdfShape, IComparable
     {
         [SerializeField] private ComputeShader cs;
         [SerializeField] private MeshFilter meshFilter;
@@ -63,6 +63,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             args.Resolution = Resolution;
             args.DistanceMode = MeshToSdfStatic.DistanceMode.Signed;
             args.Bounds = CalculateBounds();
+            args.VoxelSize = GetVoxelSize();
 
             MeshToSdfStatic meshToSdf = new MeshToSdfStatic(cs, sdfTexture, args, meshFilter);
             meshToSdf.UpdateSDF();
@@ -96,7 +97,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         private Bounds CalculateBounds()
         {
             Bounds bounds = meshRenderer.bounds;
-            bounds.size += Vector3.one;
+            //bounds.size += Vector3.one;
             
             int longestAxis = LongestAxis(bounds.size);
             float voxelSize = (bounds.size[longestAxis]) / Resolution[longestAxis];
@@ -106,6 +107,14 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             _boundsMax = bounds.max;
             return bounds;
         }
+
+        private float GetVoxelSize()
+        {
+            Bounds b = CalculateBounds();
+            int longestAxis = LongestAxis(b.size);
+            return (b.size[longestAxis]) / resolution;
+        }
+        
         private int LongestAxis(Vector3 v)
         {
             if (v.x >= v.y && v.x >= v.z)
@@ -148,6 +157,20 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             normal = math.mul(math.transpose(rot), math.normalize(norm));
 
             return dist <= 0;
+        }
+
+        public int CompareTo(object obj)
+        {
+            var a = this;
+            var b = obj as SdfTextureField;
+            if (b == null)
+                return 0;
+
+            if (a.resolution < b.resolution)
+                return 1;
+            if (a.resolution > b.resolution)
+                return -1;
+            return 0;
         }
     }
 }

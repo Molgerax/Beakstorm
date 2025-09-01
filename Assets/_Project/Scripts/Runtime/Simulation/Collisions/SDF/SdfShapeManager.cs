@@ -29,6 +29,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
         public static SdfShapeManager Instance;
 
         public static List<AbstractSdfShape> Shapes = new List<AbstractSdfShape>(16);
+        private static List<SdfTextureField> _textureFields = new(16);
 
         private AbstractSdfShape[] _shapes = new AbstractSdfShape[16];
         private Node[] _nodeList;
@@ -313,6 +314,9 @@ namespace Beakstorm.Simulation.Collisions.SDF
             {
                 Shapes.Add(shape);
                 _updateArray = true;
+                
+                if (shape is SdfTextureField textureField)
+                    _textureFields.Add(textureField);
             }
         }
 
@@ -322,6 +326,9 @@ namespace Beakstorm.Simulation.Collisions.SDF
             {
                 Shapes.Remove(shape);
                 _updateArray = true;
+                
+                if (shape is SdfTextureField textureField)
+                    _textureFields.Remove(textureField);
             }
         }
         
@@ -333,47 +340,96 @@ namespace Beakstorm.Simulation.Collisions.SDF
             sdfAtlasTexture.enableRandomWrite = true;
             sdfAtlasTexture.Create();
         }
-        
+
+        private void SortTextureFields()
+        {
+            _textureFields.Sort();
+        }
+
         private void UpdateSdfAtlas()
         {
             ClearSdfAtlas();
+            SortTextureFields();
+
+            int i = 0;
+            UpdateSdfAtlasRecursive(ref i, Vector3Int.zero, atlasResolution);
+        }
+
+        private void UpdateSdfAtlasRecursive(ref int textureIndex, Vector3Int startVoxel, Vector3Int currentResolution)
+        {
+            if (textureIndex >= _textureFields.Count)
+                return;
+
+            if (currentResolution.sqrMagnitude <= 8)
+                return;
             
-            Vector3Int startVoxel = Vector3Int.zero;
-            Vector3Int filledCorner = Vector3Int.zero;
-
-            foreach (var shape in Shapes)
+            SdfTextureField field = _textureFields[textureIndex];
+            if (field.Resolution == currentResolution)
             {
-                SdfTextureField field = shape as SdfTextureField;
-                if (field != null)
+                SetTexture(field, startVoxel);
+                textureIndex++;
+                return;
+            }
+            if (currentResolution.x != currentResolution.y || currentResolution.x != currentResolution.z)
+            {
+                if (currentResolution.x > currentResolution.y && currentResolution.x > currentResolution.z)
                 {
-                    Vector3Int res = field.Resolution;
-
-                    if (CanFitInAtlas(startVoxel, res))
-                    {
-                        field.SetStartVoxel(startVoxel);
-                        int kernelId = atlasCompute.FindKernel("Transfer");
-                        atlasCompute.SetTexture(kernelId, PropertyIDs.SdfAtlasTexture, sdfAtlasTexture);
-                        atlasCompute.SetInts(PropertyIDs.SdfAtlasResolution, atlasResolution);
-                        atlasCompute.SetTexture(kernelId, PropertyIDs.SourceTexture, field.SdfTexture);
-                        atlasCompute.SetInts(PropertyIDs.SourceResolution, res);
-                        atlasCompute.SetInts(PropertyIDs.TransferOffset, startVoxel);
-                        atlasCompute.DispatchExact(kernelId, atlasResolution);
-
-                        filledCorner = Vector3Int.Max(filledCorner, startVoxel + res);
-                        startVoxel.x += res.x;
-                    }
+                    currentResolution.x /= 2;
+                    UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(0, 0, 0) * currentResolution, currentResolution);
+                    UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(1, 0, 0) * currentResolution, currentResolution);
                 }
+                else if (currentResolution.y > currentResolution.x && currentResolution.y > currentResolution.z)
+                {
+                    currentResolution.y /= 2;
+                    UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(0, 0, 0) * currentResolution, currentResolution);
+                    UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(0, 1, 0) * currentResolution, currentResolution);
+                }
+                //if (currentResolution.z > currentResolution.x || currentResolution.z > currentResolution.y)
+                else 
+                {
+                    currentResolution.z /= 2;
+                    UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(0, 0, 0) * currentResolution, currentResolution);
+                    UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(0, 0, 1) * currentResolution, currentResolution);
+                }
+            }
+            else
+            {
+                currentResolution /= 2;
+                UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(0, 0, 0) * currentResolution, currentResolution);
+                UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(1, 0, 0) * currentResolution, currentResolution);
+                UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(0, 1, 0) * currentResolution, currentResolution);
+                UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(1, 1, 0) * currentResolution, currentResolution);
+                
+                UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(0, 0, 1) * currentResolution, currentResolution);
+                UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(1, 0, 1) * currentResolution, currentResolution);
+                UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(0, 1, 1) * currentResolution, currentResolution);
+                UpdateSdfAtlasRecursive(ref textureIndex, startVoxel + new Vector3Int(1, 1, 1) * currentResolution, currentResolution);
             }
         }
 
-        private bool CanFitInAtlas(Vector3Int startVoxel, Vector3Int res)
+        private void SetTexture(SdfTextureField field, Vector3Int startVoxel)
+        {
+            if (CanFitInAtlas(startVoxel, field.Resolution, atlasResolution))
+            {
+                field.SetStartVoxel(startVoxel);
+                int kernelId = atlasCompute.FindKernel("Transfer");
+                atlasCompute.SetTexture(kernelId, PropertyIDs.SdfAtlasTexture, sdfAtlasTexture);
+                atlasCompute.SetInts(PropertyIDs.SdfAtlasResolution, atlasResolution);
+                atlasCompute.SetTexture(kernelId, PropertyIDs.SourceTexture, field.SdfTexture);
+                atlasCompute.SetInts(PropertyIDs.SourceResolution, field.Resolution);
+                atlasCompute.SetInts(PropertyIDs.TransferOffset, startVoxel);
+                atlasCompute.DispatchExact(kernelId, atlasResolution);
+            }
+        }
+        
+        private bool CanFitInAtlas(Vector3Int startVoxel, Vector3Int res, Vector3Int totalRes)
         {
             Vector3Int sum = startVoxel + res;
-            if (sum.x > atlasResolution.x)
+            if (sum.x > totalRes.x)
                 return false;
-            if (sum.y > atlasResolution.y)
+            if (sum.y > totalRes.y)
                 return false;
-            if (sum.z > atlasResolution.z)
+            if (sum.z > totalRes.z)
                 return false;
             return true;
         }
