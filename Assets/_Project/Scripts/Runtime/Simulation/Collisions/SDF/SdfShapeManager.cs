@@ -334,7 +334,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
         
         private void InitAtlas()
         {
-            sdfAtlasTexture = new RenderTexture(atlasResolution.x, atlasResolution.y, 0, RenderTextureFormat.RFloat);
+            sdfAtlasTexture = new RenderTexture(atlasResolution.x, atlasResolution.y, 0, RenderTextureFormat.ARGBFloat);
             sdfAtlasTexture.volumeDepth = atlasResolution.z;
             sdfAtlasTexture.dimension = TextureDimension.Tex3D;
             sdfAtlasTexture.enableRandomWrite = true;

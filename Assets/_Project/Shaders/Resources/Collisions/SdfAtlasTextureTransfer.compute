@@ -4,7 +4,7 @@
 
 #define THREAD_GROUP_SIZE 4
 
-RWTexture3D<float> _SdfAtlasTexture;
+RWTexture3D<float4> _SdfAtlasTexture;
 uint3 _SdfAtlasResolution;
 
 Texture3D<float> _SourceTexture;
@@ -21,6 +21,8 @@ void Clear (uint3 id : SV_DispatchThreadID)
 }
 
 
+SamplerState sampler_linearClamp;
+
 [numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
 void Transfer (uint3 id : SV_DispatchThreadID)
 {
@@ -31,6 +33,23 @@ void Transfer (uint3 id : SV_DispatchThreadID)
 
     if (voxel.x >= _SdfAtlasResolution.x || voxel.y >= _SdfAtlasResolution.y || voxel.z >= _SdfAtlasResolution.z)
         return;
+
+    float dist = _SourceTexture[id];
+
+    float3 samplePos = float3(id.xyz + 0.5) / _SourceResolution.xyz;
+
+    float4 offset = 0;
+    offset.xyz = 0.25 / _SourceResolution.xyz;
     
-    _SdfAtlasTexture[voxel] = _SourceTexture[id];
+    float distX = _SourceTexture.SampleLevel(sampler_linearClamp, samplePos + offset.xww, 0) - _SourceTexture.SampleLevel(sampler_linearClamp, samplePos - offset.xww, 0);
+    float distY = _SourceTexture.SampleLevel(sampler_linearClamp, samplePos + offset.wyw, 0) - _SourceTexture.SampleLevel(sampler_linearClamp, samplePos - offset.wyw, 0);
+    float distZ = _SourceTexture.SampleLevel(sampler_linearClamp, samplePos + offset.wwz, 0) - _SourceTexture.SampleLevel(sampler_linearClamp, samplePos - offset.wwz, 0);
+    
+    
+    float3 normal = float3(distX, distY, distZ) / offset.xyz;
+    if (dot(normal, normal == 0))
+        normal = float3(1, 0, 0);
+    normal = normalize(normal);
+    
+    _SdfAtlasTexture[voxel] = float4(normal, dist);
 }

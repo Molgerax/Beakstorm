@@ -40,7 +40,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         private void Init()
         {
-            sdfTexture = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.RFloat);
+            sdfTexture = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);
             sdfTexture.volumeDepth = resolution;
             sdfTexture.dimension = TextureDimension.Tex3D;
             sdfTexture.enableRandomWrite = true;

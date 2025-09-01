@@ -127,7 +127,7 @@ float3 closestPointOnBox(float3 center, float3 bounds, float3 p)
 
 float3 sdfBoxNormal(float3 center, float3 bounds, float3 p)
 {
-    //return normalize(p - closestPointOnBox(center, bounds, p));
+    return normalize(closestPointOnBox(center, bounds, p));
     float3 q = (p - center);
     float3 diff = abs(q) - bounds;
     float3 norm = (getLargest(diff) + max(diff, 0)) * sign(q);
