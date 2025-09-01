@@ -91,9 +91,28 @@ Shader "Beakstorm/Raymarching/SDF BVH Slice"
         float3 sdfCol = 0;
         SdfQueryInfo info = GetClosestDistance(i.worldPos, nodeOffset);
 
-        sdfCol.r = saturate(frac(max(0, info.dist * 1)));
-        sdfCol.g = saturate(frac(max(0, -info.dist * 1)));
+        //sdfCol.r = saturate(frac(max(0, info.dist * 1)));
+        //sdfCol.g = saturate(frac(max(0, -info.dist * 1)));
         //sdfCol.b = info.matIndex / 4.0;
+        
+
+        float2 normalDeriveX = fwidth(info.normal.xz);
+        float2 normalDeriveY = ddy(info.normal.xz);
+        
+        sdfCol.rg = info.normal.xz * 0.5 + 0.5;
+        //sdfCol.b = saturate(frac(max(0, info.dist)));
+
+        float time = _Time.x;
+        float2 timeVec = float2(sin(time.x), cos(time.x));
+        
+        //sdfCol.rg = frac(info.normal.xz);
+
+        //sdfCol = dot(timeVec, info.normal.xz) * 0.5 + 0.5;
+
+        float angle = atan2(timeVec.y - info.normal.z, timeVec.x - info.normal.z);
+        angle = atan2(info.normal.z, info.normal.x);
+        //sdfCol = frac(angle / PI * 0.5);
+        sdfCol = saturate(frac(max(0, info.dist * 0.25)));
         
         return float4(sdfCol, 1);
     }
