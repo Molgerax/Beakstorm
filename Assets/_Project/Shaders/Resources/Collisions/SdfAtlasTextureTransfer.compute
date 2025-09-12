@@ -36,14 +36,20 @@ void Transfer (uint3 id : SV_DispatchThreadID)
 
     float dist = _SourceTexture[id];
 
-    float3 samplePos = float3(id.xyz + 0.5) / _SourceResolution.xyz;
+    float3 samplePos = float3(id.xyz + 0.5) / (_SourceResolution.xyz);
 
-    float4 offset = 0;
-    offset.xyz = 0.25 / _SourceResolution.xyz;
     
-    float distX = _SourceTexture.SampleLevel(sampler_linearClamp, samplePos + offset.xww, 0) - _SourceTexture.SampleLevel(sampler_linearClamp, samplePos - offset.xww, 0);
-    float distY = _SourceTexture.SampleLevel(sampler_linearClamp, samplePos + offset.wyw, 0) - _SourceTexture.SampleLevel(sampler_linearClamp, samplePos - offset.wyw, 0);
-    float distZ = _SourceTexture.SampleLevel(sampler_linearClamp, samplePos + offset.wwz, 0) - _SourceTexture.SampleLevel(sampler_linearClamp, samplePos - offset.wwz, 0);
+    float4 offset = 0;
+    offset.xyz = 2.0 / _SourceResolution.xyz;
+
+    float3 posMin = saturate(samplePos - offset.xyz);
+    float3 posMax = saturate(samplePos + offset.xyz);
+
+    offset.xyz = posMax - posMin;
+    
+    float distX = _SourceTexture.SampleLevel(sampler_linearClamp, lerp(samplePos, posMax, float3(1,0,0)), 0) - _SourceTexture.SampleLevel(sampler_linearClamp, lerp(samplePos, posMin, float3(1,0,0)), 0);
+    float distY = _SourceTexture.SampleLevel(sampler_linearClamp, lerp(samplePos, posMax, float3(0,1,0)), 0) - _SourceTexture.SampleLevel(sampler_linearClamp, lerp(samplePos, posMin, float3(0,1,0)), 0);
+    float distZ = _SourceTexture.SampleLevel(sampler_linearClamp, lerp(samplePos, posMax, float3(0,0,1)), 0) - _SourceTexture.SampleLevel(sampler_linearClamp, lerp(samplePos, posMin, float3(0,0,1)), 0);
     
     
     float3 normal = float3(distX, distY, distZ) / offset.xyz;

@@ -45,8 +45,8 @@ uint3 _SdfAtlasResolution;
 
 float3 clampSamplePos(float3 uvw, float3 startVoxel, float3 resolution)
 {
-    float3 pos = startVoxel + 1.5 + uvw * (resolution - 3);
-    return clamp(pos, startVoxel, startVoxel + resolution - 0.5);
+    float3 pos = lerp(startVoxel + 0.5, startVoxel + resolution - 0.5, uvw);
+    return pos;
 }
 
 SamplerState sampler_pointClamp;
@@ -57,39 +57,33 @@ SdfQueryInfo sdfTextureAtlasLookUp(float3 p, AbstractSdfData data)
     result.normal.y = 1;
     result.matIndex = (data.Type >> 4) & 0x0F;
 
+    float3 resolution = floor(data.YAxis);
+    float3 startVoxel = floor(data.Data);
+    float3 bounds = data.XAxis * (1.0 - 1.0 / resolution);
+    
     float3 uvw = saturate(((p - data.Translate) / data.XAxis) + 0.5);
 
-    float boxDist = sdfBox(data.Translate, data.XAxis * 0.5, p);
-    float3 boxNormal = sdfBoxNormal(data.Translate, data.XAxis * 0.5, p);
+    uvw = saturate(((p - data.Translate) / bounds) + 0.5);
+
+
+    float boxDist = sdfBox(data.Translate, bounds * 0.5, p);
+    float3 boxNormal = sdfBoxNormal(data.Translate, bounds * 0.5, p);
     if (dot(boxNormal, boxNormal) > 0)
         boxNormal = normalize(boxNormal);
     
-    float3 resolution = floor(data.YAxis);
-    float3 startVoxel = floor(data.Data);
 
     
     float3 pixelPos = clampSamplePos(uvw, startVoxel, resolution);
+    //pixelPos = startVoxel + 0.5 + uvw * (resolution - 1.0);
 
     float3 samplePos = pixelPos / (_SdfAtlasResolution);
     
-    float4 offset = 0;
     float4 texSample = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos, 0);
     
-    float dist  = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos, 0).w;
-    float distX = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + offset.xww, 0).w;
-    float distY = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + offset.wyw, 0).w;
-    float distZ = _SdfAtlasTexture.SampleLevel(sampler_linearClamp, samplePos + offset.wwz, 0).w;
-
-    result.normal = (float3(distX - dist, distY - dist, distZ - dist));
-    if (dot(result.normal, result.normal > 0))
-        result.normal = normalize(result.normal);
-
-    result.normal = normalize(texSample.xyz);
-    
     result.dist = texSample.w;
+    result.normal = normalize(texSample.xyz);
 
-
-    float3 addedDistance = result.dist * result.normal + (boxDist) * boxNormal;
+    float3 addedDistance = max(0,result.dist) * result.normal + max(0, boxDist) * boxNormal;
     //addedDistance = result.dist * boxNormal + max(0, boxDist) * boxNormal;
     
     //if (any(step(uvw, 0) + step(1, uvw)))// || any(step(1, uvw)))
@@ -98,6 +92,9 @@ SdfQueryInfo sdfTextureAtlasLookUp(float3 p, AbstractSdfData data)
         result.dist = length(addedDistance);
         result.normal = normalize(addedDistance);
         //result.dist = 0;
+
+        //result.dist = max(0, boxDist) + texSample.w;
+        //result.normal = boxNormal;
     }
     
     return result;
