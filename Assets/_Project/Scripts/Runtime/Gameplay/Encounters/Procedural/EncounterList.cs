@@ -11,6 +11,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         private UniTask _task;
         private CancellationTokenSource _tokenSource;
 
+        public WaveDescription[] Waves => waves;
+
         private void Awake()
         {
             _tokenSource = new();
