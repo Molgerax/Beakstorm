@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: 86abc397ebe915d44b8a52e75ab153d0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - material: {instanceID: 0}
+  - mesh: {instanceID: 0}
+  - atlasCompute: {fileID: 7200000, guid: 2b660e9766f4c944286173b674ad7820, type: 3}
+  - sdfAtlasTexture: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

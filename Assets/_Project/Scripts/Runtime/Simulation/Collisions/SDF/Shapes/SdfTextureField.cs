@@ -1,4 +1,5 @@
 using System;
+using Beakstorm.Core.Attributes;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -11,9 +12,10 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         [SerializeField] private MeshFilter meshFilter;
         [SerializeField] private MeshRenderer meshRenderer;
 
-        [SerializeField] private int resolution = 32;
+        [SerializeField]
+        [PowerOfTwo(4, 64)] private int resolution = 32;
 
-        [SerializeField] private RenderTexture sdfTexture;
+        private RenderTexture _sdfTexture;
         
         protected override SdfShapeType Type() => SdfShapeType.Texture;
      
@@ -21,7 +23,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         private Vector3Int _startVoxel;
 
-        public RenderTexture SdfTexture => sdfTexture;
+        public RenderTexture SdfTexture => _sdfTexture;
         public void SetStartVoxel(Vector3Int v) => _startVoxel = v;
 
         protected override void OnEnable()
@@ -40,11 +42,12 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         private void Init()
         {
-            sdfTexture = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);
-            sdfTexture.volumeDepth = resolution;
-            sdfTexture.dimension = TextureDimension.Tex3D;
-            sdfTexture.enableRandomWrite = true;
-            sdfTexture.Create();
+            _sdfTexture = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);
+            _sdfTexture.volumeDepth = resolution;
+            _sdfTexture.dimension = TextureDimension.Tex3D;
+            _sdfTexture.enableRandomWrite = true;
+            _sdfTexture.name = gameObject.name + "_SDF";
+            _sdfTexture.Create();
             
             Bake();
         }
@@ -65,16 +68,16 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             args.Bounds = CalculateBounds();
             args.VoxelSize = GetVoxelSize();
 
-            MeshToSdfStatic meshToSdf = new MeshToSdfStatic(cs, sdfTexture, args, meshFilter);
+            MeshToSdfStatic meshToSdf = new MeshToSdfStatic(cs, _sdfTexture, args, meshFilter);
             meshToSdf.UpdateSDF();
             meshToSdf.Dispose();
         }
 
         protected override void OnDisable()
         {
-            if (sdfTexture)
-                sdfTexture.Release();
-            sdfTexture = null;
+            if (_sdfTexture)
+                _sdfTexture.Release();
+            _sdfTexture = null;
             
             base.OnDisable();
         }
