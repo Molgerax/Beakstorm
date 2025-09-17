@@ -114,6 +114,8 @@ Shader "Beakstorm/Raymarching/SDF BVH Slice"
         //sdfCol = frac(angle / PI * 0.5);
         sdfCol = saturate(frac(max(0, info.dist * 0.25)));
         
+        sdfCol *= _Color.rgb;
+
         return float4(sdfCol, 1);
     }
     
