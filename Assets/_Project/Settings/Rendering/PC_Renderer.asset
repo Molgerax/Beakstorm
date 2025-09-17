@@ -16,11 +16,31 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1024
-  downSampleFactor: 2
+  downSampleFactor: 0
   blitMaterial: {fileID: 2100000, guid: fd795acfeea9df940a35acf2600991a9, type: 2}
-  blendStrength: 0.8
-  sobelCutoff: 0.3
+  blendStrength: 0.819
+  sobelCutoff: 0.155
   renderSecond: 1
+--- !u!114 &-1885357976384752901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d54542ca9a196442b5e82cb92325989, type: 3}
+  m_Name: BlendedSmokeRenderPassFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  blitMaterial: {fileID: 2100000, guid: f8a35fdcc65de204db66c9dc57874bd3, type: 2}
+  blendStrength: 1
+  blurSize: 8
+  blurSigma: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48,14 +68,15 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 7833122117494664109}
   - {fileID: -4506698491561006630}
-  m_RendererFeatureMap: ad6b866f10d7b46cdaa9b77499fd74c1
+  - {fileID: -1885357976384752901}
+  m_RendererFeatureMap: ad6b866f10d7b46cdaa9b77499fd74c1fb3223d7e8dcd5e5
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 2
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1271
   m_TransparentLayerMask:
     serializedVersion: 2
     m_Bits: 247
