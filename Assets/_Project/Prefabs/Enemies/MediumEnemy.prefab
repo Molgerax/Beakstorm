@@ -322,6 +322,7 @@ GameObject:
   - component: {fileID: 8203474729422093015}
   - component: {fileID: 6341619872662283019}
   - component: {fileID: 5472652922921227751}
+  - component: {fileID: 4496462160914636617}
   - component: {fileID: 7491312894083225664}
   - component: {fileID: 1962246369955853099}
   - component: {fileID: 2527835290116120630}
@@ -393,6 +394,9 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+    - _Target: {fileID: 4496462160914636617}
+      _MemberName: Initialize
+      _PersistentArguments: []
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 5472652922921227751}
@@ -423,7 +427,6 @@ MonoBehaviour:
     - _Target: {fileID: 2888495542978631808}
       _MemberName: PostEvent
       _PersistentArguments: []
-  emergeTime: 10
   bounds:
     m_Center: {x: 0.0000038146973, y: 17.361889, z: 1.90308}
     m_Extent: {x: 61.113586, y: 33.477657, z: 42.012104}
@@ -447,6 +450,19 @@ MonoBehaviour:
       _MemberName: Despawn
       _PersistentArguments: []
   autoStart: 0
+--- !u!114 &4496462160914636617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120369539214848294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04767e1e2759064c880604247c25e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emergeTime: 10
 --- !u!54 &7491312894083225664
 Rigidbody:
   m_ObjectHideFlags: 0

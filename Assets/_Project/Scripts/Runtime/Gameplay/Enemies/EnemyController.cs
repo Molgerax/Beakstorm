@@ -12,8 +12,6 @@ namespace Beakstorm.Gameplay.Enemies
         [SerializeField] private UltEvent onInitialize;
         [SerializeField] private UltEvent onHealthZero;
 
-        [SerializeField] private float emergeTime = 10;
-
         [SerializeField, HideInInspector] private Bounds bounds;
         
         public event Action OnHealthZero;
@@ -22,8 +20,6 @@ namespace Beakstorm.Gameplay.Enemies
         private int _currentHealth;
 
         private Vector3 _spawnPos;
-        private Vector3 _emergePos;
-        private float _emergeTimer;
 
         private EnemyPool _pool;
         private EnemySpawner _spawner;
@@ -47,12 +43,8 @@ namespace Beakstorm.Gameplay.Enemies
         public void Spawn(TransformData spawnPoint) => Spawn(spawnPoint.Position, spawnPoint.Rotation);
         public void Spawn(Vector3 position, Quaternion rotation)
         {
-            _emergeTimer = emergeTime;
-
             _spawnPos = position;
-            _emergePos = _spawnPos;
-            _emergePos.y = -256;
-            transform.SetPositionAndRotation(_emergePos, rotation);
+            transform.SetPositionAndRotation(_spawnPos, rotation);
             
             foreach (WeakPoint weakPoint in weakPoints)
             {
@@ -119,21 +111,6 @@ namespace Beakstorm.Gameplay.Enemies
             bounds = b;
         }
 
-        private void Update()
-        {
-            if (_emergeTimer > 0)
-            {
-                float t = 1 - (_emergeTimer / emergeTime);
-
-                t = 1 - (1-t) * (1-t);
-                
-                transform.position = Vector3.Lerp(_emergePos, _spawnPos, t);
-                _emergeTimer -= Time.deltaTime;
-
-                if (_emergeTimer <= 0)
-                    transform.position = _spawnPos;
-            }
-        }
         
         public int CurrentHealth()
         {

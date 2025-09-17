@@ -47,6 +47,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8203474729422093015}
   - component: {fileID: 6341619872662283019}
+  - component: {fileID: 170531926860540106}
   - component: {fileID: 1962246369955853099}
   - component: {fileID: 2527835290116120630}
   - component: {fileID: 688029778326270792}
@@ -95,16 +96,31 @@ MonoBehaviour:
   - {fileID: 7584023946244118675}
   - {fileID: 4373642563856320343}
   onInitialize:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 170531926860540106}
+      _MemberName: Initialize
+      _PersistentArguments: []
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 6341619872662283019}
       _MemberName: Despawn
       _PersistentArguments: []
-  emergeTime: 10
   bounds:
     m_Center: {x: 0, y: 4.5003567, z: -0.0000038146973}
     m_Extent: {x: 39.598843, y: 19.500362, z: 40.00071}
+--- !u!114 &170531926860540106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120369539214848294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04767e1e2759064c880604247c25e79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emergeTime: 10
 --- !u!114 &1962246369955853099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,7 +169,7 @@ MonoBehaviour:
   useCallbacks: 0
   stopSoundOnDestroy: 1
   Callbacks: []
-  soundEmitterObject: {fileID: 0}
+  soundEmitterObject: {fileID: 6120369539214848294}
   transitionDuration: 0
   eventIdInternal: 0
   valueGuidInternal: 
