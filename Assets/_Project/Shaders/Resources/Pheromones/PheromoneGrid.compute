@@ -2,6 +2,7 @@
 #pragma kernel Init
 
 #pragma kernel Emit
+#pragma kernel EmitByRequest
 #pragma kernel Clear
 #pragma kernel PrepareSort
 
@@ -364,6 +365,83 @@ void Emit (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID)
     
     _PheromoneBuffer[index] = p;    
 }
+
+
+
+[numthreads(THREAD_BLOCK_SIZE, 1, 1)]
+void EmitByRequest (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID, uint3 inGroupId : SV_GroupThreadID)
+{
+    uint aliveCount = _InstancedArgsBuffer[1];
+    uint totalDead = _AgentCount - aliveCount; 
+    uint finalEmit = min(_TargetEmitCount, floor(totalDead / _ParticlesPerEmit));
+
+    // TODO: find out how to get that index
+    EmissionRequest request = _EmissionRequestBuffer[groupId.x];
+    
+    if (inGroupId.x >= request.count)
+        return;
+
+    if (_DeltaTime <= 0)
+    {
+        return;
+    }
+
+    if (request.lifeTime <= 0)
+    {
+        return;
+    }
+
+    const uint index = _PheromoneBuffer.IncrementCounter();
+    Pheromone p = (Pheromone)0;
+    
+    uint seed = index + id.x + groupId.x * THREAD_BLOCK_SIZE + _Time * 240;
+    float randomOffset = Random(seed) * 1.0;
+
+    float sinus, cosine;
+    sincos(randomOffset * 6.283185, sinus, cosine);
+
+    float3 spawnPos = request.pos;
+    float3 spawnPosOld = request.posOld;
+
+    float3 pos = lerp(spawnPos, spawnPosOld, randomOffset);
+    float3 oldPos = pos;// - RandomVector(index) * _DeltaTime * 5;
+    pos += RandomVector(seed) * 3 * randomOffset * _DeltaTime;
+    
+    float3 vel = spawnPos - spawnPosOld;
+    if (dot(vel, vel) != 0)
+    {
+        float3 right = cross(float3(0,1,0), vel);
+        float3 up = cross(vel, right);
+        float mag = sqrt(Random(seed + 2));
+        //pos += normalize(right) * sinus * mag + normalize(up) * cosine * mag;
+    }
+    //pos.y = 0;
+    //pos = 0;
+    //pos.x = ((float)index / _TotalCount * 2 - 1) * _SimulationSpace.x;
+    
+    //oldPos.y = 0;
+
+    float maxLifeTime = request.lifeTime;
+    float lifeTime = maxLifeTime - _DeltaTime * randomOffset * 3;
+
+
+    float4 data = 0;
+    
+    data.z = request.visible;
+    data.w = lifeTime / maxLifeTime;
+    data.x = 0;
+    data.y = index;
+    
+    p.pos = pos;
+    p.oldPos = oldPos;
+    p.data = data;
+    p.life = lifeTime;
+    p.maxLife = maxLifeTime;
+    
+    _PheromoneBuffer[index] = p;    
+}
+
+
 
 
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]

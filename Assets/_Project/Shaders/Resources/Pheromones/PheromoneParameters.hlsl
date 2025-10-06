@@ -59,6 +59,17 @@ StructuredBuffer<uint> _PheromoneSpatialOffsets;
 
 SamplerState sampler_linear_clamp;
 
+struct EmissionRequest
+{
+    float3 pos;
+    float lifeTime;
+    float3 posOld;
+    float visible;
+    uint count;
+    uint padding;
+};
+
+StructuredBuffer<EmissionRequest> _EmissionRequestBuffer;
 
 // GETTER FUNCTION
 

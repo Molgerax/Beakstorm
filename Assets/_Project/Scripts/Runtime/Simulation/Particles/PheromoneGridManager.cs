@@ -42,6 +42,10 @@ namespace Beakstorm.Simulation.Particles
         private GraphicsBuffer _pheromoneBufferRead;
 
         private GraphicsBuffer _pheromoneSorted;
+
+        private GraphicsBuffer _emissionRequestBuffer;
+        private EmissionRequestGpu[] _emissionRequestsGpu;
+        private uint _emissionRequestCount;
         
         private GraphicsBuffer _instancedDrawingArgsBuffer;
         
@@ -115,7 +119,8 @@ namespace Beakstorm.Simulation.Particles
                     ResetAttractor();
                     
                     ApplyEmitters(Time.deltaTime);
-                    ApplyEmissionRequests(SimulationTime.DeltaTime);
+                    //ApplyEmissionRequests(SimulationTime.DeltaTime);
+                    BuildEmissionRequestBuffer();
                     SwapBuffers();
                     
                     _hash?.Update();
@@ -145,10 +150,16 @@ namespace Beakstorm.Simulation.Particles
 
             _pheromoneSorted = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 2 * sizeof(float));
 
+            _emissionRequestBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, 256, 10 * sizeof(float));
+            _emissionRequestsGpu = new EmissionRequestGpu[256];
+            
+            
             _instancedDrawingArgsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.IndirectArguments, 1, GraphicsBuffer.IndirectDrawIndexedArgs.size);
             GraphicsBuffer.IndirectDrawIndexedArgs[] indexedArgs = new GraphicsBuffer.IndirectDrawIndexedArgs[1];
             indexedArgs[0].indexCountPerInstance = mesh.GetIndexCount(0);
             _instancedDrawingArgsBuffer.SetData(indexedArgs);
+            
+            
             
             InitializeAttractor();
 
@@ -176,6 +187,9 @@ namespace Beakstorm.Simulation.Particles
 
             _pheromoneSorted?.Release();
             _pheromoneSorted = null;
+            
+            _emissionRequestBuffer?.Release();
+            _emissionRequestBuffer = null;
             
             _hash?.Dispose();
             
@@ -286,14 +300,85 @@ namespace Beakstorm.Simulation.Particles
             AgentBufferWrite.SetCounterValue(0);
         }
 
+        private void BuildEmissionRequestBuffer()
+        {
+            bool forceHalt = false;
+
+            int totalCount = 0;
+            
+            uint indexer = 0;
+            for (int i = _emissionRequests.Count - 1; i >= 0; i--)
+            {
+                EmissionRequest request = _emissionRequests[i];
+                _emissionRequests.RemoveAt(i);
+                
+                int count = request.Count;
+                EmissionRequestGpu rGpu = new(request);
+
+                totalCount += count;
+                
+                while (count > 0)
+                {
+                    rGpu.SetCount(Mathf.Clamp(count, 0, THREAD_GROUP_SIZE));
+                    _emissionRequestsGpu[indexer++] = rGpu;
+                    count -= THREAD_GROUP_SIZE;
+
+                    if (indexer >= _emissionRequestsGpu.Length)
+                        forceHalt = true;
+                }
+                
+                
+                if (forceHalt)
+                    break;
+            }
+            
+            _emissionRequestCount = indexer;
+            
+            if (_emissionRequestCount == 0)
+                return;
+            _emissionRequestBuffer.SetData(_emissionRequestsGpu);
+            EmitParticlesByRequest();
+        }
+
+        public void EmitParticlesByRequest()
+        {
+            if (PauseManager.IsPaused)
+                return;
+            
+            if (_emissionRequestCount <= 0)
+                return;
+            
+            int emissionKernel = pheromoneComputeShader.FindKernel("EmitByRequest");
+            
+            pheromoneComputeShader.SetFloat(PropertyIDs.Time, Time.time);
+            pheromoneComputeShader.SetFloat(PropertyIDs.DeltaTime, SimulationTime.DeltaTime);
+            
+            pheromoneComputeShader.SetFloat(PropertyIDs.TargetDensity, targetDensity);
+            pheromoneComputeShader.SetFloat(PropertyIDs.PressureMultiplier, pressureMultiplier);
+            
+            pheromoneComputeShader.SetBuffer(emissionKernel, PropertyIDs.PheromoneBuffer, AgentBufferWrite);
+            pheromoneComputeShader.SetBuffer(emissionKernel, PropertyIDs.InstancedArgsBuffer, _instancedDrawingArgsBuffer);
+            
+            pheromoneComputeShader.SetBuffer(emissionKernel, PropertyIDs.EmissionRequestBuffer, _emissionRequestBuffer);
+
+            
+            pheromoneComputeShader.Dispatch(emissionKernel, (int)_emissionRequestCount, 1, 1);
+            GraphicsBuffer.CopyCount(AgentBufferWrite, _instancedDrawingArgsBuffer, 1 * sizeof(uint));
+        }
+        
+        
         public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true)
         {
+            AddEmissionRequest(count, pos, oldPos, lifeTime, visible);
+            return;
+            
             if (PauseManager.IsPaused)
                 return;
             
             if (count <= 0 || lifeTime <= 0)
                 return;
         
+            
             AddAttractor(pos, count / SimulationTime.DeltaTime, lifeTime);
 
             if (useAttractor)
@@ -398,6 +483,41 @@ namespace Beakstorm.Simulation.Particles
                 OldPosition = oldPos;
                 LifeTime = lifeTime;
                 Visible = visible;
+            }
+        }
+
+        private struct EmissionRequestGpu
+        {
+            public Vector3 Position;
+            public float LifeTime;
+            public Vector3 OldPosition;
+            public float Visible;
+            public uint Count;
+            public uint Padding;
+            
+            public EmissionRequestGpu(uint count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true)
+            {
+                Count = count;
+                Position = pos;
+                OldPosition = oldPos;
+                LifeTime = lifeTime;
+                Visible = visible ? 1 : 0;
+                Padding = 0;
+            }
+            
+            public EmissionRequestGpu(EmissionRequest request)
+            {
+                Count = (uint)request.Count;
+                Position = request.Position;
+                OldPosition = request.OldPosition;
+                LifeTime = request.LifeTime;
+                Visible = request.Visible ? 1 : 0;
+                Padding = 0;
+            }
+
+            public void SetCount(int count)
+            {
+                Count = (uint)count;
             }
         }
 
@@ -508,6 +628,7 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int PheromoneSortingBuffer              = Shader.PropertyToID("_PheromoneSortingBuffer");
             public static readonly int InstancedArgsBuffer              = Shader.PropertyToID("_InstancedArgsBuffer");
 
+            public static readonly int EmissionRequestBuffer              = Shader.PropertyToID("_EmissionRequestBuffer");
         }
     }
 }
