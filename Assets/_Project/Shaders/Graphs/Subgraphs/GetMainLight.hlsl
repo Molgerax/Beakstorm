@@ -2,6 +2,8 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 #endif
 
+float _DimFactor;
+uint _DimMask;
 
 #ifndef SHADERGRAPH_PREVIEW
 struct Surface
@@ -10,7 +12,13 @@ struct Surface
     float3 view;
     float shininess;
     float smoothness;
+    float3 bakedGI;
 };
+
+float3 CalculateGlobalIllumination(Surface s)
+{
+    return s.bakedGI;
+}
 
 float3 CalculateCelShading(Light l, Surface s)
 {
@@ -22,10 +30,20 @@ float3 CalculateCelShading(Light l, Surface s)
     float specular = saturate(dot(s.normal, h));
     specular = pow(specular, s.shininess);
     specular *= diffuse * s.smoothness;
+
+    float dimming = ((l.layerMask) & _DimMask) > 0 ? 1 : _DimFactor;
     
-    return (diffuse + specular) * l.color;
+    return (diffuse + specular) * l.color * dimming;
 }
 #endif
+
+void GetDimLight_float(out float3 Color)
+{
+    Color = 1;
+    
+    Color = _DimFactor;
+}
+
 
 void LightingCelShaded_float(float3 Position, float2 ScreenPosition, float3 Normal, float3 View, float Smoothness, out float3 Color)
 {
@@ -36,6 +54,11 @@ void LightingCelShaded_float(float3 Position, float2 ScreenPosition, float3 Norm
     s.shininess = exp2(10 * Smoothness + 1);
     s.smoothness = Smoothness;
 
+    float3 vertexSH;
+    OUTPUT_SH(Normal, vertexSH);
+    // This function calculates the final baked lighting from light maps or probes
+    s.bakedGI = SAMPLE_GI(lightmapUV, vertexSH, Normal);
+    
 #if SHADOWS_SCREEN
     float4 clipPos = TransformWorldToHClip(Position);
     float4 shadowCoord = ComputeScreenPos(clipPos);
@@ -44,7 +67,10 @@ void LightingCelShaded_float(float3 Position, float2 ScreenPosition, float3 Norm
 #endif
 
     Light light = GetMainLight(shadowCoord);
-    Color = CalculateCelShading(light, s);
+    MixRealtimeAndBakedGI(light, s.normal, s.bakedGI);
+    
+    Color = CalculateGlobalIllumination(s);
+    Color += CalculateCelShading(light, s);
 
     int pixelLightCount = GetAdditionalLightsCount();
     //for (int i = 0; i < pixelLightCount; i++)
