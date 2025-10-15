@@ -24,6 +24,9 @@ struct Boid
 RWStructuredBuffer<Boid> _BoidBuffer;
 StructuredBuffer<Boid> _BoidBufferRead;
 
+RWStructuredBuffer<float4> _AgentBufferWrite;
+StructuredBuffer<float4> _AgentBufferRead;
+
 RWStructuredBuffer<uint2> _GridBuffer;
 RWStructuredBuffer<uint> _GridOffsetBuffer;
 RWStructuredBuffer<uint> _GridSumsBuffer;
@@ -34,7 +37,7 @@ StructuredBuffer<uint> _GridSumsBufferRead;
 uint _ThreadGroupCount;
 uint _SumOffset;
 
-
+uint _AgentStride;
 
 StructuredBuffer<uint> _AliveCountBuffer;
 
@@ -65,8 +68,12 @@ void UpdateGrid(uint3 id : SV_DispatchThreadID)
     if (index >= _AliveCountBuffer[1])
         return;
 #endif
+
+    float3 pos = 0;
+    //pos = _BoidBufferRead[index].pos;
+    pos = _AgentBufferRead[index * (_AgentStride / 4)].xyz;
     
-    uint gridId = GetGridId(_BoidBufferRead[index].pos);
+    uint gridId = GetGridId(pos);
     uint offset;
     InterlockedAdd(_GridOffsetBuffer[gridId], 1, offset);
     _GridBuffer[index] = uint2(gridId, offset);
@@ -177,5 +184,12 @@ void ReorderBoids(uint3 id : SV_DispatchThreadID)
     uint cellOffset = grid.y;
     uint index = _GridOffsetBuffer[gridID] - 1 - cellOffset;
     
-    _BoidBuffer[index] = _BoidBufferRead[id.x];
+    uint stride = _AgentStride / 4;
+
+    [unroll(4)]
+    for (uint i = 0; i < stride; i++)
+    {
+        _AgentBufferWrite[index * stride + i] = _AgentBufferRead[id.x * stride + i];
+    }
+    //_BoidBuffer[index] = _BoidBufferRead[id.x];
 }
