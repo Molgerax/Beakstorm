@@ -59,6 +59,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Encounters/ProceduralEncounter.unity
     guid: be7cdc110453d434cab4f246a0f37c17
+  - enabled: 1
+    path: Assets/_Project/Scenes/Encounters/CanyonTest.unity
+    guid: 51e1ef0af2946404ea4ec66bf2bcea57
+  - enabled: 1
+    path: Assets/_Project/Scenes/GameManagement/_SimulationManagers_Debug.unity
+    guid: 9f4170280517c7e488c0d0bc63ab9ea8
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e60fc8aa09731434f8a2133b3fb99879, type: 2}
   m_UseUCBPForAssetBundles: 0
