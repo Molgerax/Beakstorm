@@ -71,6 +71,8 @@ Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
 
 	float4 color = input.color;
 	color.a = saturate(boid.exposure);
+
+	color.xyz = lerp(color.xyz, RotateVectorByQuaternion(float3(0,0,1), rotation) * 0.5 + 0.5, _VertexColorToBase);
 	
 	output.color = color;
 	output.normalWS = mul(rotMatrix, input.normalOS);
@@ -130,6 +132,12 @@ float4 Fragment(Interpolators input) : SV_TARGET{
 	
 	float smoothness = lerp(0.5, 1, exposure) * beak;
 	float metallic = lerp(0, 1, exposure) * beak;
+
+	metallic = lerp(metallic, 0, _VertexColorToBase);
+	smoothness = lerp(smoothness, 0, _VertexColorToBase);
+
+	float3 color = colorSample.rgb * _Color.rgb * exposure * beak;
+	color = lerp(color, input.color.xyz, _VertexColorToBase);
 	
 	// For lighting, create the InputData struct, which contains position and orientation data
 	InputData lightingInput = (InputData)0; // Found in URP/ShaderLib/Input.hlsl
@@ -140,7 +148,7 @@ float4 Fragment(Interpolators input) : SV_TARGET{
 	lightingInput.bakedGI = SAMPLE_GI(input.lightmapUV, input.vertexSH, input.normalWS);
 	lightingInput.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
 	SurfaceData surfaceInput = (SurfaceData)0;
-	surfaceInput.albedo = colorSample.rgb * _Color.rgb * exposure * beak;
+	surfaceInput.albedo = color;
 	surfaceInput.alpha = 1;
 	surfaceInput.specular = 1;
 	surfaceInput.smoothness = smoothness;
