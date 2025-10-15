@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ca253e5e8171ad43b47aa3f66cce3b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetFrameRate: 120
+  targetFrameRate: 60
 --- !u!1 &1149043598
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,7 +638,7 @@ MonoBehaviour:
   UpdateMethod: 2
   BlendUpdateMethod: 1
   LensModeOverride:
-    Enabled: 0
+    Enabled: 1
     DefaultMode: 2
   DefaultBlend:
     Style: 1
