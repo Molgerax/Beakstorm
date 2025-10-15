@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   separation: 1
   alignment: 0.2
-  cohesion: 0
-  detection: 0
+  cohesion: 0.1
+  detection: 0.1
   separationRadius: 3
   alignmentRadius: 3
-  cohesionRadius: 0
+  cohesionRadius: 10
   detectionRadius: 10
   minSpeed: 0.2
   maxSpeed: 100
