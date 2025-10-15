@@ -161,11 +161,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 213222849029601710, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_Name
-      value: BirdSoundsTest
+      value: DebugTest
       objectReference: {fileID: 0}
     - target: {fileID: 4048953338964751772, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_text
-      value: Bird Sounds Test
+      value: Debug Test
       objectReference: {fileID: 0}
     - target: {fileID: 4048953338964751772, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_fontSize
@@ -1460,7 +1460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52d66bb435be7440bc4f72a52570649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collection: {fileID: 11400000, guid: 70ff9947b7efeea4a919cff46c243b79, type: 2}
+  collection: {fileID: 11400000, guid: d14ce468637e3cc48b35fcd1c5bd8099, type: 2}
   scenesToLoad:
   - asset: {fileID: 102900000, guid: d8b9408c4b11b9941b7bb78395692637, type: 3}
     guid: d8b9408c4b11b9941b7bb78395692637
