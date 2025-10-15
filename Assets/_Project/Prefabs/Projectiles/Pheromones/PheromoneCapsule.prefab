@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emissionRate: 384
   lifeTime: 3.5
+  velocityFactor: 1
 --- !u!114 &8417193104476582687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,8 +175,7 @@ MonoBehaviour:
     - _Target: {fileID: 5012512307083224738}
       _MemberName: Deactivate
       _PersistentArguments: []
-  completionPercentage:
-    _PersistentCalls: []
+  autoStart: 1
 --- !u!114 &238433144582504019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 5
-  drag: 0.005
+  drag: 0.001
 --- !u!54 &-5033398536401664210
 Rigidbody:
   m_ObjectHideFlags: 0
