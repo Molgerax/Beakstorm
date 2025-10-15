@@ -15,15 +15,23 @@ struct Surface
     float3 bakedGI;
 };
 
+float linearstep(float a, float b, float t)
+{
+    return saturate((t - a) / (b - a));
+}
+
 float3 CalculateGlobalIllumination(Surface s)
 {
-    return s.bakedGI;
+    return s.bakedGI * _DimFactor;
 }
 
 float3 CalculateCelShading(Light l, Surface s)
 {
-    float attenuation = l.shadowAttenuation * l.distanceAttenuation;
+    float shadowAtten = linearstep(0, 0.1, l.shadowAttenuation);
+    float distanceAtten = linearstep(0, 0.1, l.distanceAttenuation);
+    float attenuation = shadowAtten * distanceAtten;
     float diffuse = saturate(dot(s.normal, l.direction));
+    diffuse = smoothstep(0, 0.1, diffuse);
     diffuse *= attenuation;
     
     float3 h = SafeNormalize(l.direction + s.view);
@@ -68,17 +76,11 @@ void LightingCelShaded_float(float3 Position, float2 ScreenPosition, float3 Norm
 
     Light light = GetMainLight(shadowCoord);
     MixRealtimeAndBakedGI(light, s.normal, s.bakedGI);
-    
     Color = CalculateGlobalIllumination(s);
     Color += CalculateCelShading(light, s);
 
     int pixelLightCount = GetAdditionalLightsCount();
-    //for (int i = 0; i < pixelLightCount; i++)
-    //{
-    //    light = GetAdditionalLight(i, Position, 1);
-    //    Color += CalculateCelShading(light, s);
-    //}
-
+    
     #if USE_FORWARD_PLUS
     InputData inputData = (InputData)0;
     inputData.normalizedScreenSpaceUV = ScreenPosition;
@@ -98,7 +100,7 @@ void LightingCelShaded_float(float3 Position, float2 ScreenPosition, float3 Norm
             lightIndex = GetPerObjectLightIndex(lightIndex);
         #endif
         light = GetAdditionalLight(lightIndex, Position, 1);
-        Color += CalculateCelShading(light, s);
+        Color += saturate(CalculateCelShading(light, s));
     LIGHT_LOOP_END
     
     
