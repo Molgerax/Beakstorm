@@ -49,7 +49,6 @@ namespace Beakstorm.Gameplay.Projectiles
         private void OnGetFromPool(Projectile projectile)
         {
             projectile.gameObject.SetActive(true);
-            projectile.Spawn();
         }
 
         private void OnReleaseToPool(Projectile projectile)

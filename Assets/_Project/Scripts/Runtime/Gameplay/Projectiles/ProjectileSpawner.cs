@@ -22,6 +22,7 @@ namespace Beakstorm.Gameplay.Projectiles
             var projectileTransform = projectile.transform;
             projectileTransform.position = t.position;
             projectileTransform.rotation = t.rotation;
+            projectile.Spawn();
         }
 
         public void SpawnWithScale()
