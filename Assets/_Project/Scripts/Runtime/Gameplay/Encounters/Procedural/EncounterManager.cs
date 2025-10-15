@@ -1,11 +1,13 @@
-using System;
 using Beakstorm.Audio;
+using UltEvents;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Encounters.Procedural
 {
     public class EncounterManager : MonoBehaviour
     {
+        [SerializeField] private UltEvent onFinishEncounter;
+        
         public static EncounterManager Instance;
         
         private WaveHandler _waveHandler;
@@ -65,6 +67,11 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             Debug.Log("Wave defeated");
             _waveHandler.Dispose();
             _waveHandler = null;
+        }
+
+        public void FinishEncounter()
+        {
+            onFinishEncounter?.Invoke();
         }
     }
 }

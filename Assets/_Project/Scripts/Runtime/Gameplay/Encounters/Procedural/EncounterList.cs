@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UltEvents;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Encounters.Procedural
@@ -8,6 +9,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
     {
         [SerializeField] private WaveDescription[] waves;
 
+        [SerializeField] private UltEvent onFinishEncounter;
+        
         private UniTask _task;
         private CancellationTokenSource _tokenSource;
 
@@ -31,6 +34,12 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         }
 
 
+        private void FinishEncounter()
+        {
+            onFinishEncounter?.Invoke();
+            EncounterManager.Instance.FinishEncounter();
+        }
+        
         private async UniTask WaveLoop(CancellationToken token)
         {
             for (var index = 0; index < waves.Length; index++)
@@ -53,6 +62,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
                     }
                 }
             }
+
+            FinishEncounter();
         }
 
 
