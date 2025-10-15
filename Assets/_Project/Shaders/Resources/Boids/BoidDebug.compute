@@ -323,11 +323,10 @@ float3 FlockingForce(uint index, out int flockMates)
 
     if (numFlockMates.w != 0 && detectionSum > 0)
     {
-        //detectionHeading /= (numFlockMates.w * detectionSum);
-        detectionHeading /= detectionSum;
+        detectionHeading /= (numFlockMates.w * detectionSum);
         float3 offsetDetection = detectionHeading - positionA;
         detectionForce = calcSteerForce(offsetDetection, velocityA, maxSpeed, maxForce);
-        detectionForce = calcSteerForce(detectionHeading, velocityA, maxSpeed, maxForce);
+        detectionForce = calcSteerForce(detectionHeading, velocityA, maxSpeed, maxForce) * detectionSum;
         //detectionSum = min(detectionSum, highestDetection);
     }
     
@@ -349,13 +348,11 @@ float3 FlockingForce(uint index, out int flockMates)
 }
 
 
-float4 PheromoneDensity(float3 pos, out float3 pheromoneVelocity)
+float4 PheromoneDensity(float3 pos, float3 heading)
 {
     int numNeighbors = 0;
     float3 densityGradient = 0;
     float density = 0;
-
-    pheromoneVelocity = 0;
     
     int3 originCell = GetGridCellId(pos, _PheromoneHashCellSize, _PheromoneCenter, _PheromoneSize);
     
@@ -396,18 +393,22 @@ float4 PheromoneDensity(float3 pos, out float3 pheromoneVelocity)
             float distanceToOrigin = length(p2.pos - p2.spawnPos.xyz);
 
             float val = p2.data.w;
+
+            val = dot(p2.spawnPos.xyz, heading);
+            val = saturate(val) * 0.5 + 0.5;
+
+            //val = p2.data.w;
+
+            
             
             density += d;
             if (p2.data.x != 0)
             {
-                pheromoneVelocity += p2.spawnPos.xyz * d;
-                densityGradient += g * (val * val) / p2.data.x;
+                densityGradient += p2.spawnPos.xyz / (p2.data.x * 4) * d;
+                densityGradient += g * (val) / p2.data.x;
             }
         }
     }
-
-    if (density > 0)
-        pheromoneVelocity /= density;
     
     return float4(densityGradient, density);
 }
@@ -437,18 +438,19 @@ void Update (uint3 id : SV_DispatchThreadID)
     float3 velocity = (currentPosition - oldPosition) / _DeltaTime;
     oldPosition = currentPosition;
     float3 oldVelocity = velocity;
+
+    float3 heading = safeNormalize(velocity);
     
     float4 factors = GetBoidSettings(index);
     float minSpeed = GetMinSpeed(index);
     float maxSpeed = GetMaxSpeed(index);
     float maxForce = GetMaxForce(index);
-    float3 pheromoneVelocity = 0;
-    float4 pheromoneSample = PheromoneDensity(currentPosition + velocity * _DeltaTime * 1, pheromoneVelocity) * 100;
+    float4 pheromoneSample = PheromoneDensity(currentPosition + velocity * _DeltaTime * 1, heading) * 100;
     float3 pheromoneForce = calcSteerForce(pheromoneSample.xyz, velocity, maxSpeed, maxForce);
 
     float3 acceleration = 0;
     int flockMates = 0;
-    acceleration += FlockingForce(index, flockMates);
+    //acceleration += FlockingForce(index, flockMates);
     acceleration += forceFromBounds(currentPosition, maxForce);
     //acceleration += centerForce(currentPosition, index);
     //acceleration += sdfForce(sdfInfo);
@@ -464,13 +466,9 @@ void Update (uint3 id : SV_DispatchThreadID)
     noiseF *= saturate(1 - boid.exposure);
     
     acceleration += noiseF;
-
-    float pheromoneVel = dot(pheromoneVelocity, pheromoneVelocity); 
     
     acceleration += pheromoneForce * saturate(pheromoneSample.w);// * factors.w;
-    acceleration += calcSteerForce(pheromoneVelocity, velocity, maxSpeed, maxForce) * saturate(pheromoneSample.w) * boid.exposure * saturate(pheromoneVel);
 
-    
     float3 predictedPosition = currentPosition + _DeltaTime * clampVector(velocity + acceleration * _DeltaTime, minSpeed, maxSpeed);
     
     SdfQueryInfo sdfInfo = GetClosestDistance(predictedPosition, 0, 1 << PHEROMONE_ONLY);
@@ -481,8 +479,8 @@ void Update (uint3 id : SV_DispatchThreadID)
 
     //velocity = calcSteerForce(pheromoneSample.xyz, velocity, maxSpeed, maxForce);
     
-    //if (dot(pheromoneSample.xyz, pheromoneSample.xyz) > 0)
-    //    velocity = normalize(pheromoneSample.xyz) * saturate(pheromoneSample.w) * maxSpeed;
+    if (dot(pheromoneSample.xyz, pheromoneSample.xyz) > 0)
+        velocity = normalize(pheromoneSample.xyz) * saturate(pheromoneSample.w) * maxSpeed;
     
     velocity = clampVector(velocity, minSpeed, maxSpeed);
     
@@ -503,8 +501,8 @@ void Update (uint3 id : SV_DispatchThreadID)
     //currentPosition = 0;
     //oldPosition = 0;
     
-    boid.pos = currentPosition;
-    boid.oldPos = oldPosition;
+    //boid.pos = currentPosition;
+    //boid.oldPos = oldPosition;
 
     float3 newForward;
     float3 diff = boid.pos - boid.oldPos;
@@ -515,7 +513,7 @@ void Update (uint3 id : SV_DispatchThreadID)
 
     float force = length(velocity - oldVelocity) * _DeltaTime * 5;
     force += (1 - dot(forward, newForward)) * _DeltaTime * 5;
-    boid.data = frac(boid.data + force);
+    //boid.data = frac(boid.data + force);
     
     //rot = QuaternionMultiply(QuaternionFromTo(forward, velocity), rot);
 
@@ -531,13 +529,16 @@ void Update (uint3 id : SV_DispatchThreadID)
     
     //rot = float4(0,0,0,1);
 
+    rot = QuaternionLookAt(float3(0,1,0), float3(0,0,1));
+
+    pheromoneSample.y = 0;
+    
+    if (dot(pheromoneSample.xyz, pheromoneSample.xyz) > 0)
+        rot = QuaternionLookAt(normalize(pheromoneSample.xyz), float3(0, 1, 0));
+    
     boid.rotation = rot;//PackQuaternion(rot);
     
-    boid.exposure += pheromoneSample.w;
-    boid.exposure -= _DeltaTime * 0.2;
-    
-    boid.exposure = saturate(boid.exposure);
-
+    boid.exposure = saturate(boid.exposure + pheromoneSample.w - _DeltaTime * 1);
     //boid.exposure = 0;
     int3 originCell = (int3) floor((currentPosition - GetBoundsMin()) / _HashCellSize);
     uint key = KeyFromCellId(originCell, _CellDimensions);
@@ -571,8 +572,8 @@ void Init(uint3 id : SV_DispatchThreadID)
 
     offset = ((float3)(newId + 0.5) / sideLength - 0.5) * 64; 
     offset = 0;
-    offset = -128;
-    offset.xz = ((float2)(newId.xy + 0.5) / sideLength - 0.5) * 256; 
+    //offset = -128;
+    offset.xz = ((float2)(newId.xy + 0.5) / sideLength - 0.5) * 1024; 
     
     float3 currentPosition = offset + _WorldPos;
     float3 currentNormal = _WorldMatrix._m10_m11_m12;
