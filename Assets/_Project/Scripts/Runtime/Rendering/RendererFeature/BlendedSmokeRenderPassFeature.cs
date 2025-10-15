@@ -1,3 +1,4 @@
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
@@ -52,10 +53,31 @@ namespace Beakstorm.Rendering.RendererFeature
                 FilteringSettings filteringSettings = FilteringSettings.defaultValue;
                 filteringSettings.layerMask = _layerMask;
                 filteringSettings.renderQueueRange = RenderQueueRange.opaque;
-
+                
                 RendererListParams listParams = new RendererListParams(renderingData.cullResults, drawingSettings,
                     filteringSettings);
-                listParams.tagName = tagId;
+                
+                listParams.tagName = ShaderTagId.none;
+                var tags = new NativeArray<ShaderTagId>(1, Allocator.Temp);
+                tags[0] = ShaderTagId.none;
+                
+                var blocks = new NativeArray<RenderStateBlock>(1, Allocator.Temp);
+                RenderStateBlock stencilBlock = new RenderStateBlock(RenderStateMask.Stencil);
+                stencilBlock.stencilReference = 16;
+                stencilBlock.stencilState = new StencilState()
+                {
+                    enabled = true,
+                    compareFunctionFront = CompareFunction.Always,
+                    writeMask = 16,
+                    readMask = 16,
+                    passOperationFront = StencilOp.Replace,
+                };
+                blocks[0] = stencilBlock;
+                listParams.stateBlocks = blocks;
+                
+                listParams.tagValues = tags;
+
+                listParams.isPassTagName = false;
                 
                 passData.RendererListHdl = renderGraph.CreateRendererList(listParams);
             }
@@ -88,7 +110,7 @@ namespace Beakstorm.Rendering.RendererFeature
                 Blitter.BlitTexture( context.cmd, data.Source, new Vector4( 1, 1, 0, 0 ), data.Material, data.PassIndex );
             }
             
-            void AddBlitPass( RenderGraph renderGraph, TextureHandle source, TextureHandle destination, TextureHandle depth, Material material, string passName, int passIndex, TextureHandle edges )
+            void AddBlitPass( RenderGraph renderGraph, TextureHandle source, TextureHandle destination, TextureHandle depth, Material material, string passName, int passIndex)
             {
                 using (var builder = renderGraph.AddRasterRenderPass(passName, out BlitPassData passData))
                 {
@@ -97,7 +119,7 @@ namespace Beakstorm.Rendering.RendererFeature
                     passData.PassIndex = passIndex;
                     passData.Material = material;
                     
-                    builder.UseTexture(edges);
+                    //builder.UseTexture(edges);
 
                     builder.SetRenderAttachment(destination, 0);
                     builder.SetRenderAttachmentDepth(depth, AccessFlags.ReadWrite);
@@ -107,13 +129,6 @@ namespace Beakstorm.Rendering.RendererFeature
                     });
                 }
             }
-            
-            public class TextureBindInfo
-            {
-                public int slot;
-                public TextureHandle texture;
-            }
-
 
             // RecordRenderGraph is where the RenderGraph handle can be accessed, through which render passes can be added to the graph.
             // FrameData is a context container through which URP resources can be accessed and managed.
@@ -128,22 +143,42 @@ namespace Beakstorm.Rendering.RendererFeature
                 UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
                 
                 RenderTextureDescriptor desc = cameraData.cameraTargetDescriptor;
+
+                
                 RenderTextureDescriptor descFull = desc;
                 descFull.depthStencilFormat = GraphicsFormat.None;
+
                 
                 TextureHandle destinationFullRes =
                     UniversalRenderer.CreateRenderGraphTexture(renderGraph, descFull, "Destination", true);
                 
                 TextureHandle destinationBack =
                     UniversalRenderer.CreateRenderGraphTexture(renderGraph, descFull, "DestinationBack", true);
-                                
-                RenderGraphUtils.BlitMaterialParameters blit =
-                    new RenderGraphUtils.BlitMaterialParameters(destinationBack, destinationFullRes, _blitMaterial, 0);
-                renderGraph.AddBlitPass(blit);
+
+                descFull.width /= 2;
+                descFull.height /= 2;
+                
+                TextureHandle halfRes =
+                    UniversalRenderer.CreateRenderGraphTexture(renderGraph, descFull, "HalfRes 1", true);
+                TextureHandle halfRes2 =
+                    UniversalRenderer.CreateRenderGraphTexture(renderGraph, descFull, "HalfRes 2", true);
+
+                
+                descFull.width /= 2;
+                descFull.height /= 2;
+                
+                TextureHandle quartRes =
+                    UniversalRenderer.CreateRenderGraphTexture(renderGraph, descFull, "QuartRes 1", true);
+                TextureHandle quartRes2 =
+                    UniversalRenderer.CreateRenderGraphTexture(renderGraph, descFull, "QuartRes 2", true);
                 
                 _blitMaterial.SetFloat("_BlendStrength", _blendStrength);
                 _blitMaterial.SetFloat("_Sigma", _blurSigma);
                 _blitMaterial.SetInteger("_BlurSize", _blurSize);
+
+                RenderGraphUtils.BlitMaterialParameters blit =
+                    new RenderGraphUtils.BlitMaterialParameters(destinationBack, destinationFullRes, _blitMaterial, 0);
+                renderGraph.AddBlitPass(blit);
                 
                 // This adds a raster render pass to the graph, specifying the name and the data type that will be passed to the ExecutePass function.
                 using (var builder = renderGraph.AddRasterRenderPass<PassData>(k_PassName, out var passData))
@@ -175,6 +210,31 @@ namespace Beakstorm.Rendering.RendererFeature
                 //    new RenderGraphUtils.BlitMaterialParameters(destinationFullRes, , _blitMaterial, 2);
                 //renderGraph.AddBlitPass(edgeBlit);
                 
+                renderGraph.AddBlitPass(destinationFullRes, halfRes, Vector2.one, Vector2.zero);
+                renderGraph.AddBlitPass(halfRes, quartRes, Vector2.one, Vector2.zero);
+                
+                
+                blit =
+                    new RenderGraphUtils.BlitMaterialParameters(quartRes, quartRes2, _blitMaterial, 1);
+                renderGraph.AddBlitPass(blit);
+                
+                blit =
+                    new RenderGraphUtils.BlitMaterialParameters(quartRes2, quartRes, _blitMaterial, 2);
+                renderGraph.AddBlitPass(blit);
+                
+                renderGraph.AddBlitPass(quartRes, halfRes, Vector2.one, Vector2.zero);
+                
+                blit =
+                    new RenderGraphUtils.BlitMaterialParameters(halfRes, halfRes2, _blitMaterial, 1);
+                renderGraph.AddBlitPass(blit);
+                
+                blit =
+                    new RenderGraphUtils.BlitMaterialParameters(halfRes2, halfRes, _blitMaterial, 2);
+                renderGraph.AddBlitPass(blit);
+
+                
+                renderGraph.AddBlitPass(halfRes, destinationFullRes, Vector2.one, Vector2.zero);
+
                 blit =
                     new RenderGraphUtils.BlitMaterialParameters(destinationFullRes, destinationBack, _blitMaterial, 1);
                 renderGraph.AddBlitPass(blit);
@@ -183,9 +243,13 @@ namespace Beakstorm.Rendering.RendererFeature
                     new RenderGraphUtils.BlitMaterialParameters(destinationBack, destinationFullRes, _blitMaterial, 2);
                 renderGraph.AddBlitPass(blit);
 
+                
                 blit = 
                     new RenderGraphUtils.BlitMaterialParameters(destinationFullRes, resourceData.cameraColor, _blitMaterial, 3);
-                renderGraph.AddBlitPass(blit);
+               // renderGraph.AddBlitPass(blit);
+                
+                AddBlitPass(renderGraph, destinationFullRes, resourceData.cameraColor, resourceData.cameraDepth, _blitMaterial, "Blit Back", 3);
+                
             }
         }
         
@@ -211,7 +275,7 @@ namespace Beakstorm.Rendering.RendererFeature
             m_ScriptablePass = new BlendedSmokeRenderPass();
 
             // Configures where the render pass should be injected.
-            m_ScriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
+            m_ScriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
         }
 
         // Here you can inject one or multiple render passes in the renderer.
