@@ -39,12 +39,13 @@ Shader "Beakstorm/BlendedSmoke/Blit"
             float2 uv2 = uv + texelDelta * x;
             float4 sample = SAMPLE_TEXTURE2D(_BlitTexture, sampler_BlitTexture, uv2);
             float depth = sample.r;
+            float alpha = sample.a;
 
             
             if (x == 0)
                 middleSample = sample;
             
-            if (depth < 10000)
+            if (alpha > 0.5)
             {
                 float weight = GaussianBlurWeight(x, 0, sigma);
                 weightSum += weight;
@@ -77,13 +78,6 @@ Shader "Beakstorm/BlendedSmoke/Blit"
             
             //Blend SrcAlpha OneMinusSrcAlpha, Zero OneMinusSrcAlpha
             Blend One OneMinusSrcAlpha
-
-            Stencil 
-            {
-                Ref 1
-                Comp Always
-                Pass Replace
-            }    
             
             HLSLPROGRAM
             #pragma vertex Vert
@@ -106,6 +100,7 @@ Shader "Beakstorm/BlendedSmoke/Blit"
                 float4 col = SAMPLE_TEXTURE2D(_BlitTexture, sampler_BlitTexture, uv);
                 float alpha = col.a;
 
+                return 0;
                 return 1.#INF;
             }
             ENDHLSL
@@ -158,10 +153,17 @@ Shader "Beakstorm/BlendedSmoke/Blit"
         
         Pass
         {
-            Name "BlitNoEdge"
+            Name "Blit Back"
             ZTest Always
             ZWrite Off
             Cull Off
+            
+            Stencil 
+            {
+                Ref 16
+                ReadMask 16
+                Comp Equal
+            }  
             
             //Blend SrcAlpha OneMinusSrcAlpha, Zero OneMinusSrcAlpha
             Blend SrcAlpha OneMinusSrcAlpha
@@ -224,22 +226,30 @@ Shader "Beakstorm/BlendedSmoke/Blit"
                 float3 viewNormal = normalize(cross(ddy, ddx));
                 float3 worldNormal = TransformViewToWorldNormal(viewNormal);
 
-                worldNormal = normalize(col.rgb);
-                viewNormal = TransformWorldToViewNormal(worldNormal, true);
+                //worldNormal = viewNormal;
+                //worldNormal = normalize(col.rgb);
+                //viewNormal = TransformWorldToViewNormal(worldNormal, true);
 
                 
                 Light light = GetMainLight();
                 col.rgb = worldNormal * 0.5 + 0.5;
 
+                //return col;
+                
                 float3 rimLightDir = normalize(cross(float3(0,1,0), light.direction));
                 
                 float rimLight = dot(-viewVector, worldNormal);
                 
                 float l = dot(light.direction, worldNormal);
-                col.rgb = lerp(0.3, 0.8, step(0, l));
 
+                float steppedLight = floor(l * 3) / 3;
+
+                
+                col.rgb = lerp(0.3, 0.8, steppedLight);
                 col.rgb = lerp(col.rgb, 0, step(rimLight, 0.2));
 
+
+                col.rgb = saturate(-l);
                 
                 //#ifdef _LINEAR_TO_SRGB_CONVERSION
                 //col = LinearToSRGB(col);
