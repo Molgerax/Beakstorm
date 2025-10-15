@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Beakstorm.Rendering
+namespace Beakstorm.Rendering.ExplosionLights
 {
     [ExecuteAlways]
     public class LightDimController : MonoBehaviour
@@ -10,9 +11,20 @@ namespace Beakstorm.Rendering
         [SerializeField, Range(0, 1)] private float dimFactor = 1f;
 
 
+        public static List<ExplosionLight> ExplosionLights = new List<ExplosionLight>(32);
+        
+
         private void Update()
         {
-            Shader.SetGlobalFloat(DimFactor, dimFactor);
+            float dim = dimFactor;
+
+            foreach (ExplosionLight explosionLight in ExplosionLights)
+            {
+                if (explosionLight)
+                    dim = Mathf.Min(dim, explosionLight.DimFactor);
+            }
+            
+            Shader.SetGlobalFloat(DimFactor, dim);
             Shader.SetGlobalInteger(DimMask, layerMask);
         }
 
