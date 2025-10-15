@@ -74,6 +74,7 @@ Shader "BeakStorm/Pheromones/Grid Instanced URP"
 	    float3 oldPos;
 	    float maxLife;
 	    float4 data;
+    	float4 spawnPos;
 	};
 
     struct SortEntry

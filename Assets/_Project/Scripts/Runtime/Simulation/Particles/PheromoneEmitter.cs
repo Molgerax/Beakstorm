@@ -7,7 +7,8 @@ namespace Beakstorm.Simulation.Particles
     {
         [SerializeField, Min(0)] private float emissionRate = 60;
         [SerializeField, Range(0, 10)] private float lifeTime = 3;
-
+        [SerializeField] private float velocityFactor = 1f;
+        
         private PheromoneBehaviourData _behaviourData;
 
         public float EmissionRate
@@ -22,8 +23,15 @@ namespace Beakstorm.Simulation.Particles
             set => lifeTime = value;
         }
         
+        public float VelocityFactor
+        {
+            get => velocityFactor;
+            set => velocityFactor = value;
+        }
+        
         private float _initEmissionRate;
         private float _initLifeTime;
+        private float _initVelocityFactor;
         
         private float _remainder = 0;
         private float _duration;
@@ -38,6 +46,7 @@ namespace Beakstorm.Simulation.Particles
         {
             _initEmissionRate = emissionRate;
             _initLifeTime = lifeTime;
+            _initVelocityFactor = velocityFactor;
         }
 
         public void SetBehaviourData(PheromoneBehaviourData data)
@@ -82,13 +91,13 @@ namespace Beakstorm.Simulation.Particles
         public void Emit(int count, float life, bool visible = true)
         {
             if (PheromoneGridManager.Instance)
-                PheromoneGridManager.Instance.AddEmissionRequest(count, _position, _position , life, visible);
+                PheromoneGridManager.Instance.AddEmissionRequest(count, _position, _position , life, visible, 0);
         }
         
         private void Emit(int count)
         {
             if (PheromoneGridManager.Instance)
-                PheromoneGridManager.Instance.EmitParticles(count, _position, _oldPosition, lifeTime);
+                PheromoneGridManager.Instance.EmitParticles(count, _position, _oldPosition, lifeTime, true, velocityFactor);
         }
 
         private void ApplyBehaviour(float deltaTime)
@@ -100,6 +109,7 @@ namespace Beakstorm.Simulation.Particles
 
             LifeTime = _behaviourData.GetPheromoneLife(_duration);
             EmissionRate = _behaviourData.GetPheromoneEmission(_duration);
+            VelocityFactor = _behaviourData.GetPheromoneVelocity();
         }
 
         public void ResetEmitter()
@@ -108,8 +118,12 @@ namespace Beakstorm.Simulation.Particles
             _remainder = 0;
             _duration = 0;
 
-            LifeTime = _initLifeTime;
-            EmissionRate = _initEmissionRate;
+            if (_behaviourData)
+            {
+                LifeTime = _initLifeTime;
+                EmissionRate = _initEmissionRate;
+                VelocityFactor = _initVelocityFactor;
+            }
 
             UpdatePositions();
         }

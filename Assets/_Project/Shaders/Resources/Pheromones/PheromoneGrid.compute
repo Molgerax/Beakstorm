@@ -250,8 +250,10 @@ void Update (uint3 id : SV_DispatchThreadID)
     //acceleration += sdfForce(sdfInfo);
 
     //acceleration -= velocity * 0.5;
+
+    velocity *= 0.99;
     
-    //velocity += acceleration * _DeltaTime;
+    velocity += acceleration * _DeltaTime * 10;
     velocity = acceleration * 5;
 
     currentPosition += velocity * _DeltaTime;
@@ -403,6 +405,9 @@ void EmitByRequest (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID, 
     float3 spawnPos = request.pos;
     float3 spawnPosOld = request.posOld;
 
+    //spawnPos.y = 0;
+    //spawnPosOld.y = 0;
+    
     float3 pos = lerp(spawnPos, spawnPosOld, randomOffset);
     float3 oldPos = pos;// - RandomVector(index) * _DeltaTime * 5;
     pos += RandomVector(seed) * 3 * randomOffset * _DeltaTime;
@@ -431,6 +436,9 @@ void EmitByRequest (uint3 id : SV_DispatchThreadID, uint3 groupId : SV_GroupID, 
     data.w = lifeTime / maxLifeTime;
     data.x = 0;
     data.y = index;
+
+    p.spawnPos = 0;
+    p.spawnPos.xyz = (vel / _DeltaTime) * request.velocityFactor;
     
     p.pos = pos;
     p.oldPos = oldPos;

@@ -35,6 +35,7 @@ struct Pheromone
     float3 oldPos;
     float maxLife;
     float4 data;
+    float4 spawnPos;
 };
 
 StructuredBuffer<Pheromone> _PheromoneBuffer;

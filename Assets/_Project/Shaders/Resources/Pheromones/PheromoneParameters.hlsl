@@ -10,6 +10,7 @@ struct Pheromone
     float3 oldPos;
     float maxLife;
     float4 data;
+    float4 spawnPos;
 };
 
 
@@ -66,7 +67,7 @@ struct EmissionRequest
     float3 posOld;
     float visible;
     uint count;
-    uint padding;
+    float velocityFactor;
 };
 
 StructuredBuffer<EmissionRequest> _EmissionRequestBuffer;

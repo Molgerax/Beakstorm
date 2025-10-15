@@ -31,7 +31,7 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField] private float targetDensity = 1;
         [SerializeField] private float pressureMultiplier = 1;
 
-        [SerializeField, Range(0.1f, 16f)] private float smoothingRadius = 8;
+        [SerializeField, Range(0.1f, 64f)] private float smoothingRadius = 8;
 
         [SerializeField] [Range(0.5f, 2f)] private float cellSizeRatio = 1f;
         
@@ -78,7 +78,7 @@ namespace Beakstorm.Simulation.Particles
         public GraphicsBuffer AgentBufferWrite => _swapBuffers ? _pheromoneBufferRead : _pheromoneBuffer;
         public GraphicsBuffer AgentBufferRead => _swapBuffers ? _pheromoneBuffer : _pheromoneBufferRead;
         public int[] CellDimensions => _hash.Dimensions;
-        public int AgentBufferStride => 12; 
+        public int AgentBufferStride => 16; 
         
         private SpatialGrid _hash;
         public SpatialGrid Hash => _hash;
@@ -87,12 +87,12 @@ namespace Beakstorm.Simulation.Particles
 
         private List<EmissionRequest> _emissionRequests = new List<EmissionRequest>(128);
 
-        public void AddEmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true)
+        public void AddEmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true, float velocity = 1)
         {
             if (count <= 0 || lifeTime <= 0)
                 return;
             
-            _emissionRequests.Add(new EmissionRequest(count, pos, oldPos, lifeTime, visible));
+            _emissionRequests.Add(new EmissionRequest(count, pos, oldPos, lifeTime, visible, velocity));
         }
 
         private void Awake()
@@ -145,8 +145,10 @@ namespace Beakstorm.Simulation.Particles
             _capacity = maxCount;
             ReleaseBuffers();
             
-            _pheromoneBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured | GraphicsBuffer.Target.Counter, _capacity, AgentBufferStride * sizeof(float));
-            _pheromoneBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured | GraphicsBuffer.Target.Counter, _capacity, AgentBufferStride * sizeof(float));
+            _pheromoneBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured | GraphicsBuffer.Target.Counter, 
+                _capacity, AgentBufferStride * sizeof(float));
+            _pheromoneBufferRead = new GraphicsBuffer(GraphicsBuffer.Target.Structured | GraphicsBuffer.Target.Counter, 
+                _capacity, AgentBufferStride * sizeof(float));
 
             _pheromoneSorted = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _capacity, 2 * sizeof(float));
 
@@ -367,9 +369,9 @@ namespace Beakstorm.Simulation.Particles
         }
         
         
-        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true)
+        public void EmitParticles(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true, float velocity = 1)
         {
-            AddEmissionRequest(count, pos, oldPos, lifeTime, visible);
+            AddEmissionRequest(count, pos, oldPos, lifeTime, visible, velocity);
             return;
             
             if (PauseManager.IsPaused)
@@ -475,14 +477,16 @@ namespace Beakstorm.Simulation.Particles
             public Vector3 OldPosition;
             public float LifeTime;
             public bool Visible;
+            public float Velocity;
             
-            public EmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true)
+            public EmissionRequest(int count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true, float velocity = 1)
             {
                 Count = count;
                 Position = pos;
                 OldPosition = oldPos;
                 LifeTime = lifeTime;
                 Visible = visible;
+                Velocity = velocity;
             }
         }
 
@@ -493,16 +497,16 @@ namespace Beakstorm.Simulation.Particles
             public Vector3 OldPosition;
             public float Visible;
             public uint Count;
-            public uint Padding;
+            public float Velocity;
             
-            public EmissionRequestGpu(uint count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true)
+            public EmissionRequestGpu(uint count, Vector3 pos, Vector3 oldPos, float lifeTime, bool visible = true, float velocity = 1)
             {
                 Count = count;
                 Position = pos;
                 OldPosition = oldPos;
                 LifeTime = lifeTime;
                 Visible = visible ? 1 : 0;
-                Padding = 0;
+                Velocity = velocity;
             }
             
             public EmissionRequestGpu(EmissionRequest request)
@@ -512,7 +516,7 @@ namespace Beakstorm.Simulation.Particles
                 OldPosition = request.OldPosition;
                 LifeTime = request.LifeTime;
                 Visible = request.Visible ? 1 : 0;
-                Padding = 0;
+                Velocity = request.Velocity;
             }
 
             public void SetCount(int count)
