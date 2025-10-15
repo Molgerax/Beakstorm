@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: daf2221852f16b54984af8d9cd05f8b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -198,7 +198,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: daf2221852f16b54984af8d9cd05f8b3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -272,6 +272,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  onInitialize:
+    _PersistentCalls:
+    - _Target: {fileID: 7496872214227653802}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 882930798857488143}
@@ -293,19 +306,7 @@ MonoBehaviour:
     - _Target: {fileID: 5374600801469922370}
       _MemberName: PostEvent
       _PersistentArguments: []
-  onInitialize:
-    _PersistentCalls:
-    - _Target: {fileID: 7496872214227653802}
-      _MemberName: SetActive
-      _PersistentArguments:
-      - _Type: 1
-        _Int: 1
-        _String: 
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
+  autoInitialize: 0
   offset: {x: 0, y: 0, z: 0}
   radius: 0.5
   meshRenderer: {fileID: 6040831352328345187}
@@ -428,6 +429,7 @@ GameObject:
   - component: {fileID: 819277530142602462}
   - component: {fileID: 7667595204416723483}
   - component: {fileID: 654663151372562427}
+  - component: {fileID: 2827322097758429007}
   m_Layer: 0
   m_Name: GunTip
   m_TagString: Untagged
@@ -503,6 +505,19 @@ MonoBehaviour:
   eventIdInternal: 0
   valueGuidInternal: 
   m_callbackDataInternal: {fileID: 0}
+--- !u!114 &2827322097758429007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3877339331152747645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 390b8762f5bab554a9ccc23b9a575cfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 142303867010736475, guid: bf9ff575f08c2354c91464bd8fc49a10, type: 3}
 --- !u!1 &7100931521441752871
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,6 +690,9 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 3877339331152747645}
+    - _Target: {fileID: 2827322097758429007}
+      _MemberName: Spawn
+      _PersistentArguments: []
 --- !u!135 &4987258195435060466
 SphereCollider:
   m_ObjectHideFlags: 0
