@@ -19,6 +19,8 @@ MonoBehaviour:
   initialVelocity: 200
   projectilePrefab: {fileID: 5012512307083224738, guid: 857d7de287929cd4f9976c04d2729c21, type: 3}
   behaviourData: {fileID: 11400000, guid: b7e84ecb1e5b88540bac9ab21a55f548, type: 2}
+  moveData: {fileID: 11400000, guid: a34c18ab3f3bc9e4fbe78bec390d2146, type: 2}
   count: 32
   spreadAngle: 45
   offset: 0
+  useSpiral: 1

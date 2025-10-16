@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ItanoProjectileMoveData
   m_EditorClassIdentifier: 
   noiseFrequency: 0.8
-  noiseAmplitude: 0
+  noiseAmplitude: 10
   controlPointDistA: 150
   controlPointDistB: 5
