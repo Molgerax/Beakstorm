@@ -67,6 +67,7 @@ GameObject:
   m_Component:
   - component: {fileID: 890128633331852315}
   - component: {fileID: 3058296563083471367}
+  - component: {fileID: 7261558673879800563}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -104,6 +105,19 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 9c3db9fbb5321f140a7079d595366f08, type: 2}
   useRenderers: 0
   customSize: {x: 20, y: 20, z: 20}
+--- !u!114 &7261558673879800563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891862215964277519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff5502fd57404ee39fb867036a73f63c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faction: {fileID: 11400000, guid: be1980ba416d34f41b5a9e8bbc5eff2c, type: 2}
 --- !u!1 &1236125988240943422
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +257,7 @@ MonoBehaviour:
     - _Target: {fileID: 7481132111454077212}
       _MemberName: PostEvent
       _PersistentArguments: []
+  autoInitialize: 0
   offset: {x: 0, y: 14.66, z: 0}
   radius: 10.2
   meshRenderer: {fileID: 5572208652208514414}

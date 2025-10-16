@@ -278,6 +278,7 @@ GameObject:
   - component: {fileID: 119709469}
   - component: {fileID: 119709471}
   - component: {fileID: 119709472}
+  - component: {fileID: 119709473}
   m_Layer: 6
   m_Name: PheromoneGun
   m_TagString: Untagged
@@ -316,6 +317,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
+  targetingManager: {fileID: 119709473}
   onShoot:
     _PersistentCalls:
     - _Target: {fileID: 119709472}
@@ -334,6 +336,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventName: play_pheroShoot
+--- !u!114 &119709473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119709468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174bb7025697e7b4481fecb000fb76c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strategy: {fileID: 11400000, guid: 15a1b7e241f65354e8319853317051d9, type: 2}
+  viewAnchor: {fileID: 0}
+  ActiveTargets: []
 --- !u!1 &271261459
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,6 +1755,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1150394392}
   m_CullTransparentMesh: 1
+--- !u!1 &1172133778
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1172133779}
+  - component: {fileID: 1172133780}
+  m_Layer: 6
+  m_Name: Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1172133779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172133778}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2049153238}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1172133780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1172133778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff5502fd57404ee39fb867036a73f63c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faction: {fileID: 11400000, guid: 19f68c76f4e1aae46b7671abf8ec71ec, type: 2}
 --- !u!1 &1233681665
 GameObject:
   m_ObjectHideFlags: 0
@@ -3381,6 +3443,7 @@ Transform:
   - {fileID: 119709469}
   - {fileID: 815246325}
   - {fileID: 1775077939}
+  - {fileID: 1172133779}
   m_Father: {fileID: 1982143474}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2049153239
