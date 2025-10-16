@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8a480dfefa5e3f4a92e7ea3822b3c61, type: 3}
-  m_Name: Simple_SpreadPheromoneShot
+  m_Name: Simple_QuickShotItano
   m_EditorClassIdentifier: 
-  displaySprite: {fileID: 21300000, guid: 7507e764a4fd5d8479118df6720d4866, type: 3}
-  displayName: Decreasing
-  fireDelay: 0.5
+  displaySprite: {fileID: 21300000, guid: 7ba8a0e6dc50d234a8af640126856da2, type: 3}
+  displayName: Quick Itano
+  fireDelay: 0.01
   ammoCost: 1
-  initialVelocity: 50
+  initialVelocity: 100
   projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
-  behaviourData: {fileID: 11400000, guid: 33a83646f9fabf347b953f479d7bf422, type: 2}
-  moveData: {fileID: 11400000, guid: a34c18ab3f3bc9e4fbe78bec390d2146, type: 2}
+  behaviourData: {fileID: 11400000, guid: d4993d6ed62f18c45bc66960a891dc55, type: 2}
+  moveData: {fileID: 11400000, guid: 4ee34fa7b1c5b4e42a36b3ca7aa8fb27, type: 2}

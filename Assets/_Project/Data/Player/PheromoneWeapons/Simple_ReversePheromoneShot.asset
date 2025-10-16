@@ -19,3 +19,4 @@ MonoBehaviour:
   initialVelocity: 120
   projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
   behaviourData: {fileID: 11400000, guid: 33a83646f9fabf347b953f479d7bf422, type: 2}
+  moveData: {fileID: 11400000, guid: a34c18ab3f3bc9e4fbe78bec390d2146, type: 2}

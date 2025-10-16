@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: -5033398536401664210}
   - component: {fileID: 1407406865008997820}
   - component: {fileID: 7247312149404298291}
+  - component: {fileID: 4423818879505087520}
   m_Layer: 7
   m_Name: PheromoneCapsule_Impact
   m_TagString: Untagged
@@ -183,7 +184,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7264894178766051763}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6cd18d6dbe9579f4cb19f774bf43fbaf, type: 3}
   m_Name: 
@@ -289,3 +290,25 @@ MonoBehaviour:
       _PersistentArguments: []
   onCollisionEnter:
     _PersistentCalls: []
+--- !u!114 &4423818879505087520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7264894178766051763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb8eed963b2bc04dbe3d7265f7ecb29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Velocity: {x: 0, y: 0, z: 0}
+  MomentaryForce: {x: 0, y: 0, z: 0}
+  InitPosition: {x: 0, y: 0, z: 0}
+  InitDirection: {x: 0, y: 0, z: 0}
+  TargetPos: {x: 0, y: 0, z: 0}
+  TargetNormal: {x: 0, y: 0, z: 0}
+  Speed: 0
+  Random: 0
+  ElapsedTime: 0
+  TargetTime: 0
