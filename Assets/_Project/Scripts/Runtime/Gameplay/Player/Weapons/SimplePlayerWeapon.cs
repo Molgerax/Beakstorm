@@ -19,7 +19,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
         
         [SerializeField] protected Projectile projectilePrefab;
         [SerializeField] protected PheromoneBehaviourData behaviourData;
-        [SerializeField] protected AbstractProjectileMoveData moveData;
+        [SerializeField] protected ProjectileMoveData moveData;
 
         protected float _fireCooldown;
         

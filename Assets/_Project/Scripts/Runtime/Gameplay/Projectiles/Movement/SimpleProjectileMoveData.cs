@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Beakstorm.Gameplay.Projectiles.Movement
 {
     [CreateAssetMenu(fileName = "SimpleProjectileMoveData", menuName = "Beakstorm/Projectiles/SimpleProjectileMoveData")]
-    public class SimpleProjectileMoveData : AbstractProjectileMoveData
+    public class SimpleProjectileMoveData : ProjectileMoveData
     {
         [SerializeField] private float gravity = 9.81f;
         [SerializeField] private float drag = 0.01f;

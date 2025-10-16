@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 namespace Beakstorm.Gameplay.Projectiles.Movement
 {
     [CreateAssetMenu(fileName = "ItanoProjectileMoveData", menuName = "Beakstorm/Projectiles/ItanoProjectileMoveData")]
-    public class ItanoProjectileMoveData : AbstractProjectileMoveData
+    public class ItanoProjectileMoveData : ProjectileMoveData
     {
         [SerializeField, Min(0)] private float noiseFrequency = 2f;
         [SerializeField, Min(0)] private float noiseAmplitude = 8f;

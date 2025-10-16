@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Beakstorm.Gameplay.Projectiles.Movement
 {
     [CreateAssetMenu(fileName = "HomingProjectileMoveData", menuName = "Beakstorm/Projectiles/HomingProjectileMoveData")]
-    public class HomingProjectileMoveData : AbstractProjectileMoveData
+    public class HomingProjectileMoveData : ProjectileMoveData
     {
         [SerializeField] private float angularForce = 1;
 

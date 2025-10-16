@@ -6,7 +6,7 @@ namespace Beakstorm.Gameplay.Projectiles.Movement
 {
     public class ProjectileMovementHandler : MonoBehaviour
     {
-        private AbstractProjectileMoveData _moveData;
+        private ProjectileMoveData _moveData;
         
         [NonSerialized] public Vector3 Velocity;
         [NonSerialized] public Vector3 MomentaryForce;
@@ -33,7 +33,7 @@ namespace Beakstorm.Gameplay.Projectiles.Movement
             _moveData.Tick(this, Time.deltaTime);
         }
 
-        public void SetMovementData(AbstractProjectileMoveData moveData)
+        public void SetMovementData(ProjectileMoveData moveData)
         {
             _moveData = moveData;
         }
