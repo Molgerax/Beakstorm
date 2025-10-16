@@ -1,4 +1,5 @@
 using System;
+using Beakstorm.Gameplay.Targeting;
 using Beakstorm.Inputs;
 using Beakstorm.Simulation.Particles;
 using UltEvents;
@@ -12,6 +13,8 @@ namespace Beakstorm.Gameplay.Player
         [SerializeField, Range(0, 5f)] private float shootOffset = 3f;
         [SerializeField] private LayerMask layerMask;
 
+        [SerializeField] private TargetingManager targetingManager;
+        
         [SerializeField] private UltEvent onShoot;
         
         private PlayerInputs _inputs;
@@ -77,8 +80,19 @@ namespace Beakstorm.Gameplay.Player
         private Vector3 GetShootDirection(Vector3 shootPosition)
         {
             if (!_camera) return transform.forward;
-            
+
             Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+
+            if (targetingManager)
+            {
+                if (targetingManager.ActiveTargets.Count > 0)
+                {
+                    Target t = targetingManager.ActiveTargets[0];
+                    ray.direction = t.transform.position - targetingManager.ViewAnchor.position;
+                    ray.origin = targetingManager.ViewAnchor.position;
+                }
+            }
+            
             if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask))
             {
                 return (hit.point - shootPosition).normalized;
@@ -94,6 +108,16 @@ namespace Beakstorm.Gameplay.Player
             if (!_camera) return transform.position + transform.forward * 500;
 
             Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            
+            if (targetingManager)
+            {
+                if (targetingManager.ActiveTargets.Count > 0)
+                {
+                    Target t = targetingManager.ActiveTargets[0];
+                    ray.direction = t.transform.position - targetingManager.ViewAnchor.position;
+                    ray.origin = targetingManager.ViewAnchor.position;
+                }
+            }
 
             Vector3 shotPosition = ray.origin + ray.direction * 500f;
             targetNormal = -ray.direction;
@@ -121,8 +145,8 @@ namespace Beakstorm.Gameplay.Player
         public Vector3 HitPoint;
         public Vector3 HitNormal;
 
-        public Vector3 TargetPosition => Collider ? Collider.transform.TransformPoint(HitPoint) : _targetPosition;
-        public Vector3 TargetNormal => Collider ? Collider.transform.TransformDirection(HitNormal) : _targetNormal;
+        public Vector3 TargetPosition => (Collider && Collider.gameObject.activeInHierarchy) ? Collider.transform.TransformPoint(HitPoint) : _targetPosition;
+        public Vector3 TargetNormal => Collider && Collider.gameObject.activeInHierarchy ? Collider.transform.TransformDirection(HitNormal) : _targetNormal;
         
         public FireInfo(Vector3 position, Vector3 direction, Vector3 lookDirection, Vector3 targetPosition, Vector3 targetNormal, float speed, Collider collider = null)
         {
