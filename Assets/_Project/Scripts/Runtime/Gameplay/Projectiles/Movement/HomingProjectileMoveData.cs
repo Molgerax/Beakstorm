@@ -9,7 +9,6 @@ namespace Beakstorm.Gameplay.Projectiles.Movement
     {
         [SerializeField] private float angularForce = 1;
 
-
         public override void Initialize(ProjectileMovementHandler movementHandler, FireInfo fireInfo)
         {
             movementHandler.SetVelocity(fireInfo.InitialDirection * fireInfo.Speed);
@@ -17,7 +16,7 @@ namespace Beakstorm.Gameplay.Projectiles.Movement
 
             movementHandler.transform.rotation = Quaternion.LookRotation(fireInfo.InitialDirection);
             
-            float distance = Vector3.Distance(fireInfo.InitialPosition, fireInfo.TargetPosition);
+            float distance = Vector3.Distance(fireInfo.InitialPosition, movementHandler.FireInfo.TargetPosition);
             float time = distance / fireInfo.Speed;
 
             movementHandler.ElapsedTime = 0;

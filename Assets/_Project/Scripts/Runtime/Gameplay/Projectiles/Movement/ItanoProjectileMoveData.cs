@@ -24,7 +24,7 @@ namespace Beakstorm.Gameplay.Projectiles.Movement
             transform.rotation = Quaternion.LookRotation(fireInfo.InitialDirection);
             transform.position = fireInfo.InitialPosition;
             
-            float distance = Vector3.Distance(fireInfo.InitialPosition, fireInfo.TargetPosition);
+            float distance = Vector3.Distance(fireInfo.InitialPosition, movementHandler.FireInfo.TargetPosition);
             float time = distance / fireInfo.Speed;
 
             movementHandler.ElapsedTime = 0;

@@ -63,13 +63,12 @@ namespace Beakstorm.Gameplay.Player
             Vector3 lookDir = GetShootDirection(pos);
 
             Vector3 dir = transform.forward;
-            
-            Vector3 targetNormal = Vector3.up;
-            Vector3 targetPos = GetTargetPos(out targetNormal);
+
+            Vector3 targetPos = GetTargetPos(out var targetNormal, out var coll);
             
             pos += dir * shootOffset;
 
-            FireInfo fireInfo = new FireInfo(pos, dir, lookDir, targetPos, targetNormal, 0);
+            FireInfo fireInfo = new FireInfo(pos, dir, lookDir, targetPos, targetNormal, 0, coll);
             
             if (PlayerController.Instance.SelectedWeapon.Fire(fireInfo))
                 onShoot?.Invoke();
@@ -88,9 +87,10 @@ namespace Beakstorm.Gameplay.Player
             return _camera.transform.forward;
         }
         
-        private Vector3 GetTargetPos(out Vector3 targetNormal)
+        private Vector3 GetTargetPos(out Vector3 targetNormal, out Collider collider)
         {
             targetNormal = -transform.forward;
+            collider = null;
             if (!_camera) return transform.position + transform.forward * 500;
 
             Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -101,6 +101,7 @@ namespace Beakstorm.Gameplay.Player
             if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask))
             {
                 targetNormal = hit.normal;
+                collider = hit.collider;
                 return hit.point;
             }
 
@@ -113,18 +114,33 @@ namespace Beakstorm.Gameplay.Player
         public Vector3 InitialPosition;
         public Vector3 InitialDirection;
         public Vector3 LookDirection;
-        public Vector3 TargetPosition;
-        public Vector3 TargetNormal;
+        private Vector3 _targetPosition;
+        private Vector3 _targetNormal;
         public float Speed;
+        public Collider Collider;
+        public Vector3 HitPoint;
+        public Vector3 HitNormal;
 
-        public FireInfo(Vector3 position, Vector3 direction, Vector3 lookDirection, Vector3 targetPosition, Vector3 targetNormal, float speed)
+        public Vector3 TargetPosition => Collider ? Collider.transform.TransformPoint(HitPoint) : _targetPosition;
+        public Vector3 TargetNormal => Collider ? Collider.transform.TransformDirection(HitNormal) : _targetNormal;
+        
+        public FireInfo(Vector3 position, Vector3 direction, Vector3 lookDirection, Vector3 targetPosition, Vector3 targetNormal, float speed, Collider collider = null)
         {
             InitialPosition = position;
             InitialDirection = direction;
             LookDirection = lookDirection;
-            TargetPosition = targetPosition;
-            TargetNormal = targetNormal;
+            _targetPosition = targetPosition;
+            _targetNormal = targetNormal;
             Speed = speed;
+            Collider = collider;
+            HitPoint = targetPosition;
+            HitNormal = targetNormal;
+
+            if (Collider)
+            {
+                HitPoint = Collider.transform.InverseTransformPoint(_targetPosition);
+                HitNormal = Collider.transform.InverseTransformDirection(_targetNormal);
+            }
         }
     }
 }
