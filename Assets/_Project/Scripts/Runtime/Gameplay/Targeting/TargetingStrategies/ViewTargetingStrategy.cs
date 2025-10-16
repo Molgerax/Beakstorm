@@ -20,18 +20,25 @@ namespace Beakstorm.Gameplay.Targeting.TargetingStrategies
         
             foreach (Target target in Target.Targets)
             {
-                if (targetingManager.ActiveTargets.Count >= maxTargets)
-                    break;
-
                 if (!IsTargetFaction(target))
                     continue;
                 
                 Vector3 diff = target.transform.position - targetingManager.ViewAnchor.position;
 
                 float angle = Vector3.Angle(targetingManager.ViewAnchor.forward, diff.normalized);
-                
+
                 if (diff.magnitude < maxDistance && angle < maxAngle)
+                {
                     targetingManager.ActiveTargets.Add(target);
+                    target.Weight = angle;
+                }
+            }
+            
+            targetingManager.ActiveTargets.Sort();
+
+            for (int i = targetingManager.ActiveTargets.Count - 1; i >= maxTargets; i--)
+            {
+                targetingManager.ActiveTargets.RemoveAt(i);
             }
         }
     }
