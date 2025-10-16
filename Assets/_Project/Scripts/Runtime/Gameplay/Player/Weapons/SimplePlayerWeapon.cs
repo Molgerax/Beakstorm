@@ -1,4 +1,5 @@
 using Beakstorm.Gameplay.Projectiles;
+using Beakstorm.Gameplay.Projectiles.Movement;
 using Beakstorm.Simulation.Particles;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
         
         [SerializeField] protected Projectile projectilePrefab;
         [SerializeField] protected PheromoneBehaviourData behaviourData;
+        [SerializeField] protected AbstractProjectileMoveData moveData;
 
         protected float _fireCooldown;
         
@@ -37,19 +39,32 @@ namespace Beakstorm.Gameplay.Player.Weapons
             _fireCooldown = Mathf.Max(0, _fireCooldown - deltaTime);
         }
         
-        protected virtual void FireSingleProjectile(Vector3 position, Vector3 direction)
+        protected virtual void FireSingleProjectile(FireInfo fireInfo)
         {
+            fireInfo.Speed = initialVelocity;
+            
             var projectileInstance = ProjectileManager.Instance.GetProjectile(projectilePrefab);
             var projTransform = projectileInstance.transform;
-            projTransform.position = position;
+            projTransform.position = fireInfo.InitialPosition;
+
 
             if (projectileInstance.TryGetComponent(out SimpleMovementHandler movementHandler))
             {
-                movementHandler.SetVelocity(direction * initialVelocity);
+                movementHandler.SetVelocity(fireInfo.LookDirection * initialVelocity);
                 
                 if (behaviourData)
                     movementHandler.Gravity = behaviourData.Gravity;
             }
+            
+            if (projectileInstance.TryGetComponent(out ProjectileMovementHandler projectileMovementHandler))
+            {
+                if (moveData)
+                {
+                    projectileMovementHandler.SetMovementData(moveData);
+                    projectileMovementHandler.Initialize(fireInfo);
+                }
+            }
+
 
             if (projectileInstance.TryGetComponent(out PheromoneEmitter emitter))
             {
@@ -66,12 +81,12 @@ namespace Beakstorm.Gameplay.Player.Weapons
             }
         }
         
-        public virtual bool Fire(Vector3 position, Vector3 direction)
+        public virtual bool Fire(FireInfo fireInfo)
         {
             if (_fireCooldown > 0)
                 return false;
         
-            FireSingleProjectile(position, direction);
+            FireSingleProjectile(fireInfo);
             _fireCooldown = FireDelay;
             return true;
         }

@@ -1,6 +1,4 @@
-﻿using Beakstorm.Gameplay.Projectiles;
-using Beakstorm.Simulation.Particles;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player.Weapons
 {
@@ -10,16 +8,26 @@ namespace Beakstorm.Gameplay.Player.Weapons
         [SerializeField, Min(1)] private int count = 1;
         [SerializeField, Range(1f, 360f)] private float spreadAngle = 25f;
         [SerializeField, Range(0f, 3f)] private float offset = 1f;
+
+        [SerializeField] private bool useSpiral = true;
         
-        protected override void FireSingleProjectile(Vector3 position, Vector3 direction)
+        protected override void FireSingleProjectile(FireInfo fireInfo)
         {
+            FireInfo infoCopy = fireInfo;
             for (int i = 0; i < count; i++)
             {
-                Vector3 shotDirection = GetShotDirection(i, direction);
+                fireInfo = infoCopy;
+                fireInfo.InitialDirection = useSpiral ? 
+                    GetSpiralPattern(i, infoCopy.InitialDirection) : 
+                    GetShotDirection(i, infoCopy.InitialDirection);
 
-                shotDirection = GetSpiralPattern(i, direction);
+                fireInfo.LookDirection = useSpiral ? 
+                    GetSpiralPattern(i, infoCopy.LookDirection) : 
+                    GetShotDirection(i, infoCopy.LookDirection);
                 
-                base.FireSingleProjectile(position + shotDirection * offset, shotDirection);
+                fireInfo.InitialPosition += fireInfo.InitialDirection * offset;
+                
+                base.FireSingleProjectile(fireInfo);
             }
         }
 
