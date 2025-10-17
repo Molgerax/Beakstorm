@@ -51,9 +51,6 @@ namespace Beakstorm.Gameplay.Player.Weapons
             if (projectileInstance.TryGetComponent(out SimpleMovementHandler movementHandler))
             {
                 movementHandler.SetVelocity(fireInfo.LookDirection * initialVelocity);
-                
-                if (behaviourData)
-                    movementHandler.Gravity = behaviourData.Gravity;
             }
             
             if (projectileInstance.TryGetComponent(out ProjectileMovementHandler projectileMovementHandler))
