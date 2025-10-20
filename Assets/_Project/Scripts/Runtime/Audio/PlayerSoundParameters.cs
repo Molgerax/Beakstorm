@@ -1,5 +1,6 @@
 ﻿using System;
 using Beakstorm.Gameplay.Player;
+using Beakstorm.Gameplay.Player.Flying;
 using UnityEngine;
 
 namespace Beakstorm.Audio
