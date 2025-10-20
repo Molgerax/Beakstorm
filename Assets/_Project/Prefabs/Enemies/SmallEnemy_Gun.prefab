@@ -89,8 +89,8 @@ PrefabInstance:
       value: 150.2
       objectReference: {fileID: 0}
     - target: {fileID: 8915212844012890157, guid: 37bb652e3ccbfe94ab281c0225127c44, type: 3}
-      propertyPath: radius
-      value: 5
+      propertyPath: autoInitialize
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -185,6 +185,30 @@ PrefabInstance:
     - target: {fileID: 7441738662445378794, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: bounds.m_Center.x
+      value: 0.00000047683716
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: bounds.m_Center.y
+      value: 5.124563
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: bounds.m_Center.z
+      value: 0.00000047683716
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: bounds.m_Extent.x
+      value: 7.618415
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: bounds.m_Extent.y
+      value: 15.784565
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: bounds.m_Extent.z
+      value: 7.256368
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

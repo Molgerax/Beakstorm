@@ -1304,6 +1304,10 @@ PrefabInstance:
       propertyPath: meshRenderer
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1424759133269100437, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: autoInitialize
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1561042241744505459, guid: 726560654fc258a41a4e700629f046ce, type: 3}
       propertyPath: m_IsActive
       value: 0
