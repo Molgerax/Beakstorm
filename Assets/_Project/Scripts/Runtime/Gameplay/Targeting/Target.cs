@@ -10,7 +10,7 @@ namespace Beakstorm.Gameplay.Targeting
 
         [SerializeField] private Faction faction;
 
-        public float Weight;
+        [NonSerialized] public float Weight;
         
         public Faction Faction => faction;
 
