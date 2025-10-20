@@ -1800,6 +1800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faction: {fileID: 11400000, guid: 19f68c76f4e1aae46b7671abf8ec71ec, type: 2}
+  Weight: 0
 --- !u!1 &1233681665
 GameObject:
   m_ObjectHideFlags: 0
@@ -2852,13 +2853,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddd7899f1c911741a3574a1dbe8803d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  t: {fileID: 0}
-  maxAngles: {x: -80, y: 70}
-  maxSpeed: 60
-  minSpeed: 20
-  acceleration: 25
-  steerSpeed: 120
-  rollSpeed: 3
+  <T>k__BackingField: {fileID: 0}
+  controlStrategy: {fileID: 11400000, guid: f39d94641bfb2fe46b32da4098126108, type: 2}
 --- !u!114 &1982143478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3015,6 +3011,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   multiPositionArray: []
 --- !u!114 &1982143486
 MonoBehaviour:
@@ -3057,6 +3055,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   multiPositionArray: []
 --- !u!114 &1982143487
 MonoBehaviour:
@@ -3091,6 +3091,8 @@ MonoBehaviour:
   multiPositionTypeLabel: 0
   attenuationSphereColor: {r: 1, g: 0, b: 0, a: 0.1}
   LargeModePositions:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
