@@ -72,12 +72,10 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             float angle = Vector3.SignedAngle(glider.T.forward, flatForward, glider.T.right);
             float angleStrength = -angle / 180f;
-
-            angleStrength = Vector3.Dot(glider.T.forward, Vector3.up);
             
             float inputStrength = 0;
-            //inputStrength += _inputs.accelerateAction.IsPressed() ? 1 : 0;
-            inputStrength -= glider.BreakInput ? 1 : -1;
+            inputStrength += glider.ThrustInput ? 1 : 0;
+            inputStrength -= glider.BreakInput ? 1 : 0;
             
 
             glider.Speed += inputStrength * Acceleration * dt;

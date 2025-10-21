@@ -1,4 +1,5 @@
 using System;
+using Beakstorm.Core.Variables;
 using Beakstorm.Gameplay.Damaging;
 using Beakstorm.Inputs;
 using Beakstorm.Pausing;
@@ -13,6 +14,9 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         [SerializeField] private FlightControlStrategy controlStrategy;
 
+        [SerializeField] private RangeVariable speedVariable;
+        [SerializeField] private RangeVariable thrustVariable;
+        
         private LayerMask _layerMask;
 
         private Vector3 _position;
@@ -23,15 +27,20 @@ namespace Beakstorm.Gameplay.Player.Flying
         private Vector3 _velocity;
         private Vector3 _oldVelocity;
 
+        public RangeVariable ThrustVariable => thrustVariable;
+        public RangeVariable SpeedVariable => speedVariable;
+        
         [NonSerialized] public Rigidbody Rigidbody;
         
-        [NonSerialized] public Vector3 EulerAngles;
+        [NonSerialized] public Vector3 Velocity;
         [NonSerialized] public float Speed;
         [NonSerialized] public float Roll;
         [NonSerialized] public float Thrust;
         
         public float Speed01 => controlStrategy.Speed01(Speed);
 
+        [NonSerialized] public float Thrust01;
+        
         public Vector2 MoveInput => _inputs.MoveInput;
         public bool BreakInput => _inputs.brakeAction.IsPressed();
         public bool ThrustInput => _inputs.accelerateAction.IsPressed();
@@ -54,6 +63,8 @@ namespace Beakstorm.Gameplay.Player.Flying
             _oldPosition = _position;
             
             controlStrategy.Initialize(this, Time.deltaTime);
+
+            speedVariable.Set(0);
         }
 
 
@@ -70,6 +81,8 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             if (CameraFOV.Instance)
                 CameraFOV.Instance.SetFoV(Speed01);
+            
+            speedVariable.Set(Speed);
         }
 
         private void FixedUpdate()
