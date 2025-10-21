@@ -17,7 +17,7 @@ MonoBehaviour:
   MinSpeed: 20
   Acceleration: 25
   Gravity: 10
-  SteerSpeed: 20
+  SteerSpeed: 120
   RollSpeed: 3
   steerSpeedCurve:
     serializedVersion: 2
