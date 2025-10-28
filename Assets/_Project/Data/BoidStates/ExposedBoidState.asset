@@ -20,6 +20,6 @@ MonoBehaviour:
   alignmentRadius: 3
   cohesionRadius: 10
   detectionRadius: 10
-  minSpeed: 0.2
-  maxSpeed: 100
+  minSpeed: 0.1
+  maxSpeed: 150
   maxForce: 180
