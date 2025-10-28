@@ -15,19 +15,55 @@ MonoBehaviour:
   spawnDataEntries:
   - enemy: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
     transformData:
-      Position: {x: -146, y: -21, z: 80}
-      Rotation: {x: 0, y: 0.8660254, z: -0, w: 0.5}
+      Position: {x: -293.19226, y: -21, z: 382.32892}
+      Rotation: {x: 0, y: 0.8660254, z: 0, w: 0.5}
     waitCondition: 2
     spawnDelay: 0
   - enemy: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
     transformData:
-      Position: {x: 14, y: -12, z: 83}
-      Rotation: {x: 0, y: 0.8660254, z: 0, w: -0.5}
+      Position: {x: -240.99524, y: -12, z: 123.65204}
+      Rotation: {x: 0, y: 0.9644992, z: 0, w: -0.2640858}
     waitCondition: 2
     spawnDelay: 0
   - enemy: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
     transformData:
-      Position: {x: -49.96599, y: -30, z: -120.20766}
-      Rotation: {x: 0, y: 0.8660254, z: 0, w: -0.5}
+      Position: {x: -383.77408, y: -30, z: -118.41676}
+      Rotation: {x: 0, y: 0.9904071, z: 0, w: 0.13818008}
+    waitCondition: 2
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
+    transformData:
+      Position: {x: 117.26778, y: -47.484444, z: 74.66044}
+      Rotation: {x: 0, y: -0.052026097, z: 0, w: 0.9986457}
+    waitCondition: 2
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
+    transformData:
+      Position: {x: 84.86212, y: 43.34228, z: -145.62442}
+      Rotation: {x: 0, y: -0.052026097, z: 0, w: 0.9986457}
+    waitCondition: 2
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
+    transformData:
+      Position: {x: 139.22647, y: 43.34228, z: -139.9446}
+      Rotation: {x: 0, y: -0.052026097, z: 0, w: 0.9986457}
+    waitCondition: 2
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
+    transformData:
+      Position: {x: 379.67035, y: -84.04353, z: -158.9588}
+      Rotation: {x: 0, y: -0.052026097, z: 0, w: 0.9986457}
+    waitCondition: 2
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
+    transformData:
+      Position: {x: 392.55032, y: -55.068245, z: 133.01804}
+      Rotation: {x: 0, y: -0.052026097, z: 0, w: 0.9986457}
+    waitCondition: 2
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
+    transformData:
+      Position: {x: 386.4949, y: 12.767567, z: -15.950102}
+      Rotation: {x: 0, y: -0.052026097, z: 0, w: 0.9986457}
     waitCondition: 2
     spawnDelay: 0
