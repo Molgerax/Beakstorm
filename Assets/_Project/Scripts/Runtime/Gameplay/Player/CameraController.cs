@@ -51,7 +51,7 @@ namespace Beakstorm.Gameplay.Player
 
         private float _timeSinceCenter;
 
-        private Vector3 _headOffset;
+        [SerializeField] private Vector3 _headOffset;
         
         #region Mono Methods
         private void Awake()
@@ -81,6 +81,8 @@ namespace Beakstorm.Gameplay.Player
 
             if (_headOffset.sqrMagnitude > 0)
                 cameraHead.localPosition = playerTarget.TransformDirection(_headOffset);
+            else
+                cameraHead.localPosition = Vector3.zero;
         }
 
         #endregion
@@ -145,9 +147,17 @@ namespace Beakstorm.Gameplay.Player
 
             Vector3 eulerAngles = playerRotation.eulerAngles;
             eulerAngles.z = 0;
-            playerRotation = Quaternion.Euler(eulerAngles);
+            //playerRotation = Quaternion.Euler(eulerAngles);
 
-            playerRotation = Quaternion.Slerp(playerRotation, Quaternion.LookRotation(new Vector3(forward.x, 0, forward.z).normalized, Vector3.up), yAlpha);
+            Vector3 up = Vector3.Dot(playerTarget.up, Vector3.up) > 0 ? Vector3.up : Vector3.down;
+
+            Quaternion targetRotation =
+                Quaternion.LookRotation(new Vector3(forward.x, 0, forward.z).normalized, up);
+            targetRotation = Quaternion.LookRotation(forward, up);
+
+            playerRotation = Quaternion.Slerp(playerRotation, targetRotation, yAlpha);
+            playerRotation = targetRotation;
+            
             _fixedRotation = Quaternion.Slerp(_fixedRotation, playerRotation, SlerpT(movementAlpha));
         }
 
