@@ -31,8 +31,11 @@ namespace Beakstorm.Gameplay.Player.Flying
         public RangeVariable SpeedVariable => speedVariable;
         
         [NonSerialized] public Rigidbody Rigidbody;
-        
+
+        [NonSerialized] public Quaternion LocalRotation;
+        [NonSerialized] public Vector3 EulerAngles;
         [NonSerialized] public Vector3 Velocity;
+        [NonSerialized] public Vector3 OldVelocity;
         [NonSerialized] public float Speed;
         [NonSerialized] public float Roll;
         [NonSerialized] public float Thrust;
@@ -119,7 +122,9 @@ namespace Beakstorm.Gameplay.Player.Flying
 
                 if (TryGetComponent(out IDamageable damageable))
                 {
-                    damageable.TakeDamage(Mathf.CeilToInt(collisionStrength * Speed * 0.75f));
+                    int damage = Mathf.CeilToInt(collisionStrength * Speed * 0.75f);
+                
+                    damageable.TakeDamage(Mathf.Clamp(damage, 0, 25));
                 }
 
                 //Speed = Mathf.Clamp(Speed - (controlStrategy.MaxSpeed - controlStrategy.MinSpeed) * collisionStrength, controlStrategy.MinSpeed, controlStrategy.MaxSpeed);
@@ -139,6 +144,8 @@ namespace Beakstorm.Gameplay.Player.Flying
 
 
                 Quaternion rotation = Quaternion.LookRotation(forward.normalized, T.up);
+
+                EulerAngles = rotation.eulerAngles;
                 
                 T.position = pos;
                 //t.forward = forward.normalized;
