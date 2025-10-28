@@ -58,6 +58,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             if (!T)
                 T = transform;
             
+            PlayerStartPosition.SetPlayer(T);
 
             _position = transform.position;
             _oldPosition = _position;
