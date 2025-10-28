@@ -15,14 +15,14 @@ MonoBehaviour:
   scenesToLoad:
   - asset: {fileID: 102900000, guid: d8b9408c4b11b9941b7bb78395692637, type: 3}
     guid: d8b9408c4b11b9941b7bb78395692637
-  - asset: {fileID: 102900000, guid: a7e9b15eccbf3864b99ac2f2607adda5, type: 3}
-    guid: a7e9b15eccbf3864b99ac2f2607adda5
   - asset: {fileID: 102900000, guid: 9f4170280517c7e488c0d0bc63ab9ea8, type: 3}
     guid: 9f4170280517c7e488c0d0bc63ab9ea8
-  - asset: {fileID: 102900000, guid: cf0611d3f3f63354794049e75ffe8d73, type: 3}
-    guid: cf0611d3f3f63354794049e75ffe8d73
   - asset: {fileID: 102900000, guid: 26d57c928dd64894bbb4abe181eefac8, type: 3}
     guid: 26d57c928dd64894bbb4abe181eefac8
+  - asset: {fileID: 102900000, guid: a7e9b15eccbf3864b99ac2f2607adda5, type: 3}
+    guid: a7e9b15eccbf3864b99ac2f2607adda5
+  - asset: {fileID: 102900000, guid: cf0611d3f3f63354794049e75ffe8d73, type: 3}
+    guid: cf0611d3f3f63354794049e75ffe8d73
   - asset: {fileID: 102900000, guid: 4747b48565139b949818ef16b3ff465e, type: 3}
     guid: 4747b48565139b949818ef16b3ff465e
   loadAdditively: 0
