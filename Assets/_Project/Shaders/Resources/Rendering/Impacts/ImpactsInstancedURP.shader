@@ -83,7 +83,8 @@ Shader "BeakStorm/Impacts/Instanced URP"
 	
 	    // Pull in URP library functions and our own common functions
 	#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-	
+	#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
 	// Textures
 	SAMPLER(sampler_MainTex);
 	SAMPLER(sampler_SpriteSheet);
@@ -175,6 +176,22 @@ Shader "BeakStorm/Impacts/Instanced URP"
 		
 		return t * _Size * dmg;
 	}
+
+    float Dither(float In, float2 ScreenPosition)
+	{
+		float2 uv = ScreenPosition.xy * _ScreenParams.xy;
+		const float DITHER_THRESHOLDS[16] =
+		{
+			1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
+			13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
+			4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
+			16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
+		};
+		uint index = (uint(uv.x) % 4) * 4 + uint(uv.y) % 4;
+		return In - DITHER_THRESHOLDS[index];
+	}
+
+
     
     
 	Interpolators Vertex(Attributes input, uint instance_id: SV_InstanceID)
@@ -256,6 +273,7 @@ Shader "BeakStorm/Impacts/Instanced URP"
 	
 		output.instanceID = instance_id;
 		
+		output.positionWS = worldPos;
 	
 		return output;
 	}
@@ -303,7 +321,8 @@ Shader "BeakStorm/Impacts/Instanced URP"
 		float3 worldPos = meshPositionWS + vpos * GetSize(impact);
 		
 		float4 outPos = TransformWorldToHClip(worldPos);
-		
+
+		output.positionWS = worldPos;
 		output.positionCS = outPos;
 		output.instanceID = instance_id;
 	
@@ -325,6 +344,15 @@ Shader "BeakStorm/Impacts/Instanced URP"
 
 		float2 offset = uv * 2 - 1;
 		float4 colorSample = SAMPLE_TEXTURE2D(_SpriteSheet, sampler_SpriteSheet, uv);
+
+		
+		
+		float3 cameraDiff = GetCameraPositionWS() - input.positionWS;
+		float distanceToCam = length(cameraDiff);
+		distanceToCam = saturate(distanceToCam / 10);
+		float dither = Dither(distanceToCam, GetNormalizedScreenSpaceUV(input.positionCS.xy));
+		clip(dither);
+
 		
 		if (colorSample.a < 0.1)
 			discard;

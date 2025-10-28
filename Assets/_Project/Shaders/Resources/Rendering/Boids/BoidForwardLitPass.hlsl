@@ -115,6 +115,21 @@ half DepthOnlyFragment(Interpolators input) : SV_TARGET
 	return input.positionCS.z;
 }
 
+float Dither(float In, float2 ScreenPosition)
+{
+	float2 uv = ScreenPosition.xy * _ScreenParams.xy;
+	const float DITHER_THRESHOLDS[16] =
+	{
+		1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
+		13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
+		4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
+		16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
+	};
+	uint index = (uint(uv.x) % 4) * 4 + uint(uv.y) % 4;
+	return In - DITHER_THRESHOLDS[index];
+}
+
+
 // The fragment function. This runs once per fragment, which you can think of as a pixel on the screen
 // It must output the final color of this pixel
 float4 Fragment(Interpolators input) : SV_TARGET{
@@ -123,6 +138,12 @@ float4 Fragment(Interpolators input) : SV_TARGET{
 	// Sample the color map
 	float4 colorSample = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv);
 	half3 l = half3(unity_SHAr.w, unity_SHAg.w, unity_SHAb.w);
+
+	float3 cameraDiff = GetCameraPositionWS() - input.positionWS;
+	float distanceToCam = length(cameraDiff);
+	distanceToCam = saturate(distanceToCam / 10);
+	float dither = Dither(distanceToCam, GetNormalizedScreenSpaceUV(input.positionCS.xy));
+	clip(dither);
 
 	float wing = input.color.r;
 	float beak = input.color.g;
