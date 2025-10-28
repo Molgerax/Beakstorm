@@ -82,6 +82,7 @@ namespace AK
         static const AkUniqueID DOPPLERPITCH = 331339483U;
         static const AkUniqueID PLAYER_HEALTH = 215992295U;
         static const AkUniqueID PLAYER_SPEED = 1062779386U;
+        static const AkUniqueID PLAYER_THRUST = 2560771683U;
         static const AkUniqueID VOLUME_MASTER = 3695994288U;
         static const AkUniqueID VOLUME_MUSIC = 3891337659U;
         static const AkUniqueID VOLUME_SFX = 3673881719U;

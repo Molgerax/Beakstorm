@@ -38,6 +38,7 @@
 						</GameParameter>
 					</ChildrenList>
 				</Folder>
+				<GameParameter Name="player_Thrust" ID="{751E6486-672C-4A53-A4BD-EB7003E08178}"/>
 			</ChildrenList>
 		</WorkUnit>
 	</GameParameters>

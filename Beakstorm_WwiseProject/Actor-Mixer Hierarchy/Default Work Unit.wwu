@@ -4968,7 +4968,7 @@
 												</PropertyList>
 												<ReferenceList>
 													<Reference Name="ControlInput">
-														<ObjectRef Name="player_Speed" ID="{B0151E82-E880-4947-A00B-3878AB2D1C2F}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+														<ObjectRef Name="player_Thrust" ID="{751E6486-672C-4A53-A4BD-EB7003E08178}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
 													</Reference>
 													<Reference Name="Curve">
 														<Custom>
@@ -5003,7 +5003,7 @@
 												</PropertyList>
 												<ReferenceList>
 													<Reference Name="ControlInput">
-														<ObjectRef Name="player_Speed" ID="{B0151E82-E880-4947-A00B-3878AB2D1C2F}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+														<ObjectRef Name="player_Thrust" ID="{751E6486-672C-4A53-A4BD-EB7003E08178}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
 													</Reference>
 													<Reference Name="Curve">
 														<Custom>
