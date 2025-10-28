@@ -15,5 +15,5 @@ MonoBehaviour:
   targetFactions:
   - {fileID: 11400000, guid: be1980ba416d34f41b5a9e8bbc5eff2c, type: 2}
   maxDistance: 500
-  maxAngle: 10
+  maxAngle: 25
   maxTargets: 1
