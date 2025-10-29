@@ -19,6 +19,8 @@ namespace Beakstorm.Gameplay.Enemies
 
             if (projectileInstance.TryGetComponent(out SimpleMovementHandler movementHandler))
                 movementHandler.SetVelocity(direction * initialVelocity);
+            
+            projectileInstance.Spawn();
         }
 
         public override void OnMonoEnable()
