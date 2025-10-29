@@ -97,6 +97,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37bb652e3ccbfe94ab281c0225127c44, type: 3}
+--- !u!1 &3790902515459306472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 33440227797629714, guid: 37bb652e3ccbfe94ab281c0225127c44, type: 3}
+  m_PrefabInstance: {fileID: 3813757740518721786}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7397403829655637481 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5928403842306589971, guid: 37bb652e3ccbfe94ab281c0225127c44, type: 3}
@@ -209,6 +214,30 @@ PrefabInstance:
     - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
       propertyPath: bounds.m_Extent.z
       value: 7.256368
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[4]._Target
+      value: 
+      objectReference: {fileID: 3790902515459306472}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[4]._MemberName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[4]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[4]._PersistentArguments.Array.data[0]._X
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[4]._PersistentArguments.Array.data[0]._Type
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
