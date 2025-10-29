@@ -1829,9 +1829,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - WaveData: {fileID: 11400000, guid: 3e3558c6212db0c45ac2e1e60e07e1f1, type: 2}
-    CalmIndex: 1
-    CalmDuration: 20
   - WaveData: {fileID: 11400000, guid: bb10b09fed61a4748856d79ffab8809d, type: 2}
     CalmIndex: 2
     CalmDuration: 20

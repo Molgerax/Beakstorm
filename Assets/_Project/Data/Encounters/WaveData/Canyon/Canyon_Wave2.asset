@@ -67,3 +67,27 @@ MonoBehaviour:
       Rotation: {x: 0, y: -0.052026097, z: 0, w: 0.9986457}
     waitCondition: 2
     spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: b24d91c0375f5dc438ab053d1c76ceaa, type: 2}
+    transformData:
+      Position: {x: 119.77589, y: 46.84429, z: -359.07758}
+      Rotation: {x: -0.44553354, y: 0.5519633, z: -0.44272336, w: 0.5484819}
+    waitCondition: 2
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: b24d91c0375f5dc438ab053d1c76ceaa, type: 2}
+    transformData:
+      Position: {x: -166.53894, y: 62.69809, z: -474.92902}
+      Rotation: {x: 0.4003603, y: 0.58555555, z: 0.39783508, w: 0.58186215}
+    waitCondition: 2
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: ec9e769268f290b449ee4571a05eabde, type: 2}
+    transformData:
+      Position: {x: 190.01967, y: 73.83821, z: -113.444214}
+      Rotation: {x: -2.9077227e-11, y: 0.042747494, z: -1.2441158e-12, w: -0.9990859}
+    waitCondition: 2
+    spawnDelay: 0
+  - enemy: {fileID: 11400000, guid: ec9e769268f290b449ee4571a05eabde, type: 2}
+    transformData:
+      Position: {x: 208.87685, y: 57, z: 67.00897}
+      Rotation: {x: 0.042747494, y: -0.0000000018685522, z: -0.9990859, w: 0.00000004367143}
+    waitCondition: 2
+    spawnDelay: 0
