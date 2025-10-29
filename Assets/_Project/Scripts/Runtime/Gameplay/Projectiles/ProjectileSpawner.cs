@@ -15,17 +15,34 @@ namespace Beakstorm.Gameplay.Projectiles
             _pool = ProjectileManager.Instance.GetPool(projectilePrefab);
         }
 
-        public void Spawn()
+        public Projectile Spawn()
         {
             Projectile projectile = GetProjectile();
             var t = transform;
             var projectileTransform = projectile.transform;
             projectileTransform.position = t.position;
             projectileTransform.rotation = t.rotation;
+
             projectile.Spawn();
+            return projectile;
         }
 
-        public void SpawnWithScale()
+        public Projectile SpawnWithParent(Transform parent)
+        {
+            Projectile projectile = GetProjectile();
+            var t = transform;
+            parent = parent ? parent : t;
+            
+            var projectileTransform = projectile.transform;
+            projectileTransform.position = t.position;
+            projectileTransform.rotation = t.rotation;
+            projectileTransform.SetParent(parent, true);
+            
+            projectile.Spawn();
+            return projectile;
+        }
+        
+        public Projectile SpawnWithScale()
         {
             Projectile projectile = GetProjectile();
             var t = transform;
@@ -33,6 +50,9 @@ namespace Beakstorm.Gameplay.Projectiles
             projectileTransform.position = t.position;
             projectileTransform.rotation = t.rotation;
             projectileTransform.localScale = t.lossyScale;
+            
+            projectile.Spawn();
+            return projectile;
         }
     }
 }

@@ -43,17 +43,20 @@ namespace Beakstorm.Gameplay.Projectiles
         {
             var projectileInstance = Object.Instantiate(_prefab, _poolParentTransform, true);
             projectileInstance.ObjectPool = _objectPool;
+            projectileInstance.PoolTransform = _poolParentTransform;
             return projectileInstance;
         }
 
         private void OnGetFromPool(Projectile projectile)
         {
+            projectile.ReParentToPoolTransform();
             projectile.gameObject.SetActive(true);
         }
 
         private void OnReleaseToPool(Projectile projectile)
         {
             projectile.gameObject.SetActive(false);
+            projectile.ReParentToPoolTransform();
         }
 
         private void OnDestroyPooledObject(Projectile projectile)
