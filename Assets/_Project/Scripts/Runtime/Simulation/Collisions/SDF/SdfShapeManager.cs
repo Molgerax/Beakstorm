@@ -22,7 +22,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
         [Header("Sdf Atlas")] 
         [SerializeField] private ComputeShader atlasCompute;
         [SerializeField] private Vector3Int atlasResolution;
-        [SerializeField] private RenderTexture sdfAtlasTexture;
+        
+        private RenderTexture sdfAtlasTexture;
 
         private MaterialPropertyBlock _propBlock;
         
@@ -338,6 +339,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             sdfAtlasTexture.volumeDepth = atlasResolution.z;
             sdfAtlasTexture.dimension = TextureDimension.Tex3D;
             sdfAtlasTexture.enableRandomWrite = true;
+            sdfAtlasTexture.name = "ShapeManager_SDFAtlas";
             sdfAtlasTexture.Create();
         }
 
@@ -520,6 +522,16 @@ namespace Beakstorm.Simulation.Collisions.SDF
             public static readonly int SourceTexture = Shader.PropertyToID("_SourceTexture");
             public static readonly int SourceResolution = Shader.PropertyToID("_SourceResolution");
             public static readonly int TransferOffset = Shader.PropertyToID("_TransferOffset");
+        }
+        
+
+        [ContextMenu("Open SDF Atlas")]
+        private void OpenAtlasProperties()
+        {
+            #if UNITY_EDITOR
+            if (sdfAtlasTexture)
+                UnityEditor.EditorUtility.OpenPropertyEditor(sdfAtlasTexture);
+            #endif
         }
     }
 }
