@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e35c576140d60fa409d2076ce1aea69b, type: 3}
+  m_Name: 391ACA4A-5704-4657-92FA-AE6AD59B8D4F
+  m_EditorClassIdentifier: 
+  objectName: play_pheroShoot
+  id: 4261851675
+  guid: 391ACA4A-5704-4657-92FA-AE6AD59B8D4F
+  IsInUserDefinedSoundBank: 1
