@@ -21,21 +21,25 @@ namespace Beakstorm.Simulation.Collisions
         [SerializeField] private bool logDebugInfo = false;
         [SerializeField] private bool logDebugInfoPos = false;
 
+        private const int INIT_BUFFER_SIZE = 16;
+        
         public static WeakPointManager Instance;
         
-        public static List<WeakPoint> WeakPoints = new List<WeakPoint>(16);
+        public static List<WeakPoint> WeakPoints = new List<WeakPoint>(INIT_BUFFER_SIZE);
         public GraphicsBuffer WeakPointBuffer;
         public GraphicsBuffer DamageBuffer;
         private GraphicsBuffer _flushDamageBuffer;
         
-        private WeakPoint[] _weakPoints = new WeakPoint[16];
-        private Vector4[] _weakPointPositions = new Vector4[16];
-        private int _bufferSize = 16;
+        private WeakPoint[] _weakPoints = new WeakPoint[INIT_BUFFER_SIZE];
+        private Vector4[] _weakPointPositions = new Vector4[INIT_BUFFER_SIZE];
+        private int _bufferSize = INIT_BUFFER_SIZE;
 
         private AsyncGPUReadbackRequest _request;
         private NativeArray<int> _damageArray;
 
         private StringBuilder _logBuilder;
+
+        private bool _pauseForResize;
 
         private int WeakPointCount => Mathf.Min(WeakPoints.Count, _bufferSize);
         
@@ -79,6 +83,11 @@ namespace Beakstorm.Simulation.Collisions
             RequestDamageValues();
             
             CollideBoids();
+
+            if (_pauseForResize)
+            {
+                UpdateBufferSize();
+            }
         }
 
         private void UpdatePositions()
@@ -109,6 +118,15 @@ namespace Beakstorm.Simulation.Collisions
 
         private void RequestDamageValues()
         {
+            if (_pauseForResize)
+            {
+                CacheWeakPoints();
+
+                _request = AsyncGPUReadback.RequestIntoNativeArray(ref _damageArray, DamageBuffer);
+                _pauseForResize = false;
+                return;
+            }
+            
             if (_request.done)
             {
                 if (logDebugInfo)
@@ -151,16 +169,21 @@ namespace Beakstorm.Simulation.Collisions
                         FlushDamage();
                 }
                 
-                UpdateBufferSize();
-                CacheWeakPoints();
-                
-                _request = AsyncGPUReadback.RequestIntoNativeArray(ref _damageArray, DamageBuffer);
                 
                 if (logDebugInfo)
                 {
                     Debug.Log(_logBuilder, this);
                     _logBuilder.Clear();
                 }
+                
+                if (WeakPoints.Count > _bufferSize)
+                {
+                    _pauseForResize = true;
+                    return;
+                }
+                
+                CacheWeakPoints();
+                _request = AsyncGPUReadback.RequestIntoNativeArray(ref _damageArray, DamageBuffer);
             }
         }
 
