@@ -7,12 +7,14 @@ namespace Beakstorm.Audio
     {
         [SerializeField] private AK.Wwise.RTPC doppler;
         [SerializeField] private float dopplerFactor = 1f;
-
-        private uint _postId = AkUnitySoundEngine.AK_INVALID_PLAYING_ID;
+        [SerializeField] private GameObject target;
 
         private Vector3 _position;
         private Vector3 _oldPosition;
         private Vector3 _velocity;
+        
+        private GameObject Target => target ? target : gameObject;
+
 
         private void Update()
         {
@@ -31,7 +33,7 @@ namespace Beakstorm.Audio
             float dopplerPitch = CalculateDoppler(PlayerController.Instance.Position, PlayerController.Instance.Velocity,
                 _position, _velocity, dopplerFactor);
 
-            doppler.SetValue(gameObject, dopplerPitch);
+            doppler.SetValue(Target, dopplerPitch);
         }
         
         private void UpdatePosition()
