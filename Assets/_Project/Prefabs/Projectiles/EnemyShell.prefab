@@ -86,6 +86,51 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2153443624255472408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2333425008883805666}
+  - component: {fileID: 3850381949816390477}
+  m_Layer: 0
+  m_Name: Trail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2333425008883805666
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2153443624255472408}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3643450096948898207}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3850381949816390477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2153443624255472408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3daa6d24e74704d87897518dbdd473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 2167621570866657911, guid: d2731b1c02496264396a0bdf35f8efd2, type: 3}
 --- !u!1 &7264894178766051763
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,6 +167,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4485577773283016394}
+  - {fileID: 2333425008883805666}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5012512307083224738
@@ -139,6 +185,11 @@ MonoBehaviour:
   defaultCapacity: 16
   maximumCapacity: 16
   onSpawn:
+    _PersistentCalls:
+    - _Target: {fileID: 3850381949816390477}
+      _MemberName: Spawn
+      _PersistentArguments: []
+  onDetach:
     _PersistentCalls: []
 --- !u!114 &8417193104476582687
 MonoBehaviour:
@@ -156,9 +207,13 @@ MonoBehaviour:
   resetOnDisable: 1
   onTimerElapsed:
     _PersistentCalls:
+    - _Target: {fileID: 3850381949816390477}
+      _MemberName: Detach
+      _PersistentArguments: []
     - _Target: {fileID: 5012512307083224738}
       _MemberName: Deactivate
       _PersistentArguments: []
+  autoStart: 1
 --- !u!114 &238433144582504019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 5
-  drag: 0.005
+  drag: 0
 --- !u!54 &-5033398536401664210
 Rigidbody:
   m_ObjectHideFlags: 0
