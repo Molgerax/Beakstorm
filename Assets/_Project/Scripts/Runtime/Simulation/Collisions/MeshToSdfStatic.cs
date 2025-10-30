@@ -27,11 +27,11 @@ namespace Beakstorm.Simulation.Collisions
             Init();
         }
         
-        public MeshToSdfStatic(ComputeShader cs, RenderTexture sdf, InputArgs args, SkinnedMeshRenderer skinnedMeshRenderer)
+        public MeshToSdfStatic(ComputeShader cs, RenderTexture sdf, InputArgs args, MeshCollider meshCollider)
         {
             SetFromArgs(args);
             m_Compute = cs;
-            m_SkinnedMeshRenderer = skinnedMeshRenderer;
+            m_MeshCollider = meshCollider;
             _sdfTexture = sdf;
             
             Init();
@@ -149,7 +149,10 @@ If you need signed distance or just need a limited shell around your surface, us
 
         SkinnedMeshRenderer m_SkinnedMeshRenderer = null;
         MeshFilter m_MeshFilter = null;
+        MeshCollider m_MeshCollider = null;
 
+        private Transform GetTransform => m_MeshCollider ? m_MeshCollider.transform : m_MeshFilter.transform;
+        
         ComputeBuffer m_SDFBuffer = null;
         ComputeBuffer m_SDFBufferBis = null;
         ComputeBuffer m_JumpBuffer = null;
@@ -311,7 +314,7 @@ If you need signed distance or just need a limited shell around your surface, us
             cmd.SetComputeFloatParam(m_Compute, Uniforms._MaxDistance, maxDistance);
             cmd.SetComputeFloatParam(m_Compute, Uniforms.INITIAL_DISTANCE, maxDistance * 1.01f);
             cmd.SetComputeMatrixParam(m_Compute, Uniforms._WorldToLocal, 
-                GetMeshToSDFMatrix(m_MeshFilter ? m_MeshFilter.transform : m_SkinnedMeshRenderer.transform));
+                GetMeshToSDFMatrix(GetTransform));
 
             // Last FloodStep should finish writing into m_SDFBufferBis, so that we always end up
             // writing to m_SDFBuffer in FinalizeFlood
@@ -448,6 +451,13 @@ If you need signed distance or just need a limited shell around your surface, us
                 if (mesh == null)
                     return false;
                 m_SkinnedMeshRenderer.vertexBufferTarget |= GraphicsBuffer.Target.Raw;
+            }
+            else if (m_MeshCollider != null)
+            {
+                mesh = m_MeshCollider.sharedMesh;
+                if (mesh == null)
+                    return false;
+                mesh.vertexBufferTarget |= GraphicsBuffer.Target.Raw;
             }
             else if (m_MeshFilter != null)
             {

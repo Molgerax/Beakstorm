@@ -1,4 +1,5 @@
 using System;
+using Beakstorm.ComputeHelpers;
 using Beakstorm.Core.Attributes;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,13 +10,21 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
     public class SdfTextureField : AbstractSdfShape, IComparable
     {
         [SerializeField] private ComputeShader cs;
-        [SerializeField] private MeshFilter meshFilter;
-        [SerializeField] private MeshRenderer meshRenderer;
-
+        [SerializeField] private ComputeShader combineSdfCs;
+        [SerializeField] private GameObject parent;
+        
         [SerializeField]
         [PowerOfTwo(4, 64)] private int resolution = 32;
 
+
+        [SerializeField] private bool allMeshChildren;
+
+        private GameObject Target => parent ? parent : gameObject;
+        
         private RenderTexture _sdfTexture;
+        private MeshCollider[] _meshColliders;
+
+        private Bounds _cachedBounds;
         
         protected override SdfShapeType Type() => SdfShapeType.Texture;
      
@@ -32,17 +41,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             Init();
         }
 
-        private void Reset()
-        {
-            if (!meshFilter)
-                meshFilter = GetComponent<MeshFilter>();
-            if (!meshRenderer)
-                meshRenderer = GetComponent<MeshRenderer>();
-        }
-
         private void Init()
         {
-            _sdfTexture = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.ARGBFloat);
+            _sdfTexture = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.RFloat);
             _sdfTexture.volumeDepth = resolution;
             _sdfTexture.dimension = TextureDimension.Tex3D;
             _sdfTexture.enableRandomWrite = true;
@@ -55,9 +56,67 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         [ContextMenu("Bake")]
         public void Bake()
         {
-            if (!meshFilter)
+            if (!allMeshChildren)
+            {
+                if (Target.TryGetComponent(out MeshFilter meshFilter) && Target.TryGetComponent(out MeshRenderer meshRenderer))
+                {
+                    Bounds bounds = CalculateBounds(meshRenderer.bounds);
+                    float voxelSize = GetVoxelSize(bounds);
+                    BakeSingleMesh(_sdfTexture, meshFilter, bounds, voxelSize);
+
+                    _cachedBounds = bounds;
+                }
                 return;
-        
+            }
+
+
+            _meshColliders = Target.GetComponentsInChildren<MeshCollider>();
+            if (_meshColliders == null || _meshColliders.Length == 0)
+                return;
+            
+            Bounds allBounds = new Bounds();
+            bool init = false;
+            foreach (MeshCollider meshCollider in _meshColliders)
+            {
+                if (!init)
+                {
+                    allBounds = meshCollider.bounds;
+                    init = true;
+                }
+
+                allBounds.Encapsulate(meshCollider.bounds);
+            }
+
+            allBounds = CalculateBounds(allBounds);
+            float allVoxelSize = GetVoxelSize(allBounds);
+
+            _cachedBounds = allBounds;
+            
+            combineSdfCs.SetInt(PropertyIDs.Resolution, resolution);
+            combineSdfCs.SetTexture(0, PropertyIDs.TextureWrite, _sdfTexture);
+            combineSdfCs.DispatchExact(0, Resolution);
+            
+            RenderTexture tempSdf = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.RFloat);
+            tempSdf.volumeDepth = resolution;
+            tempSdf.dimension = TextureDimension.Tex3D;
+            tempSdf.enableRandomWrite = true;
+            tempSdf.name = gameObject.name + "_SDF";
+            tempSdf.Create();
+
+            foreach (MeshCollider meshCollider in _meshColliders)
+            {
+                BakeSingleMesh(tempSdf, meshCollider, allBounds, allVoxelSize);
+                
+                combineSdfCs.SetTexture(1, PropertyIDs.TextureRead, tempSdf);
+                combineSdfCs.SetTexture(1, PropertyIDs.TextureWrite, _sdfTexture);
+                combineSdfCs.DispatchExact(1, Resolution);
+            }
+            
+            tempSdf.Release();
+        }
+
+        private void BakeSingleMesh(RenderTexture texture, MeshFilter filter, Bounds bounds, float voxelSize)
+        {
             MeshToSdfStatic.InputArgs args = new MeshToSdfStatic.InputArgs();
             args.Offset = 0;
             args.Quality = MeshToSdfStatic.FloodFillQuality.Ultra;
@@ -65,10 +124,27 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             args.FloodMode = MeshToSdfStatic.FloodMode.Linear;
             args.Resolution = Resolution;
             args.DistanceMode = MeshToSdfStatic.DistanceMode.Signed;
-            args.Bounds = CalculateBounds();
-            args.VoxelSize = GetVoxelSize();
+            args.Bounds = bounds;
+            args.VoxelSize = voxelSize;
 
-            MeshToSdfStatic meshToSdf = new MeshToSdfStatic(cs, _sdfTexture, args, meshFilter);
+            MeshToSdfStatic meshToSdf = new MeshToSdfStatic(cs, texture, args, filter);
+            meshToSdf.UpdateSDF();
+            meshToSdf.Dispose();
+        }
+        
+        private void BakeSingleMesh(RenderTexture texture, MeshCollider meshCollider, Bounds bounds, float voxelSize)
+        {
+            MeshToSdfStatic.InputArgs args = new MeshToSdfStatic.InputArgs();
+            args.Offset = 0;
+            args.Quality = MeshToSdfStatic.FloodFillQuality.Ultra;
+            args.FillIterations = 64;
+            args.FloodMode = MeshToSdfStatic.FloodMode.Linear;
+            args.Resolution = Resolution;
+            args.DistanceMode = MeshToSdfStatic.DistanceMode.Signed;
+            args.Bounds = bounds;
+            args.VoxelSize = voxelSize;
+
+            MeshToSdfStatic meshToSdf = new MeshToSdfStatic(cs, texture, args, meshCollider);
             meshToSdf.UpdateSDF();
             meshToSdf.Dispose();
         }
@@ -84,22 +160,18 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         private void Update()
         {
-            if (!meshRenderer)
-                return;
-        
-            var bounds = CalculateBounds();
+            Bounds bounds = _cachedBounds;
             float3 pos = bounds.center;
             float3 scale = bounds.size;
             float3 data = new float3(_startVoxel.x, _startVoxel.y, _startVoxel.z) + 0.5f;
-            float3 res = new float3(Resolution.x, Resolution.y, Resolution.z) + 0.5f; 
-            
-            
+            float3 res = new float3(Resolution.x, Resolution.y, Resolution.z) + 0.5f;
+
             _sdfData = new AbstractSdfData(scale, res, 0, pos, data, GetTypeData());
         }
 
-        private Bounds CalculateBounds()
+        private Bounds CalculateBounds(Bounds b)
         {
-            Bounds bounds = meshRenderer.bounds;
+            Bounds bounds = b;
             //bounds.size += Vector3.one;
             
             int longestAxis = LongestAxis(bounds.size);
@@ -111,9 +183,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             return bounds;
         }
 
-        private float GetVoxelSize()
+        private float GetVoxelSize(Bounds bounds)
         {
-            Bounds b = CalculateBounds();
+            Bounds b = CalculateBounds(bounds);
             int longestAxis = LongestAxis(b.size);
             return (b.size[longestAxis]) / resolution;
         }
@@ -130,7 +202,6 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         public void OnDrawGizmos()
         {
             Gizmos.color = new(1, 0, 0, 0.5f);
-            var bounds = meshRenderer.bounds;
             Gizmos.DrawWireCube((_boundsMin + _boundsMax) / 2, _boundsMax - _boundsMin);
         }
         
@@ -174,6 +245,14 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             if (a.resolution > b.resolution)
                 return -1;
             return 0;
+        }
+
+
+        private class PropertyIDs
+        {
+            public static readonly int TextureRead = Shader.PropertyToID("_TextureRead");
+            public static readonly int TextureWrite = Shader.PropertyToID("_TextureWrite");
+            public static readonly int Resolution = Shader.PropertyToID("_Resolution");
         }
     }
 }

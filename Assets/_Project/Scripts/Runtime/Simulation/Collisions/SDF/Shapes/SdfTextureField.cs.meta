@@ -5,9 +5,9 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - cs: {fileID: 7200000, guid: 21a034c7a3ab6be46873a82e0d02ec7b, type: 3}
+  - combineSdfCs: {fileID: 7200000, guid: fee8b22a1f8f4c34dae66920cd96771a, type: 3}
   - meshFilter: {instanceID: 0}
   - meshRenderer: {instanceID: 0}
-  - sdfTexture: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

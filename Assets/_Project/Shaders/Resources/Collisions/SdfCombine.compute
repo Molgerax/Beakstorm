@@ -1,0 +1,32 @@
+#pragma kernel Clear
+#pragma kernel Combine
+
+#define THREAD_GROUP_SIZE 4
+
+Texture3D<float> _TextureRead;
+
+RWTexture3D<float> _TextureWrite;
+uint3 _Resolution;
+
+
+[numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
+void Clear (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _Resolution.x || id.y >= _Resolution.y || id.z >= _Resolution.z)
+        return;
+    _TextureWrite[id.xyz] = 10000;
+}
+
+[numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
+void Combine (uint3 id : SV_DispatchThreadID)
+{
+    const uint3 voxel = id;
+    
+    if (id.x >= _Resolution.x || id.y >= _Resolution.y || id.z >= _Resolution.z)
+        return;
+
+    float read = _TextureRead[id];
+    float write = _TextureWrite[id];
+    
+    _TextureWrite[voxel] = min(read, write);
+}
