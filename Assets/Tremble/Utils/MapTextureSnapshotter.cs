@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using Debug = UnityEngine.Debug;
-
+using Object = UnityEngine.Object;
 #if HDRP_INSTALLED
 using File = System.IO.File;
 #endif
@@ -232,11 +232,16 @@ namespace TinyGoose.Tremble
 					}
 #endif
 
+					Material blitMat = new Material(Shader.Find("Hidden/BlitWithMainColor"));
+					blitMat.color = m.color;
+
 					// Else we make a copy to resize
 					m_Camera.targetTexture = null;
 					GL.sRGBWrite = true;
-					Graphics.Blit(mainTex, tex.RenderTextureSrgb);
+					Graphics.Blit(mainTex, tex.RenderTextureSrgb, blitMat);
 
+					Object.DestroyImmediate(blitMat);
+					
 					RenderTexture.active = tex.RenderTextureSrgb;
 
 					// Copy texture from RT
