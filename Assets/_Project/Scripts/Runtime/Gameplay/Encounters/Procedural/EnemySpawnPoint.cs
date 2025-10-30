@@ -7,11 +7,20 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 {
     public class EnemySpawnPoint : MonoBehaviour, IEnemySpawnData
     {
-        [SerializeField] public EnemySO enemy;
-        [SerializeField, Min(0)] public float spawnDelay;
+        [SerializeField] private EnemySO enemy;
+        [SerializeField, Min(0)] private int waveIndex;
+        [SerializeField, Min(0)] private float spawnDelay;
 
+        public void Init(EnemySO enemy, int waveIndex, float spawnDelay)
+        {
+            this.enemy = enemy;
+            this.waveIndex = waveIndex;
+            this.spawnDelay = spawnDelay;
+        }
+        
         public bool IsValid => enemy;
-
+        public int WaveIndex => waveIndex;
+        
         public EnemySO Enemy => enemy;
         public TransformData TransformData => new (transform);
         public EnemySpawnDataEntry.WaitCondition WaitCondition => EnemySpawnDataEntry.WaitCondition.WaitForDelay;
