@@ -192,6 +192,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: enemySo
+      value: 
+      objectReference: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
       propertyPath: bounds.m_Center.x
       value: 0.00000047683716
       objectReference: {fileID: 0}
