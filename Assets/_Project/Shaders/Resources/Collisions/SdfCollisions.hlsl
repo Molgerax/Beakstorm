@@ -49,7 +49,7 @@ float3 clampSamplePos(float3 uvw, float3 startVoxel, float3 resolution)
     //pos = lerp(startVoxel + 0.5, startVoxel + resolution - 0.5, uvw);
 
     pos = startVoxel - 0.5 + (resolution - 1) * uvw;
-    //pos = startVoxel + (resolution) * uvw;
+    pos = startVoxel + (resolution) * uvw;
     
     pos = clamp(pos, startVoxel + 0.5, startVoxel + resolution - 0.5);
     
