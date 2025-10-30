@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 9ad6c3317444439e821b6999629b97e0
+timeCreated: 1711965846
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Editor/Utils/ModTimeDB.cs
+  uploadId: 797178

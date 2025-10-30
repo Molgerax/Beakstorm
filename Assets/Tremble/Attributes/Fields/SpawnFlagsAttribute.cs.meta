@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 0102725e5aa1439cbb30a9675ce4513d
+timeCreated: 1705750006
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Attributes/Fields/SpawnFlagsAttribute.cs
+  uploadId: 797178

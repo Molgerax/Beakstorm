@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 46547fc395b804663b8dac6d491327f6
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Sample/Materials/Colours/M_Green.mat
+  uploadId: 797178

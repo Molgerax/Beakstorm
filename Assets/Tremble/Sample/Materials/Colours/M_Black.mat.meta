@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3f1c092690d8f42b88ea7f2abef724db
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Sample/Materials/Colours/M_Black.mat
+  uploadId: 797178

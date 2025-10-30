@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 267ae928b4a54d1e8a4e47c20016b646
+timeCreated: 1710148829
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/FieldConverters/ScriptableObjectFieldConverter.cs
+  uploadId: 797178

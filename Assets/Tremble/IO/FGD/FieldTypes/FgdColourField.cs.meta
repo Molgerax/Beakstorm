@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: d14b410b2bd14d4e8a9a0b9e4cc5d984
+timeCreated: 1712223272
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/IO/FGD/FieldTypes/FgdColourField.cs
+  uploadId: 797178

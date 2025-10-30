@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: eaf1a772c03e4686be2389348cf42bf1
+timeCreated: 1722851222
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Editor/EditorUI/Editors/WadAssetImporterEditor.cs
+  uploadId: 797178

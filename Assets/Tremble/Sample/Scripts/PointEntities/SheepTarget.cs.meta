@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: a9e1cf156af448569dcbf2ab86177ea8
+timeCreated: 1708859034
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Sample/Scripts/PointEntities/SheepTarget.cs
+  uploadId: 797178

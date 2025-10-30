@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6a19fd6d39c9e400dbeb78ddc48b82e0
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Sample/Data/Player_NoBrakes.asset
+  uploadId: 797178

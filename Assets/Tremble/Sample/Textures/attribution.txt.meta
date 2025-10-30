@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e5e843a438bc04c388f5e5a33e2260f0
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Sample/Textures/attribution.txt
+  uploadId: 797178

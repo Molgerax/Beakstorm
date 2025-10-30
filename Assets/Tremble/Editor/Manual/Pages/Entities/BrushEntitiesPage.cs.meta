@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 468269cf35e449789a6062b8bcf8066f
+timeCreated: 1723201757
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Editor/Manual/Pages/Entities/BrushEntitiesPage.cs
+  uploadId: 797178

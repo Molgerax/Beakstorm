@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b3806920a91d5469f8c9ef060771e83b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/IO/FGD/FgdFieldFactory.cs
+  uploadId: 797178

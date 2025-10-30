@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 4b44834781104ac6941bd9a435d8dae3
+timeCreated: 1710152777
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Types/WorldspawnScript.cs
+  uploadId: 797178

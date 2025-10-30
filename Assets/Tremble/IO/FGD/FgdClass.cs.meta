@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: e3de2d23101644c9a58c281bfcca7eae
+timeCreated: 1709808579
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/IO/FGD/FgdClass.cs
+  uploadId: 797178

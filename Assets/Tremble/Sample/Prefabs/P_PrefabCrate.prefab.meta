@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: eb430d64d109e4b01a770351bb7a3f7b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Sample/Prefabs/P_PrefabCrate.prefab
+  uploadId: 797178

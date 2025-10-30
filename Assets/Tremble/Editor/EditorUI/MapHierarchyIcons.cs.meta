@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 986da32076bc407e9d805d1b0de7da27
+timeCreated: 1713948862
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Editor/EditorUI/MapHierarchyIcons.cs
+  uploadId: 797178

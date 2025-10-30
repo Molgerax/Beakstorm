@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: ab6c6d9d07924bbebafee07655e56466
+timeCreated: 1740748009
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Types/TwoWayDictionary.cs
+  uploadId: 797178

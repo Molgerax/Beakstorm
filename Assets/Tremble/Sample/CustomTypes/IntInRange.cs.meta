@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 0769e233a0b04399bc464eef3047c6fd
+timeCreated: 1708853787
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Sample/CustomTypes/IntInRange.cs
+  uploadId: 797178

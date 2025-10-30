@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1361d123a716144e685abb31c8d00ea4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Sample/Materials/M_FloorConcrete.mat
+  uploadId: 797178
