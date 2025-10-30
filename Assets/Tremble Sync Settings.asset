@@ -354,10 +354,16 @@ MonoBehaviour:
     m_ResolutionX: 2
     m_ResolutionY: 2
     m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
   m_PipelineSplitMesh: 1
   m_PipelineSmoothMeshNormals: 1
   m_PipelineSimplifyCollisionMeshes: 1
-  m_PipelineUnwrapUV2: 1
+  m_PipelineUnwrapUV2: 0
   m_PipelineRunMapProcessors: 1
   m_MapProcessors: []
   m_LogOnImportAndSync: 0
@@ -385,36 +391,41 @@ MonoBehaviour:
   m_ExportClipSkipTextures: 1
   m_ImportScale: 0.0625
   m_AssetMetadatas:
-  - MapName: sampleprefab_P_Player
-    Path: Assets/Tremble/Sample/Prefabs/P_Player.prefab
+  - MapName: enemy_Bunker
+    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/Bunker.prefab
     FullTypeName: UnityEngine.GameObject
-    AddressableName: P_Player
-    SpawnOffset: {x: -0, y: -0, z: -0}
-  - MapName: sampleprefab_P_PrefabCrate
-    Path: Assets/Tremble/Sample/Prefabs/P_PrefabCrate.prefab
+    AddressableName: Bunker
+    SpawnOffset: {x: -0, y: -9.8985, z: -0}
+  - MapName: enemy_LargeEnemy
+    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/LargeEnemy.prefab
     FullTypeName: UnityEngine.GameObject
-    AddressableName: P_PrefabCrate
-    SpawnOffset: {x: 0.0017999411, y: -0, z: -0}
-  - MapName: Player_Fast
-    Path: Assets/Tremble/Sample/Data/Player_Fast.asset
-    FullTypeName: TinyGoose.Tremble.Sample.PlayerData
-    AddressableName: Player_Fast
-    SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: Player_NoBrakes
-    Path: Assets/Tremble/Sample/Data/Player_NoBrakes.asset
-    FullTypeName: TinyGoose.Tremble.Sample.PlayerData
-    AddressableName: Player_NoBrakes
-    SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: Player_Normal
-    Path: Assets/Tremble/Sample/Data/Player_Normal.asset
-    FullTypeName: TinyGoose.Tremble.Sample.PlayerData
-    AddressableName: Player_Normal
-    SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: Player_NoTurn
-    Path: Assets/Tremble/Sample/Data/Player_NoTurn.asset
-    FullTypeName: TinyGoose.Tremble.Sample.PlayerData
-    AddressableName: Player_NoTurn
-    SpawnOffset: {x: 0, y: 0, z: 0}
+    AddressableName: LargeEnemy
+    SpawnOffset: {x: -0, y: -4.5003567, z: -0}
+  - MapName: enemy_MediumEnemy
+    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/MediumEnemy.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: MediumEnemy
+    SpawnOffset: {x: -0.0000038146973, y: -12.047838, z: -3.904602}
+  - MapName: enemy_ShieldedEnemy
+    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/ShieldedEnemy.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: ShieldedEnemy
+    SpawnOffset: {x: -0, y: -8.219999, z: -0}
+  - MapName: enemy_SimpleTurret
+    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/SimpleTurret.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: SimpleTurret
+    SpawnOffset: {x: -0, y: -9.400002, z: -0}
+  - MapName: enemy_SmallEnemy
+    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/SmallEnemy.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: SmallEnemy
+    SpawnOffset: {x: -0, y: -7.0047092, z: -0}
+  - MapName: enemy_SmallEnemy_Gun
+    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/SmallEnemy_Gun.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: SmallEnemy_Gun
+    SpawnOffset: {x: -0.00000047683716, y: -5.124563, z: -0.00000047683716}
   - MapName: Mapping/Mapping_Base
     Path: Assets/_Project/Materials/Mapping/Mapping_Base.mat
     FullTypeName: UnityEngine.Material
@@ -425,23 +436,53 @@ MonoBehaviour:
     FullTypeName: UnityEngine.Material
     AddressableName: Mapping_Base_Red
     SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: M_SimpleBlue
-    Path: Assets/Tremble/Sample/Materials/Colours/M_SimpleBlue.mat
+  - MapName: Lit
+    Path: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: M_SimpleBlue
+    AddressableName: Lit
     SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: M_White
-    Path: Assets/Tremble/Sample/Materials/Colours/M_White.mat
+  - MapName: WeakPoint_Cloth
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Cloth.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: M_White
+    AddressableName: WeakPoint_Cloth
     SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: M_Black
-    Path: Assets/Tremble/Sample/Materials/Colours/M_Black.mat
+  - MapName: m_rope
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_rope.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: M_Black
+    AddressableName: m_rope
     SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: M_FloorBrick
-    Path: Assets/Tremble/Sample/Materials/M_FloorBrick.mat
+  - MapName: WeakPoint_Socket_MetalAccent
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_MetalAccent.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: M_FloorBrick
+    AddressableName: WeakPoint_Socket_MetalAccent
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Mat
+    Path: Assets/_Project/Materials/Test/WeakPoint_Mat.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: WeakPoint_Mat
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_metal
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_metal
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Socket_Metal
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_Metal.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: WeakPoint_Socket_Metal
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_ShipMedium
+    Path: Assets/_Project/Art/Materials/m_ShipMedium.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_ShipMedium
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_ShipGlass
+    Path: Assets/_Project/Art/Materials/m_ShipGlass.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_ShipGlass
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_metal_accent
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal_accent.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_metal_accent
     SpawnOffset: {x: 0, y: 0, z: 0}
