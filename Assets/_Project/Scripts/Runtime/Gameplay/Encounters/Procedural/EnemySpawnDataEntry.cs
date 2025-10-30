@@ -6,13 +6,23 @@ using UnityEngine;
 namespace Beakstorm.Gameplay.Encounters.Procedural
 {
     [System.Serializable]
-    public struct EnemySpawnDataEntry
+    public struct EnemySpawnDataEntry : IEnemySpawnData
     {
-        [SerializeField] public EnemySO enemy;
-        [SerializeField] public TransformData transformData;
+        [SerializeField] private EnemySO enemy;
+        [SerializeField] private TransformData transformData;
+        [SerializeField] private WaitCondition waitCondition;
+        [SerializeField] private float spawnDelay;
 
-        [SerializeField] public WaitCondition waitCondition;
-        [SerializeField] public float spawnDelay;
+        public EnemySO Enemy => enemy;
+
+        public TransformData TransformData
+        {
+            get => transformData;
+            set => transformData = value;
+        }
+
+        WaitCondition IEnemySpawnData.WaitCondition => waitCondition;
+        public float SpawnDelay => spawnDelay;
 
         public bool IsValid => enemy;
         

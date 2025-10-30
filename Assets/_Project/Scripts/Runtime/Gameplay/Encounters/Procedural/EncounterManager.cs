@@ -47,7 +47,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             }
         }
 
-        public bool BeginWave(WaveDataSO waveData)
+        public bool BeginWave(IWaveData waveData)
         {
             if (IsWaveActive)
                 return false;
