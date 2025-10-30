@@ -1775,9 +1775,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materialType: 2
   cs: {fileID: 7200000, guid: 21a034c7a3ab6be46873a82e0d02ec7b, type: 3}
+  combineSdfCs: {fileID: 7200000, guid: fee8b22a1f8f4c34dae66920cd96771a, type: 3}
   meshFilter: {fileID: 1048069027}
   meshRenderer: {fileID: 1048069026}
   resolution: 32
+  allMeshChildren: 0
 --- !u!1 &1088745442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1829,6 +1831,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
+  - WaveData: {fileID: 11400000, guid: 3e3558c6212db0c45ac2e1e60e07e1f1, type: 2}
+    CalmIndex: 1
+    CalmDuration: 5
   - WaveData: {fileID: 11400000, guid: bb10b09fed61a4748856d79ffab8809d, type: 2}
     CalmIndex: 2
     CalmDuration: 20
