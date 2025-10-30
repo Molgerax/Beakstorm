@@ -25,7 +25,18 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         private MeshCollider[] _meshColliders;
 
         private Bounds _cachedBounds;
-        
+        private Vector3 _cachedPos;
+
+        private Bounds MovedBounds
+        {
+            get
+            {
+                Bounds b = _cachedBounds;
+                b.center += (Target.transform.position - _cachedPos);
+                return b;
+            }
+        }
+
         protected override SdfShapeType Type() => SdfShapeType.Texture;
      
         public Vector3Int Resolution => Vector3Int.one * resolution;
@@ -65,6 +76,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
                     BakeSingleMesh(_sdfTexture, meshFilter, bounds, voxelSize);
 
                     _cachedBounds = bounds;
+                    _cachedPos = Target.transform.position;
                 }
                 return;
             }
@@ -91,6 +103,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             float allVoxelSize = GetVoxelSize(allBounds);
 
             _cachedBounds = allBounds;
+            _cachedPos = Target.transform.position;
             
             combineSdfCs.SetInt(PropertyIDs.Resolution, resolution);
             combineSdfCs.SetTexture(0, PropertyIDs.TextureWrite, _sdfTexture);
@@ -152,7 +165,10 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         protected override void OnDisable()
         {
             if (_sdfTexture)
+            {
                 _sdfTexture.Release();
+                CoreUtils.Destroy(_sdfTexture);
+            }
             _sdfTexture = null;
             
             base.OnDisable();
@@ -160,11 +176,14 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         private void Update()
         {
-            Bounds bounds = _cachedBounds;
+            Bounds bounds = MovedBounds;
             float3 pos = bounds.center;
             float3 scale = bounds.size;
             float3 data = new float3(_startVoxel.x, _startVoxel.y, _startVoxel.z) + 0.5f;
             float3 res = new float3(Resolution.x, Resolution.y, Resolution.z) + 0.5f;
+            
+            _boundsMin = bounds.min;
+            _boundsMax = bounds.max;
 
             _sdfData = new AbstractSdfData(scale, res, 0, pos, data, GetTypeData());
         }
@@ -178,14 +197,12 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             float voxelSize = (bounds.size[longestAxis]) / Resolution[longestAxis];
             bounds = new Bounds(bounds.center, ((Vector3)Resolution + Vector3.one * 2) * voxelSize);
             
-            _boundsMin = bounds.min;
-            _boundsMax = bounds.max;
             return bounds;
         }
 
         private float GetVoxelSize(Bounds bounds)
         {
-            Bounds b = CalculateBounds(bounds);
+            Bounds b = bounds;// CalculateBounds(bounds);
             int longestAxis = LongestAxis(b.size);
             return (b.size[longestAxis]) / resolution;
         }
@@ -201,8 +218,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         public void OnDrawGizmos()
         {
+            Bounds b = MovedBounds;
             Gizmos.color = new(1, 0, 0, 0.5f);
-            Gizmos.DrawWireCube((_boundsMin + _boundsMax) / 2, _boundsMax - _boundsMin);
+            Gizmos.DrawWireCube(b.center, b.size);
         }
         
         
