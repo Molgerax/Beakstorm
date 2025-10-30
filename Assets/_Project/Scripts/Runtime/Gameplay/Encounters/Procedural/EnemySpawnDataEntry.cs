@@ -34,14 +34,6 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             this.waitCondition = waitCondition;
         }
 
-
-        public EnemyController Spawn()
-        {
-            EnemyController e = enemy.GetEnemyInstance();
-            e.Spawn(transformData);
-            return e;
-        }
-
         public async UniTask GetWaitCondition(CancellationToken token)
         {
             if (waitCondition == WaitCondition.Null)

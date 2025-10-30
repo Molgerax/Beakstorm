@@ -15,6 +15,11 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         public UniTask GetWaitCondition(CancellationToken token);
 
-        public EnemyController Spawn();
+        public EnemyController Spawn()
+        {
+            EnemyController e = Enemy.GetEnemyInstance();
+            e.Spawn(TransformData);
+            return e;
+        }
     }
 }
