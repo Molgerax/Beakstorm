@@ -15,6 +15,9 @@ float _AvoidDistance;
 float _NoiseStrength;
 float _NoiseScale;
 
+float3 _SpawnBoundsCenter;
+float3 _SpawnBoundsSize;
+
 
 RWStructuredBuffer<float3> _PositionBuffer;
 RWStructuredBuffer<float3> _OldPositionBuffer;

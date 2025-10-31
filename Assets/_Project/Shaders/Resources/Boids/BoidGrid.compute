@@ -548,6 +548,17 @@ void Update (uint3 id : SV_DispatchThreadID)
     _BoidBuffer[index] = boid;
 }
 
+float3 GetSpawnPosition(uint index, uint count, float3 size)
+{
+    size = max(size, 1);
+    float volume = abs(size.x * size.y * size.z);
+    float pointVolume = volume / count;
+    float length = pow(pointVolume, 1.0 / 3.0);
+    uint3 dimensions = max(1, ceil(size / length));
+    int3 newId = Index1Dto3D(index, dimensions);
+    return (newId + 0.5) / (dimensions);
+}
+
 [numthreads(THREAD_BLOCK_SIZE, 1, 1)]
 void Init(uint3 id : SV_DispatchThreadID)
 {
@@ -573,8 +584,12 @@ void Init(uint3 id : SV_DispatchThreadID)
     offset = 0;
     offset = -128;
     offset.xz = ((float2)(newId.xy + 0.5) / sideLength - 0.5) * 256; 
+
+    float3 spawnPos = offset + _WorldPos;
+    spawnPos = _SpawnBoundsCenter +
+        _SpawnBoundsSize * (GetSpawnPosition(index,_AgentCount, _SpawnBoundsSize) - 0.5);
     
-    float3 currentPosition = offset + _WorldPos;
+    float3 currentPosition = spawnPos;
     float3 currentNormal = _WorldMatrix._m10_m11_m12;
     float3 currentVelocity = _WorldMatrix._m20_m21_m22 * GetMaxSpeed(index);
 

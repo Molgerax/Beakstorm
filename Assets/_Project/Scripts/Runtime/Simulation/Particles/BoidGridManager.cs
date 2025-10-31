@@ -1,5 +1,6 @@
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Pausing;
+using Beakstorm.SceneManagement;
 using Beakstorm.Simulation.Collisions;
 using Beakstorm.Simulation.Collisions.SDF;
 using Beakstorm.Utility;
@@ -201,7 +202,11 @@ namespace Beakstorm.Simulation.Particles
 
             boidComputeShader.SetFloat(PropertyIDs.Time, Time.time);
             boidComputeShader.SetFloat(PropertyIDs.DeltaTime, timeStep);
-            
+
+            Bounds spawnBounds = BoidSpawnArea.SpawnBounds;
+            boidComputeShader.SetVector(PropertyIDs.SpawnBoundsCenter, spawnBounds.center);
+            boidComputeShader.SetVector(PropertyIDs.SpawnBoundsSize, spawnBounds.size);
+
             boidComputeShader.SetFloat(PropertyIDs.AvoidDistance, avoidDistance);
             boidComputeShader.SetFloat(PropertyIDs.NoiseStrength, noiseStrength);
             boidComputeShader.SetFloat(PropertyIDs.NoiseScale, noiseScale);
@@ -326,6 +331,8 @@ namespace Beakstorm.Simulation.Particles
             public static readonly int AttractorBuffer = Shader.PropertyToID("_AttractorBuffer");
             public static readonly int AttractorCount = Shader.PropertyToID("_AttractorCount");
 
+            public static readonly int SpawnBoundsCenter = Shader.PropertyToID("_SpawnBoundsCenter");
+            public static readonly int SpawnBoundsSize = Shader.PropertyToID("_SpawnBoundsSize");
         }
     }
 }
