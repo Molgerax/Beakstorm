@@ -12,6 +12,8 @@ namespace Beakstorm.Mapping.Tremble
         [SerializeField] private int waveIndex = 0;
         [SerializeField] private float spawnDelay = 0;
 
+        [Tremble("target")] private WaveData _waveData;
+        
         [SerializeField, HideInInspector, NoTremble]
         public EnemySO Enemy;
         
@@ -24,7 +26,23 @@ namespace Beakstorm.Mapping.Tremble
             EnemySpawnPoint spawnPoint = newGameObject.AddComponent<EnemySpawnPoint>();
             spawnPoint.Init(Enemy, waveIndex, spawnDelay);
             
+            
+            WaveData waveData = FindOrCreateWaveData();
+            if (waveData)
+                waveData.AddSpawnPoint(spawnPoint);
+            
             CoreUtils.Destroy(gameObject);
+        }
+
+        private WaveData FindOrCreateWaveData()
+        {
+            if (_waveData)
+                return _waveData;
+            
+            WaveData waveData = GetComponentInParent<WaveData>();
+            if (waveData == null)
+                waveData = transform.parent.gameObject.AddComponent<WaveData>();
+            return waveData;
         }
     }
 }
