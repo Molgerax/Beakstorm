@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Beakstorm.Core.Events;
@@ -8,7 +9,7 @@ using UnityEngine.SceneManagement;
 namespace Beakstorm.SceneManagement
 {
     [DefaultExecutionOrder(-100)]
-    public class GlobalSceneLoaderListener : MonoBehaviour
+    public class GlobalSceneLoader : MonoBehaviour
     {
         #region Serialize Fields
 
@@ -20,6 +21,17 @@ namespace Beakstorm.SceneManagement
         [SerializeField] private SceneLoadEventSO sceneLoadChannel;
 
         #endregion
+
+        private static event Action CallbacksForLoad;
+        private static bool _isLoading;
+        
+        public static bool IsLoaded(Action callbackIfTrue = null)
+        {
+            if (_isLoading)
+                CallbacksForLoad += callbackIfTrue;
+
+            return !_isLoading;
+        }
 
         #region Private Members
 
@@ -59,6 +71,8 @@ namespace Beakstorm.SceneManagement
 
         private void LoadScenes(SceneReference[] scenesToLoad, bool loadAdditively, bool setFirstSceneActive, bool showLoadingScreen)
         {
+            _isLoading = true;
+            
             if(!loadAdditively) AddScenesToUnload();
 
             if((loadAdditively && setFirstSceneActive) || !loadAdditively)
@@ -78,6 +92,17 @@ namespace Beakstorm.SceneManagement
                 }
                 _scenesToUnload.Clear();
             }
+        }
+
+        private void OnLoadingFinished()
+        {
+            if (!_isLoading)
+                return;
+
+            _isLoading = false;
+            CallbacksForLoad?.Invoke();
+
+            CallbacksForLoad = null;
         }
 
         private IEnumerator TrackLoadingProgress(bool showLoadingScreen, bool unloadScenes, SceneReference[] scenesToLoad, bool loadAdditively, bool setFirstSceneActive)
@@ -123,6 +148,8 @@ namespace Beakstorm.SceneManagement
             //Clear the scenes to load
             _scenesToLoadAsyncOperations.Clear();
 
+            OnLoadingFinished();
+            
             //Hide progress bar when loading is done
             if (showLoadingScreen)
             {
