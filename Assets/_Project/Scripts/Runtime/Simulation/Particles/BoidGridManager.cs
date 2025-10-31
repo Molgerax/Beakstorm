@@ -3,6 +3,7 @@ using Beakstorm.Pausing;
 using Beakstorm.SceneManagement;
 using Beakstorm.Simulation.Collisions;
 using Beakstorm.Simulation.Collisions.SDF;
+using Beakstorm.Simulation.Settings;
 using Beakstorm.Utility;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -106,7 +107,8 @@ namespace Beakstorm.Simulation.Particles
 
         private void Start()
         {
-            InitializeBuffers();
+            if (GlobalSceneLoader.IsLoaded(InitializeBuffers))
+                InitializeBuffers();
         }
 
         private void Update()
