@@ -3,6 +3,7 @@ using Beakstorm.Core.Variables;
 using Beakstorm.Gameplay.Damaging;
 using Beakstorm.Inputs;
 using Beakstorm.Pausing;
+using Beakstorm.SceneManagement;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player.Flying
@@ -48,7 +49,19 @@ namespace Beakstorm.Gameplay.Player.Flying
         public bool BreakInput => _inputs.brakeAction.IsPressed();
         public bool ThrustInput => _inputs.accelerateAction.IsPressed();
 
+        private bool _initialized;
+
         #region Mono Methods
+
+        private void Initialize()
+        {
+            PlayerStartPosition.SetPlayer(T);
+            _position = transform.position;
+            _oldPosition = _position;
+            
+            controlStrategy.Initialize(this, Time.deltaTime);
+            _initialized = true;
+        }
         
         private void Awake()
         {
@@ -60,20 +73,18 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             if (!T)
                 T = transform;
-            
-            PlayerStartPosition.SetPlayer(T);
-
-            _position = transform.position;
-            _oldPosition = _position;
-            
-            controlStrategy.Initialize(this, Time.deltaTime);
-
             speedVariable.Set(0);
+            
+            if (GlobalSceneLoader.IsLoaded(Initialize))
+                Initialize();
         }
 
 
         private void Update()
         {
+            if (!_initialized)
+                return;
+            
             if (PauseManager.IsPaused)
                 return;
 
