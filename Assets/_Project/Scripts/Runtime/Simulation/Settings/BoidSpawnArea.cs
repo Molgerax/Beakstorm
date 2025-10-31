@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Beakstorm.Simulation.Settings
 {
-    [BrushEntity("boid_spawn_trigger", type: BrushType.Trigger)]
+    [BrushEntity("boid_spawn", category:"trigger", type: BrushType.Trigger)]
     public class BoidSpawnArea : MonoBehaviour, IOnImportFromMapEntity
     {
         private static BoidSpawnArea _instance;
