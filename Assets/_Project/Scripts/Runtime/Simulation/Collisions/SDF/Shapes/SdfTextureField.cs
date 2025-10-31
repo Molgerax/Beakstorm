@@ -90,6 +90,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             bool init = false;
             foreach (MeshCollider meshCollider in _meshColliders)
             {
+                if (meshCollider.isTrigger)
+                    continue;
+                
                 if (!init)
                 {
                     allBounds = meshCollider.bounds;
@@ -118,6 +121,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
             foreach (MeshCollider meshCollider in _meshColliders)
             {
+                if (meshCollider.isTrigger)
+                    continue;
+                
                 BakeSingleMesh(tempSdf, meshCollider, allBounds, allVoxelSize);
                 
                 combineSdfCs.SetTexture(1, PropertyIDs.TextureRead, tempSdf);
