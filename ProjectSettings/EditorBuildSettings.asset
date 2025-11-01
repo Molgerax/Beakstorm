@@ -68,6 +68,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Encounters/MappingTest.unity
     guid: 13d8a1f89891e5d4ea9c8fa56a600b51
+  - enabled: 1
+    path: Assets/_Project/Scenes/Encounters/MapLoader.unity
+    guid: 247e54af723485948b51f2410c718961
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 5ca2446e97eeaf84e8abe89ffb3e0eab, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: e60fc8aa09731434f8a2133b3fb99879, type: 2}
