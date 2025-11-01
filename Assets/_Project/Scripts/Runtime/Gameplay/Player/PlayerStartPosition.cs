@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player
 {
-    [PointEntity("player_spawn", colour: "0 1.0 0", size: 2f)]
+    [PointEntity("player_spawn", colour: "0 1.0 0", size: 16f)]
     [DefaultExecutionOrder(-50)]
     public class PlayerStartPosition : MonoBehaviour
     {

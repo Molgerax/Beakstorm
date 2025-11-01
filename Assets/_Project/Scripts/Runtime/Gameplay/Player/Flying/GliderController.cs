@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Beakstorm.Gameplay.Player.Flying
 {
     [DefaultExecutionOrder(-40)]
-    public class GliderController : MonoBehaviour
+    public class GliderController : MonoBehaviour, IOnSceneLoad
     {
         [field:SerializeField] public Transform T { get; private set; }
 
@@ -51,9 +51,12 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         private bool _initialized;
 
+        public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.WhenLevelStarts;
+        
+
         #region Mono Methods
 
-        private void Initialize()
+        public void OnSceneLoaded()
         {
             PlayerStartPosition.SetPlayer(T);
             _position = transform.position;
@@ -75,8 +78,7 @@ namespace Beakstorm.Gameplay.Player.Flying
                 T = transform;
             speedVariable.Set(0);
             
-            if (GlobalSceneLoader.IsLoaded(Initialize))
-                Initialize();
+            GlobalSceneLoader.ExecuteWhenLoaded(this);
         }
 
 

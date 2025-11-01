@@ -87,10 +87,13 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         private async UniTask WaveLoop(CancellationToken token)
         {
+            if (!EncounterManager.Instance)
+                return;
+            
             EncounterManager.Instance.SetWar(intensity);
             EncounterManager.Instance.BeginWave(this);
 
-            while (EncounterManager.Instance.IsWaveActive)
+            while (EncounterManager.Instance && EncounterManager.Instance.IsWaveActive)
             {
                 token.ThrowIfCancellationRequested();
                 await UniTask.Yield(token);
