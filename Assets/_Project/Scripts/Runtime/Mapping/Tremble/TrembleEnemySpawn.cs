@@ -19,7 +19,7 @@ namespace Beakstorm.Mapping.Tremble
         
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
-            GameObject newGameObject = new GameObject(gameObject.name);
+            GameObject newGameObject = new GameObject(gameObject.name + "_Spawn");
             newGameObject.transform.SetParent(transform.parent);
             newGameObject.transform.SetLocalPositionAndRotation(transform.localPosition, transform.localRotation);
 

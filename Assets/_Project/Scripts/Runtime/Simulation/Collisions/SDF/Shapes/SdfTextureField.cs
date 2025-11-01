@@ -19,6 +19,21 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         [SerializeField] private bool allMeshChildren;
 
+        public void InitializeFromScript(ComputeShader cs, ComputeShader combineSdfCs, int resolution, GameObject parent, bool allMeshChildren)
+        {
+            if (!this.cs)
+                this.cs = cs;
+            
+            if (!this.combineSdfCs)
+                this.combineSdfCs = combineSdfCs;
+            
+            this.resolution = resolution;
+            this.parent = parent;
+            this.allMeshChildren = allMeshChildren;
+            
+            Init();
+        }
+        
         private GameObject Target => parent ? parent : gameObject;
         
         private RenderTexture _sdfTexture;
@@ -54,6 +69,8 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         private void Init()
         {
+            Release();
+            
             _sdfTexture = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.RFloat);
             _sdfTexture.volumeDepth = resolution;
             _sdfTexture.dimension = TextureDimension.Tex3D;
@@ -62,6 +79,16 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             _sdfTexture.Create();
             
             Bake();
+        }
+
+        private void Release()
+        {
+            if (_sdfTexture)
+            {
+                _sdfTexture.Release();
+                CoreUtils.Destroy(_sdfTexture);
+            }
+            _sdfTexture = null;
         }
 
         [ContextMenu("Bake")]
@@ -170,13 +197,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         protected override void OnDisable()
         {
-            if (_sdfTexture)
-            {
-                _sdfTexture.Release();
-                CoreUtils.Destroy(_sdfTexture);
-            }
-            _sdfTexture = null;
-            
+            Release();
             base.OnDisable();
         }
 

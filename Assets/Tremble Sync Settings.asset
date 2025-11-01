@@ -18,7 +18,7 @@ MonoBehaviour:
   m_TrenchBroomVersion: 3
   m_TemplateMap: {fileID: 0}
   m_WorldspawnScript:
-    m_ScriptName: TinyGoose.Tremble.Worldspawn
+    m_ScriptName: Beakstorm.Mapping.Tremble.MapWorldSpawn
   m_TypeNamingConvention: 3
   m_FieldNamingConvention: 0
   m_SpawnFlagNamingConvention: 4
@@ -365,7 +365,10 @@ MonoBehaviour:
   m_PipelineSimplifyCollisionMeshes: 1
   m_PipelineUnwrapUV2: 0
   m_PipelineRunMapProcessors: 1
-  m_MapProcessors: []
+  m_MapProcessors:
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.SdfTextureMapProcessor
+    Enabled: 1
   m_LogOnImportAndSync: 0
   m_UseLiveUpdate: 1
   m_AutomaticallyReimportWhenDependencyChanges: 1
