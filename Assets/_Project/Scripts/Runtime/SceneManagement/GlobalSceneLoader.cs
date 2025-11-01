@@ -22,15 +22,26 @@ namespace Beakstorm.SceneManagement
 
         #endregion
 
-        private static event Action CallbacksForLoad;
         private static bool _isLoading;
+        private static List<IOnSceneLoad> _onSceneLoadListeners;
+        private static Dictionary<SceneLoadCallbackPoint, List<IOnSceneLoad>> _sceneLoadListenerDict = new(4); 
         
-        public static bool IsLoaded(Action callbackIfTrue = null)
+        public static void ExecuteWhenLoaded(IOnSceneLoad onSceneLoad)
         {
+            _onSceneLoadListeners ??= new(32);
+            
             if (_isLoading)
-                CallbacksForLoad += callbackIfTrue;
+            {
+                if (!_sceneLoadListenerDict.ContainsKey(onSceneLoad.SceneLoadCallbackPoint))
+                    _sceneLoadListenerDict.Add(onSceneLoad.SceneLoadCallbackPoint, new List<IOnSceneLoad>());
 
-            return !_isLoading;
+                _sceneLoadListenerDict[onSceneLoad.SceneLoadCallbackPoint].Add(onSceneLoad);
+                //_onSceneLoadListeners.Add(onSceneLoad);
+            }
+            else
+            {
+                ExecuteSceneLoad(onSceneLoad);
+            }
         }
 
         #region Private Members
@@ -94,15 +105,38 @@ namespace Beakstorm.SceneManagement
             }
         }
 
+        private static void ExecuteSceneLoad(IOnSceneLoad sceneLoad)
+        {
+            Debug.Log($"Loaded {sceneLoad} at point {sceneLoad.SceneLoadCallbackPoint}");
+            sceneLoad.OnSceneLoaded();
+        }
+
         private void OnLoadingFinished()
         {
             if (!_isLoading)
                 return;
 
-            _isLoading = false;
-            CallbacksForLoad?.Invoke();
 
-            CallbacksForLoad = null;
+            for (int i = 0; i <= (int)SceneLoadCallbackPoint.AfterAll; i++)
+            {
+                if (!Enum.IsDefined(typeof(SceneLoadCallbackPoint), i))
+                    continue;
+                
+                SceneLoadCallbackPoint point = (SceneLoadCallbackPoint)i;
+                
+                if (_sceneLoadListenerDict.ContainsKey(point))
+                {
+                    foreach (IOnSceneLoad sceneLoad in _sceneLoadListenerDict[point])
+                    {
+                        ExecuteSceneLoad(sceneLoad);
+                    } 
+                    
+                    _sceneLoadListenerDict[point].Clear();
+                }
+            }
+
+
+            _isLoading = false;
         }
 
         private IEnumerator TrackLoadingProgress(bool showLoadingScreen, bool unloadScenes, SceneReference[] scenesToLoad, bool loadAdditively, bool setFirstSceneActive)
@@ -148,8 +182,6 @@ namespace Beakstorm.SceneManagement
             //Clear the scenes to load
             _scenesToLoadAsyncOperations.Clear();
 
-            OnLoadingFinished();
-            
             //Hide progress bar when loading is done
             if (showLoadingScreen)
             {
@@ -159,6 +191,8 @@ namespace Beakstorm.SceneManagement
                     yield return null;
                 }
             }
+            
+            OnLoadingFinished();
         }
 
         private void OnActiveSceneLoaded(AsyncOperation asyncOp)

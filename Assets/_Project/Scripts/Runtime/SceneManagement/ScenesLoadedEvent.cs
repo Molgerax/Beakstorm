@@ -3,19 +3,21 @@ using UnityEngine;
 
 namespace Beakstorm.SceneManagement
 {
-    public class ScenesLoadedEvent : MonoBehaviour
+    public class ScenesLoadedEvent : MonoBehaviour, IOnSceneLoad
     {
         [SerializeField] private UltEvent onScenesLoaded;
 
-        private void OnSceneLoadFinished()
-        {
-            onScenesLoaded?.Invoke();
-        }
+        public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.AfterAll;
         
         private void Awake()
         {
-            if (GlobalSceneLoader.IsLoaded(OnSceneLoadFinished))
-                OnSceneLoadFinished();
+            GlobalSceneLoader.ExecuteWhenLoaded(this);
         }
+
+        public void OnSceneLoaded()
+        {
+            onScenesLoaded?.Invoke();
+        }
+
     }
 }

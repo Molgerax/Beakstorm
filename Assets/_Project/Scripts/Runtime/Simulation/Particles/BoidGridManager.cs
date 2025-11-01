@@ -10,7 +10,7 @@ using UnityEngine.Rendering;
 
 namespace Beakstorm.Simulation.Particles
 {
-    public class BoidGridManager : MonoBehaviour, IGridParticleSimulation
+    public class BoidGridManager : MonoBehaviour, IGridParticleSimulation, IOnSceneLoad
     {
         [SerializeField] 
         private int maxCount = 256;
@@ -107,9 +107,15 @@ namespace Beakstorm.Simulation.Particles
 
         private void Start()
         {
-            if (GlobalSceneLoader.IsLoaded(InitializeBuffers))
-                InitializeBuffers();
+            GlobalSceneLoader.ExecuteWhenLoaded(this);
         }
+
+        public void OnSceneLoaded()
+        {
+            InitializeBuffers();
+        }
+
+        public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.WhenLevelStarts;
 
         private void Update()
         {
