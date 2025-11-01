@@ -7,7 +7,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
     /// <summary>
     /// Heavily pulled from https://github.com/SebLague/Ray-Tracing/blob/main/Assets/Scripts/BVH.cs
     /// </summary>
-    public static class BVH<TBounds, TSdfData> where TBounds : IBounds, ISdfData<TSdfData>
+    public static class BVH<TBounds, TSdfData> where TBounds : IBounds, ISdfData<TSdfData>, IValid
     {
         private const int MaxDepth = 8;
         private static int _nodeIndex;
@@ -28,9 +28,15 @@ namespace Beakstorm.Simulation.Collisions.SDF
             
             BoundingBox bounds = new BoundingBox();
             _nodeIndex = 0;
-            
+
+            int invalidCount = 0;
             for (int i = 0; i < itemCount; i++)
             {
+                if (!items[i].IsValid)
+                {
+                    invalidCount++;
+                }
+                
                 float3 min = items[i].BoundsMin();
                 float3 max = items[i].BoundsMax();
                 bvhItemArray[i] = new BVHItem(min, max, i);
@@ -38,10 +44,13 @@ namespace Beakstorm.Simulation.Collisions.SDF
             }
 
             AddToNodeList(ref nodeArray, new Node(bounds));
-            Split(ref nodeArray, bvhItemArray, 0, 0, itemCount);
+            Split(ref nodeArray, bvhItemArray, 0, 0, itemCount - invalidCount);
 
             for (int i = 0; i < bvhItemArray.Length; i++)
             {
+                if (i >= itemCount - invalidCount)
+                    continue;
+                
                 BVHItem item = bvhItemArray[i];
                 sdfDataArray[i] = items[item.Index].SdfData();
             }

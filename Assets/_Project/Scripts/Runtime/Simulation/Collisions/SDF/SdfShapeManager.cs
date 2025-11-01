@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Simulation.Collisions.SDF.Shapes;
 using Unity.Mathematics;
@@ -35,6 +36,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
         public static List<AbstractSdfShape> Shapes = new List<AbstractSdfShape>(16);
         private static List<SdfTextureField> _textureFields = new(16);
 
+        private static int _invalidTextureFields;
+        
         private AbstractSdfShape[] _shapes = new AbstractSdfShape[16];
         private Node[] _nodeList;
         private AbstractSdfData[] _dataArray;
@@ -109,6 +112,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             UpdateSdfAtlas();
             
             UpdateArray();
+            FillArray();
             ResizeBuffers();
             
             
@@ -296,7 +300,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void UpdateArray()
         {
-            _shapeCount = Shapes.Count;
+            _shapeCount = Shapes.Count(i => i.IsValid);
             if (!_updateArray)
                 return;
             ResizeBuffers();
@@ -306,9 +310,17 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void FillArray()
         {
-            for (int i = 0; i < Mathf.Min(_shapes.Length, Shapes.Count); i++)
+            int count = Mathf.Min(_shapes.Length, Shapes.Count);
+            int front = 0;
+            int back = count - 1;
+            for (int i = 0; i < count; i++)
             {
-                _shapes[i] = Shapes[i];
+                var shape = Shapes[i];
+
+                if (shape.IsValid)
+                    _shapes[front++] = shape;
+                else
+                    _shapes[back--] = shape;
             }
         }
         
@@ -351,6 +363,13 @@ namespace Beakstorm.Simulation.Collisions.SDF
         private void SortTextureFields()
         {
             _textureFields.Sort();
+
+            _invalidTextureFields = 0;
+            for (int i = 0; i < _textureFields.Count; i++)
+            {
+                if (!_textureFields[i].IsValid)
+                    _invalidTextureFields++;
+            }
         }
 
         private void UpdateSdfAtlas()
@@ -364,13 +383,14 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void UpdateSdfAtlasRecursive(ref int textureIndex, Vector3Int startVoxel, Vector3Int currentResolution)
         {
-            if (textureIndex >= _textureFields.Count)
+            if (textureIndex >= _textureFields.Count - _invalidTextureFields)
                 return;
 
             if (currentResolution.sqrMagnitude <= 8)
                 return;
             
             SdfTextureField field = _textureFields[textureIndex];
+
             if (field.Resolution == currentResolution)
             {
                 SetTexture(field, startVoxel);

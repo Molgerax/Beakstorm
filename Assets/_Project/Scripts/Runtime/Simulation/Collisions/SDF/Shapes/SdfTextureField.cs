@@ -1,13 +1,17 @@
 using System;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Core.Attributes;
+using Beakstorm.Rendering;
+using Beakstorm.SceneManagement;
+using Cysharp.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Object = UnityEngine.Object;
 
 namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 {
-    public class SdfTextureField : AbstractSdfShape, IComparable
+    public class SdfTextureField : AbstractSdfShape, IComparable, IOnSceneLoad
     {
         [SerializeField] private ComputeShader cs;
         [SerializeField] private ComputeShader combineSdfCs;
@@ -16,10 +20,14 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         [SerializeField]
         [PowerOfTwo(4, 64)] private int resolution = 32;
 
-
         [SerializeField] private bool allMeshChildren;
-
-        public void InitializeFromScript(ComputeShader cs, ComputeShader combineSdfCs, int resolution, GameObject parent, bool allMeshChildren)
+        
+        [Header("Saving")]
+        [SerializeField] private Texture3D textureAsset;
+        
+        public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.Third;
+        
+        public Texture3D InitializeFromScript(ComputeShader cs, ComputeShader combineSdfCs, SdfMaterialType materialType, int resolution, GameObject parent, bool allMeshChildren)
         {
             if (!this.cs)
                 this.cs = cs;
@@ -30,17 +38,47 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             this.resolution = resolution;
             this.parent = parent;
             this.allMeshChildren = allMeshChildren;
+            this.materialType = materialType;
             
+            BakeToObject(parent);
+            return textureAsset;
+        }
+
+        private void BakeToObject(Object target)
+        {
+#if UNITY_EDITOR
             Init();
+            var result = BakeTexture3D.RenderTextureToTexture3D(_sdfTexture);
+            textureAsset = result ? result : null;
+            Release();
+#endif
         }
         
+
         private GameObject Target => parent ? parent : gameObject;
         
         private RenderTexture _sdfTexture;
         private MeshCollider[] _meshColliders;
 
-        private Bounds _cachedBounds;
+        [SerializeField, HideInInspector] private Bounds _cachedBounds;
         private Vector3 _cachedPos;
+
+        private bool _initialized;
+
+        public override bool IsValid
+        {
+            get
+            {
+                if (textureAsset)
+                    return true;
+                
+                if (!_initialized)
+                    return false;
+                if (!_sdfTexture || !_sdfTexture.IsCreated())
+                    return false;
+                return true;
+            }
+        }
 
         private Bounds MovedBounds
         {
@@ -52,19 +90,36 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             }
         }
 
+        private UniTask _task;
+        
         protected override SdfShapeType Type() => SdfShapeType.Texture;
      
         public Vector3Int Resolution => Vector3Int.one * resolution;
 
         private Vector3Int _startVoxel;
 
-        public RenderTexture SdfTexture => _sdfTexture;
+        public Texture SdfTexture => textureAsset ? textureAsset : _sdfTexture;
         public void SetStartVoxel(Vector3Int v) => _startVoxel = v;
 
+        
+        public void OnSceneLoaded()
+        {
+            if (isActiveAndEnabled)
+            {
+                Init();
+            }
+        }
+        
         protected override void OnEnable()
         {
             base.OnEnable();
-            Init();
+            _initialized = false;
+            if (textureAsset)
+            {
+                _initialized = true;
+                return;
+            }
+            GlobalSceneLoader.ExecuteWhenLoaded(this);
         }
 
         private void Init()
@@ -89,6 +144,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
                 CoreUtils.Destroy(_sdfTexture);
             }
             _sdfTexture = null;
+            _initialized = false;
         }
 
         [ContextMenu("Bake")]
@@ -104,6 +160,8 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
                     _cachedBounds = bounds;
                     _cachedPos = Target.transform.position;
+
+                    _initialized = true;
                 }
                 return;
             }
@@ -111,7 +169,10 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
             _meshColliders = Target.GetComponentsInChildren<MeshCollider>();
             if (_meshColliders == null || _meshColliders.Length == 0)
+            {
+                Debug.LogError($"SDF Texture {name} contains no mesh colliders, skipping.");
                 return;
+            }
             
             Bounds allBounds = new Bounds();
             bool init = false;
@@ -159,6 +220,8 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             }
             
             tempSdf.Release();
+
+            _initialized = true;
         }
 
         private void BakeSingleMesh(RenderTexture texture, MeshFilter filter, Bounds bounds, float voxelSize)
@@ -285,9 +348,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             if (b == null)
                 return 0;
 
-            if (a.resolution < b.resolution)
+            if (a.resolution < b.resolution || !a.IsValid)
                 return 1;
-            if (a.resolution > b.resolution)
+            if (a.resolution > b.resolution || !b.IsValid)
                 return -1;
             return 0;
         }
