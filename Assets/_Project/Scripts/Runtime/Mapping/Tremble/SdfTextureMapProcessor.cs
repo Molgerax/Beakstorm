@@ -12,8 +12,13 @@ namespace Beakstorm.Mapping.Tremble
     
         public override void OnProcessingStarted(GameObject root, MapBsp mapBsp)
         {
-            _sdfCompute = Addressables.LoadAssetAsync<ComputeShader>("MeshToSDF.compute").WaitForCompletion();
-            _sdfCombineCompute = Addressables.LoadAssetAsync<ComputeShader>("SdfCombine.compute").WaitForCompletion();
+#if UNITY_EDITOR
+            _sdfCompute = FindComputeShader("MeshToSDF");
+            _sdfCombineCompute = FindComputeShader("SdfCombine");
+#endif
+            
+            if (!_sdfCompute) _sdfCompute = Addressables.LoadAssetAsync<ComputeShader>("MeshToSDF.compute").WaitForCompletion();
+            if (!_sdfCombineCompute) _sdfCombineCompute = Addressables.LoadAssetAsync<ComputeShader>("SdfCombine.compute").WaitForCompletion();
         }
 
         public override void OnProcessingCompleted(GameObject root, MapBsp mapBsp)
@@ -30,8 +35,21 @@ namespace Beakstorm.Mapping.Tremble
                 if (tex)
                     TrembleMapImportSettings.Current.SaveObjectInMap("sdf_texture", tex);
             }
-            
-            
         }
+        
+#if UNITY_EDITOR
+        private ComputeShader FindComputeShader(string name)
+        {
+            string[] guids = UnityEditor.AssetDatabase.FindAssets(name + $"t:{nameof(ComputeShader)}");
+            foreach (string guid in guids)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                ComputeShader cs = UnityEditor.AssetDatabase.LoadAssetAtPath<ComputeShader>(path);
+                if (cs)
+                    return cs;
+            }
+            return null;
+        }
+#endif
     }
 }
