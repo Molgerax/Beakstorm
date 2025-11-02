@@ -6,13 +6,13 @@
 Texture3D<float> _TextureRead;
 
 RWTexture3D<float> _TextureWrite;
-uint3 _Resolution;
+uint _Resolution;
 
 
 [numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
 void Clear (uint3 id : SV_DispatchThreadID)
 {
-    if (id.x >= _Resolution.x || id.y >= _Resolution.y || id.z >= _Resolution.z)
+    if (id.x >= _Resolution || id.y >= _Resolution || id.z >= _Resolution)
         return;
     _TextureWrite[id.xyz] = 10000;
 }
@@ -22,7 +22,7 @@ void Combine (uint3 id : SV_DispatchThreadID)
 {
     const uint3 voxel = id;
     
-    if (id.x >= _Resolution.x || id.y >= _Resolution.y || id.z >= _Resolution.z)
+    if (id.x >= _Resolution || id.y >= _Resolution || id.z >= _Resolution)
         return;
 
     float read = _TextureRead[id];
