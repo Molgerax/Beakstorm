@@ -287,6 +287,20 @@ SdfQueryInfo sdfCone(float3 p, AbstractSdfData data)
 }
 
 
+float4 opElongate(float3 p, in float3 h )
+{
+    //return vec4( p-clamp(p,-h,h), 0.0 ); // faster, but produces zero in the interior elongated box
+    
+    float3 q = abs(p)-h;
+    return float4( max(q,0.0), min(max(q.x,max(q.y,q.z)),0.0) );
+}
+
+
+float sdfTorusAA(float3 p, float radius, float thickness)
+{
+    float2 q = float2(length(p.xz)-radius, p.y);
+    return length(q) - thickness;
+}
 
 
 /// <summary>
@@ -309,6 +323,17 @@ float sdfTorus(float3 center, float3 normal, float radius, float thickness, floa
     return length(q - tCenter) - thickness;
 }
 
+float3 projectOnPlane(float3 p, float3 n)
+{
+    float h = dot(p, n);
+    return p - n * h;
+}
+
+float3 projectOnPlaneByAmount(float3 p, float3 n, float t)
+{
+    float h = dot(p, n);
+    return p - n * sign(h) * min(abs(h), t);
+}
 
 /// <summary>
 /// Gets the vector from point p to a torus. (not normalized)
@@ -318,9 +343,10 @@ float sdfTorus(float3 center, float3 normal, float radius, float thickness, floa
 /// <param name="radius">Radius of the torus from its center</param>
 /// <param name="thickness">Thickness of the torus ring</param>
 /// <param name="p">Input position</param>
-float3 sdfTorus_Vector(float3 center, float3 normal, float radius, float thickness, float3 p)
+float3 sdfTorus_Vector(float3 center, float3 normal, float radius, float thickness, float3 p, float height = 0)
 {
     float3 q = p - center;
+    q = projectOnPlaneByAmount(q, normal, height);    
     float h = dot(q, normal);
 
     // Tangent of the Plane
@@ -364,9 +390,20 @@ SdfQueryInfo sdfTorus(float3 p, AbstractSdfData data)
     result.dist = -data.Data.x;
     result.normal.y = 1;
     result.matIndex = (data.Type >> 4) & 0x0F;
-    
+
     result.dist = sdfTorus(data.Translate, data.YAxis, data.Data.x, data.Data.y, p);
-    result.normal = normalize(sdfTorus_Vector(data.Translate, data.YAxis, data.Data.x, data.Data.y, p));
+    result.normal = normalize(sdfTorus_Vector(data.Translate, data.YAxis, data.Data.x, 0, p, data.Data.z));
+
+    
+    float3x3 rot = float3x3(data.XAxis, data.YAxis, data.ZAxis);
+    float3 q = mul(rot, p - data.Translate);
+
+    float4 w = opElongate(q, float3(0, data.Data.z, 0));
+    result.dist = w.w + sdfTorusAA(w.xyz, data.Data.x, data.Data.y);
+
+    //result.normal = normalize(sdfTorus_Vector(0, float3(0,1,0), data.Data.x, data.Data.y, w.xyz));
+    //result.normal = normalize(mul(transpose(rot), result.normal));
+
     
     return result;
 }
