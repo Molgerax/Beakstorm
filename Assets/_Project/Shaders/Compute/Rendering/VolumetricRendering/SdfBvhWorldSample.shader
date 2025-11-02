@@ -8,6 +8,7 @@ Shader "Beakstorm/Raymarching/SDF BVH Slice"
         [Space(8)]
         _SurfaceDistance("Surface Distance", Range(-5.0, 5.0)) = 0.0
         _Multiplier("Distance Mult", Float) = 1.0
+        [Toggle] _Normals("Normals", Int) = 0
     }
     
     HLSLINCLUDE
@@ -37,6 +38,8 @@ Shader "Beakstorm/Raymarching/SDF BVH Slice"
     float _SurfaceDistance;
     float _Multiplier;
 
+    int _Normals;
+    
     //Structs
     struct appdata
     {
@@ -114,7 +117,14 @@ Shader "Beakstorm/Raymarching/SDF BVH Slice"
         float angle = atan2(timeVec.y - info.normal.z, timeVec.x - info.normal.z);
         angle = atan2(info.normal.z, info.normal.x);
         //sdfCol = frac(angle / PI * 0.5);
+
         sdfCol = saturate(frac(max(0, info.dist * _Multiplier)));
+        sdfCol.r += saturate(frac(max(0, abs(info.dist) * _Multiplier))) * step(info.dist, 0);
+        if (_Normals == 1)
+        {
+            sdfCol = info.normal * 0.5 + 0.5;
+        }
+        
         
         sdfCol *= _Color.rgb;
 
