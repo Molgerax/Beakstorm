@@ -360,12 +360,15 @@ MonoBehaviour:
     m_ResolutionX: 2
     m_ResolutionY: 2
     m_Dirty: 0
-  m_PipelineSplitMesh: 1
+  m_PipelineSplitMesh: 0
   m_PipelineSmoothMeshNormals: 1
   m_PipelineSimplifyCollisionMeshes: 1
   m_PipelineUnwrapUV2: 0
   m_PipelineRunMapProcessors: 1
   m_MapProcessors:
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.EnemySpawnMapProcessor
+    Enabled: 0
   - Class:
       m_MapClassName: Beakstorm.Mapping.Tremble.SdfTextureMapProcessor
     Enabled: 1
@@ -394,41 +397,46 @@ MonoBehaviour:
   m_ExportClipSkipTextures: 1
   m_ImportScale: 0.0625
   m_AssetMetadatas:
-  - MapName: enemy_Bunker
-    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/Bunker.prefab
+  - MapName: enemy_Bunker_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/Bunker_Spawn.prefab
     FullTypeName: UnityEngine.GameObject
-    AddressableName: Bunker
+    AddressableName: Bunker_Spawn
     SpawnOffset: {x: -0, y: -9.8985, z: -0}
-  - MapName: enemy_LargeEnemy
-    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/LargeEnemy.prefab
+  - MapName: enemy_HangarShip_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/HangarShip_Spawn.prefab
     FullTypeName: UnityEngine.GameObject
-    AddressableName: LargeEnemy
+    AddressableName: HangarShip_Spawn
+    SpawnOffset: {x: -0, y: -8.958847, z: -0}
+  - MapName: enemy_LargeEnemy_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/LargeEnemy_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: LargeEnemy_Spawn
     SpawnOffset: {x: -0, y: -4.5003567, z: -0}
-  - MapName: enemy_MediumEnemy
-    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/MediumEnemy.prefab
+  - MapName: enemy_MediumEnemy_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/MediumEnemy_Spawn.prefab
     FullTypeName: UnityEngine.GameObject
-    AddressableName: MediumEnemy
+    AddressableName: MediumEnemy_Spawn
     SpawnOffset: {x: -0.0000038146973, y: -12.047838, z: -3.904602}
-  - MapName: enemy_ShieldedEnemy
-    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/ShieldedEnemy.prefab
+  - MapName: enemy_ShieldedEnemy_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/ShieldedEnemy_Spawn.prefab
     FullTypeName: UnityEngine.GameObject
-    AddressableName: ShieldedEnemy
+    AddressableName: ShieldedEnemy_Spawn
     SpawnOffset: {x: -0, y: -8.219999, z: -0}
-  - MapName: enemy_SimpleTurret
-    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/SimpleTurret.prefab
+  - MapName: enemy_SimpleTurret_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/SimpleTurret_Spawn.prefab
     FullTypeName: UnityEngine.GameObject
-    AddressableName: SimpleTurret
+    AddressableName: SimpleTurret_Spawn
     SpawnOffset: {x: -0, y: -9.400002, z: -0}
-  - MapName: enemy_SmallEnemy
-    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/SmallEnemy.prefab
+  - MapName: enemy_SmallEnemy_Gun_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/SmallEnemy_Gun_Spawn.prefab
     FullTypeName: UnityEngine.GameObject
-    AddressableName: SmallEnemy
-    SpawnOffset: {x: -0, y: -7.0047092, z: -0}
-  - MapName: enemy_SmallEnemy_Gun
-    Path: Assets/_Generated/EnemyController/TrembleEnemySpawn/SmallEnemy_Gun.prefab
-    FullTypeName: UnityEngine.GameObject
-    AddressableName: SmallEnemy_Gun
+    AddressableName: SmallEnemy_Gun_Spawn
     SpawnOffset: {x: -0.00000047683716, y: -5.124563, z: -0.00000047683716}
+  - MapName: enemy_SmallEnemy_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/SmallEnemy_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: SmallEnemy_Spawn
+    SpawnOffset: {x: -0, y: -7.0047092, z: -0}
   - MapName: Mapping/Mapping_Base
     Path: Assets/_Project/Materials/Mapping/Mapping_Base.mat
     FullTypeName: UnityEngine.Material
@@ -459,15 +467,15 @@ MonoBehaviour:
     FullTypeName: UnityEngine.Material
     AddressableName: WeakPoint_Socket_MetalAccent
     SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: WeakPoint_Mat
-    Path: Assets/_Project/Materials/Test/WeakPoint_Mat.mat
-    FullTypeName: UnityEngine.Material
-    AddressableName: WeakPoint_Mat
-    SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: m_metal
     Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal.mat
     FullTypeName: UnityEngine.Material
     AddressableName: m_metal
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Mat
+    Path: Assets/_Project/Materials/Test/WeakPoint_Mat.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: WeakPoint_Mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: WeakPoint_Socket_Metal
     Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_Metal.mat
