@@ -6,9 +6,6 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
     public class SdfBox : AbstractSdfShape
     {
         [SerializeField] private float3 scale = new float3(1, 1, 1);
-        [SerializeField] private bool isValid = true;
-
-        public override bool IsValid => isValid;
 
         protected override SdfShapeType Type() => SdfShapeType.Box;
         

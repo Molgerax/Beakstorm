@@ -7,11 +7,10 @@ using Cysharp.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Object = UnityEngine.Object;
 
 namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 {
-    public class SdfTextureField : AbstractSdfShape, IComparable, IOnSceneLoad
+    public class SdfTextureField : AbstractSdfShape, IComparable
     {
         [SerializeField] private ComputeShader cs;
         [SerializeField] private ComputeShader combineSdfCs;
@@ -40,11 +39,11 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             this.allMeshChildren = allMeshChildren;
             this.materialType = materialType;
             
-            BakeToObject(parent);
+            BakeToObject();
             return textureAsset;
         }
 
-        private void BakeToObject(Object target)
+        private void BakeToObject()
         {
 #if UNITY_EDITOR
             Init();
@@ -102,14 +101,6 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         public void SetStartVoxel(Vector3Int v) => _startVoxel = v;
 
         
-        public void OnSceneLoaded()
-        {
-            if (isActiveAndEnabled)
-            {
-                Init();
-            }
-        }
-        
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -119,7 +110,8 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
                 _initialized = true;
                 return;
             }
-            GlobalSceneLoader.ExecuteWhenLoaded(this);
+
+            Init();
         }
 
         private void Init()
@@ -196,9 +188,6 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             _cachedBounds = allBounds;
             _cachedPos = Target.transform.position;
             
-            combineSdfCs.SetInt(PropertyIDs.Resolution, resolution);
-            combineSdfCs.SetTexture(0, PropertyIDs.TextureWrite, _sdfTexture);
-            combineSdfCs.DispatchExact(0, Resolution);
             
             RenderTexture tempSdf = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.RFloat);
             tempSdf.volumeDepth = resolution;
@@ -207,12 +196,16 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             tempSdf.name = gameObject.name + "_SDF";
             tempSdf.Create();
 
+            combineSdfCs.SetInt(PropertyIDs.Resolution, resolution);
+            combineSdfCs.SetTexture(0, PropertyIDs.TextureWrite, tempSdf);
+            combineSdfCs.DispatchExact(0, Resolution);
+            
             foreach (MeshCollider meshCollider in _meshColliders)
             {
                 if (meshCollider.isTrigger)
                     continue;
                 
-                BakeSingleMesh(tempSdf, meshCollider, allBounds, allVoxelSize);
+                BakeSingleMesh(_sdfTexture, meshCollider, allBounds, allVoxelSize);
                 
                 combineSdfCs.SetTexture(1, PropertyIDs.TextureRead, tempSdf);
                 combineSdfCs.SetTexture(1, PropertyIDs.TextureWrite, _sdfTexture);
