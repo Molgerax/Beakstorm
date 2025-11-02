@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Project/Scenes/TestScenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Encounters/TestEncounter.unity
     guid: bce57ba8687361f48b36b24647246677
   - enabled: 1
