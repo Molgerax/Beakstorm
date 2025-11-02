@@ -105,10 +105,10 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-  enemySo: {fileID: 11400000, guid: efbd414898215704494d8f63abba30e9, type: 2}
   bounds:
     m_Center: {x: 0, y: 8.219999, z: 0}
     m_Extent: {x: 14, y: 18.880001, z: 14}
+  enemySo: {fileID: 11400000, guid: efbd414898215704494d8f63abba30e9, type: 2}
 --- !u!114 &991789987226707210
 MonoBehaviour:
   m_ObjectHideFlags: 0

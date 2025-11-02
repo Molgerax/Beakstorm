@@ -244,6 +244,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0, y: 9.898501, z: 0}
     m_Extent: {x: 15, y: 10.300337, z: 10}
+  enemySo: {fileID: 11400000, guid: b24d91c0375f5dc438ab053d1c76ceaa, type: 2}
 --- !u!1 &4914008418578846413
 GameObject:
   m_ObjectHideFlags: 0

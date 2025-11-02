@@ -550,6 +550,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0.0000038146973, y: 17.361889, z: 1.90308}
     m_Extent: {x: 61.113586, y: 33.477657, z: 42.012104}
+  enemySo: {fileID: 11400000, guid: 268eba94870643445be9f363204548d1, type: 2}
 --- !u!114 &5472652922921227751
 MonoBehaviour:
   m_ObjectHideFlags: 0
