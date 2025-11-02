@@ -20,6 +20,16 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         
         private void Update()
         {
+            UpdateSdfData();
+        }
+
+        private void OnValidate()
+        {
+            UpdateSdfData();
+        }
+
+        private void UpdateSdfData()
+        {
             float3 pos = T.position;
             float4x4 m = T.worldToLocalMatrix;
             float3x3 s = new float3x3(m.c0.xyz, m.c1.xyz, m.c2.xyz);
@@ -76,7 +86,63 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         public void OnDrawGizmos()
         {
-            return;
+            Gizmos.color = new (1, 0, 0, 0.5f);
+
+            if (height < 0.01f)
+            {
+                TorusGizmo(_sdfData.Translate, _sdfData.YAxis, _sdfData.ZAxis, Radius, Thickness);
+                return;
+            }
+
+            TorusGizmo(_sdfData.Translate - _sdfData.YAxis * Height, _sdfData.YAxis, _sdfData.ZAxis, Radius, Thickness);
+            TorusGizmo(_sdfData.Translate + _sdfData.YAxis * Height, _sdfData.YAxis, _sdfData.ZAxis, Radius, Thickness);
+            ConnectionGizmo(_sdfData.Translate, _sdfData.YAxis, _sdfData.ZAxis, Radius, Thickness, Height);
+        }
+
+        private void TorusGizmo(float3 center, float3 normal, float3 tangent, float rad, float thick, int res = 8)
+        {
+            float3 bitangent = math.cross(normal, tangent);
+            
+            
+#if UNITY_EDITOR
+            UnityEditor.Handles.color = Gizmos.color;
+            UnityEditor.Handles.DrawWireDisc(center, normal, rad + thick);
+            UnityEditor.Handles.DrawWireDisc(center, normal, rad - thick);
+#endif
+            
+            for (int i = 0; i < res; i++)
+            {
+                float t = (float)i / res * Mathf.PI * 2;
+
+                float3 tan = math.cos(t) * bitangent - math.sin(t) * tangent;
+
+                float3 p = center + math.sin(t) * rad * bitangent + math.cos(t) * rad * tangent;
+         
+#if UNITY_EDITOR
+                UnityEditor.Handles.color = Gizmos.color;
+                UnityEditor.Handles.DrawWireDisc(p, tan, thick);
+#else
+                Gizmos.DrawWireSphere(p, thick);
+#endif
+
+            }
+        }
+        
+        private void ConnectionGizmo(float3 center, float3 normal, float3 tangent, float rad, float thick, float h, int res = 8)
+        {
+            float3 bitangent = math.cross(normal, tangent);
+            
+            for (int i = 0; i < res; i++)
+            {
+                float t = (float)i / res * Mathf.PI * 2;
+                
+                float3 offset = math.sin(t) * (rad + thick) * bitangent + math.cos(t) * (rad + thick) * tangent;
+
+                float3 p1 = center + normal * h + offset;
+                float3 p2 = center - normal * h + offset;
+                
+                Gizmos.DrawLine(p1, p2);
+            }
         }
     }
 }
