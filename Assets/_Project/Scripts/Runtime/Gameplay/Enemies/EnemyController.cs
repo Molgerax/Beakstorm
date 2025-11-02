@@ -13,6 +13,10 @@ namespace Beakstorm.Gameplay.Enemies
         [SerializeField] private UltEvent onHealthZero;
 
         [SerializeField, HideInInspector] private Bounds bounds;
+
+        [SerializeField] private EnemySO enemySo;
+
+        public void SetEnemySo(EnemySO enemy) => enemySo = enemy; 
         
         public event Action OnHealthZero;
         
@@ -39,6 +43,11 @@ namespace Beakstorm.Gameplay.Enemies
             gameObject.SetActive(false);
         }
 
+        private void Start()
+        {
+            GetPoolIfNoneSet();
+        }
+
         public void Spawn(Transform spawnPoint) => Spawn(spawnPoint.position, spawnPoint.rotation);
         public void Spawn(TransformData spawnPoint) => Spawn(spawnPoint.Position, spawnPoint.Rotation);
         public void Spawn(Vector3 position, Quaternion rotation)
@@ -62,6 +71,20 @@ namespace Beakstorm.Gameplay.Enemies
         public void Despawn()
         {
             _pool.ReturnToPool(this);
+        }
+
+        private void GetPoolIfNoneSet()
+        {
+            if (_pool != null)
+                return;
+            
+            if (!EnemyPoolManager.Instance)
+                return;
+
+            Debug.Log("Enemy had to get own pool, despawn now.");
+            
+            _pool = EnemyPoolManager.Instance.GetEnemyPool(enemySo);
+            Despawn();
         }
         
 

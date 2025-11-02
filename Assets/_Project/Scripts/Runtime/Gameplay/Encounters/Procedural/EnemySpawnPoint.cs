@@ -1,16 +1,22 @@
 using System.Threading;
 using Beakstorm.Gameplay.Enemies;
 using Cysharp.Threading.Tasks;
+using TinyGoose.Tremble;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Beakstorm.Gameplay.Encounters.Procedural
 {
-    public class EnemySpawnPoint : MonoBehaviour, IEnemySpawnData
+    [PrefabEntity(category:"enemy")]
+    public class EnemySpawnPoint : MonoBehaviour, IEnemySpawnData, IOnImportFromMapEntity
     {
-        [SerializeField] private EnemySO enemy;
+        [SerializeField, NoTremble] private EnemySO enemy;
         [SerializeField, Min(0)] private int waveIndex;
         [SerializeField, Min(0)] private float spawnDelay;
 
+        [Tremble("target")] private WaveData _waveData;
+        
+        
         public void Init(EnemySO enemy, int waveIndex, float spawnDelay)
         {
             this.enemy = enemy;
@@ -29,6 +35,20 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public async UniTask GetWaitCondition(CancellationToken token)
         {
             await UniTask.Delay(Mathf.RoundToInt(spawnDelay * 1000), DelayType.DeltaTime, cancellationToken: token);
+        }
+
+        public void AddToWaveData()
+        {
+            if (_waveData) 
+                _waveData.AddSpawnPoint(this);
+        }
+        
+        public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
+        {
+            AddToWaveData();
+            
+            if (gameObject.transform.GetChild(0))
+                CoreUtils.Destroy(gameObject.transform.GetChild(0).gameObject);
         }
     }
 }

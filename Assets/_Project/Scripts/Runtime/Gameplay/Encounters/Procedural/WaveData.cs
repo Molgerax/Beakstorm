@@ -26,6 +26,13 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public void AddSpawnPoint(EnemySpawnPoint spawnPoint)
         {
             spawnPoints ??= new List<EnemySpawnPoint>(4);
+
+            for (int i = spawnPoints.Count - 1; i >= 0; i--)
+            {
+                if (!spawnPoints[i])
+                    spawnPoints.RemoveAt(i);
+            }
+            
             if (spawnPoint.IsValid && !spawnPoints.Contains(spawnPoint))
                 spawnPoints.Add(spawnPoint);
         }
@@ -45,7 +52,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             int i = 0;
             foreach (EnemySpawnPoint entry in spawnPoints)
             {
-                if (entry.IsValid)
+                if (entry && entry.IsValid)
                     i += entry.Enemy.DangerRating;
             }
             return i;
@@ -56,7 +63,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             int i = 0;
             foreach (EnemySpawnPoint entry in spawnPoints)
             {
-                if (entry.IsValid)
+                if (entry && entry.IsValid)
                     i++;
             }
             return i;
@@ -65,6 +72,18 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         private void Awake()
         {
             _tokenSource = new();
+        }
+
+        private void Update()
+        {
+            if (spawnPoints == null)
+                return;
+            
+            for (int i = spawnPoints.Count - 1; i >= 0; i--)
+            {
+                if (!spawnPoints[i])
+                    spawnPoints.RemoveAt(i);
+            }
         }
 
         private void OnDestroy()

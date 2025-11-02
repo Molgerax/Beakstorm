@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using Beakstorm.Gameplay.Encounters.Procedural;
 using Beakstorm.Gameplay.Enemies;
 using Beakstorm.Mapping.Tremble;
 using UnityEditor;
@@ -13,6 +15,7 @@ namespace Beakstorm.AssetPostProcess.Editor
         public static string GetPathRoot()
         {
             string path = "Assets/_Generated/" + nameof(EnemyController) + "/" + nameof(TrembleEnemySpawn);
+            path = "Assets/_Generated/TremblePrefabs/" + nameof(EnemySpawnPoint);
             return path;
         }
 
@@ -30,22 +33,35 @@ namespace Beakstorm.AssetPostProcess.Editor
             if (enemySo == null)
                     return;
             
-            GameObject loadedPrefab = enemySo.Prefab.gameObject;
+            GameObject enemyPrefab = enemySo.Prefab.gameObject;
             
-            if (!loadedPrefab)
+            if (!enemyPrefab)
                 return;
 
-            if (!loadedPrefab.TryGetComponent(out EnemyController target))
+            if (!enemyPrefab.TryGetComponent(out EnemyController target))
                 return;
             
-            if (loadedPrefab.TryGetComponent(out TrembleEnemySpawn spawn))
+            if (enemyPrefab.TryGetComponent(out TrembleEnemySpawn spawn))
                 return;
 
+            string prefabPath = AssetDatabase.GetAssetPath(enemyPrefab);
+            if (!string.IsNullOrEmpty(prefabPath))
+            {
+                GameObject loadedPrefab = PrefabUtility.LoadPrefabContents(prefabPath);
+                EnemyController e = loadedPrefab.GetComponent<EnemyController>();
+                e.SetEnemySo(enemySo);
+                PrefabUtility.SaveAsPrefabAsset(loadedPrefab, prefabPath);
+                PrefabUtility.UnloadPrefabContents(loadedPrefab);
+            }
+            
+            
             string folderPath = GetPathRoot();
+
+            EnsureFolderExists(folderPath);
             
             string[] guids;
 
-            guids = AssetDatabase.FindAssets(loadedPrefab.name + $"t:{nameof(EnemyController)}", new[] {folderPath});
+            guids = AssetDatabase.FindAssets(enemyPrefab.name + $"t:{nameof(EnemyController)}", new[] {folderPath});
             if (guids == null || guids.Length == 0)
             {
                 guids = AssetDatabase.FindAssets("", new[] {folderPath});
@@ -57,30 +73,45 @@ namespace Beakstorm.AssetPostProcess.Editor
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetP);
 
                 GameObject source = PrefabUtility.GetCorrespondingObjectFromSource(prefab);
-                if (source == loadedPrefab)
+                if (source == enemyPrefab)
                 {
                     ApplyOnPrefabVariant(enemySo, prefab, source, assetP);
                     return;
                 }
             }
-            CreatePrefabVariant(enemySo, loadedPrefab, folderPath + "/" + loadedPrefab.name + ".prefab");
+            CreatePrefabVariant(enemySo, enemyPrefab, folderPath + "/" + enemyPrefab.name + "_Spawn.prefab");
         }
         
         static void CreatePrefabVariant(EnemySO enemy, GameObject source, string variantPath)
         {
-            GameObject prefabVariant = (GameObject)PrefabUtility.InstantiatePrefab(source);
+            GameObject prefabVariant = new GameObject(source.name + "_Spawner");
+
+            EnemySpawnPoint script = prefabVariant.AddComponent<EnemySpawnPoint>();
+            script.Init(enemy, 0, 0);
             
-            Debug.Log(prefabVariant);
+            GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(source);
+            instance.transform.SetParent(prefabVariant.transform, false);
             
-            TrembleEnemySpawn script = prefabVariant.AddComponent<TrembleEnemySpawn>();
-            script.Enemy = enemy;
-            PrefabUtility.ApplyAddedComponent(script, variantPath, InteractionMode.AutomatedAction);
+            //PrefabUtility.ApplyAddedComponent(script, variantPath, InteractionMode.AutomatedAction);
             PrefabUtility.SaveAsPrefabAsset(prefabVariant, variantPath);
             CoreUtils.Destroy(prefabVariant);
         }
 
+        static void EnsureFolderExists(string folderPath)
+        {
+            string fullPath = Application.dataPath + "/" + Path.GetRelativePath("Assets", folderPath);
+
+            if (!Directory.Exists(fullPath))
+            {
+                Directory.CreateDirectory(fullPath);
+            }
+        }
+        
         static void ApplyOnPrefabVariant(EnemySO enemy, GameObject prefabVariant, GameObject source, string variantPath)
         {
+            Debug.Log("Oops, shouldnt happen");
+            return;
+            
             if (prefabVariant.TryGetComponent(out TrembleEnemySpawn script))
                 return;
             
