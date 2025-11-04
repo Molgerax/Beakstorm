@@ -13,6 +13,7 @@ RWStructuredBuffer<int> _DamageBuffer;
 StructuredBuffer<int> _FlushDamageBuffer;
 
 int _WeakPointCount;
+int _BufferSize;
 float _Time;
 float _DeltaTime;
 
@@ -22,9 +23,15 @@ void FlushDamage(uint3 id : SV_DispatchThreadID)
 {
     int index = id.x;
 
-    if (index >= _WeakPointCount)
+    if (index >= _BufferSize)
         return;
 
+    if (index >= _WeakPointCount)
+    {
+        _DamageBuffer[index] = 0;
+        return;
+    }
+    
     int flushDamage = _FlushDamageBuffer[index];
     int dmg = _DamageBuffer[index] - flushDamage;
 

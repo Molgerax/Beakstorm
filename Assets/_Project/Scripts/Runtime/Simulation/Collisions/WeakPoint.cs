@@ -43,7 +43,17 @@ namespace Beakstorm.Simulation.Collisions
         public int MaxHealth => maxHealth;
         public int CurrentHealth => currentHealth;
         public float CurrentHealth01 => (float) currentHealth / maxHealth;
-        public bool IsDestroyed => currentHealth <= 0;
+        public bool IsDestroyed => currentHealth <= 0 || _destroyed;
+
+        public bool IsValid
+        {
+            get
+            {
+                if (IsDestroyed || !isActiveAndEnabled)
+                    return false;
+                return true;
+            }
+        }
 
         private MaterialPropertyBlock _propBlock;
         
@@ -80,14 +90,12 @@ namespace Beakstorm.Simulation.Collisions
 
         private void Subscribe()
         {
-            if (!WeakPointManager.WeakPoints.Contains(this))
-                WeakPointManager.WeakPoints.Add(this);
+            WeakPointManager.AddWeakPoint(this);
         }
 
         private void Unsubscribe()
-        {   
-            if (WeakPointManager.WeakPoints.Contains(this))
-                WeakPointManager.WeakPoints.Remove(this);
+        {
+            WeakPointManager.RemoveWeakPoint(this);
         }
         
         public void ApplyDamage(int value)
