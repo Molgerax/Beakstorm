@@ -65,13 +65,15 @@ namespace TinyGoose.Tremble
 				return false;
 			}
 
-			if (key == "target")
-				numberedKeys = new[] {key};
-
 			List<object> outValues = new(numberedKeys.Length);
 
 			foreach (string numberedKey in numberedKeys)
 			{
+				if (string.IsNullOrEmpty(numberedKey))
+					continue;
+				if (key == "target" && numberedKey == TrembleSyncSettings.Get().IdentityPropertyName)
+					continue;
+				
 				// First get multiple and add if possible
 				if (TryGetValuesFromMap(entity, numberedKey, gameObject, target, out T[] tValues))
 				{

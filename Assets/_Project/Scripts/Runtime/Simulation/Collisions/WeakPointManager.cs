@@ -288,12 +288,16 @@ namespace Beakstorm.Simulation.Collisions
             compute.DispatchExact(kernel, _bufferSize);
         }
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
-            Gizmos.color = Color.cyan;
-            foreach (Vector4 position in _weakPointPositions)
+            Gizmos.color = new(0, 1, 1, 0.5f);
+            for (var i = 0; i < _weakPointPositions.Length; i++)
             {
+                Vector4 position = _weakPointPositions[i];
                 if (position == Vector4.zero)
+                    continue;
+
+                if (i >= WeakPointCount)
                     continue;
                 
                 Gizmos.DrawWireSphere(position, position.w + 0.5f);

@@ -63,7 +63,6 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             }
             
             waveHandler.Spawn();
-            
             EvaluateDanger();
             waveHandler.OnDefeatedAll += EvaluateDanger;
             return waveHandler;
@@ -74,9 +73,10 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             _dangerRating = 0;
             foreach (var handler in _waveHandlers)
             {
-                if (handler is {Defeated: false})
+                if (handler != null)
                 {
-                    _dangerRating = Mathf.Max(_dangerRating, handler.WaveData.DangerRating());
+                    if (!handler.Defeated)
+                        _dangerRating = Mathf.Max(_dangerRating, handler.WaveData.DangerRating());
                 }
             }
             
