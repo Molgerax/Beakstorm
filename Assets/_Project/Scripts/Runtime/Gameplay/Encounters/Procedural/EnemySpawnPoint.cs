@@ -15,7 +15,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         [SerializeField, Min(0)] private float spawnDelay;
 
         [Tremble("target")] private WaveData _waveData;
-        
+
+        public WaveData WaveData => _waveData;
         
         public void Init(EnemySO enemy, int waveIndex, float spawnDelay)
         {

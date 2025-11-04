@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Beakstorm.Mapping;
+using Beakstorm.SceneManagement;
 using Beakstorm.Utility.Extensions;
 using Cysharp.Threading.Tasks;
 using TinyGoose.Tremble;
@@ -11,10 +12,11 @@ using UnityEngine;
 namespace Beakstorm.Gameplay.Encounters.Procedural
 {
     [PointEntity("wave", colour:"1.0 0.5 0", size:16)]
-    public class WaveData : TriggerBehaviour, IWaveData
+    public class WaveData : TriggerBehaviour, IWaveData, IOnSceneLoad
     {
         [SerializeField] private List<EnemySpawnPoint> spawnPoints = new(4);
         [SerializeField, Range(1, 5)] private int intensity = 1;
+        [SerializeField] private bool autoStartOnLoad = false;
         
         [Header("Events")]
         [SerializeField] private UltEvent onFinish;
@@ -22,6 +24,12 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         private UniTask _task;
         private CancellationTokenSource _tokenSource;
+
+        public void SetAutoStart(bool value) => autoStartOnLoad = value;
+
+        private bool _started = false;
+        
+        public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.AfterAll;
 
         public void AddSpawnPoint(EnemySpawnPoint spawnPoint)
         {
@@ -73,6 +81,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         private void Awake()
         {
             _tokenSource = new();
+            
+            GlobalSceneLoader.ExecuteWhenLoaded(this);
         }
 
         private void Update()
@@ -101,6 +111,9 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         
         public void StartEncounter()
         {
+            if (_started)
+                return;
+            
             _task = WaveLoop(_tokenSource.Token);
         }
         
@@ -109,6 +122,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         {
             if (!EncounterManager.Instance)
                 return;
+
+            _started = true;
             
             var handler = EncounterManager.Instance.BeginWave(this);
 
@@ -125,6 +140,12 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         {
             onFinish?.Invoke();
             target.TryTrigger();
+        }
+
+        public void OnSceneLoaded()
+        {
+            if (autoStartOnLoad)
+                Trigger();
         }
     }
 }
