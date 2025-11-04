@@ -50,6 +50,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         public int DangerRating()
         {
+            return intensity;
+            
             int i = 0;
             foreach (EnemySpawnPoint entry in spawnPoints)
             {
@@ -90,10 +92,9 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         private async UniTask WaveLoop(CancellationToken token)
         {
-            EncounterManager.Instance.SetWar(intensity);
-            EncounterManager.Instance.BeginWave(this);
+            var handler = EncounterManager.Instance.BeginWave(this);
 
-            while (EncounterManager.Instance.IsWaveActive)
+            while (!handler.Defeated)
             {
                 token.ThrowIfCancellationRequested();
                 await UniTask.Yield(token);

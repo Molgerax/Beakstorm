@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Beakstorm.Audio;
 using UltEvents;
 using UnityEngine;
@@ -10,20 +11,24 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         
         public static EncounterManager Instance;
         
-        private WaveHandler _waveHandler;
+        private readonly List<WaveHandler> _waveHandlers = new();
         
         private void Awake()
         {
             Instance = this;
         }
-        
+
+        private int _dangerRating = 0;
 
         private void OnDestroy()
         {
             if (Instance == this)
                 Instance = null;
-            
-            _waveHandler?.Dispose();
+
+            foreach (WaveHandler handler in _waveHandlers)
+            {
+                handler?.Dispose();
+            }
         }
 
         public void SetPeace(int intensity)
@@ -36,39 +41,51 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             MusicStateManager.Instance.SetWar(intensity - 1);
         }
 
-        public bool IsWaveActive
+
+        public WaveHandler BeginWave(IWaveData waveData)
         {
-            get
+            WaveHandler waveHandler = null;
+            foreach (WaveHandler handler in _waveHandlers)
             {
-                if (_waveHandler == null)
-                    return false;
-
-                return _waveHandler.Defeated == false;
+                if (handler == null)
+                    continue;
+                
+                if (handler.Defeated)
+                    waveHandler = handler;
             }
-        }
 
-        public bool BeginWave(IWaveData waveData)
-        {
-            if (IsWaveActive)
-                return false;
-
-            if (_waveHandler == null)
-                _waveHandler = new WaveHandler(this, waveData);
-            else 
-                _waveHandler.Reset(this, waveData);
+            if (waveHandler != null)
+                waveHandler.Reset(this, waveData);
+            else
+            {
+                waveHandler = new WaveHandler(this, waveData);
+                _waveHandlers.Add(waveHandler);
+            }
             
-            _waveHandler.Spawn();
-            _waveHandler.OnDefeatedAll += WaveHandlerOnDefeatedAll;
-            return true;
+            waveHandler.Spawn();
+            
+            EvaluateDanger();
+            waveHandler.OnDefeatedAll += EvaluateDanger;
+            return waveHandler;
         }
 
-        private void WaveHandlerOnDefeatedAll()
+        private void EvaluateDanger()
         {
-            Debug.Log("Wave defeated");
-            _waveHandler.Dispose();
-            _waveHandler = null;
+            _dangerRating = 0;
+            foreach (var handler in _waveHandlers)
+            {
+                if (handler is {Defeated: false})
+                {
+                    _dangerRating = Mathf.Max(_dangerRating, handler.WaveData.DangerRating());
+                }
+            }
+            
+            if (_dangerRating == 0)
+                SetPeace(1);
+            else
+                SetWar(_dangerRating);
         }
-
+        
         public void FinishEncounter()
         {
             onFinishEncounter?.Invoke();

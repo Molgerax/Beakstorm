@@ -23,6 +23,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         private List<EnemyController> _activeEnemies;
 
+        public IWaveData WaveData => _waveData;
+        
         public event Action OnDefeatedAll;
 
         public float ElapsedTime => _timer;
