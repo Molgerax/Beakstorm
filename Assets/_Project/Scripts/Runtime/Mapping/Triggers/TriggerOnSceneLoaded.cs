@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.Triggers
 {
-    [PointEntity("on_load", "trigger", colour:"1.0, 0.5, 0.0", size:16)]
+    [PointEntity("on_load", "trigger", colour:"0.5 1.0 0.0", size:16)]
     public class TriggerOnSceneLoaded : MonoBehaviour, IOnSceneLoad
     {
-        [SerializeField] private Component target;
+        [SerializeField, Tremble("target")] private TriggerBehaviour[] target;
 
         public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.AfterAll;
         

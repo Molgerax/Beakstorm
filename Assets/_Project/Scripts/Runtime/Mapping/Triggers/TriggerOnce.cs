@@ -7,7 +7,7 @@ namespace Beakstorm.Mapping.Triggers
     [BrushEntity("once", "trigger", BrushType.Trigger)]
     public class TriggerOnce : MonoBehaviour
     {
-        [SerializeField] private Component target;
+        [SerializeField, Tremble("target")] private TriggerBehaviour[] target;
         [SerializeField] private LayerMask layerMask = 64;
 
         [SerializeField, NoTremble] private bool _triggered = false;
@@ -20,11 +20,11 @@ namespace Beakstorm.Mapping.Triggers
             //if (!layerMask.Contains(other))
             //    return;
 
-            target.TryTrigger();
-            
-            Debug.Log("Triggered!");
-            
             _triggered = true;
+            
+            Debug.Log("Triggered", this);
+            
+            target.TryTrigger();
         }
     }
 }

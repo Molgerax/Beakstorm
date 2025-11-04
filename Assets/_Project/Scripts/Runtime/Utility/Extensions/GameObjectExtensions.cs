@@ -10,7 +10,7 @@ namespace Beakstorm.Utility.Extensions
             if (!gameObject)
                 return false;
 
-            return (gameObject.TryGetComponent(out ITriggerable triggerable));
+            return (gameObject.TryGetComponent(out TriggerBehaviour triggerable));
         }
 
         public static bool IsTriggerable(this Component component) => component && component.gameObject.IsTriggerable();
@@ -20,7 +20,7 @@ namespace Beakstorm.Utility.Extensions
             if (!gameObject)
                 return false;
             
-            if (gameObject.TryGetComponent(out ITriggerable triggerable))
+            if (gameObject.TryGetComponent(out TriggerBehaviour triggerable))
             {
                 triggerable.Trigger();
                 return true;
@@ -28,7 +28,17 @@ namespace Beakstorm.Utility.Extensions
 
             return false;
         }
-        
+
+        public static void TryTrigger(this TriggerBehaviour[] components)
+        {
+            if (components == null)
+                return;
+            foreach (var component in components)
+            {
+                if (component)
+                    component.Trigger();
+            }
+        }
         
         public static bool TryTrigger(this Component component) => component && component.gameObject.TryTrigger();
     }
