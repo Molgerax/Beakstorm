@@ -65,6 +65,9 @@ namespace TinyGoose.Tremble
 				return false;
 			}
 
+			if (key == "target")
+				numberedKeys = new[] {key};
+
 			List<object> outValues = new(numberedKeys.Length);
 
 			foreach (string numberedKey in numberedKeys)
