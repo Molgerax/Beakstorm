@@ -368,7 +368,7 @@ MonoBehaviour:
   m_MapProcessors:
   - Class:
       m_MapClassName: Beakstorm.Mapping.Tremble.EnemySpawnMapProcessor
-    Enabled: 0
+    Enabled: 1
   - Class:
       m_MapClassName: Beakstorm.Mapping.Tremble.SdfTextureMapProcessor
     Enabled: 1
