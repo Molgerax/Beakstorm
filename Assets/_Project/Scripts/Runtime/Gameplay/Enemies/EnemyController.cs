@@ -23,8 +23,6 @@ namespace Beakstorm.Gameplay.Enemies
         private int _maxHealth;
         private int _currentHealth;
 
-        private Vector3 _spawnPos;
-
         private EnemyPool _pool;
         private EnemySpawner _spawner;
 
@@ -48,12 +46,20 @@ namespace Beakstorm.Gameplay.Enemies
             GetPoolIfNoneSet();
         }
 
-        public void Spawn(Transform spawnPoint) => Spawn(spawnPoint.position, spawnPoint.rotation);
-        public void Spawn(TransformData spawnPoint) => Spawn(spawnPoint.Position, spawnPoint.Rotation);
-        public void Spawn(Vector3 position, Quaternion rotation)
+        public void Spawn(Transform spawnPoint, bool useParent = false) => Spawn(spawnPoint.position, spawnPoint.rotation, useParent ? spawnPoint : null);
+        public void Spawn(TransformData spawnPoint) => Spawn(spawnPoint.Position, spawnPoint.Rotation, spawnPoint.Parent);
+        public void Spawn(Vector3 position, Quaternion rotation, Transform parent = null)
         {
-            _spawnPos = position;
-            transform.SetPositionAndRotation(_spawnPos, rotation);
+            if (parent)
+            {
+                transform.SetParent(parent, true);
+                transform.SetLocalPositionAndRotation(position, rotation);
+            }
+            else
+            {
+                transform.SetPositionAndRotation(position, rotation);
+            }
+            
             _isDefeated = false;
             
             foreach (WeakPoint weakPoint in weakPoints)

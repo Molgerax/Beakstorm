@@ -14,6 +14,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         [SerializeField, Min(0)] private int waveIndex;
         [SerializeField, Min(0)] private float spawnDelay;
 
+        [SerializeField, Tremble("parent")] private Transform spawnParent;
+        
         [Tremble("target")] private WaveData _waveData;
 
         public WaveData WaveData => _waveData;
@@ -29,7 +31,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public int WaveIndex => waveIndex;
         
         public EnemySO Enemy => enemy;
-        public TransformData TransformData => new (transform);
+        public TransformData TransformData => new (transform, spawnParent);
         public EnemySpawnDataEntry.WaitCondition WaitCondition => EnemySpawnDataEntry.WaitCondition.WaitForDelay;
         public float SpawnDelay => spawnDelay;
         

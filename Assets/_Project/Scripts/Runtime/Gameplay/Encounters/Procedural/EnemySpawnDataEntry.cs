@@ -70,23 +70,43 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
     {
         public Vector3 Position;
         public Quaternion Rotation;
+        public Transform Parent;
 
         public TransformData(Transform t)
         {
             Position = t.position;
             Rotation = t.rotation;
+            Parent = null;
+        }
+        
+        public TransformData(Transform t, Transform parent = null)
+        {
+            if (parent)
+            {
+                Position = parent.InverseTransformPoint(t.position);
+                Rotation = Quaternion.Inverse(parent.rotation) * t.rotation;
+                Parent = parent;
+            }
+            else
+            {
+                Position = t.position;
+                Rotation = t.rotation;
+                Parent = null;
+            }
         }
 
         public TransformData(Vector3 pos, Quaternion rot)
         {
             Position = pos;
             Rotation = rot;
+            Parent = null;
         }
             
         public TransformData(Vector3 pos)
         {
             Position = pos;
             Rotation = Quaternion.identity;
+            Parent = null;
         }
     }
 }
