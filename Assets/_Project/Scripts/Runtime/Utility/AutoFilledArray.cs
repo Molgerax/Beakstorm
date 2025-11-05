@@ -10,7 +10,7 @@ namespace Beakstorm.Utility
         private Dictionary<int, T> _dictionary;
         private Queue<int> _freeIndices;
         private List<int> _fullIndices;
-        private List<T> _list;
+        private HashSet<T> _hashSet;
 
         private int _count;
         private int _size;
@@ -29,7 +29,7 @@ namespace Beakstorm.Utility
             _size = size;
             _array = new T[size];
             _dictionary = new();
-            _list = new List<T>(size);
+            _hashSet = new(size);
 
             _freeIndices = new(size);
             _fullIndices = new(size);
@@ -37,7 +37,7 @@ namespace Beakstorm.Utility
 
         public bool AddElement(T value)
         {
-            if (_list.Contains(value))
+            if (_hashSet.Contains(value))
                 return false;
 
             FreeNull();
@@ -55,7 +55,7 @@ namespace Beakstorm.Utility
                 {
                     _dictionary[index] = value;
                     _fullIndices.Add(index);
-                    _list.Add(value);
+                    _hashSet.Add(value);
                     return true;
                 }
             }
@@ -63,7 +63,7 @@ namespace Beakstorm.Utility
             index = _count++;
             _dictionary.Add(index, value);
             _fullIndices.Add(index);
-            _list.Add(value);
+            _hashSet.Add(value);
             return true;
         }
 
@@ -78,17 +78,18 @@ namespace Beakstorm.Utility
             FreeLastElementIfNull();
         }
 
-        public bool Contains(T value) => _list.Contains(value);
+        public bool Contains(T value) => _hashSet.Contains(value);
 
         public void Resize(int newSize)
         {
             _array = new T[newSize];
+            _size = newSize;
             UpdateArray();
         }
         
         public bool RemoveElement(T value)
         {
-            if (!_list.Remove(value))
+            if (!_hashSet.Remove(value))
                 return false;
 
             for (int i = _fullIndices.Count - 1; i >= 0; i--)
@@ -119,7 +120,7 @@ namespace Beakstorm.Utility
                 T item = _dictionary[fullIndex];
                 if (item == null)
                 {
-                    _list.Remove(null);
+                    _hashSet.Remove(null);
                     _freeIndices.Enqueue(fullIndex);
                     _fullIndices.RemoveAt(i);
                 }

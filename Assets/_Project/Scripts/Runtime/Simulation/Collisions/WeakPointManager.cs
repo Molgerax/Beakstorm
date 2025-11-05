@@ -31,7 +31,7 @@ namespace Beakstorm.Simulation.Collisions
         
         private static AutoFilledArray<WeakPoint> WeakPoints = new AutoFilledArray<WeakPoint>(INIT_BUFFER_SIZE); 
 
-        private Vector4[] _weakPointPositions = new Vector4[INIT_BUFFER_SIZE];
+        private Vector4[] _weakPointPositions;
         private int _bufferSize = INIT_BUFFER_SIZE;
 
         private AsyncGPUReadbackRequest _request;
@@ -60,6 +60,7 @@ namespace Beakstorm.Simulation.Collisions
             _damageArray = new NativeArray<int>(_bufferSize, Allocator.Persistent);
             DamageBuffer.SetData(_damageArray);
             _flushDamageBuffer.SetData(_damageArray);
+            _weakPointPositions = new Vector4[_bufferSize];
         }
 
 
