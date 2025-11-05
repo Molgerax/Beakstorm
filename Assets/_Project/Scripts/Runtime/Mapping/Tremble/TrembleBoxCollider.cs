@@ -7,12 +7,25 @@ using UnityEngine.Rendering;
 namespace Beakstorm.Mapping.Tremble
 {
     [BrushEntity("box", category:"collision", type: BrushType.Solid)]
-    public class TrembleBoxCollider : MonoBehaviour, IOnImportFromMapEntity
+    public class TrembleBoxCollider : TriggerBehaviour, IOnImportFromMapEntity
     {
+        [Tremble("parent")] private Transform _parent;
+
+        [Tremble("targetname")] private string _id;
+        
         [Tremble("sdfMaterial")] private SdfMaterialType _sdfMaterialType = SdfMaterialType.None;
+
+        [SerializeField, HideInInspector, NoTremble] private Rigidbody _rigidbody;
         
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
+            if (!string.IsNullOrEmpty(_id))
+            {
+                _rigidbody = gameObject.AddComponent<Rigidbody>();
+                _rigidbody.isKinematic = true;
+                _rigidbody.useGravity = false;
+            }
+            
             MeshCollider meshCollider = GetComponent<MeshCollider>();
             Bounds bounds = meshCollider.bounds;
             
@@ -22,6 +35,15 @@ namespace Beakstorm.Mapping.Tremble
             SdfBox sdfBox = gameObject.AddComponent<SdfBox>();
             sdfBox.SetDimensions(boxCollider.center, boxCollider.size);
             sdfBox.SetMaterialType(_sdfMaterialType);
+        }
+
+        public override void Trigger()
+        {
+            if (_rigidbody)
+            {
+                _rigidbody.isKinematic = false;
+                _rigidbody.useGravity = true;
+            }
         }
     }
 }
