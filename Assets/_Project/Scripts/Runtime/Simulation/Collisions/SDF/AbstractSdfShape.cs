@@ -8,6 +8,9 @@ namespace Beakstorm.Simulation.Collisions.SDF
     public abstract class AbstractSdfShape : MonoBehaviour,  IBounds, ISdfData<AbstractSdfData>, IValid
     {
         [SerializeField] protected SdfMaterialType materialType = SdfMaterialType.None;
+
+        public void SetMaterialType(SdfMaterialType type) => materialType = type;
+        
         
         protected abstract SdfShapeType Type();
 

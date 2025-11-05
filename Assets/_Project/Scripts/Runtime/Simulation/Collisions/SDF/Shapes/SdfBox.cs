@@ -6,8 +6,15 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
     public class SdfBox : AbstractSdfShape
     {
         [SerializeField] private float3 scale = new float3(1, 1, 1);
-
+        [SerializeField] private float3 offset = float3.zero;
+        
         protected override SdfShapeType Type() => SdfShapeType.Box;
+
+        public void SetDimensions(float3 center, float3 size)
+        {
+            offset = center;
+            scale = size;
+        }
         
         private float3 AdjustedScale()
         {
@@ -18,7 +25,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
         private void Update()
         {
-            float3 pos = T.position;
+            float3 pos = T.TransformPoint(offset);
             float4x4 m = T.worldToLocalMatrix;
             float3x3 s = new float3x3(m.c0.xyz, m.c1.xyz, m.c2.xyz);
             
@@ -44,7 +51,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
             for (int i = 0; i < 8; i++)
             {
-                float3 p = math.mul(rot, Corners[i] * scale * 0.5f) + center;
+                float3 p = math.mul(rot, Corners[i] * adjustedScale * 0.5f) + center;
                 bounds.GrowToInclude(p, p);
             }
 
@@ -56,7 +63,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         {
             Gizmos.color = new(1, 0, 0, 0.5f);
             Gizmos.matrix = T.localToWorldMatrix;
-            Gizmos.DrawWireCube(Vector3.zero, scale);
+            Gizmos.DrawWireCube(offset, scale);
         }
         
         
