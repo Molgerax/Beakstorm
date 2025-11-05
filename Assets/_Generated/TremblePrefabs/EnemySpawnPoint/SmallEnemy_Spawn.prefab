@@ -48,6 +48,7 @@ MonoBehaviour:
   enemy: {fileID: 11400000, guid: ba12d084cda02de4b9712b85732218d4, type: 2}
   waveIndex: 0
   spawnDelay: 0
+  spawnParent: {fileID: 0}
 --- !u!1001 &9121775080604406078
 PrefabInstance:
   m_ObjectHideFlags: 0
