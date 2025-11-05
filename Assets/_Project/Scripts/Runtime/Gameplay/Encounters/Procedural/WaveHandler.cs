@@ -87,7 +87,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             }
         }
 
-        public async UniTask SpawnAll(CancellationToken token)
+        private async UniTask SpawnAll(CancellationToken token)
         {
             _timer = 0;
             RunTimer(token).Forget();

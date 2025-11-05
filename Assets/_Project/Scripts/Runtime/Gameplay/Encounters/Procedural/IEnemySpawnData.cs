@@ -14,11 +14,14 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public float SpawnDelay { get; }
 
         public UniTask GetWaitCondition(CancellationToken token);
-
-        public EnemyController Spawn()
+    }
+    
+    public static class EnemySpawnDataExtensions
+    {
+        public static EnemyController Spawn(this IEnemySpawnData data)
         {
-            EnemyController e = Enemy.GetEnemyInstance();
-            e.Spawn(TransformData);
+            EnemyController e = data.Enemy.GetEnemyInstance();
+            e.Spawn(data.TransformData);
             return e;
         }
     }
