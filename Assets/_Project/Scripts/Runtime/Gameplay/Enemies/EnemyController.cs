@@ -54,6 +54,7 @@ namespace Beakstorm.Gameplay.Enemies
         {
             _spawnPos = position;
             transform.SetPositionAndRotation(_spawnPos, rotation);
+            _isDefeated = false;
             
             foreach (WeakPoint weakPoint in weakPoints)
             {
@@ -64,7 +65,6 @@ namespace Beakstorm.Gameplay.Enemies
             }
             
             onInitialize?.Invoke();
-            _isDefeated = false;
         }
 
 

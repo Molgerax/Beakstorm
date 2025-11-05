@@ -1,3 +1,4 @@
+using Beakstorm.Mapping.Tremble;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Enemies.EnemyBehaviour
@@ -10,12 +11,13 @@ namespace Beakstorm.Gameplay.Enemies.EnemyBehaviour
         private float _emergeTimer;
         private Vector3 _emergePos, _spawnPos;
 
+        private float LowerBound => MapWorldSpawn.Instance ? MapWorldSpawn.Instance.MapLowerBound : -256;
 
         public void Initialize()
         {
             _spawnPos = transform.position;
             _emergePos = _spawnPos;
-            _emergePos.y = -256;
+            _emergePos.y = LowerBound;
             transform.position = _emergePos;
 
             _emergeTimer = emergeTime;
