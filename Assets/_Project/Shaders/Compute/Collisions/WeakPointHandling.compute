@@ -93,7 +93,7 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
     
     float4 posR = _WeakPointBuffer.Load(index);
     float3 positionA = posR.xyz;
-    float radius = posR.w;
+    float radius = posR.w + 2;
 
     if (dot(posR, posR) == 0)
     {
