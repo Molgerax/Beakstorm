@@ -395,7 +395,7 @@ MonoBehaviour:
   m_MaterialCaptureLightIntensity: 0.5
   m_MaterialCaptureLightAngle: 0.75
   m_ExportClipSkipTextures: 1
-  m_ImportScale: 0.0625
+  m_ImportScale: 0.25
   m_AssetMetadatas:
   - MapName: enemy_Bunker_Spawn
     Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/Bunker_Spawn.prefab

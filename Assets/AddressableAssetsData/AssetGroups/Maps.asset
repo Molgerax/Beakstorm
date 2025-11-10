@@ -26,6 +26,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Map
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 54654050a16758b49b04c643ab18a408
+    m_Address: Assets/_Project/Maps/FlightPlayground.map
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Map
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 751bc9e10ec8f0342bd19d2532ae32ec
     m_Address: TrembleTestMap.map
     m_ReadOnly: 0
