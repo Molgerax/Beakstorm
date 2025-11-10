@@ -1,5 +1,6 @@
 using TinyGoose.Tremble;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Beakstorm.Simulation.Settings
 {
@@ -12,6 +13,7 @@ namespace Beakstorm.Simulation.Settings
             : new Bounds(new(0, -128, 0), new Vector3(256, 1, 256));
 
         [SerializeField, HideInInspector, NoTremble] private MeshCollider _meshCollider;
+        [SerializeField, HideInInspector, NoTremble] private Bounds _bounds;
         
         private void OnEnable()
         {
@@ -25,7 +27,7 @@ namespace Beakstorm.Simulation.Settings
                 _instance = null;
         }
 
-        public Bounds Bounds => _meshCollider ? _meshCollider.bounds : new Bounds(transform.position, transform.lossyScale);
+        public Bounds Bounds => _bounds.size.magnitude > 0 ? _bounds : new Bounds(transform.position, transform.lossyScale);
         
         private void OnDrawGizmos()
         {
@@ -36,6 +38,12 @@ namespace Beakstorm.Simulation.Settings
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
             _meshCollider = GetComponent<MeshCollider>();
+            _bounds = new Bounds(Vector3.zero, Vector3.zero);
+            if (_meshCollider)
+            {
+                _bounds = _meshCollider.bounds;
+                CoreUtils.Destroy(_meshCollider);
+            }
         }
     }
 }
