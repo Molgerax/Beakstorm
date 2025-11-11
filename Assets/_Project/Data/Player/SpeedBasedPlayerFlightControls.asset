@@ -1,0 +1,162 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e26408988b646ca8822869381a26250, type: 3}
+  m_Name: SpeedBasedPlayerFlightControls
+  m_EditorClassIdentifier: 
+  maxAngles: {x: -80, y: 70}
+  maxSpeed: 200
+  minSpeed: 1
+  stallSpeed: 10
+  mass: 300
+  throttleSpeed: 20
+  throttleReset: 1
+  minThrust: 0
+  maxThrust: 20
+  thrustAoaCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -90
+      value: 1
+      inSlope: -0.017779926
+      outSlope: -0.017779926
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.18791945
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.00086768833
+      outSlope: -0.00086768833
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.24161074
+    - serializedVersion: 3
+      time: 90
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.18936552
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  breakDrag: 2
+  dragPower: 2
+  dragMult: 1
+  dragCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 85.839966
+      value: 0.017363613
+      inSlope: 0.0004994004
+      outSlope: 0.0004994004
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.17284752
+    - serializedVersion: 3
+      time: 200
+      value: 1
+      inSlope: 0.014618858
+      outSlope: 0.014618858
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0734869
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  liftPower: 100
+  angleOfAttackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -90
+      value: 3
+      inSlope: -0.022459066
+      outSlope: -0.022459066
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.12133373
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4850235
+      value: 0.5036449
+      inSlope: -1.023363
+      outSlope: -0.0028335468
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 90
+      value: 0.25
+      inSlope: -0.0028335468
+      outSlope: 0
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  gravity: 10
+  rollSpeed: 3
+  steerSpeed: 90
+  steerSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.00034455603
+      outSlope: -0.00034455603
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1375839
+    - serializedVersion: 3
+      time: 100
+      value: 0.33
+      inSlope: -0.016575547
+      outSlope: -0.016575547
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.041946337
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
