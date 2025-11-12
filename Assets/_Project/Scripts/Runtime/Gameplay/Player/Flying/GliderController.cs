@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Beakstorm.Core.Variables;
 using Beakstorm.Gameplay.Damaging;
 using Beakstorm.Inputs;
+using Beakstorm.Mapping.BrushEntities;
 using Beakstorm.Pausing;
 using Beakstorm.SceneManagement;
 using UnityEngine;
@@ -40,6 +42,8 @@ namespace Beakstorm.Gameplay.Player.Flying
         [NonSerialized] public float Speed;
         [NonSerialized] public float Roll;
         [NonSerialized] public float Thrust;
+
+        [NonSerialized] public Vector3 ExternalWind;
         
         public float Speed01 => controlStrategy.Speed01(Speed);
 
@@ -52,6 +56,8 @@ namespace Beakstorm.Gameplay.Player.Flying
         private bool _initialized;
 
         public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.WhenLevelStarts;
+
+        private List<WindDraft> _drafts = new();
         
 
         #region Mono Methods
@@ -92,6 +98,7 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             float dt = Time.deltaTime;
             
+            ApplyWind();
             controlStrategy.UpdateFlight(this, dt);
             
             HandleCollision(dt);
@@ -115,6 +122,15 @@ namespace Beakstorm.Gameplay.Player.Flying
         #endregion
 
 
+        private void ApplyWind()
+        {
+            ExternalWind = Vector3.zero;
+            foreach (var draft in _drafts)
+            {
+                if (draft)
+                    ExternalWind += draft.Force;
+            }
+        }
         
         private void HandleCollision(float dt)
         {
@@ -177,6 +193,22 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             T.position = pos;
             T.forward = forward;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out WindDraft draft))
+            {
+                _drafts.Add(draft);
+            }
+        }
+        
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent(out WindDraft draft))
+            {
+                _drafts.Remove(draft);
+            }
         }
     }
 }
