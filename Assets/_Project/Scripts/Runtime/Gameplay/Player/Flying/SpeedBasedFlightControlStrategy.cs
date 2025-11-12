@@ -190,6 +190,9 @@ namespace Beakstorm.Gameplay.Player.Flying
             Vector3 flatForward = forward;
             flatForward.y = 0f;
 
+            if (Vector3.Dot(glider.T.up, Vector3.up) < 0)
+                flatForward *= -1;
+            
             float force = 0;
             
             float angle = Vector3.SignedAngle(forward, flatForward, glider.T.right);
