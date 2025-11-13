@@ -1660,6 +1660,7 @@ MonoBehaviour:
   controlStrategy: {fileID: 11400000, guid: 2a387c860d97f0943b7bacd39157a53b, type: 2}
   speedVariable: {fileID: 11400000, guid: e57bae1dde6fda34fb568f7184446306, type: 2}
   thrustVariable: {fileID: 11400000, guid: 8578a64aed3d1cf45ba8972c3924dba0, type: 2}
+  overChargeVariable: {fileID: 11400000, guid: 17ad0aad937b6a34089a0b69ef8bcb81, type: 2}
 --- !u!114 &8405665729557999531
 MonoBehaviour:
   m_ObjectHideFlags: 0

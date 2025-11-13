@@ -29,6 +29,9 @@ MonoBehaviour:
     Materials:
     - {fileID: 2100000, guid: e84523692239319499d73bad6951c76d, type: 2}
     - {fileID: 2100000, guid: 860e82aa07fe1b14db004cbe8141f0d0, type: 2}
+    - {fileID: 2100000, guid: cbf9802346300eb44bb16813962aed18, type: 2}
+    - {fileID: 2100000, guid: c1955b25cba3b644ea60dc8f0615ba1c, type: 2}
+    - {fileID: 2100000, guid: 4b471ae6d3a024e48a88e3ebc3fe395c, type: 2}
   m_MaterialRenderData:
   - m_Material: {fileID: 2100000, guid: d9d8676ef392ea641b99c4c1eb1ebe9f, type: 2}
     m_ExportMode: 0
@@ -360,6 +363,30 @@ MonoBehaviour:
     m_ResolutionX: 2
     m_ResolutionY: 2
     m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: ebc2e2b22a4174f9e9867d979b7008b8, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: cbf9802346300eb44bb16813962aed18, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: c1955b25cba3b644ea60dc8f0615ba1c, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 4b471ae6d3a024e48a88e3ebc3fe395c, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
   m_PipelineSplitMesh: 0
   m_PipelineSmoothMeshNormals: 1
   m_PipelineSimplifyCollisionMeshes: 1
@@ -446,6 +473,21 @@ MonoBehaviour:
     Path: Assets/_Project/Materials/Mapping/Mapping_Base_Red.mat
     FullTypeName: UnityEngine.Material
     AddressableName: Mapping_Base_Red
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/WindDraft
+    Path: Assets/_Project/Materials/Mapping/WindDraft.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: WindDraft
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/Mapping_Base_Green
+    Path: Assets/_Project/Materials/Mapping/Mapping_Base_Green.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping_Base_Green
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/Mapping_Base_Blue
+    Path: Assets/_Project/Materials/Mapping/Mapping_Base_Blue.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping_Base_Blue
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Lit
     Path: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
