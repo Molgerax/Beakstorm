@@ -938,6 +938,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1597530800}
     - target: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 1696295099}
+    - target: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2125250252}
@@ -2426,11 +2430,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnUp: {fileID: 473342629}
+    m_SelectOnDown: {fileID: 1597530800}
+    m_SelectOnLeft: {fileID: 805006311}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:

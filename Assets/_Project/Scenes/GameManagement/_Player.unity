@@ -804,8 +804,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   min: 60
-  max: 80
+  max: 90
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   cam: {fileID: 737318626}
+  composer: {fileID: 737318627}
+  distances: {x: 6, y: 10}
 --- !u!114 &737318630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,7 +1226,7 @@ Transform:
   m_GameObject: {fileID: 1060014457}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1783,7 +1809,7 @@ MonoBehaviour:
   movementAlpha: 7
   yAlpha: 0.125
   lookThreshold: 0.2
-  _headOffset: {x: 0, y: 0, z: 0}
+  _headOffset: {x: 0, y: 1.5, z: 0}
 --- !u!1 &1422211437
 GameObject:
   m_ObjectHideFlags: 0
@@ -2800,6 +2826,26 @@ PrefabInstance:
       propertyPath: onDeath._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 447267689}
+    - target: {fileID: 6094908347123523411, guid: cd3cee1a9919b0642b8bb7b32fded276, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Value
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094908347123523411, guid: cd3cee1a9919b0642b8bb7b32fded276, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094908347123523411, guid: cd3cee1a9919b0642b8bb7b32fded276, type: 3}
+      propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.data[0].m_Value.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094908347123523411, guid: cd3cee1a9919b0642b8bb7b32fded276, type: 3}
+      propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.data[0].m_Value.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6094908347123523411, guid: cd3cee1a9919b0642b8bb7b32fded276, type: 3}
+      propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.z
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
