@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerSpeed
   m_EditorClassIdentifier: 
   Value: 0
-  Min: 0
+  Min: -1
   Max: 0
