@@ -1,4 +1,5 @@
 using Beakstorm.Core.Variables;
+using Beakstorm.Utility.Extensions;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player.Flying
@@ -17,9 +18,8 @@ namespace Beakstorm.Gameplay.Player.Flying
         [SerializeField] private float throttleSpeed = 1f;
         [SerializeField] private float throttleReset = 1f;
         [SerializeField] private float minThrust = 10f;
+        [SerializeField] private float idleThrust = 20f;
         [SerializeField] private float maxThrust = 100f;
-
-        [SerializeField] private AnimationCurve thrustAoaCurve = AnimationCurve.Constant(-90, 90, 0);
         
         [Header("Drag")] 
         [SerializeField] private float breakDrag = 1f;
@@ -27,9 +27,11 @@ namespace Beakstorm.Gameplay.Player.Flying
         [SerializeField] private float dragMult = 1f;
         [SerializeField] private AnimationCurve dragCurve = AnimationCurve.Constant(0, 100, 1);
 
-        [SerializeField] private float liftPower = 100f;
         [SerializeField] private AnimationCurve angleOfAttackCurve = AnimationCurve.EaseInOut(-90, 0, 90, 0);
 
+        [SerializeField] private AnimationCurve aoaMaxSpeed = AnimationCurve.EaseInOut(0, 1, 90, 1);
+
+        [SerializeField] private float maxSpeedReduction = 1;
         
         [SerializeField] private float gravity = 10;
         
@@ -74,7 +76,9 @@ namespace Beakstorm.Gameplay.Player.Flying
             glider.Speed = glider.Velocity.magnitude;
 
             glider.SpeedVariable.Min = 0;
-            glider.SpeedVariable.Max = maxSpeed;
+            glider.SpeedVariable.Max = maxSpeed * 2;
+            
+            glider.FovFactor = glider.Speed01;
         }
 
         private void UpdateSteering(GliderController glider, float dt)
@@ -187,15 +191,17 @@ namespace Beakstorm.Gameplay.Player.Flying
         private void UpdateAcceleration(GliderController glider, float dt)
         {
             Vector3 forward = glider.T.forward;
+
             Vector3 flatForward = forward;
             flatForward.y = 0f;
 
             if (Vector3.Dot(glider.T.up, Vector3.up) < 0)
                 flatForward *= -1;
             
+            
             float force = 0;
             
-            float angle = Vector3.SignedAngle(forward, flatForward, glider.T.right);
+            float angle = Vector3.SignedAngle(flatForward,forward,glider.T.right);
 
             float gravityPull = Vector3.Dot(Vector3.up, forward) * gravity;
             
@@ -205,11 +211,11 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             float inputStrength = 0;
             inputStrength += glider.ThrustInput ? 1 : 0;
-            //inputStrength -= glider.BreakInput ? 1 : 0;
+            inputStrength -= glider.BreakInput ? 1 : 0;
 
             //if (Mathf.Abs(inputStrength) < 0.1f)
             glider.Thrust =
-                    Mathf.Lerp(glider.Thrust, minThrust, 1 - Mathf.Exp(-throttleReset * dt));
+                    Mathf.Lerp(glider.Thrust, idleThrust, 1 - Mathf.Exp(-throttleReset * dt));
             
             
             
@@ -219,14 +225,8 @@ namespace Beakstorm.Gameplay.Player.Flying
             glider.Thrust01 = glider.Thrust / maxThrust;
 
             float appliedThrust = glider.Thrust;
-            float maxSpeedForThrust = (1 + thrustAoaCurve.Evaluate(angle)) * maxSpeed * 0.5f;
-            float thrustStrength = Mathf.Clamp01((glider.Speed / (maxSpeedForThrust)));
-            thrustStrength *= thrustStrength;
-
-            thrustStrength = 1 - thrustStrength;
-            thrustStrength = Mathf.Lerp(0.1f, 1f, thrustStrength);
             
-            force += appliedThrust * mass * thrustStrength;
+            force += appliedThrust * mass;
             force += GetThrustFromWind(glider.T.forward, glider.ExternalWind) * mass;
 
             glider.ThrustVariable.Min = minThrust;
@@ -241,8 +241,14 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             glider.Speed += (force / mass) * dt;
 
+            float maxSpeedAoa = aoaMaxSpeed.Evaluate(angle) * maxSpeed;
+            
             //_speed += (inputStrength + angleStrength * Mathf.Abs(angleStrength)) * acceleration * Time.deltaTime;
-            glider.Speed = Mathf.Clamp(glider.Speed, minSpeed, maxSpeed);
+
+            if (glider.Speed > maxSpeedAoa)
+                glider.Speed -= Mathf.Min(glider.Speed - maxSpeedAoa, maxSpeedReduction * dt);
+            
+            glider.Speed = Mathf.Clamp(glider.Speed, minSpeed, maxSpeed * 2);
 
             glider.Velocity = glider.T.forward * glider.Speed;
         }

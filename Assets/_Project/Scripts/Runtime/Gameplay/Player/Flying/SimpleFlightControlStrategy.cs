@@ -36,6 +36,8 @@ namespace Beakstorm.Gameplay.Player.Flying
             UpdateAcceleration(glider, dt);
             
             glider.T.position += glider.T.forward * (glider.Speed * dt);
+            
+            glider.FovFactor = glider.Speed01;
         }
 
         private void UpdateSteering(GliderController glider, float dt)

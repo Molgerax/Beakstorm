@@ -43,6 +43,8 @@ namespace Beakstorm.Gameplay.Player.Flying
         [NonSerialized] public float Roll;
         [NonSerialized] public float Thrust;
 
+        [NonSerialized] public float FovFactor;
+
         [NonSerialized] public Vector3 ExternalWind;
         
         public float Speed01 => controlStrategy.Speed01(Speed);
@@ -102,9 +104,12 @@ namespace Beakstorm.Gameplay.Player.Flying
             controlStrategy.UpdateFlight(this, dt);
             
             HandleCollision(dt);
-            
+
             if (CameraFOV.Instance)
-                CameraFOV.Instance.SetFoV(Speed01);
+            {
+                CameraFOV.Instance.SetFoV(FovFactor);
+                CameraFOV.Instance.SetCameraDistance(FovFactor);
+            }
             
             speedVariable.Set(Speed);
         }
