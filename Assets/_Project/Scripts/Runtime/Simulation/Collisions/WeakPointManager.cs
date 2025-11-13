@@ -292,6 +292,9 @@ namespace Beakstorm.Simulation.Collisions
         private void OnDrawGizmos()
         {
             Gizmos.color = new(0, 1, 1, 0.5f);
+            if(_weakPointPositions == null)
+                return;
+            
             for (var i = 0; i < _weakPointPositions.Length; i++)
             {
                 Vector4 position = _weakPointPositions[i];
