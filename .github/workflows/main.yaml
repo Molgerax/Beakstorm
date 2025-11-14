@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
-    runs-on: self-hosted
+    runs-on: ubuntu
     strategy:
       fail-fast: false
       matrix:
@@ -21,14 +21,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          lfs: false
+          lfs: true
       - uses: actions/cache@v3
         with:
           path: Library
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
-      - if: matrix.targetPlatform == 'Android'
-        uses: jlumbroso/free-disk-space@v1.3.1
+      - uses: jlumbroso/free-disk-space@v1.3.1
       - name: Apply csc.rsp (pre-processor symbols)
         run: echo -define:UNITY_EDITOR_LINUX >> Assets/csc.rsp
       - uses: game-ci/unity-builder@v4
