@@ -6,7 +6,7 @@ namespace Beakstorm.Utility.Extensions
     {
         public static bool Contains(this LayerMask layerMask, int layer)
         {
-            return ((layerMask.value & layer) > 0);
+            return ((layerMask.value & (1 << layer)) > 0);
         }
      
         public static bool Contains(this LayerMask layerMask, GameObject gameObject) =>
