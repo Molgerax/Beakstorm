@@ -16,6 +16,9 @@ MonoBehaviour:
   displayName: Quick Itano
   fireDelay: 0.01
   ammoCost: 1
+  pickupCount: 10
+  reloadTime: 2
+  maxReloadCount: 10
   initialVelocity: 100
   projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
   behaviourData: {fileID: 11400000, guid: d4993d6ed62f18c45bc66960a891dc55, type: 2}
