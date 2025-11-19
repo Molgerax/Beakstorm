@@ -93,7 +93,7 @@ namespace Beakstorm.Gameplay.Player
                 }
             }
             
-            if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask, QueryTriggerInteraction.Ignore))
             {
                 return (hit.point - shootPosition).normalized;
             }
@@ -122,7 +122,7 @@ namespace Beakstorm.Gameplay.Player
             Vector3 shotPosition = ray.origin + ray.direction * 500f;
             targetNormal = -ray.direction;
             
-            if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask, QueryTriggerInteraction.Ignore))
             {
                 targetNormal = hit.normal;
                 collider = hit.collider;
