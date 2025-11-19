@@ -57,6 +57,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a8ceaf6f3ea49946bd01c143c5a29ca
+    m_Address: MessageRing
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ee93937e6bebee64fb948a62ff3fc43f
     m_Address: ShieldedEnemy_Spawn
     m_ReadOnly: 0
