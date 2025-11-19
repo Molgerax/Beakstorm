@@ -26,7 +26,7 @@ MonoBehaviour:
   dischargeRate: 1
   dischargeMult: 70
   chargeCapacity: 2
-  breakDrag: 0.5
+  breakDrag: 0.75
   angleOfAttackCurve:
     serializedVersion: 2
     m_Curve:
@@ -96,26 +96,26 @@ MonoBehaviour:
   gravity: 10
   rollSpeed: 3
   steerSpeed: 90
-  steerSpeedCurve:
+  steerThrustCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.00034455603
-      outSlope: -0.00034455603
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.1375839
+      outWeight: 0
     - serializedVersion: 3
-      time: 100
-      value: 0.33
-      inSlope: -0.016575547
-      outSlope: -0.016575547
+      time: 1
+      value: 0.4
+      inSlope: -0.93875676
+      outSlope: -0.93875676
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.041946337
+      inWeight: 0.11962098
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
