@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShowExpanded: 1
   m_AutoSyncOnCompile: 1
-  m_AllowStandaloneImport: 0
+  m_AllowStandaloneImport: 1
   m_TrenchBroomVersion: 3
   m_TemplateMap: {fileID: 0}
   m_WorldspawnScript:
@@ -464,30 +464,70 @@ MonoBehaviour:
     FullTypeName: UnityEngine.GameObject
     AddressableName: SmallEnemy_Spawn
     SpawnOffset: {x: -0, y: -7.0047092, z: -0}
+  - MapName: prefab_weapon_pickup
+    Path: Assets/_Project/Prefabs/Pickups/Weapons/WeaponPickup.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: WeaponPickup
+    SpawnOffset: {x: -0, y: -0, z: -0}
+  - MapName: Impact_PheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Impact_PheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Impact_PheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Multi_ConstantPheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Multi_ConstantPheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Multi_ConstantPheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Multi_ReversePheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Multi_ReversePheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Multi_ReversePheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Simple_LongRangeShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Simple_LongRangeShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Simple_LongRangeShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Simple_QuickShotItano
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Simple_QuickShotItano.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Simple_QuickShotItano
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Simple_ReversePheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Simple_ReversePheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Simple_ReversePheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Simple_SpreadPheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Simple_SpreadPheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Simple_SpreadPheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Mapping/Mapping_Base
     Path: Assets/_Project/Materials/Mapping/Mapping_Base.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: Mapping_Base
+    AddressableName: Mapping/Mapping_Base
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Mapping/Mapping_Base_Red
     Path: Assets/_Project/Materials/Mapping/Mapping_Base_Red.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: Mapping_Base_Red
+    AddressableName: Mapping/Mapping_Base_Red
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Mapping/WindDraft
     Path: Assets/_Project/Materials/Mapping/WindDraft.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: WindDraft
+    AddressableName: Mapping/WindDraft
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Mapping/Mapping_Base_Green
     Path: Assets/_Project/Materials/Mapping/Mapping_Base_Green.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: Mapping_Base_Green
+    AddressableName: Mapping/Mapping_Base_Green
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Mapping/Mapping_Base_Blue
     Path: Assets/_Project/Materials/Mapping/Mapping_Base_Blue.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: Mapping_Base_Blue
+    AddressableName: Mapping/Mapping_Base_Blue
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Lit
     Path: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat

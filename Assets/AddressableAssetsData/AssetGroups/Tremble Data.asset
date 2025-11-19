@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Tremble Data
+  m_EditorClassIdentifier: 
+  m_GroupName: Tremble Data
+  m_GUID: f6c0bcba8c2af734c9a225b84f74ba5d
+  m_SerializeEntries:
+  - m_GUID: 00293372832f14248b9698242dcaefcf
+    m_Address: Simple_SpreadPheromoneShot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b763d6de748faf4294d1c981112eba6
+    m_Address: Simple_LongRangeShot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35d420423548a2349b6d7155b26e7135
+    m_Address: Simple_QuickShotItano
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 848899affe973bf47b013bbab7f99edc
+    m_Address: Simple_ReversePheromoneShot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b96d0a59e46c4cf49919838ac0a61d73
+    m_Address: Multi_ConstantPheromoneShot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4fa46089df425d48a5802f0d23581d2
+    m_Address: Multi_ReversePheromoneShot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f08fd6abe09c4f04e92d93fbd6f863d0
+    m_Address: TrembleSyncSettings
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fade88fdeec5e594d821d2ad086adb8d
+    m_Address: Impact_PheromoneShot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d8aeb4f9e09ee8343902018e14c13f32, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 20fef6fb651a7e0428408d3e31976d00, type: 2}
+    - {fileID: 11400000, guid: bcc2fb3e3d4527b4984f73985965bc80, type: 2}
