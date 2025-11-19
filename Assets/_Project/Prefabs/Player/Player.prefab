@@ -1221,6 +1221,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
+  weaponInventory: {fileID: 8394150491180038678}
   targetingManager: {fileID: 5739782084432256678}
   onShoot:
     _PersistentCalls:
@@ -1412,7 +1413,7 @@ VisualEffect:
       - m_Value: 1.81
         m_Name: Radius
         m_Overridden: 1
-      - m_Value: NaN
+      - m_Value: 1
         m_Name: Alpha
         m_Overridden: 1
     m_Vector2f:
@@ -1574,6 +1575,7 @@ GameObject:
   - component: {fileID: 1061469067480119206}
   - component: {fileID: 5937893661966738334}
   - component: {fileID: 1530304106516227324}
+  - component: {fileID: 8394150491180038678}
   - component: {fileID: 8405665729557999531}
   - component: {fileID: 6227677176761447952}
   - component: {fileID: 5452414440813012770}
@@ -1617,12 +1619,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnchor: {fileID: 4645228151657795752}
   maxHealth: 100
-  weapons:
-  - {fileID: 11400000, guid: 2b763d6de748faf4294d1c981112eba6, type: 2}
-  - {fileID: 11400000, guid: 35d420423548a2349b6d7155b26e7135, type: 2}
-  - {fileID: 11400000, guid: b96d0a59e46c4cf49919838ac0a61d73, type: 2}
-  - {fileID: 11400000, guid: fade88fdeec5e594d821d2ad086adb8d, type: 2}
-  - {fileID: 11400000, guid: c4fa46089df425d48a5802f0d23581d2, type: 2}
   onDamageTaken:
     _PersistentCalls:
     - _Target: {fileID: 3928600324764272393}
@@ -1661,6 +1657,21 @@ MonoBehaviour:
   speedVariable: {fileID: 11400000, guid: e57bae1dde6fda34fb568f7184446306, type: 2}
   thrustVariable: {fileID: 11400000, guid: 8578a64aed3d1cf45ba8972c3924dba0, type: 2}
   overChargeVariable: {fileID: 11400000, guid: 17ad0aad937b6a34089a0b69ef8bcb81, type: 2}
+--- !u!114 &8394150491180038678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4675909254041505790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8027a785922c88a4e8a33620a7abf9fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initWeapons:
+  - {fileID: 11400000, guid: 2b763d6de748faf4294d1c981112eba6, type: 2}
+  - {fileID: 11400000, guid: 848899affe973bf47b013bbab7f99edc, type: 2}
 --- !u!114 &8405665729557999531
 MonoBehaviour:
   m_ObjectHideFlags: 0
