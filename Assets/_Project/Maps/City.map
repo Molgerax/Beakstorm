@@ -379,11 +379,18 @@
 }
 // entity 23
 {
+"classname" "prefab_weapon_pickup"
+"origin" "2480 -1488 -1168"
+"weapon" "Multi_ConstantPheromoneShot"
+}
+// entity 24
+{
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "Hidden"
 "_tb_id" "1"
 "_tb_layer_sort_index" "1"
+"_tb_layer_locked" "1"
 "_tb_layer_hidden" "1"
 "_tb_layer_omit_from_export" "1"
 // brush 0
@@ -437,13 +444,14 @@
 ( 4096 -4096 -1984 ) ( 4096 -4096 -1983.75 ) ( 4096 -4095.75 -1984 ) Mapping/Mapping_Base [ 1.2246467991473533e-15 4 0 0 ] [ 0 0 -4 0 ] 0 1 1
 }
 }
-// entity 24
+// entity 25
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "Floor"
 "_tb_id" "2"
 "_tb_layer_sort_index" "2"
+"_tb_layer_locked" "1"
 "_tb_layer_omit_from_export" "1"
 // brush 0
 {
@@ -482,7 +490,7 @@
 ( 0 1024 -1792 ) ( 0 1024 -1791.75 ) ( 0 1024.25 -1792 ) Mapping/Mapping_Base [ 0 4 0 0 ] [ 0 0 -4 0 ] 270 1 1
 }
 }
-// entity 25
+// entity 26
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -490,7 +498,7 @@
 "_tb_id" "3"
 "_tb_layer_sort_index" "0"
 }
-// entity 26
+// entity 27
 {
 "classname" "enemy_Bunker_Spawn"
 "origin" "2462 -1182 -1366.75"
@@ -498,7 +506,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 27
+// entity 28
 {
 "classname" "enemy_Bunker_Spawn"
 "origin" "2462 -1806 -1366.75"
@@ -506,7 +514,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 28
+// entity 29
 {
 "classname" "ent_wave"
 "origin" "2464 -1504 -800"
@@ -516,7 +524,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 29
+// entity 30
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "2380 -1500 -1170.38"
@@ -524,7 +532,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 30
+// entity 31
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "2572 -1500 -1170.38"
@@ -532,7 +540,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 31
+// entity 32
 {
 "classname" "enemy_SmallEnemy_Gun_Spawn"
 "origin" "2785.5 -1981 -912.88"
@@ -540,7 +548,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 32
+// entity 33
 {
 "classname" "enemy_SmallEnemy_Gun_Spawn"
 "origin" "1969.5 -2093 -912.88"
@@ -548,7 +556,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 33
+// entity 34
 {
 "classname" "enemy_SmallEnemy_Gun_Spawn"
 "origin" "2001.5 -1069 -912.88"
@@ -556,7 +564,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 34
+// entity 35
 {
 "classname" "enemy_SmallEnemy_Gun_Spawn"
 "origin" "2785.5 -1005 -912.88"
@@ -564,7 +572,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 35
+// entity 36
 {
 "classname" "ent_wave"
 "origin" "2464 -1680 -800"
@@ -574,7 +582,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 36
+// entity 37
 {
 "classname" "ent_wave"
 "origin" "1952 2336 -288"
@@ -584,7 +592,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 37
+// entity 38
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "2656 1888 -749.5"
@@ -592,7 +600,7 @@
 "target" "enemy_b"
 "_tb_layer" "3"
 }
-// entity 38
+// entity 39
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "2272 1376 -749.5"
@@ -600,7 +608,7 @@
 "target" "enemy_b"
 "_tb_layer" "3"
 }
-// entity 39
+// entity 40
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "1696 1376 -749.5"
@@ -608,7 +616,7 @@
 "target" "enemy_b"
 "_tb_layer" "3"
 }
-// entity 40
+// entity 41
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "1312 1888 -749.5"
@@ -616,7 +624,7 @@
 "target" "enemy_b"
 "_tb_layer" "3"
 }
-// entity 41
+// entity 42
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "1696 2400 -749.5"
@@ -624,7 +632,7 @@
 "target" "enemy_b"
 "_tb_layer" "3"
 }
-// entity 42
+// entity 43
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "2272 2400 -749.5"
@@ -632,7 +640,7 @@
 "target" "enemy_b"
 "_tb_layer" "3"
 }
-// entity 43
+// entity 44
 {
 "classname" "enemy_MediumEnemy_Spawn"
 "origin" "2044.38 1831.25 -911.38"
@@ -640,7 +648,7 @@
 "target" "enemy_b"
 "_tb_layer" "3"
 }
-// entity 44
+// entity 45
 {
 "classname" "trigger_counter"
 "origin" "2144 -32 -480"
@@ -650,7 +658,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 45
+// entity 46
 {
 "classname" "ent_wave"
 "origin" "1760 -32 -480"
@@ -658,7 +666,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 46
+// entity 47
 {
 "classname" "enemy_HangarShip_Spawn"
 "origin" "316.5 -124.5 -856.625"
@@ -666,7 +674,7 @@
 "target" "boss"
 "_tb_layer" "3"
 }
-// entity 47
+// entity 48
 {
 "classname" "ent_wave"
 "origin" "-1632 -1824 -1280"
@@ -676,7 +684,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 48
+// entity 49
 {
 "classname" "ent_wave"
 "origin" "-1920 -1824 -1440"
@@ -685,7 +693,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 49
+// entity 50
 {
 "classname" "trigger_relay"
 "origin" "-1600 -1824 -1408"
@@ -694,7 +702,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 50
+// entity 51
 {
 "classname" "trigger_relay"
 "origin" "-1696 -1728 -1504"
@@ -703,7 +711,7 @@
 "angles" "0 0 0"
 "_tb_layer" "3"
 }
-// entity 51
+// entity 52
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -713,7 +721,7 @@
 "_tb_transformation" "0.25 0 0 0 0 0.25 0 0 0 0 0.25 32 0 0 0 1"
 "_tb_layer" "3"
 }
-// entity 52
+// entity 53
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -723,7 +731,7 @@
 "_tb_transformation" "0.25 0 0 0 0 0.25 0 0 0 0 0.25 -544 0 0 0 1"
 "_tb_group" "5"
 }
-// entity 53
+// entity 54
 {
 "classname" "collision_box"
 "parent" "elev"
@@ -740,7 +748,7 @@
 ( -1792 -1600 -2016 ) ( -1792 -1632 -1760 ) ( -1792 -1600 -1760 ) Mapping/Mapping_Base_Red [ 6.921730337728899e-15 0 1 -32 ] [ 8.238535137130597e-15 4 -5.702491859712238e-29 0 ] 0 1 1
 }
 }
-// entity 54
+// entity 55
 {
 "classname" "collision_box"
 "parent" "elev"
@@ -757,7 +765,7 @@
 ( -1792 -1632 -1824 ) ( -1792 -1664 -1568 ) ( -1792 -1632 -1568 ) Mapping/Mapping_Base_Red [ 6.921730337728899e-15 0 1 -32 ] [ 8.238535137130597e-15 4 -5.702491859712238e-29 0 ] 270 1 1
 }
 }
-// entity 55
+// entity 56
 {
 "classname" "collision_box"
 "parent" "elev"
@@ -774,7 +782,7 @@
 ( -1792 -1408 -1824 ) ( -1792 -1440 -1568 ) ( -1792 -1408 -1568 ) Mapping/Mapping_Base_Red [ 6.921730337728899e-15 0 1 -32 ] [ 8.238535137130597e-15 4 -5.702491859712238e-29 0 ] 270 1 1
 }
 }
-// entity 56
+// entity 57
 {
 "classname" "collision_box"
 "parent" "elev"
@@ -791,7 +799,7 @@
 ( -2016 -1408 -1824 ) ( -2016 -1440 -1568 ) ( -2016 -1408 -1568 ) Mapping/Mapping_Base_Red [ 6.921730337728899e-15 0 1 -32 ] [ 8.238535137130597e-15 4 -5.702491859712238e-29 0 ] 270 1 1
 }
 }
-// entity 57
+// entity 58
 {
 "classname" "collision_box"
 "parent" "elev"
@@ -808,7 +816,7 @@
 ( -2016 -1632 -1824 ) ( -2016 -1664 -1568 ) ( -2016 -1632 -1568 ) Mapping/Mapping_Base_Red [ 6.921730337728899e-15 0 1 -32 ] [ 8.238535137130597e-15 4 -5.702491859712238e-29 0 ] 0 1 1
 }
 }
-// entity 58
+// entity 59
 {
 "classname" "collision_box"
 "parent" "elev"
@@ -825,7 +833,7 @@
 ( -1792 -1600 -1760 ) ( -1792 -1632 -1504 ) ( -1792 -1600 -1504 ) Mapping/Mapping_Base_Red [ 6.921730337728899e-15 0 1 -32 ] [ 8.238535137130597e-15 4 -5.702491859712238e-29 0 ] 0 1 1
 }
 }
-// entity 59
+// entity 60
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "-1920 -1952 -1746.38"
@@ -835,7 +843,7 @@
 "angles" "0 0 0"
 "_tb_group" "5"
 }
-// entity 60
+// entity 61
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "-1824 -2048 -1746.38"
@@ -845,7 +853,7 @@
 "angles" "0 -90 0"
 "_tb_group" "5"
 }
-// entity 61
+// entity 62
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "-2016 -2048 -1746.38"
@@ -855,7 +863,7 @@
 "angles" "0 90 0"
 "_tb_group" "5"
 }
-// entity 62
+// entity 63
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "-1920 -2144 -1746.38"
@@ -865,7 +873,7 @@
 "angles" "0 0 0"
 "_tb_group" "5"
 }
-// entity 63
+// entity 64
 {
 "classname" "func_door"
 "origin" "-1920 -2048 -1760"
@@ -875,12 +883,71 @@
 "speed" "32"
 "_tb_group" "5"
 }
-// entity 64
+// entity 65
+{
+"classname" "prefab_weapon_pickup"
+"origin" "-1920 -2048 -1656"
+"parent" "elev"
+"weapon" "Simple_ReversePheromoneShot"
+"_tb_group" "5"
+}
+// entity 66
+{
+"classname" "prefab_weapon_pickup"
+"origin" "-1664 1728 -168"
+"weapon" "Multi_ReversePheromoneShot"
+"_tb_group" "5"
+}
+// entity 67
 {
 "classname" "enemy_Bunker_Spawn"
 "origin" "-1920 -2048 -1494.75"
 "target" "enemy_c"
 "parent" "elev"
 "angles" "0 0 0"
+"_tb_layer" "3"
+}
+// entity 68
+{
+"classname" "misc_message"
+"origin" "-1248 -3488 -2016"
+"targetname" "msg0"
+"message" "Welcome to Beakstorm!"
+"_tb_layer" "3"
+}
+// entity 69
+{
+"classname" "trigger_relay"
+"origin" "-1248 -3296 -2016"
+"targetname" "on_load"
+"delay" "5"
+"target" "msg0"
+"_tb_layer" "3"
+}
+// entity 70
+{
+"classname" "trigger_relay"
+"origin" "-1440 -3488 -2016"
+"targetname" "msg0"
+"delay" "5"
+"target" "msg1"
+"_tb_layer" "3"
+}
+// entity 71
+{
+"classname" "misc_message"
+"origin" "-1248 -3680 -2016"
+"targetname" "msg1"
+"message" "This message is timed for 5 seconds"
+"time" "5"
+"_tb_layer" "3"
+}
+// entity 72
+{
+"classname" "trigger_message"
+"origin" "-1936 -1983 -1264"
+"scale" "8"
+"time" "10"
+"message" "Destroy objects by leading birds into them!"
 "_tb_layer" "3"
 }
