@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Beakstorm.Inputs;
+using Beakstorm.UI.Icons;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,7 @@ namespace Beakstorm.Gameplay.Messages
 {
     public class MessageManager : MonoBehaviour
     {
+        [SerializeField] private ButtonIcons icons;
         [SerializeField] private TMP_Text text;
         [SerializeField] private Image timerBar;
         [SerializeField] private Image skipButton;
@@ -21,6 +23,8 @@ namespace Beakstorm.Gameplay.Messages
 
         private Message _cachedMessage;
         
+        private string _cachedText;
+        
         public static void AddMessage(Message message)
         {
             _messageQueue.Enqueue(message);
@@ -30,12 +34,17 @@ namespace Beakstorm.Gameplay.Messages
         private void OnEnable()
         {
             PlayerInputs.Instance.whistleAction.performed += OnSkipMessage;
+            PlayerInputs.ActiveDeviceChangeEvent += OnDeviceChanged;
+            OnDeviceChanged();
             SetMessageUI(null);
         }
         
         private void OnDisable()
         {
             PlayerInputs.Instance.whistleAction.performed -= OnSkipMessage;
+            PlayerInputs.ActiveDeviceChangeEvent -= OnDeviceChanged;
+            
+            _messageQueue.Clear();
         }
 
         private void Update()
@@ -78,10 +87,19 @@ namespace Beakstorm.Gameplay.Messages
                 Dequeue();
         }
 
+        private void OnDeviceChanged()
+        {
+            text.text =
+                CompleteTextWithButtonPromptSprite.ReplaceActiveBindings(_cachedText, PlayerInputs.Instance, icons);
+            text.spriteAsset = icons.GetAssetByDevice(PlayerInputs.LastActiveDevice);
+        }
+
         private void SetText(string messageText)
         {
+            _cachedText = messageText;
             if (text)
-                text.text = messageText;
+                text.text =
+                    CompleteTextWithButtonPromptSprite.ReplaceActiveBindings(_cachedText, PlayerInputs.Instance, icons);
         }
         
         private void SetTimer(float value01)

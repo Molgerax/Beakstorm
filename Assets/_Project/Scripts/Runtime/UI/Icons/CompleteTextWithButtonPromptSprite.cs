@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Beakstorm.Inputs;
 using TMPro;
@@ -64,13 +65,15 @@ namespace Beakstorm.UI.Icons
                 var innerPart = match.Groups[1].Captures[0].Value;
                 Debug.LogFormat("{0} has {1}", withBraces, innerPart);
 
-                var tagText = GetSpriteTag(innerPart, inputs, spriteAssets);
+                var tagText = GetSpriteTags(innerPart, inputs, spriteAssets);
 
                 replacedText = replacedText.Replace(withBraces, tagText);
             }
 
             return replacedText;
         }
+
+
 
         /// <summary>
         /// Looks up the InputBinding based on device type and returns the TextMeshPro sprite tag
@@ -88,6 +91,39 @@ namespace Beakstorm.UI.Icons
 
             return $"<sprite name=\"{stringButtonName}\">";
             return $"<sprite=\"{spriteAsset.name}\" name=\"{stringButtonName}\">";
+        }
+        
+        public static string GetSpriteTags(string actionName, PlayerInputs inputs,
+            ButtonIcons spriteAssets)
+        {
+            string output = String.Empty;
+
+            List<InputBinding> bindings = inputs.GetBindings(actionName);
+
+            foreach (InputBinding binding in bindings)
+            {
+                string bin = GetSpriteTag(binding, inputs, spriteAssets);
+
+                if (string.IsNullOrEmpty(output))
+                    output = bin;
+                else
+                    output = output + "/" + bin;
+            }
+            
+            return output;
+        }
+        
+        public static string GetSpriteTag(InputBinding binding, PlayerInputs inputs,
+            ButtonIcons spriteAssets)
+        {
+            TMP_SpriteAsset spriteAsset = spriteAssets.GetAssetByDevice(PlayerInputs.LastActiveDevice);
+
+            Debug.LogFormat("Retrieving sprite tag for: {0} with path {1}", binding.action,
+                binding.effectivePath);
+            string stringButtonName = binding.effectivePath;
+            stringButtonName = RenameInput(stringButtonName, spriteAsset.name);
+
+            return $"<sprite name=\"{stringButtonName}\">";
         }
 
         private static string RenameInput(string stringButtonName, string prefix)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Beakstorm.Settings;
 using Beakstorm.Utility;
 using UnityEngine;
@@ -154,14 +155,59 @@ namespace Beakstorm.Inputs
             InputAction action = GetAction(actionName);
 
             int id = 0;
+            InputControlScheme? currentScheme = null;
             for (int i = 0; i < _inputs.controlSchemes.Count; i++)
             {
                 var scheme = _inputs.controlSchemes[i];
                 if (scheme.SupportsDevice(_lastActiveDevice))
+                {
+                    currentScheme = scheme;
                     id = i;
+                }
+            }
+            
+            if (currentScheme == null)
+                return action.bindings[id];
+            
+            foreach (InputBinding binding in action.bindings)
+            {
+                if (binding.groups.Contains(currentScheme.Value.name))
+                    return binding;
             }
 
             return action.bindings[id];
+        }
+        
+        public List<InputBinding> GetBindings(string actionName)
+        {
+            List<InputBinding> bindings = new();
+            InputAction action = GetAction(actionName);
+
+            int id = 0;
+            InputControlScheme? currentScheme = null;
+            for (int i = 0; i < _inputs.controlSchemes.Count; i++)
+            {
+                var scheme = _inputs.controlSchemes[i];
+                if (scheme.SupportsDevice(_lastActiveDevice))
+                {
+                    currentScheme = scheme;
+                    id = i;
+                }
+            }
+
+            if (currentScheme == null)
+                return null;
+
+            foreach (InputBinding binding in action.bindings)
+            {
+                if (string.IsNullOrEmpty(binding.groups))
+                    continue;
+                
+                if (binding.groups.Contains(currentScheme.Value.name))
+                    bindings.Add(binding);
+            }
+            
+            return bindings;
         }
         
         public void EnablePlayerInputs()
