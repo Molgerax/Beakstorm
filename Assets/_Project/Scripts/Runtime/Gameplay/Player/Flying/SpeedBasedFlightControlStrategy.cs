@@ -41,7 +41,7 @@ namespace Beakstorm.Gameplay.Player.Flying
         [SerializeField] private float rollSpeed = 3;
 
         [SerializeField] private float steerSpeed = 60;
-        [SerializeField] private AnimationCurve steerSpeedCurve = AnimationCurve.Constant(0, 100, 1);
+        [SerializeField] private AnimationCurve steerThrustCurve = AnimationCurve.Constant(0, 100, 1);
 
         [SerializeField] private AnimationCurve debugCurve;
 
@@ -54,10 +54,22 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         private float _windXVel;
         private float _windYVel;
+
+        private float _fov;
+        private float _fovSpeed;
         
         public override float Speed01(float speed) => (speed - minSpeed) / (maxSpeed * 2 - minSpeed);
 
-        public float GetSteerSpeed(float speed) => steerSpeedCurve.Evaluate((speed)) * steerSpeed;
+        public float GetSteerSpeed(GliderController glider)
+        {
+            float thrustReduction = steerThrustCurve.Evaluate(glider.Thrust01);
+
+            float overChargeEnhancement = glider.Discharging ? 0 : Mathf.Clamp01(glider.OverCharge / (chargeCapacity));
+
+            float factor = Mathf.Clamp(thrustReduction + overChargeEnhancement, 0, 1.5f);
+            
+            return factor * steerSpeed;
+        }
 
 
         public override void Initialize(GliderController glider, float dt)
@@ -71,32 +83,8 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             glider.Velocity = Vector3.forward * stallSpeed;
 
+            _fov = 0;
             CalculateCoefficients();
-        }
-
-        [ContextMenu("Calculate Coefficients")]
-        private void CalculateCoefficients()
-        {
-            Vector2 p0, p1, p2;
-            p0 = new(minSpeed, minThrust);
-            p1 = new(cruiseSpeed, idleThrust);
-            p2 = new(maxSpeed, maxThrust);
-            CalculateQuadraticCoefficients(p0, p1, p2, out _a, out _b, out _c);
-
-            Keyframe[] keyframes = new Keyframe[32];
-
-            for (var index = 0; index < keyframes.Length; index++)
-            {
-                float t = index / (keyframes.Length - 1f);
-                var keyframe = keyframes[index];
-                float x = t * maxSpeed;
-                keyframe.time = x;
-                keyframe.value = _a * x * x + _b * x + _c;
-                keyframe.weightedMode = WeightedMode.None;
-                keyframes[index] = keyframe;
-            }
-
-            debugCurve = new AnimationCurve(keyframes);
         }
 
         public override void UpdateFlight(GliderController glider, float dt)
@@ -121,8 +109,15 @@ namespace Beakstorm.Gameplay.Player.Flying
             glider.OverChargeVariable.Max = chargeCapacity;
 
             glider.OverChargeVariable.Value = glider.OverCharge;
+
+            _fov = Mathf.SmoothDamp(_fov,
+                glider.OverCharge > 0 && !glider.Discharging
+                    ? Mathf.Clamp01(glider.Speed01 - (glider.OverCharge / chargeCapacity))
+                    : glider.Speed01, 
+                ref _fovSpeed, 0.05f);
             
-            glider.FovFactor = glider.Speed01;
+            glider.FovFactor = _fov;
+            //glider.FovFactor = glider.Speed01;
         }
 
         private void UpdateSteering(GliderController glider, float dt)
@@ -134,27 +129,20 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             Vector3 localEulerAngles = glider.T.localEulerAngles;
             localEulerAngles = glider.EulerAngles;
-            Quaternion localRotation = glider.T.localRotation;
-
-            Quaternion removeRoll = Quaternion.AngleAxis(glider.Roll, localRotation * Vector3.forward);
-            localRotation = Quaternion.Inverse(removeRoll) * localRotation;
             
             float stalling = 1 - Mathf.Clamp01((glider.Speed - minSpeed) / (stallSpeed - minSpeed));
 
             float pitch = Vector3.SignedAngle(Vector3.up, forwards, glider.T.right);
-
-            localRotation *= Quaternion.Euler(-Vector3.right * inputVector.y * dt * GetSteerSpeed(glider.Thrust01 * 100));
-            localEulerAngles.x -= inputVector.y * dt * GetSteerSpeed(glider.Thrust01 * 100);
+            
+            localEulerAngles.x -= inputVector.y * dt * GetSteerSpeed(glider);
 
             if (glider.Speed < stallSpeed && pitch > 0 && pitch < 170)
             {
-                localRotation *= Quaternion.Euler(Vector3.right * dt * stalling * steerSpeed);
                 localEulerAngles.x += dt * stalling * steerSpeed;
             }
 
             if (pitch < 0)
             {
-                localRotation *= Quaternion.Euler(-Vector3.right * dt * steerSpeed * 0.125f);
                 localEulerAngles.x -= dt * steerSpeed * 0.125f;
             }
             
@@ -163,17 +151,9 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             if (localEulerAngles.x < -180)
                 localEulerAngles.x += 360;
-            
-            //localEulerAngles.x = Mathf.Max(localEulerAngles.x, maxAngles.x);
-            //localEulerAngles.x = Mathf.Min(localEulerAngles.x, maxAngles.y);
 
-            float yAcceleration = inputVector.x * dt * GetSteerSpeed(glider.Thrust01 * 100);
+            float yAcceleration = inputVector.x * dt * GetSteerSpeed(glider);
 
-            
-            float rollAngle = Mathf.Lerp(20f, 80f, glider.Speed01);
-
-            
-            
             Vector3 up = Vector3.up;
 
             Vector3 forces = Vector3.zero;
@@ -190,15 +170,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             float targetRoll = -Vector3.SignedAngle(-up, forces.normalized, glider.Velocity.normalized);
 
-            //glider.Roll = Mathf.Lerp(glider.Roll, -inputVector.x * rollAngle, 1 - Mathf.Exp(-rollSpeed * dt));
             glider.Roll = Mathf.Lerp(glider.Roll, targetRoll, 1 - Mathf.Exp(-rollSpeed * dt));
-            //glider.Roll = targetRoll;
-
-            
-            //yAcceleration *= pitch < 0 ? -1 : 1;
-            Quaternion yaw = Quaternion.Euler(0, yAcceleration, 0);
-            
-            localRotation *= Quaternion.Inverse(localRotation) * yaw * localRotation;
 
             if (_flipping && pitch > 0 && Mathf.Abs(glider.Roll) < 10f)
                 _flipping = false;
@@ -219,11 +191,6 @@ namespace Beakstorm.Gameplay.Player.Flying
             localEulerAngles.y += yAcceleration;
             localEulerAngles.z = glider.Roll;
 
-            glider.LocalRotation = localRotation;
-            
-            localRotation = Quaternion.AngleAxis(glider.Roll, localRotation * Vector3.forward) * localRotation;
-            glider.T.localRotation = localRotation;
-
             Vector3 wind = glider.ExternalWind;
             Vector3 velocity = glider.Speed * glider.T.forward;
             Vector3 windDirection = (wind + velocity).normalized;
@@ -239,10 +206,7 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             glider.EulerAngles = localEulerAngles;
 
-            //glider.T.localEulerAngles = localEulerAngles;
             glider.T.localRotation = Quaternion.Euler(glider.EulerAngles);
-
-            //glider.T.Rotate(0.0f, yAcceleration, 0.0f, Space.World);
         }
 
         private void UpdateAcceleration(GliderController glider, float dt)
@@ -320,7 +284,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             force -= gravityPull * mass * angleOfAttackCurve.Evaluate(angle);
             //force += (angleStrength * gravity * mass);
             
-            float drag = CalculateDrag(glider.Velocity, glider.BreakInput && !glider.ThrustInput ? breakDrag : 0);
+            float drag = CalculateDrag(glider.Velocity, glider.BreakInput ? breakDrag : 0);
             float maxSpeedAoa = aoaMaxSpeed.Evaluate(angle) * maxSpeed;
 
             //force *= Mathf.Clamp01(1 - glider.Speed / maxSpeedAoa);
@@ -365,6 +329,31 @@ namespace Beakstorm.Gameplay.Player.Flying
             return Mathf.Max(alignment, -minThrust * 0.5f);
         }
 
+        
+        [ContextMenu("Calculate Coefficients")]
+        private void CalculateCoefficients()
+        {
+            Vector2 p0, p1, p2;
+            p0 = new(minSpeed, minThrust);
+            p1 = new(cruiseSpeed, idleThrust);
+            p2 = new(maxSpeed, maxThrust);
+            CalculateQuadraticCoefficients(p0, p1, p2, out _a, out _b, out _c);
+
+            Keyframe[] keyframes = new Keyframe[32];
+
+            for (var index = 0; index < keyframes.Length; index++)
+            {
+                float t = index / (keyframes.Length - 1f);
+                var keyframe = keyframes[index];
+                float x = t * maxSpeed;
+                keyframe.time = x;
+                keyframe.value = _a * x * x + _b * x + _c;
+                keyframe.weightedMode = WeightedMode.None;
+                keyframes[index] = keyframe;
+            }
+
+            debugCurve = new AnimationCurve(keyframes);
+        }
 
         private void CalculateQuadraticCoefficients(Vector2 p0, Vector2 p1, Vector2 p2, out float a, out float b,
             out float c)
