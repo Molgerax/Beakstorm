@@ -23,19 +23,20 @@ namespace Beakstorm.UI.Indicators
         public IObjectPool<OffscreenIndicator> ObjectPool { set => _objectPool = value; }
         
         
-        public void Initialize(OffscreenTarget target, Camera cam, Canvas canvas)
+        public void Initialize(OffscreenTarget target, Camera cam, RectTransform canvas)
         {
             _target = target;
             _camera = cam;
             _settings = _target.Settings;
 
             _rect = GetComponent<RectTransform>();
-            _canvasRect = canvas.GetComponent<RectTransform>();
+            _canvasRect = canvas;
 
             _target.Indicator = this;
 
             offscreenImage.sprite = _settings.IndicatorTexture;
             offscreenImage.color = _settings.Color;
+            _rect.localScale = Vector3.one * _settings.Scale;
         }
         
         public void Deactivate()
@@ -119,6 +120,9 @@ namespace Beakstorm.UI.Indicators
         }
 
         //Change the indicator Position back to the actual rectTransform coordinate system and return indicatorPosition
+
+        indicatorPosition = indicatorPosition.normalized * 384f;
+        
         indicatorPosition += canvasCenter;
         return indicatorPosition;
     }

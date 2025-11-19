@@ -13,7 +13,8 @@ namespace Beakstorm.UI.Indicators
         public static OffscreenIndicatorManager Instance;
         
         [SerializeField] private OffscreenIndicator offscreenIndicatorPrefab;
-
+        [SerializeField] private RectTransform indicatorArea;
+        
         private IObjectPool<OffscreenIndicator> _indicatorPool;
         private Transform _poolParentTransform;
         
@@ -81,9 +82,9 @@ namespace Beakstorm.UI.Indicators
 
         public void SpawnIndicator(OffscreenTarget target)
         {
-            var offscreenIndicator = _indicatorPool.Get();
+            var offscreenIndicator = _indicatorPool.Get(); 
             offscreenIndicator.ObjectPool = _indicatorPool;
-            offscreenIndicator.Initialize(target, _camera, _canvas);
+            offscreenIndicator.Initialize(target, _camera, _canvas.GetComponent<RectTransform>());
         }
         
         
