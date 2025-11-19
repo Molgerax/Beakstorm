@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using AptabaseSDK;
 using Beakstorm.Gameplay.Damaging;
-using Beakstorm.Gameplay.Player.Weapons;
 using Beakstorm.Pausing;
 using Beakstorm.Simulation;
 using UltEvents;
@@ -15,7 +14,6 @@ namespace Beakstorm.Gameplay.Player
 
         [SerializeField] private Transform playerAnchor;
         [SerializeField] private int maxHealth = 100;
-        [SerializeField] private SimplePlayerWeapon[] weapons = new SimplePlayerWeapon[0];
         [SerializeField] private UltEvent<float> onDamageTaken;
 
         [SerializeField] private UltEvent onDeath;
@@ -23,7 +21,6 @@ namespace Beakstorm.Gameplay.Player
         
         private int _damageTaken = 0;
         private int _health;
-        private int _selectedWeaponIndex;
         
         private Vector3 _oldPosition;
         private Vector3 _position;
@@ -40,13 +37,6 @@ namespace Beakstorm.Gameplay.Player
         
         public int DamageTaken => _damageTaken;
 
-        public SimplePlayerWeapon SelectedWeapon => weapons.Length == 0 ? null : weapons[_selectedWeaponIndex];
-        public int SelectedWeaponIndex
-        {
-            get => _selectedWeaponIndex;
-            set => _selectedWeaponIndex = (weapons.Length == 0) ? 0 : (value % weapons.Length + weapons.Length) % weapons.Length;
-        }
-
         private void Awake()
         {
             if (!playerAnchor)
@@ -59,20 +49,10 @@ namespace Beakstorm.Gameplay.Player
         private void OnEnable()
         {
             Instance = this;
-            
-            foreach (SimplePlayerWeapon weapon in weapons)
-            {
-                weapon.OnMonoEnable();
-            }
         }
         
         private void OnDisable()
         {
-            foreach (SimplePlayerWeapon weapon in weapons)
-            {
-                weapon.OnMonoDisable();
-            }
-
             if (Instance == this)
                 Instance = null;
         }

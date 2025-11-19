@@ -2,8 +2,8 @@
 
 namespace Beakstorm.Gameplay.Player.Weapons
 {
-    [CreateAssetMenu(menuName = "Beakstorm/PlayerWeaponData/MultiShotProjectile", fileName = "MultiShotPlayerWeapon")]
-    public class MultiShotPlayerWeapon : SimplePlayerWeapon
+    [CreateAssetMenu(menuName = "Beakstorm/PheromoneWeapon/MultiShotPheromoneWeapon", fileName = "MultiShotPlayerWeapon")]
+    public class MultiShotPheromoneWeapon : SimplePheromoneWeapon
     {
         [SerializeField, Min(1)] private int count = 1;
         [SerializeField, Range(1f, 360f)] private float spreadAngle = 25f;
@@ -11,7 +11,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
 
         [SerializeField] private bool useSpiral = true;
         
-        protected override void FireSingleProjectile(FireInfo fireInfo)
+        public override void FireProjectile(FireInfo fireInfo)
         {
             FireInfo infoCopy = fireInfo;
             for (int i = 0; i < count; i++)
@@ -27,7 +27,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
                 
                 fireInfo.InitialPosition += fireInfo.InitialDirection * offset;
                 
-                base.FireSingleProjectile(fireInfo);
+                base.FireProjectile(fireInfo);
             }
         }
 
