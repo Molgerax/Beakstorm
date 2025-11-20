@@ -2115,7 +2115,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1129355987
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3318,6 +3318,7 @@ GameObject:
   - component: {fileID: 1875038373}
   - component: {fileID: 1875038375}
   - component: {fileID: 1875038374}
+  - component: {fileID: 1875038376}
   m_Layer: 5
   m_Name: SkipButton
   m_TagString: Untagged
@@ -3382,6 +3383,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1875038372}
   m_CullTransparentMesh: 1
+--- !u!114 &1875038376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875038372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 915099442d7f4e7e9baef584a21c9c4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.UI.Icons.ButtonPrompt
+  actionName: Player/Whistle
+  icons: {fileID: 11400000, guid: 454128960f170bf43b480371a52ea4f3, type: 2}
+  image: {fileID: 1875038374}
 --- !u!1 &1930989331
 GameObject:
   m_ObjectHideFlags: 0
@@ -3656,6 +3672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fe8200ff17230c47b372630352dd9ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icons: {fileID: 11400000, guid: 454128960f170bf43b480371a52ea4f3, type: 2}
   text: {fileID: 1789576997}
   timerBar: {fileID: 186361629}
   skipButton: {fileID: 1875038374}
@@ -4018,7 +4035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6094908347123523411, guid: cd3cee1a9919b0642b8bb7b32fded276, type: 3}
       propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Value
-      value: 0.26300177
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6094908347123523411, guid: cd3cee1a9919b0642b8bb7b32fded276, type: 3}
       propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.data[0].m_Value.x
