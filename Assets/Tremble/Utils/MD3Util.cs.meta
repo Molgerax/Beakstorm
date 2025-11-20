@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: b6df817cee22fba4bb61fab7a3e48367
+timeCreated: 1628505675
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Utils/MD3Util.cs
+  uploadId: 797178

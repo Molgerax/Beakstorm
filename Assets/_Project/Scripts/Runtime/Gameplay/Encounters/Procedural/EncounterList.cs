@@ -53,9 +53,9 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
                 else
                 {
                     EncounterManager.Instance.SetWar(wave.CalmIndex);
-                    EncounterManager.Instance.BeginWave(wave.WaveData);
+                    var handler = EncounterManager.Instance.BeginWave(wave.WaveData);
 
-                    while (EncounterManager.Instance.IsWaveActive)
+                    while (!handler.Defeated)
                     {
                         token.ThrowIfCancellationRequested();
                         await UniTask.Yield(token);

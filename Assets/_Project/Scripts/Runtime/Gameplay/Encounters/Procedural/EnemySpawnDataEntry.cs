@@ -6,13 +6,23 @@ using UnityEngine;
 namespace Beakstorm.Gameplay.Encounters.Procedural
 {
     [System.Serializable]
-    public struct EnemySpawnDataEntry
+    public struct EnemySpawnDataEntry : IEnemySpawnData
     {
-        [SerializeField] public EnemySO enemy;
-        [SerializeField] public TransformData transformData;
+        [SerializeField] private EnemySO enemy;
+        [SerializeField] private TransformData transformData;
+        [SerializeField] private WaitCondition waitCondition;
+        [SerializeField] private float spawnDelay;
 
-        [SerializeField] public WaitCondition waitCondition;
-        [SerializeField] public float spawnDelay;
+        public EnemySO Enemy => enemy;
+
+        public TransformData TransformData
+        {
+            get => transformData;
+            set => transformData = value;
+        }
+
+        WaitCondition IEnemySpawnData.WaitCondition => waitCondition;
+        public float SpawnDelay => spawnDelay;
 
         public bool IsValid => enemy;
         
@@ -22,14 +32,6 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             this.transformData = new TransformData(spawner.transform);
             this.spawnDelay = delay;
             this.waitCondition = waitCondition;
-        }
-
-
-        public EnemyController Spawn()
-        {
-            EnemyController e = enemy.GetEnemyInstance();
-            e.Spawn(transformData);
-            return e;
         }
 
         public async UniTask GetWaitCondition(CancellationToken token)
@@ -68,23 +70,43 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
     {
         public Vector3 Position;
         public Quaternion Rotation;
+        public Transform Parent;
 
         public TransformData(Transform t)
         {
             Position = t.position;
             Rotation = t.rotation;
+            Parent = null;
+        }
+        
+        public TransformData(Transform t, Transform parent = null)
+        {
+            if (parent)
+            {
+                Position = parent.InverseTransformPoint(t.position);
+                Rotation = Quaternion.Inverse(parent.rotation) * t.rotation;
+                Parent = parent;
+            }
+            else
+            {
+                Position = t.position;
+                Rotation = t.rotation;
+                Parent = null;
+            }
         }
 
         public TransformData(Vector3 pos, Quaternion rot)
         {
             Position = pos;
             Rotation = rot;
+            Parent = null;
         }
             
         public TransformData(Vector3 pos)
         {
             Position = pos;
             Rotation = Quaternion.identity;
+            Parent = null;
         }
     }
 }

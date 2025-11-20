@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 937aa9fd9252d4b3b9787657eb809aa4
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Materials/Clip.shader
+  uploadId: 797178

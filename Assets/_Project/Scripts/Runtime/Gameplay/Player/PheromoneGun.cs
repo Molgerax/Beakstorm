@@ -1,7 +1,7 @@
 using System;
+using Beakstorm.Gameplay.Player.Weapons;
 using Beakstorm.Gameplay.Targeting;
 using Beakstorm.Inputs;
-using Beakstorm.Simulation.Particles;
 using UltEvents;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +13,8 @@ namespace Beakstorm.Gameplay.Player
         [SerializeField, Range(0, 5f)] private float shootOffset = 3f;
         [SerializeField] private LayerMask layerMask;
 
+        [SerializeField] private PheromoneWeaponInventory weaponInventory;
+        
         [SerializeField] private TargetingManager targetingManager;
         
         [SerializeField] private UltEvent onShoot;
@@ -37,29 +39,10 @@ namespace Beakstorm.Gameplay.Player
             _inputs.shootAction.performed -= OnShootActionPerformed;
         }
 
-        private void Update()
-        {
-            UpdateWeapon(Time.deltaTime);
-            
-            return;
-            
-            if (_inputs.whistleAction.IsPressed())
-            {
-                BoidGridManager.Instance.RefreshWhistle(transform.position, 1f);
-            }
-        }
-
-        private void UpdateWeapon(float deltaTime)
-        {
-            if (!PlayerController.Instance || !PlayerController.Instance.SelectedWeapon)
-                return;
-            
-            PlayerController.Instance.SelectedWeapon.UpdateWeapon(deltaTime);
-        }
         
         private void OnShootActionPerformed(InputAction.CallbackContext callback)
         {
-            if (!PlayerController.Instance || !PlayerController.Instance.SelectedWeapon)
+            if (!weaponInventory || weaponInventory.SelectedWeapon == null)
                 return;
 
             Vector3 pos = transform.position;
@@ -73,7 +56,7 @@ namespace Beakstorm.Gameplay.Player
 
             FireInfo fireInfo = new FireInfo(pos, dir, lookDir, targetPos, targetNormal, 0, coll);
             
-            if (PlayerController.Instance.SelectedWeapon.Fire(fireInfo))
+            if (weaponInventory.SelectedWeapon.TryFire(fireInfo))
                 onShoot?.Invoke();
         }
 
@@ -93,7 +76,7 @@ namespace Beakstorm.Gameplay.Player
                 }
             }
             
-            if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask, QueryTriggerInteraction.Ignore))
             {
                 return (hit.point - shootPosition).normalized;
             }
@@ -122,7 +105,7 @@ namespace Beakstorm.Gameplay.Player
             Vector3 shotPosition = ray.origin + ray.direction * 500f;
             targetNormal = -ray.direction;
             
-            if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Single.MaxValue, layerMask, QueryTriggerInteraction.Ignore))
             {
                 targetNormal = hit.normal;
                 collider = hit.collider;

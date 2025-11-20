@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6e3e987223b8a49f19b5873fcb84b8b4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/FieldConverters/Vector3Converter.cs
+  uploadId: 797178

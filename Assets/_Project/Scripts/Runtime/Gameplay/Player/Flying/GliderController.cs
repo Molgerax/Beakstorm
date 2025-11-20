@@ -1,14 +1,17 @@
 using System;
+using System.Collections.Generic;
 using Beakstorm.Core.Variables;
 using Beakstorm.Gameplay.Damaging;
 using Beakstorm.Inputs;
+using Beakstorm.Mapping.BrushEntities;
 using Beakstorm.Pausing;
+using Beakstorm.SceneManagement;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player.Flying
 {
     [DefaultExecutionOrder(-40)]
-    public class GliderController : MonoBehaviour
+    public class GliderController : MonoBehaviour, IOnSceneLoad
     {
         [field:SerializeField] public Transform T { get; private set; }
 
@@ -16,6 +19,7 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         [SerializeField] private RangeVariable speedVariable;
         [SerializeField] private RangeVariable thrustVariable;
+        [SerializeField] private RangeVariable overChargeVariable;
         
         private LayerMask _layerMask;
 
@@ -29,6 +33,7 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         public RangeVariable ThrustVariable => thrustVariable;
         public RangeVariable SpeedVariable => speedVariable;
+        public RangeVariable OverChargeVariable => overChargeVariable;
         
         [NonSerialized] public Rigidbody Rigidbody;
 
@@ -39,6 +44,13 @@ namespace Beakstorm.Gameplay.Player.Flying
         [NonSerialized] public float Speed;
         [NonSerialized] public float Roll;
         [NonSerialized] public float Thrust;
+
+        [NonSerialized] public float OverCharge;
+        [NonSerialized] public bool Discharging;
+        
+        [NonSerialized] public float FovFactor;
+
+        [NonSerialized] public Vector3 ExternalWind;
         
         public float Speed01 => controlStrategy.Speed01(Speed);
 
@@ -48,7 +60,24 @@ namespace Beakstorm.Gameplay.Player.Flying
         public bool BreakInput => _inputs.brakeAction.IsPressed();
         public bool ThrustInput => _inputs.accelerateAction.IsPressed();
 
+        private bool _initialized;
+
+        public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.WhenLevelStarts;
+
+        private List<WindDraft> _drafts = new();
+        
+
         #region Mono Methods
+
+        public void OnSceneLoaded()
+        {
+            PlayerStartPosition.SetPlayer(T);
+            _position = transform.position;
+            _oldPosition = _position;
+            
+            controlStrategy.Initialize(this, Time.deltaTime);
+            _initialized = true;
+        }
         
         private void Awake()
         {
@@ -60,31 +89,34 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             if (!T)
                 T = transform;
-            
-            PlayerStartPosition.SetPlayer(T);
-
-            _position = transform.position;
-            _oldPosition = _position;
-            
-            controlStrategy.Initialize(this, Time.deltaTime);
-
             speedVariable.Set(0);
+            
+            GlobalSceneLoader.ExecuteWhenLoaded(this);
         }
 
 
         private void Update()
         {
+            if (!_initialized)
+                return;
+            
             if (PauseManager.IsPaused)
                 return;
 
             float dt = Time.deltaTime;
+            if (dt <= 0)
+                return;
             
+            ApplyWind();
             controlStrategy.UpdateFlight(this, dt);
             
             HandleCollision(dt);
-            
+
             if (CameraFOV.Instance)
-                CameraFOV.Instance.SetFoV(Speed01);
+            {
+                CameraFOV.Instance.SetFoV(FovFactor);
+                CameraFOV.Instance.SetCameraDistance(FovFactor);
+            }
             
             speedVariable.Set(Speed);
         }
@@ -102,6 +134,15 @@ namespace Beakstorm.Gameplay.Player.Flying
         #endregion
 
 
+        private void ApplyWind()
+        {
+            ExternalWind = Vector3.zero;
+            foreach (var draft in _drafts)
+            {
+                if (draft)
+                    ExternalWind += draft.Force;
+            }
+        }
         
         private void HandleCollision(float dt)
         {
@@ -164,6 +205,22 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             T.position = pos;
             T.forward = forward;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out WindDraft draft))
+            {
+                _drafts.Add(draft);
+            }
+        }
+        
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent(out WindDraft draft))
+            {
+                _drafts.Remove(draft);
+            }
         }
     }
 }

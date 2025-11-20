@@ -92,20 +92,20 @@ namespace Beakstorm.Gameplay.Encounters
 
         private void DrawHandle(ref EnemySpawnDataEntry entry, int index, SceneView sceneView)
         {
-            int danger = entry.enemy.DangerRating;
+            int danger = entry.Enemy.DangerRating;
             float selectedTint = (index == _selectedIndex) ? 1f : 0.5f;
             Color c = Color.HSVToRGB(danger/10f, 1f, 1f);
             c.a = selectedTint;
             
             Handles.color = c;
             
-            Vector3 pos = entry.transformData.Position;
-            Quaternion rot = entry.transformData.Rotation;
+            Vector3 pos = entry.TransformData.Position;
+            Quaternion rot = entry.TransformData.Rotation;
 
             Bounds modelBounds = new Bounds(Vector3.zero, Vector3.one * 5);
             
             if (entry.IsValid)
-                modelBounds = entry.enemy.Prefab.Bounds;
+                modelBounds = entry.Enemy.Prefab.Bounds;
             Bounds bounds = new Bounds(pos, modelBounds.size);
 
             if (_resetBounds)
@@ -120,11 +120,11 @@ namespace Beakstorm.Gameplay.Encounters
             float thickness = 2f;
 
             if (entry.IsValid)
-                radius = entry.enemy.Prefab.Bounds.extents.magnitude;
+                radius = entry.Enemy.Prefab.Bounds.extents.magnitude;
 
             GUIContent label = new GUIContent($"{index}: <Invalid>");
             if (entry.IsValid)
-                label.text = $"{index}: {entry.enemy.name}";
+                label.text = $"{index}: {entry.Enemy.name}";
             Handles.Label(pos, label);
             Handles.DrawWireDisc(pos, rot * Vector3.up, radius, thickness);
             Handles.DrawLine(pos, pos + (rot * Vector3.forward) * radius, thickness);
@@ -139,10 +139,10 @@ namespace Beakstorm.Gameplay.Encounters
 
             EditorGUI.BeginChangeCheck();
             if (Tools.current == Tool.Move)
-                pos = Handles.PositionHandle(entry.transformData.Position, entry.transformData.Rotation);
+                pos = Handles.PositionHandle(entry.TransformData.Position, entry.TransformData.Rotation);
             
             if (Tools.current == Tool.Rotate)
-                rot = Handles.RotationHandle(entry.transformData.Rotation, entry.transformData.Position);
+                rot = Handles.RotationHandle(entry.TransformData.Rotation, entry.TransformData.Position);
 
             if (Event.current.isKey && Event.current.keyCode == KeyCode.F && Event.current.shift == false)
             {
@@ -152,7 +152,7 @@ namespace Beakstorm.Gameplay.Encounters
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(target, "Changed WaveDataSO");
-                entry.transformData = new TransformData(pos, rot);
+                entry.TransformData = new TransformData(pos, rot);
             }
         }
         
@@ -171,30 +171,30 @@ namespace Beakstorm.Gameplay.Encounters
         
         private static void DrawHandlePreview(EnemySpawnDataEntry entry, int index)
         {
-            int danger = entry.enemy.DangerRating;
+            int danger = entry.Enemy.DangerRating;
             Color c = Color.HSVToRGB(danger/10f, 1f, 1f);
             c.a = 0.25f;
             
             Handles.color = c;
             
-            Vector3 pos = entry.transformData.Position;
-            Quaternion rot = entry.transformData.Rotation;
+            Vector3 pos = entry.TransformData.Position;
+            Quaternion rot = entry.TransformData.Rotation;
 
             Bounds modelBounds = new Bounds(Vector3.zero, Vector3.one * 5);
             
             if (entry.IsValid)
-                modelBounds = entry.enemy.Prefab.Bounds;
+                modelBounds = entry.Enemy.Prefab.Bounds;
             Bounds bounds = new Bounds(pos, modelBounds.size);
 
             float radius = 10f;
             float thickness = 2f;
 
             if (entry.IsValid)
-                radius = entry.enemy.Prefab.Bounds.extents.magnitude;
+                radius = entry.Enemy.Prefab.Bounds.extents.magnitude;
 
             GUIContent label = new GUIContent($"{index}: <Invalid>");
             if (entry.IsValid)
-                label.text = $"{index}: {entry.enemy.name}";
+                label.text = $"{index}: {entry.Enemy.name}";
             Handles.Label(pos, label);
             Handles.DrawWireDisc(pos, rot * Vector3.up, radius, thickness);
             Handles.DrawLine(pos, pos + (rot * Vector3.forward) * radius, thickness);
@@ -244,12 +244,12 @@ namespace Beakstorm.Gameplay.Encounters
             for (var index = 0; index < dataSo.SpawnDataEntries.Count; index++)
             {
                 EnemySpawnDataEntry entry = dataSo.SpawnDataEntries[index];
-                TransformData tf = entry.transformData;
+                TransformData tf = entry.TransformData;
                 tf.Position += (endPos - startPos);
                 tf.Position = rot * (tf.Position - startPos) + startPos;
                 tf.Rotation = rot * tf.Rotation;
                 
-                entry.transformData = tf;
+                entry.TransformData = tf;
                 dataSo.SpawnDataEntries[index] = entry;
             }
         }

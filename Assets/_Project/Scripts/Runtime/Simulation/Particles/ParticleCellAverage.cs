@@ -65,7 +65,7 @@ namespace Beakstorm.Simulation.Particles
         private void Initialize()
         {
             sim = GetComponent<IGridParticleSimulation>();
-            if (sim == null)
+            if (sim == null || sim.Initialized == false)
                 return;
 
             _dimensions = Vector3Int.CeilToInt(sim.SimulationSize / sim.CellSize);

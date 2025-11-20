@@ -10,7 +10,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
     public class WaveHandler : IDisposable
     {
         private EncounterManager _manager;
-        private WaveDataSO _waveData;
+        private IWaveData _waveData;
         
         private float _timer;
         private bool _finishedSpawning;
@@ -23,11 +23,13 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         private List<EnemyController> _activeEnemies;
 
+        public IWaveData WaveData => _waveData;
+        
         public event Action OnDefeatedAll;
 
         public float ElapsedTime => _timer;
         
-        public WaveHandler(EncounterManager manager, WaveDataSO waveData)
+        public WaveHandler(EncounterManager manager, IWaveData waveData)
         {
             _manager = manager;
             _waveData = waveData;
@@ -40,7 +42,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             _finishedSpawning = false;
         }
 
-        public void Reset(EncounterManager manager, WaveDataSO waveData)
+        public void Reset(EncounterManager manager, IWaveData waveData)
         {
             Dispose();
             
@@ -85,7 +87,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             }
         }
 
-        public async UniTask SpawnAll(CancellationToken token)
+        private async UniTask SpawnAll(CancellationToken token)
         {
             _timer = 0;
             RunTimer(token).Forget();
@@ -95,9 +97,9 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         private async UniTask SpawnAllLoop(CancellationToken token)
         {
-            foreach (EnemySpawnDataEntry entry in _waveData.SpawnDataEntries)
+            foreach (IEnemySpawnData entry in _waveData)
             {
-                if (!entry.IsValid)
+                if (!entry.Enemy)
                     continue;
 
                 await entry.GetWaitCondition(token);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Beakstorm.SceneManagement.Editor
@@ -15,9 +16,28 @@ namespace Beakstorm.SceneManagement.Editor
         private static List<string> _openScenes;
         private static int _activeSceneIndex;
 
+        private const string MENU_TOGGLE_PLAY_FROM_BOOTH = "Play/Play from Boot Scene";
+        private static bool _playFromBoot = true;
+
+
         static PlayFromBootScene()
         {
+            Menu.SetChecked(MENU_TOGGLE_PLAY_FROM_BOOTH, _playFromBoot);
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
+
+
+        [MenuItem(MENU_TOGGLE_PLAY_FROM_BOOTH, true)]
+        public static bool TogglePlayFromBootValidate()
+        {
+            return !EditorApplication.isPlaying;
+        }
+        
+        [MenuItem(MENU_TOGGLE_PLAY_FROM_BOOTH)]
+        public static void TogglePlayFromBoot()
+        {
+            _playFromBoot = !_playFromBoot;
+            Menu.SetChecked(MENU_TOGGLE_PLAY_FROM_BOOTH, _playFromBoot);
         }
         
         public static void Play()
@@ -46,6 +66,9 @@ namespace Beakstorm.SceneManagement.Editor
 
         private static void OnPlayModeStateChanged(PlayModeStateChange change)
         {
+            if (!_playFromBoot)
+                return;
+            
             if (!EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 Play();

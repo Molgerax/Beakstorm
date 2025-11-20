@@ -100,13 +100,13 @@ void LightingCelShaded_float(float3 Position, float2 ScreenPosition, float3 Norm
 
     int pixelLightCount = GetAdditionalLightsCount();
     
-    #if USE_FORWARD_PLUS
+    #if USE_CLUSTER_LIGHT_LOOP
     InputData inputData = (InputData)0;
     inputData.normalizedScreenSpaceUV = ScreenPosition;
     inputData.positionWS = Position;
     #endif
 
-    #if USE_FORWARD_PLUS
+    #if USE_CLUSTER_LIGHT_LOOP
     UNITY_LOOP for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
     {
         Light additionalLight = GetAdditionalLight(lightIndex, inputData.positionWS, half4(1,1,1,1));
@@ -115,7 +115,7 @@ void LightingCelShaded_float(float3 Position, float2 ScreenPosition, float3 Norm
     #endif
     
     LIGHT_LOOP_BEGIN(pixelLightCount)
-        #if !USE_FORWARD_PLUS
+        #if !USE_CLUSTER_LIGHT_LOOP
             lightIndex = GetPerObjectLightIndex(lightIndex);
         #endif
         light = GetAdditionalLight(lightIndex, Position, 1);
@@ -177,13 +177,13 @@ void LightingLambertShaded_float(float3 Position, float2 ScreenPosition, float3 
 
     int pixelLightCount = GetAdditionalLightsCount();
     
-    #if USE_FORWARD_PLUS
+    #if USE_CLUSTER_LIGHT_LOOP
     InputData inputData = (InputData)0;
     inputData.normalizedScreenSpaceUV = ScreenPosition;
     inputData.positionWS = Position;
     #endif
 
-    #if USE_FORWARD_PLUS
+    #if USE_CLUSTER_LIGHT_LOOP
     UNITY_LOOP for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
     {
         Light additionalLight = GetAdditionalLight(lightIndex, inputData.positionWS, half4(1,1,1,1));
@@ -192,7 +192,7 @@ void LightingLambertShaded_float(float3 Position, float2 ScreenPosition, float3 
     #endif
     
     LIGHT_LOOP_BEGIN(pixelLightCount)
-        #if !USE_FORWARD_PLUS
+        #if !USE_CLUSTER_LIGHT_LOOP
             lightIndex = GetPerObjectLightIndex(lightIndex);
     #endif
     light = GetAdditionalLight(lightIndex, Position, 1);

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: fcf63be3ebf546e598559701514185f6
+timeCreated: 1728729960
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Types/TrembleTimer.cs
+  uploadId: 797178

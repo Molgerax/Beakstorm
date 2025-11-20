@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 4f73e981a84ca44b4bfe0fe68379f559
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/FieldConverters/IntFieldConverter.cs
+  uploadId: 797178

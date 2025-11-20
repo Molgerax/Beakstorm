@@ -62,6 +62,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -83,6 +85,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -195,6 +198,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0, y: 9.400002, z: 0}
     m_Extent: {x: 5, y: 11.400002, z: 5.000001}
+  enemySo: {fileID: 11400000, guid: ec9e769268f290b449ee4571a05eabde, type: 2}
 --- !u!1 &974106532363978320
 GameObject:
   m_ObjectHideFlags: 0

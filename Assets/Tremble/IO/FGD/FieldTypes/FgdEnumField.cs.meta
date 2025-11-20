@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 7cb83d47f4a14179baba19b9197b90ea
+timeCreated: 1712223369
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/IO/FGD/FieldTypes/FgdEnumField.cs
+  uploadId: 797178

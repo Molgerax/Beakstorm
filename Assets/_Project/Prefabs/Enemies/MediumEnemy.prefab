@@ -49,6 +49,10 @@ MonoBehaviour:
     x: 1
     y: 16.71
     z: 5.8
+  offset:
+    x: 0
+    y: 0
+    z: 0
 --- !u!1 &1629069588529952506
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,6 +234,10 @@ MonoBehaviour:
     x: 1
     y: 9.7
     z: 5.05
+  offset:
+    x: 0
+    y: 0
+    z: 0
 --- !u!1 &3487133670200992763
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,6 +319,10 @@ MonoBehaviour:
     x: 1
     y: 9.7
     z: 5.05
+  offset:
+    x: 0
+    y: 0
+    z: 0
 --- !u!1 &4550146956553879032
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,6 +562,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0.0000038146973, y: 17.361889, z: 1.90308}
     m_Extent: {x: 61.113586, y: 33.477657, z: 42.012104}
+  enemySo: {fileID: 11400000, guid: 268eba94870643445be9f363204548d1, type: 2}
 --- !u!114 &5472652922921227751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,10 +603,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6120369539214848294}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 10000
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

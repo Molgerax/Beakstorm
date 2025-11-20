@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 1538a37a171f49e686de801a819c48de
+timeCreated: 1736713077
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Editor/VersionCheck/Q3Map2DllInstallEngine.cs
+  uploadId: 797178

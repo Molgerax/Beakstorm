@@ -5,9 +5,12 @@ using UnityEngine;
 namespace Beakstorm.Simulation.Collisions.SDF
 {
     [ExecuteAlways]
-    public abstract class AbstractSdfShape : MonoBehaviour,  IBounds, ISdfData<AbstractSdfData>
+    public abstract class AbstractSdfShape : MonoBehaviour,  IBounds, ISdfData<AbstractSdfData>, IValid
     {
-        [SerializeField] private SdfMaterialType materialType = SdfMaterialType.None;
+        [SerializeField] protected SdfMaterialType materialType = SdfMaterialType.None;
+
+        public void SetMaterialType(SdfMaterialType type) => materialType = type;
+        
         
         protected abstract SdfShapeType Type();
 
@@ -31,6 +34,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
                 return new float3(grow, grow, grow);
             }
         }
+
+        public virtual bool IsValid => true;
         
         protected uint GetTypeData()
         {

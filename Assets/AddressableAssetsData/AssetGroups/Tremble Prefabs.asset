@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Tremble Prefabs
+  m_EditorClassIdentifier: 
+  m_GroupName: Tremble Prefabs
+  m_GUID: 88bfd4ea2df4a8548a22b8657686eee5
+  m_SerializeEntries:
+  - m_GUID: 055db12b54eacc74faf615c43ecf2fbb
+    m_Address: MediumEnemy_Spawn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 366cc1bc265b9b74d903287787948002
+    m_Address: WeaponPickup
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c6fa5fb28f46784cb7b0b1ae810b6a7
+    m_Address: LargeEnemy_Spawn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 518e60a15f4ceb848a506086a66816b9
+    m_Address: Bunker_Spawn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 574def6a9a0b4dd4686c834965328d29
+    m_Address: SmallEnemy_Spawn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c385116b5030634ab970a2b20fe45db
+    m_Address: SmallEnemy_Gun_Spawn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a2222cf2c999c64a9c5795a7548b5df
+    m_Address: HangarShip_Spawn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a8ceaf6f3ea49946bd01c143c5a29ca
+    m_Address: MessageRing
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee93937e6bebee64fb948a62ff3fc43f
+    m_Address: ShieldedEnemy_Spawn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f19d8199d36847c49a7a49888ee5e4e2
+    m_Address: SimpleTurret_Spawn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d8aeb4f9e09ee8343902018e14c13f32, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 3f0cacb485ba33c4893fee81842a1b14, type: 2}
+    - {fileID: 11400000, guid: ab20b8d91c24b07499aaff84562e941d, type: 2}

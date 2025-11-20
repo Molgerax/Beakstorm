@@ -75,6 +75,8 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             glider.SpeedVariable.Min = 0;
             glider.SpeedVariable.Max = maxSpeed;
+
+            glider.FovFactor = glider.Speed01;
         }
 
         private void UpdateSteering(GliderController glider, float dt)
@@ -190,6 +192,8 @@ namespace Beakstorm.Gameplay.Player.Flying
             Vector3 flatForward = forward;
             flatForward.y = 0f;
 
+            if (Vector3.Dot(glider.T.up, Vector3.up) < 0)
+                flatForward *= -1;
 
             float force = 0;
             
@@ -225,6 +229,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             thrustStrength = Mathf.Lerp(0.1f, 1f, thrustStrength);
             
             force += appliedThrust * mass * thrustStrength;
+            force += GetThrustFromWind(glider.T.forward, glider.ExternalWind) * mass;
 
             glider.ThrustVariable.Min = minThrust;
             glider.ThrustVariable.Max = maxThrust;
@@ -261,6 +266,15 @@ namespace Beakstorm.Gameplay.Player.Flying
             float coefficient = angleOfAttackCurve.Evaluate(velocity.magnitude);
             
             return coefficient * vel2 * -velocity.normalized;
+        }
+
+        private float GetThrustFromWind(Vector3 heading, Vector3 wind)
+        {
+            if (wind.magnitude < 0.1f)
+                return 0;
+            
+            float alignment = Vector3.Dot(heading.normalized, wind);
+            return Mathf.Max(alignment, -minThrust * 0.5f);
         }
     }
 }

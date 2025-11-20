@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a44b84a65567e4fb59dac2929aba0b09
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/ScriptableObjects/MapFileAsset.cs
+  uploadId: 797178

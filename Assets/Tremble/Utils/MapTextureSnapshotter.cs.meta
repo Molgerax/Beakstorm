@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: cd6405c6b01049ba9a15b8f11f80f46d
+timeCreated: 1707139093
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Utils/MapTextureSnapshotter.cs
+  uploadId: 797178

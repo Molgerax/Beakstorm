@@ -16,6 +16,9 @@ MonoBehaviour:
   displayName: Impact
   fireDelay: 2
   ammoCost: 1
+  pickupCount: 3
+  reloadTime: 15
+  maxReloadCount: 3
   initialVelocity: 100
   projectilePrefab: {fileID: 5012512307083224738, guid: bc7de790a204626479f719529a915965, type: 3}
   behaviourData: {fileID: 11400000, guid: 2692ea444efd7884fb42834a9e55c792, type: 2}

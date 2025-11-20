@@ -54,6 +54,7 @@ namespace Beakstorm.Gameplay.Enemies
         private void OnReleaseToPool(EnemyController enemy)
         {
             enemy.gameObject.SetActive(false);
+            enemy.transform.SetParent(_poolParentTransform);
         }
 
         private void OnDestroyPooledObject(EnemyController enemy)

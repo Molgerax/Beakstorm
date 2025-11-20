@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerInputActions",
     "maps": [
         {
@@ -228,7 +229,7 @@
                 {
                     "name": "",
                     "id": "ef99a9f2-4cff-41e7-8a79-001b4cc3f919",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Controller",
@@ -272,7 +273,7 @@
                 {
                     "name": "",
                     "id": "7106bd8f-a6f0-4ad6-bba9-48c36efe8b07",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Controller",
@@ -294,7 +295,7 @@
                 {
                     "name": "",
                     "id": "85b1870e-9703-4a45-b07f-aa52120c4305",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Controller",
@@ -347,61 +348,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Bumpers",
-                    "id": "70896ca7-59b6-4476-9735-b85da7de6d97",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SwitchPheromone",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "e577b739-6339-4ec0-bdaf-e7612e09a09a",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Controller",
-                    "action": "SwitchPheromone",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "1fd3f912-f70c-4026-a8e5-9ce3090e10f9",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Controller",
-                    "action": "SwitchPheromone",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "f02cd021-51ee-4932-9b6c-4e9aa11309b3",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Controller",
-                    "action": "SwitchPheromone",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "770bf9c3-0656-4f48-896d-9059433ae6af",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Controller",
-                    "action": "SwitchPheromone",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "af6083a9-c0f8-4720-8a3f-45ed35e7a6c8",
                     "path": "<Gamepad>/rightStickPress",
@@ -437,7 +383,7 @@
                 {
                     "name": "",
                     "id": "a95f16a0-8de5-4101-9ba8-c16aa28d5a61",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Controller",
@@ -470,7 +416,7 @@
                 {
                     "name": "",
                     "id": "8bca8963-b3f1-4bda-ac41-8bac7958b13f",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Controller",

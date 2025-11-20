@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Simulation.Collisions.SDF.Shapes;
 using Unity.Mathematics;
@@ -21,7 +22,10 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         [Header("Sdf Atlas")] 
         [SerializeField] private ComputeShader atlasCompute;
-        [SerializeField] private Vector3Int atlasResolution;
+        [SerializeField] private Vector3Int atlasResolution = Vector3Int.one * 64; 
+        
+        
+        private Vector3Int _atlasResolution;
         
         private RenderTexture sdfAtlasTexture;
 
@@ -32,6 +36,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
         public static List<AbstractSdfShape> Shapes = new List<AbstractSdfShape>(16);
         private static List<SdfTextureField> _textureFields = new(16);
 
+        private static int _invalidTextureFields;
+        
         private AbstractSdfShape[] _shapes = new AbstractSdfShape[16];
         private Node[] _nodeList;
         private AbstractSdfData[] _dataArray;
@@ -63,7 +69,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             
             
             cs.SetTexture(kernelId, PropertyIDs.SdfAtlasTexture, SdfAtlasTexture);
-            cs.SetInts(PropertyIDs.SdfAtlasResolution, atlasResolution);
+            cs.SetInts(PropertyIDs.SdfAtlasResolution, _atlasResolution);
         }
         
         public void SetShaderProperties(MaterialPropertyBlock propertyBlock)
@@ -73,7 +79,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             propertyBlock.SetInt(PropertyIDs.NodeCount, NodeCount);
             
             propertyBlock.SetTexture(PropertyIDs.SdfAtlasTexture, SdfAtlasTexture);
-            propertyBlock.SetVector(PropertyIDs.SdfAtlasResolution, (Vector3)atlasResolution);
+            propertyBlock.SetVector(PropertyIDs.SdfAtlasResolution, (Vector3)_atlasResolution);
         }
         
         private void OnEnable()
@@ -106,6 +112,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             UpdateSdfAtlas();
             
             UpdateArray();
+            FillArray();
             ResizeBuffers();
             
             
@@ -293,7 +300,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void UpdateArray()
         {
-            _shapeCount = Shapes.Count;
+            _shapeCount = Shapes.Count(i => i.IsValid);
             if (!_updateArray)
                 return;
             ResizeBuffers();
@@ -303,9 +310,17 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void FillArray()
         {
-            for (int i = 0; i < Mathf.Min(_shapes.Length, Shapes.Count); i++)
+            int count = Mathf.Min(_shapes.Length, Shapes.Count);
+            int front = 0;
+            int back = count - 1;
+            for (int i = 0; i < count; i++)
             {
-                _shapes[i] = Shapes[i];
+                var shape = Shapes[i];
+
+                if (shape.IsValid)
+                    _shapes[front++] = shape;
+                else
+                    _shapes[back--] = shape;
             }
         }
         
@@ -335,8 +350,10 @@ namespace Beakstorm.Simulation.Collisions.SDF
         
         private void InitAtlas()
         {
-            sdfAtlasTexture = new RenderTexture(atlasResolution.x, atlasResolution.y, 0, RenderTextureFormat.ARGBFloat);
-            sdfAtlasTexture.volumeDepth = atlasResolution.z;
+            _atlasResolution = atlasResolution;
+            
+            sdfAtlasTexture = new RenderTexture(_atlasResolution.x, _atlasResolution.y, 0, RenderTextureFormat.ARGBFloat);
+            sdfAtlasTexture.volumeDepth = _atlasResolution.z;
             sdfAtlasTexture.dimension = TextureDimension.Tex3D;
             sdfAtlasTexture.enableRandomWrite = true;
             sdfAtlasTexture.name = "ShapeManager_SDFAtlas";
@@ -346,6 +363,13 @@ namespace Beakstorm.Simulation.Collisions.SDF
         private void SortTextureFields()
         {
             _textureFields.Sort();
+
+            _invalidTextureFields = 0;
+            for (int i = 0; i < _textureFields.Count; i++)
+            {
+                if (!_textureFields[i].IsValid)
+                    _invalidTextureFields++;
+            }
         }
 
         private void UpdateSdfAtlas()
@@ -354,18 +378,19 @@ namespace Beakstorm.Simulation.Collisions.SDF
             SortTextureFields();
 
             int i = 0;
-            UpdateSdfAtlasRecursive(ref i, Vector3Int.zero, atlasResolution);
+            UpdateSdfAtlasRecursive(ref i, Vector3Int.zero, _atlasResolution);
         }
 
         private void UpdateSdfAtlasRecursive(ref int textureIndex, Vector3Int startVoxel, Vector3Int currentResolution)
         {
-            if (textureIndex >= _textureFields.Count)
+            if (textureIndex >= _textureFields.Count - _invalidTextureFields)
                 return;
 
             if (currentResolution.sqrMagnitude <= 8)
                 return;
             
             SdfTextureField field = _textureFields[textureIndex];
+
             if (field.Resolution == currentResolution)
             {
                 SetTexture(field, startVoxel);
@@ -411,16 +436,16 @@ namespace Beakstorm.Simulation.Collisions.SDF
 
         private void SetTexture(SdfTextureField field, Vector3Int startVoxel)
         {
-            if (CanFitInAtlas(startVoxel, field.Resolution, atlasResolution))
+            if (CanFitInAtlas(startVoxel, field.Resolution, _atlasResolution))
             {
                 field.SetStartVoxel(startVoxel);
                 int kernelId = atlasCompute.FindKernel("Transfer");
                 atlasCompute.SetTexture(kernelId, PropertyIDs.SdfAtlasTexture, sdfAtlasTexture);
-                atlasCompute.SetInts(PropertyIDs.SdfAtlasResolution, atlasResolution);
+                atlasCompute.SetInts(PropertyIDs.SdfAtlasResolution, _atlasResolution);
                 atlasCompute.SetTexture(kernelId, PropertyIDs.SourceTexture, field.SdfTexture);
                 atlasCompute.SetInts(PropertyIDs.SourceResolution, field.Resolution);
                 atlasCompute.SetInts(PropertyIDs.TransferOffset, startVoxel);
-                atlasCompute.DispatchExact(kernelId, atlasResolution);
+                atlasCompute.DispatchExact(kernelId, _atlasResolution);
             }
         }
         
@@ -440,8 +465,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
         {
             int kernelId = atlasCompute.FindKernel("Clear");
             atlasCompute.SetTexture(kernelId, PropertyIDs.SdfAtlasTexture, sdfAtlasTexture);
-            atlasCompute.SetInts(PropertyIDs.SdfAtlasResolution, atlasResolution);
-            atlasCompute.DispatchExact(kernelId, atlasResolution);
+            atlasCompute.SetInts(PropertyIDs.SdfAtlasResolution, _atlasResolution);
+            atlasCompute.DispatchExact(kernelId, _atlasResolution);
         }
         
         private void RenderPreview()
@@ -462,7 +487,7 @@ namespace Beakstorm.Simulation.Collisions.SDF
             _propBlock.SetInt(PropertyIDs.NodeCount, NodeCount);
             
             _propBlock.SetTexture(PropertyIDs.SdfAtlasTexture, SdfAtlasTexture);
-            _propBlock.SetVector(PropertyIDs.SdfAtlasResolution, (Vector3)atlasResolution);
+            _propBlock.SetVector(PropertyIDs.SdfAtlasResolution, (Vector3)_atlasResolution);
 
             Bounds bounds = new Bounds();
             bounds.Encapsulate(_nodeList[0].BoundsMin);

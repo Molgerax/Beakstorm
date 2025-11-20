@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 42bb3c4e19fb4804bfaa5dd98d17cee0
+timeCreated: 1722209446
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Utils/FloatFormatUtil.cs
+  uploadId: 797178

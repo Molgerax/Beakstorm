@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b221a3b342c714e93a5ced490d049184
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Editor/Templates/gameconfig-9.cfg
+  uploadId: 797178

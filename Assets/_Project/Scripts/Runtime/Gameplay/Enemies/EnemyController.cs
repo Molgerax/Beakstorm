@@ -13,13 +13,15 @@ namespace Beakstorm.Gameplay.Enemies
         [SerializeField] private UltEvent onHealthZero;
 
         [SerializeField, HideInInspector] private Bounds bounds;
+
+        [SerializeField] private EnemySO enemySo;
+
+        public void SetEnemySo(EnemySO enemy) => enemySo = enemy; 
         
         public event Action OnHealthZero;
         
         private int _maxHealth;
         private int _currentHealth;
-
-        private Vector3 _spawnPos;
 
         private EnemyPool _pool;
         private EnemySpawner _spawner;
@@ -39,12 +41,26 @@ namespace Beakstorm.Gameplay.Enemies
             gameObject.SetActive(false);
         }
 
-        public void Spawn(Transform spawnPoint) => Spawn(spawnPoint.position, spawnPoint.rotation);
-        public void Spawn(TransformData spawnPoint) => Spawn(spawnPoint.Position, spawnPoint.Rotation);
-        public void Spawn(Vector3 position, Quaternion rotation)
+        private void Start()
         {
-            _spawnPos = position;
-            transform.SetPositionAndRotation(_spawnPos, rotation);
+            GetPoolIfNoneSet();
+        }
+
+        public void Spawn(Transform spawnPoint, bool useParent = false) => Spawn(spawnPoint.position, spawnPoint.rotation, useParent ? spawnPoint : null);
+        public void Spawn(TransformData spawnPoint) => Spawn(spawnPoint.Position, spawnPoint.Rotation, spawnPoint.Parent);
+        public void Spawn(Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            if (parent)
+            {
+                transform.SetParent(parent, true);
+                transform.SetLocalPositionAndRotation(position, rotation);
+            }
+            else
+            {
+                transform.SetPositionAndRotation(position, rotation);
+            }
+            
+            _isDefeated = false;
             
             foreach (WeakPoint weakPoint in weakPoints)
             {
@@ -55,13 +71,26 @@ namespace Beakstorm.Gameplay.Enemies
             }
             
             onInitialize?.Invoke();
-            _isDefeated = false;
         }
 
 
         public void Despawn()
         {
             _pool.ReturnToPool(this);
+        }
+
+        private void GetPoolIfNoneSet()
+        {
+            if (_pool != null)
+                return;
+            
+            if (!EnemyPoolManager.Instance)
+                return;
+
+            Debug.Log("Enemy had to get own pool, despawn now.");
+            
+            _pool = EnemyPoolManager.Instance.GetEnemyPool(enemySo);
+            Despawn();
         }
         
 

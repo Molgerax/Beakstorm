@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 737bbd6b6175d4d3ebf6128db488a086
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 277805
+  packageName: Tremble - Map Importer
+  packageVersion: 1.10.0
+  assetPath: Assets/Tremble/Editor/TinyGoose.Tremble.Editor.asmdef
+  uploadId: 797178

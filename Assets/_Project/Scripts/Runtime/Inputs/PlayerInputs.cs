@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Beakstorm.Settings;
 using Beakstorm.Utility;
 using UnityEngine;
@@ -47,6 +48,8 @@ namespace Beakstorm.Inputs
         private InputBuffered _cancelBuffered;
         private InputBuffered _shootBuffered;
 
+        private static InputDevice _lastActiveDevice;
+
         #endregion
 
         #region Properties
@@ -60,6 +63,10 @@ namespace Beakstorm.Inputs
         public bool ShootBuffered => _shootBuffered;
 
         public PlayerInputActions InputActions => _inputs;
+
+        public static InputDevice LastActiveDevice => _lastActiveDevice;
+
+        public static event Action ActiveDeviceChangeEvent;
 
         #endregion
 
@@ -106,11 +113,103 @@ namespace Beakstorm.Inputs
             
             _inputs.UI.Navigate.AddListener(OnMoveUI);
             _inputs.UI.Point.AddListener(OnPointUI);
+            
+            InputSystem.onActionChange += OnActionChange;
+        }
+
+        private void OnDisable()
+        {
+            InputSystem.onActionChange -= OnActionChange;
         }
 
         #endregion
 
+        
+        private void OnActionChange(object obj, InputActionChange change)
+        {
+            if (change == InputActionChange.ActionPerformed)
+            {
+                InputAction inputAction = (InputAction)obj;
+                InputControl activeControl = inputAction.activeControl;
+                //Debug.LogFormat("Current Control {0}", activeControl);
 
+                var newDevice = activeControl.device;
+
+                // we detected a change
+                if (_lastActiveDevice != newDevice)
+                {
+                    _lastActiveDevice = newDevice;
+                    // fire an event to anyone listening
+                    ActiveDeviceChangeEvent?.Invoke();
+                }
+            }
+        }
+
+        public InputAction GetAction(string actionName)
+        {
+            return _inputs.FindAction(actionName);
+        }
+
+        public InputBinding GetBinding(string actionName)
+        {
+            InputAction action = GetAction(actionName);
+
+            int id = 0;
+            InputControlScheme? currentScheme = null;
+            for (int i = 0; i < _inputs.controlSchemes.Count; i++)
+            {
+                var scheme = _inputs.controlSchemes[i];
+                if (scheme.SupportsDevice(_lastActiveDevice))
+                {
+                    currentScheme = scheme;
+                    id = i;
+                }
+            }
+            
+            if (currentScheme == null)
+                return action.bindings[id];
+            
+            foreach (InputBinding binding in action.bindings)
+            {
+                if (binding.groups.Contains(currentScheme.Value.name))
+                    return binding;
+            }
+
+            return action.bindings[id];
+        }
+        
+        public List<InputBinding> GetBindings(string actionName)
+        {
+            List<InputBinding> bindings = new();
+            InputAction action = GetAction(actionName);
+
+            int id = 0;
+            InputControlScheme? currentScheme = null;
+            for (int i = 0; i < _inputs.controlSchemes.Count; i++)
+            {
+                var scheme = _inputs.controlSchemes[i];
+                if (scheme.SupportsDevice(_lastActiveDevice))
+                {
+                    currentScheme = scheme;
+                    id = i;
+                }
+            }
+
+            if (currentScheme == null)
+                return null;
+
+            foreach (InputBinding binding in action.bindings)
+            {
+                if (string.IsNullOrEmpty(binding.groups))
+                    continue;
+                
+                if (binding.groups.Contains(currentScheme.Value.name))
+                    bindings.Add(binding);
+            }
+            
+            return bindings;
+        }
+        
         public void EnablePlayerInputs()
         {
             InputActions.Player.Enable();

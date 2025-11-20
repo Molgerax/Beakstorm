@@ -1,0 +1,586 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a88c8a3ff11450b94453ed26fba8f5c, type: 3}
+  m_Name: Tremble Sync Settings
+  m_EditorClassIdentifier: 
+  m_ShowExpanded: 1
+  m_AutoSyncOnCompile: 1
+  m_AllowStandaloneImport: 1
+  m_TrenchBroomVersion: 3
+  m_TemplateMap: {fileID: 0}
+  m_WorldspawnScript:
+    m_ScriptName: Beakstorm.Mapping.Tremble.MapWorldSpawn
+  m_TypeNamingConvention: 3
+  m_FieldNamingConvention: 0
+  m_SpawnFlagNamingConvention: 4
+  m_MaterialNamingConvention: 3
+  m_IdentityPropertyName: targetname
+  m_MaterialGroups:
+  - Name: Mapping
+    Materials:
+    - {fileID: 2100000, guid: e84523692239319499d73bad6951c76d, type: 2}
+    - {fileID: 2100000, guid: 860e82aa07fe1b14db004cbe8141f0d0, type: 2}
+    - {fileID: 2100000, guid: cbf9802346300eb44bb16813962aed18, type: 2}
+    - {fileID: 2100000, guid: c1955b25cba3b644ea60dc8f0615ba1c, type: 2}
+    - {fileID: 2100000, guid: 4b471ae6d3a024e48a88e3ebc3fe395c, type: 2}
+  m_MaterialRenderData:
+  - m_Material: {fileID: 2100000, guid: d9d8676ef392ea641b99c4c1eb1ebe9f, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 8f2f812cf50d78c4dae45f14a42e1f63, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 3acb73fb6b834ff418b37ec08513ce4a, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: c2e057d6d978a9d4d96fc53bbf4c1324, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 0549ad6672f3ee142949e88a01e4a2c0, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 159ad82aac75b9c48b75baa4d62db3ac, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: e31db964f0cd94e429a48e59f3fa0b66, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: daf2221852f16b54984af8d9cd05f8b3, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: d62e846475ee4db45b4f5deacdb87d5f, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 93d116b213a7e2448a690227e43624d7, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 4dfb57a49bcf69543818600b170ef672, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 3d5e8143ee07477428eaebca800db3ec, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: ff5cbf242b7589d4baafc630eecff146, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 408fbf264103d5a4089f1147c35746e2, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 5424d182223946a41947cbdb185313ba, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 61a7632d4bd5b37489b68af6d353f4c4, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 11fc5cb06c04b4540a624005fca86a08, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 03620cad77bcc8340b60347bdea151f9, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: ac1d8abcc2fad634a8773659c953ce9b, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 97f0a60cab5172d4687b907c2a22318e, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 69707b6cc0c3b0f4c90907c0f08aad28, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 27efa96d48b239a478adb2aa800c41e5, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 733b405e9c0293547a80e018863c130c, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: f88c40f1386135a45ae8561e042a3bdc, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 47e7f82be5f348d42940c13ab860fd18, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: b144783ab938d9e4796f2b3e637f9302, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 5703681b7ff606c4ea951fd91e610f84, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: deb78959c575b0242950100d5906e96f, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 62d2b1e04bc404044a64a4bae6ed71cf, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 6eb2b0e205a9e3949b1bff80adfc575d, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 789768643a1cc7d4cbaf3fc73a416460, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 22663aafaa6fcde478484de8618b8b70, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: f6237eb34b3cf2b49898e247dae8923c, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 21034e5a3b21a964b880ceb135566dee, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: f28fc18c1bb50cf4991176f6b4786ccb, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 341a7dbe4aa609b4d88f0a959de14668, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: fd795acfeea9df940a35acf2600991a9, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: f8a35fdcc65de204db66c9dc57874bd3, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: c7a3fddd0af3a1c44985ba134ae3f3ed, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 3e8e6c2a956ffa647b6f530959a822c7, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 3f1c092690d8f42b88ea7f2abef724db, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 46547fc395b804663b8dac6d491327f6, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 2c24e9a4313c849ebbc5d6dfc3413cb2, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 2567af7a183a84989b4bf1b0044c21e5, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 9b7047ef828ad420f97c5225c747d361, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 0c9dda8345160435887e29946128cccc, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 1361d123a716144e685abb31c8d00ea4, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 5f7320eb3b94b4ec0b9d3140d53504eb, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 72ad818ee723542e68f12ef4911b8aed, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 672293571e291483e93d872ac6637085, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: e84523692239319499d73bad6951c76d, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 860e82aa07fe1b14db004cbe8141f0d0, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: ebc2e2b22a4174f9e9867d979b7008b8, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: cbf9802346300eb44bb16813962aed18, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: c1955b25cba3b644ea60dc8f0615ba1c, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 4b471ae6d3a024e48a88e3ebc3fe395c, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  m_PipelineSplitMesh: 0
+  m_PipelineSmoothMeshNormals: 1
+  m_PipelineSimplifyCollisionMeshes: 1
+  m_PipelineUnwrapUV2: 0
+  m_PipelineRunMapProcessors: 1
+  m_MapProcessors:
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.EnemySpawnMapProcessor
+    Enabled: 1
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.SdfTextureMapProcessor
+    Enabled: 1
+  m_LogOnImportAndSync: 0
+  m_UseLiveUpdate: 1
+  m_AutomaticallyReimportWhenDependencyChanges: 1
+  m_EntityIconStyle: 1
+  m_PrefabOverrideHandling: 2
+  m_UseClassicQuakeCulling: 0
+  m_Q3Map2ResultDisplayType: 1
+  m_EmbedTrembleSettingsInProjectSettings: 1
+  m_FgdFormattingStyle: 1
+  m_SubdivideAllLeafs: 0
+  m_AlwaysPackBoolsIntoSpawnFlags: 1
+  m_SyncEnumsAsStringValue: 1
+  m_SyncSerializedFields: 1
+  m_SyncMaterialsAndPrefabs: 1
+  m_WorldspawnLayer: Default
+  m_DiscardMapGroups: 0
+  m_MainMeshName: worldspawn
+  m_AutoDeleteMapBackups: 0
+  m_ExtraCommandLineArgs: -threads 8 -meta -v
+  m_MaterialExportSize: 5
+  m_MaterialCaptureLightIntensity: 0.5
+  m_MaterialCaptureLightAngle: 0.75
+  m_ExportClipSkipTextures: 1
+  m_ImportScale: 0.25
+  m_AssetMetadatas:
+  - MapName: enemy_Bunker_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/Bunker_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: Bunker_Spawn
+    SpawnOffset: {x: -0, y: -9.8985, z: -0}
+  - MapName: enemy_HangarShip_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/HangarShip_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: HangarShip_Spawn
+    SpawnOffset: {x: -0, y: -8.958847, z: -0}
+  - MapName: enemy_LargeEnemy_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/LargeEnemy_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: LargeEnemy_Spawn
+    SpawnOffset: {x: -0, y: -4.5003567, z: -0}
+  - MapName: enemy_MediumEnemy_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/MediumEnemy_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: MediumEnemy_Spawn
+    SpawnOffset: {x: -0.0000038146973, y: -12.047838, z: -3.904602}
+  - MapName: enemy_ShieldedEnemy_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/ShieldedEnemy_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: ShieldedEnemy_Spawn
+    SpawnOffset: {x: -0, y: -8.219999, z: -0}
+  - MapName: enemy_SimpleTurret_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/SimpleTurret_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: SimpleTurret_Spawn
+    SpawnOffset: {x: -0, y: -9.400002, z: -0}
+  - MapName: enemy_SmallEnemy_Gun_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/SmallEnemy_Gun_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: SmallEnemy_Gun_Spawn
+    SpawnOffset: {x: -0.00000047683716, y: -5.124563, z: -0.00000047683716}
+  - MapName: enemy_SmallEnemy_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/SmallEnemy_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: SmallEnemy_Spawn
+    SpawnOffset: {x: -0, y: -7.0047092, z: -0}
+  - MapName: prefab_weapon_pickup
+    Path: Assets/_Project/Prefabs/Pickups/Weapons/WeaponPickup.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: WeaponPickup
+    SpawnOffset: {x: -0, y: -0, z: -0}
+  - MapName: trigger_message
+    Path: Assets/_Project/Prefabs/Tutorial/MessageRing.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: MessageRing
+    SpawnOffset: {x: -0, y: -0, z: -0}
+  - MapName: Impact_PheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Impact_PheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Impact_PheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Multi_ConstantPheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Multi_ConstantPheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Multi_ConstantPheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Multi_ReversePheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Multi_ReversePheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Multi_ReversePheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Simple_LongRangeShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Simple_LongRangeShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Simple_LongRangeShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Simple_QuickShotItano
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Simple_QuickShotItano.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Simple_QuickShotItano
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Simple_ReversePheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Simple_ReversePheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Simple_ReversePheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Simple_SpreadPheromoneShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Simple_SpreadPheromoneShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Simple_SpreadPheromoneShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/Mapping_Base
+    Path: Assets/_Project/Materials/Mapping/Mapping_Base.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/Mapping_Base
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/Mapping_Base_Red
+    Path: Assets/_Project/Materials/Mapping/Mapping_Base_Red.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/Mapping_Base_Red
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/WindDraft
+    Path: Assets/_Project/Materials/Mapping/WindDraft.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/WindDraft
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/Mapping_Base_Green
+    Path: Assets/_Project/Materials/Mapping/Mapping_Base_Green.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/Mapping_Base_Green
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/Mapping_Base_Blue
+    Path: Assets/_Project/Materials/Mapping/Mapping_Base_Blue.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/Mapping_Base_Blue
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Lit
+    Path: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Lit
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Cloth
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Cloth.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: WeakPoint_Cloth
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_rope
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_rope.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_rope
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Socket_MetalAccent
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_MetalAccent.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: WeakPoint_Socket_MetalAccent
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_metal
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_metal
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Mat
+    Path: Assets/_Project/Materials/Test/WeakPoint_Mat.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: WeakPoint_Mat
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Socket_Metal
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_Metal.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: WeakPoint_Socket_Metal
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_ShipMedium
+    Path: Assets/_Project/Art/Materials/m_ShipMedium.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_ShipMedium
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_ShipGlass
+    Path: Assets/_Project/Art/Materials/m_ShipGlass.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_ShipGlass
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_metal_accent
+    Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal_accent.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_metal_accent
+    SpawnOffset: {x: 0, y: 0, z: 0}
