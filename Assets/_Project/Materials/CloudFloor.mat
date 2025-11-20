@@ -11,8 +11,16 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 73a26dd9b4c5aea44ae94187df1b363c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_ValidKeywords:
+  - _ADDITIONAL_LIGHTS
+  - _ADDITIONAL_LIGHT_SHADOWS
+  - _CLUSTER_LIGHT_LOOP
+  - _MAIN_LIGHT_SHADOWS
+  - _MAIN_LIGHT_SHADOWS_CASCADE
+  - _SHADOWS_SOFT
+  m_InvalidKeywords:
+  - _EMISSION
+  - _FORWARD_PLUS
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -38,12 +46,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ADDITIONAL_LIGHTS: 1
+    - _ADDITIONAL_LIGHT_SHADOWS: 1
+    - _CLUSTER_LIGHT_LOOP: 1
     - _CloudAlpha: 1
     - _CloudPower: 0.26
     - _CloudScale: 4
     - _DerivativeOffset: 1
+    - _FORWARD_PLUS: 1
+    - _MAIN_LIGHT_SHADOWS: 1
+    - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _SHADOWS_SOFT: 1
     - _VertexOffset: 0.05
     m_Colors:
     - _CloudColor: {r: 1.6051236, g: 1.224187, b: 0.9464172, a: 1}
@@ -62,4 +77,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 9
+  version: 10
