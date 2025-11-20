@@ -24,6 +24,7 @@ namespace Beakstorm.Gameplay.Messages
         private Message _cachedMessage;
         
         private string _cachedText;
+        private bool _disabled;
         
         public static void AddMessage(Message message)
         {
@@ -60,6 +61,7 @@ namespace Beakstorm.Gameplay.Messages
                 SetText(String.Empty);
                 SetParent(false);
                 SetSkip(false);
+                _disabled = false;
             }
             else
             {
@@ -67,13 +69,18 @@ namespace Beakstorm.Gameplay.Messages
                 SetTimer(message.Timer01);
                 SetParent(true);
                 SetSkip(message.IsSkippable);
+                _disabled = true;
             }
         }
 
         private void Tick(float dt)
         {
-            if(CurrentMessage == null)
+            if (CurrentMessage == null)
+            { 
+                if (!_disabled)
+                    SetMessageUI(null);
                 return;
+            }
 
             if (_cachedMessage != CurrentMessage)
             {
@@ -89,8 +96,9 @@ namespace Beakstorm.Gameplay.Messages
 
         private void OnDeviceChanged()
         {
-            text.text =
-                CompleteTextWithButtonPromptSprite.ReplaceActiveBindings(_cachedText, PlayerInputs.Instance, icons);
+            if (!string.IsNullOrEmpty(_cachedText))
+                text.text =
+                    CompleteTextWithButtonPromptSprite.ReplaceActiveBindings(_cachedText, PlayerInputs.Instance, icons);
             text.spriteAsset = icons.GetAssetByDevice(PlayerInputs.LastActiveDevice);
         }
 

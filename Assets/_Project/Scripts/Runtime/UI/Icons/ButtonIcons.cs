@@ -14,7 +14,10 @@ namespace Beakstorm.UI.Icons
         public TMP_SpriteAsset GetAssetByDevice(InputDevice device)
         {
             if (device == null)
+            {
+                Debug.LogError("Device is null!");
                 return spriteAssets[0];
+            }
         
             List<string> names = new List<string>();
 

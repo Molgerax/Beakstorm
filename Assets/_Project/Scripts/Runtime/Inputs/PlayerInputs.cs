@@ -131,7 +131,7 @@ namespace Beakstorm.Inputs
             {
                 InputAction inputAction = (InputAction)obj;
                 InputControl activeControl = inputAction.activeControl;
-                Debug.LogFormat("Current Control {0}", activeControl);
+                //Debug.LogFormat("Current Control {0}", activeControl);
 
                 var newDevice = activeControl.device;
 

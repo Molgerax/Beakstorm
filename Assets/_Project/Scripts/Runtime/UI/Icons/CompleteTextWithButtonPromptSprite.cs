@@ -5,7 +5,6 @@ using Beakstorm.Inputs;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.TextCore;
 
 namespace Beakstorm.UI.Icons
 {
@@ -23,26 +22,16 @@ namespace Beakstorm.UI.Icons
         
             string stringButtonName = dynamicBinding.effectivePath;
             stringButtonName = RenameInput(stringButtonName, spriteAsset.name);
-            Debug.LogFormat("ActionNeeded: {0}", stringButtonName);
+            //Debug.LogFormat("ActionNeeded: {0}", stringButtonName);
 
             
             int index = spriteAsset.GetSpriteIndexFromName(stringButtonName);
-            Debug.Log($"Index: {index}");
+            //Debug.Log($"Index: {index}");
             uv = Vector4.zero;
 
             if (spriteAsset.spriteGlyphTable.Count <= index || index < 0)
                 return null;
             return spriteAsset.spriteGlyphTable[index].sprite;
-            
-            
-            GlyphRect rect = spriteAsset.spriteCharacterTable[index].glyph.glyphRect;
-
-            uv.x = (float) rect.x / spriteAsset.spriteSheet.width;
-            uv.y = (float) rect.y / spriteAsset.spriteSheet.height;
-            uv.z = (float) rect.width / spriteAsset.spriteSheet.width;
-            uv.w = (float) rect.height / spriteAsset.spriteSheet.height;
-
-            return null;//spriteAsset.spriteSheet;
         }
 
         public static string ReplaceActiveBindings(string textWithActions, PlayerInputs inputs,
@@ -63,7 +52,7 @@ namespace Beakstorm.UI.Icons
             {
                 var withBraces = match.Groups[0].Captures[0].Value;
                 var innerPart = match.Groups[1].Captures[0].Value;
-                Debug.LogFormat("{0} has {1}", withBraces, innerPart);
+                //Debug.LogFormat("{0} has {1}", withBraces, innerPart);
 
                 var tagText = GetSpriteTags(innerPart, inputs, spriteAssets);
 
@@ -84,8 +73,8 @@ namespace Beakstorm.UI.Icons
             InputBinding dynamicBinding = inputs.GetBinding(actionName);
             TMP_SpriteAsset spriteAsset = spriteAssets.GetAssetByDevice(PlayerInputs.LastActiveDevice);
 
-            Debug.LogFormat("Retrieving sprite tag for: {0} with path {1}", dynamicBinding.action,
-                dynamicBinding.effectivePath);
+            //Debug.LogFormat("Retrieving sprite tag for: {0} with path {1}", dynamicBinding.action,
+            //    dynamicBinding.effectivePath);
             string stringButtonName = dynamicBinding.effectivePath;
             stringButtonName = RenameInput(stringButtonName, spriteAsset.name);
 
@@ -118,8 +107,8 @@ namespace Beakstorm.UI.Icons
         {
             TMP_SpriteAsset spriteAsset = spriteAssets.GetAssetByDevice(PlayerInputs.LastActiveDevice);
 
-            Debug.LogFormat("Retrieving sprite tag for: {0} with path {1}", binding.action,
-                binding.effectivePath);
+            //Debug.LogFormat("Retrieving sprite tag for: {0} with path {1}", binding.action,
+            //    binding.effectivePath);
             string stringButtonName = binding.effectivePath;
             stringButtonName = RenameInput(stringButtonName, spriteAsset.name);
 
