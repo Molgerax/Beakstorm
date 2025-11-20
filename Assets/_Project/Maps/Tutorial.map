@@ -1,0 +1,365 @@
+// Game: Unity: Beakstorm
+// Format: Quake3 (Valve)
+// entity 0
+{
+"mapversion" "220"
+"_tb_textures" "textures/Mapping"
+"classname" "worldspawn"
+"sdf_resolution" "64"
+"sdf_material_type" "Wood"
+"map_lower_bound" "-512"
+}
+// entity 1
+{
+"classname" "ent_player_spawn"
+"origin" "-2752 0 -928"
+"angles" "0 -90 0"
+}
+// entity 2
+{
+"classname" "trigger_on_load"
+"origin" "-1568 160 -2016"
+"target" "on_load"
+}
+// entity 3
+{
+"classname" "misc_message"
+"origin" "-1376 160 -2016"
+"targetname" "on_load"
+"message" "Welcome to Beakstorm! Control your aircraft with {Player/Move}.\nYou can invert the controls in the Pause Menu {Player/Pause}"
+}
+// entity 4
+{
+"classname" "trigger_relay"
+"origin" "-1568 -32 -2016"
+"targetname" "on_load"
+"target" "msg0"
+"delay" "1"
+}
+// entity 5
+{
+"classname" "misc_message"
+"origin" "-1376 -32 -2016"
+"targetname" "msg0"
+"message" "You can freely look around with {Player/Look}."
+}
+// entity 6
+{
+"classname" "trigger_relay"
+"origin" "-1568 -224 -2016"
+"targetname" "msg0"
+"target" "msg1"
+"delay" "1"
+}
+// entity 7
+{
+"classname" "trigger_relay"
+"origin" "-1568 -416 -2016"
+"targetname" "msg1"
+"target" "msg2"
+"delay" "1"
+}
+// entity 8
+{
+"classname" "misc_message"
+"origin" "-1376 -224 -2016"
+"targetname" "msg1"
+"message" "You can recenter the camera again with {Player/SwitchCameraHandling}."
+}
+// entity 9
+{
+"classname" "misc_message"
+"origin" "-1376 -416 -2016"
+"targetname" "msg2"
+"message" "Hold {Player/Accelerate} to accelerate, and hold {Player/Brake} to brake."
+}
+// entity 10
+{
+"classname" "trigger_relay"
+"origin" "-1568 -608 -2016"
+"targetname" "msg2"
+"target" "msg3"
+"delay" "1"
+}
+// entity 11
+{
+"classname" "misc_message"
+"origin" "-1376 -608 -2016"
+"targetname" "msg3"
+"message" "Now, try flying through the mountain!"
+}
+// entity 12
+{
+"classname" "trigger_boid_spawn"
+// brush 0
+{
+( 2560 -576 -2048 ) ( 2560 -575 -2048 ) ( 2560 -576 -2047 ) Mapping/Mapping_Base [ 0 -1 0 0 ] [ 0 0 -1 0 ] 90 1 1
+( 2240 -576 -2048 ) ( 2240 -576 -2047 ) ( 2241 -576 -2048 ) Mapping/Mapping_Base [ 1 0 0 0 ] [ 0 0 -1 0 ] 180 1 1
+( 2240 -576 -2048 ) ( 2241 -576 -2048 ) ( 2240 -575 -2048 ) Mapping/Mapping_Base [ -1 0 0 0 ] [ 0 -1 0 0 ] 180 1 1
+( 3648 832 -896 ) ( 3648 833 -896 ) ( 3649 832 -896 ) Mapping/Mapping_Base [ 1 0 0 0 ] [ 0 -1 0 0 ] 90 1 1
+( 3648 576 -1984 ) ( 3649 576 -1984 ) ( 3648 576 -1983 ) Mapping/Mapping_Base [ -1 0 0 0 ] [ 0 0 -1 0 ] 90 1 1
+( 3648 832 -1984 ) ( 3648 832 -1983 ) ( 3648 833 -1984 ) Mapping/Mapping_Base [ 0 1 0 0 ] [ 0 0 -1 0 ] 180 1 1
+}
+}
+// entity 13
+{
+"classname" "misc_message"
+"origin" "96 -352 -352"
+"targetname" "msg4"
+"message" "Well done! By holding {Player/Accelerate} and {Player/Brake} at the same time, you can charge up a boost. This is good for fast maneuvering!"
+"time" "10"
+}
+// entity 14
+{
+"classname" "trigger_relay"
+"origin" "224 -480 -352"
+"targetname" "msg4"
+"delay" "10"
+"target" "msg5"
+}
+// entity 15
+{
+"classname" "func_group"
+"_tb_type" "_tb_group"
+"_tb_name" "Mtn"
+"_tb_id" "7"
+"_tb_linked_group_id" "{edb413c0-0037-4f95-81a6-def6c223f23b}"
+// brush 0
+{
+( 0 544 -384 ) ( 0 224 -384 ) ( 0 544 -2048 ) Mapping/Mapping_Base [ 0 -1 0 32 ] [ 0 0 -1 0 ] 90 1 1
+( 512 224 -2048 ) ( 0 224 -2048 ) ( 512 224 -384 ) Mapping/Mapping_Base_Red [ -1 0 0 0 ] [ 0 0 -1 0 ] 180 1 1
+( 0 544 -2048 ) ( 0 224 -2048 ) ( 512 544 -2048 ) Mapping/Mapping_Base [ -1 0 0 0 ] [ 0 -1 0 32 ] 90 1 1
+( 512 544 -384 ) ( 512 224 -384 ) ( 0 544 -384 ) Mapping/Mapping_Base [ 1 0 0 0 ] [ 0 -1 0 32 ] 0 1 1
+( 0 544 -2048 ) ( 512 544 -2048 ) ( 0 544 -384 ) Mapping/Mapping_Base [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 512 544 -2048 ) ( 512 224 -2048 ) ( 512 544 -384 ) Mapping/Mapping_Base [ 0 1 0 -32 ] [ 0 0 -1 0 ] 90 1 1
+}
+// brush 1
+{
+( 0 224 -2048 ) ( 0 224 -1024 ) ( 0 -224 -2048 ) Mapping/Mapping_Base [ 0 -1 0 32 ] [ 0 0 -1 0 ] 90 1 1
+( 0 -224 -2048 ) ( 0 -224 -1024 ) ( 512 -224 -2048 ) Mapping/Mapping_Base_Red [ 1 0 0 0 ] [ 0 0 -1 0 ] 270 1 1
+( 0 224 -2048 ) ( 0 -224 -2048 ) ( 512 224 -2048 ) Mapping/Mapping_Base [ -1 0 0 0 ] [ 0 -1 0 32 ] 90 1 1
+( 512 -224 -1024 ) ( 0 -224 -1024 ) ( 512 224 -1024 ) Mapping/Mapping_Base_Red [ -1 0 0 0 ] [ 0 -1 0 32 ] 180 1 1
+( 512 224 -2048 ) ( 512 224 -1024 ) ( 0 224 -2048 ) Mapping/Mapping_Base_Red [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 512 -224 -2048 ) ( 512 -224 -1024 ) ( 512 224 -2048 ) Mapping/Mapping_Base [ 0 1 0 -32 ] [ 0 0 -1 0 ] 90 1 1
+}
+// brush 2
+{
+( 0 -544 -2048 ) ( 0 -224 -2048 ) ( 0 -544 -384 ) Mapping/Mapping_Base [ 0 -1 0 32 ] [ 0 0 -1 0 ] 90 1 1
+( 0 -544 -384 ) ( 512 -544 -384 ) ( 0 -544 -2048 ) Mapping/Mapping_Base [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 512 -544 -2048 ) ( 512 -224 -2048 ) ( 0 -544 -2048 ) Mapping/Mapping_Base [ -1 0 0 0 ] [ 0 -1 0 32 ] 90 1 1
+( 0 -544 -384 ) ( 0 -224 -384 ) ( 512 -544 -384 ) Mapping/Mapping_Base [ 1 0 0 0 ] [ 0 -1 0 32 ] 0 1 1
+( 0 -224 -384 ) ( 0 -224 -2048 ) ( 512 -224 -384 ) Mapping/Mapping_Base_Red [ 1 0 0 0 ] [ 0 0 -1 0 ] 90 1 1
+( 512 -544 -384 ) ( 512 -224 -384 ) ( 512 -544 -2048 ) Mapping/Mapping_Base [ 0 1 0 -32 ] [ 0 0 -1 0 ] 90 1 1
+}
+// brush 3
+{
+( 0 -224 -384 ) ( 0 -224 -576 ) ( 0 224 -384 ) Mapping/Mapping_Base [ 0 -1 0 32 ] [ 0 0 -1 0 ] 90 1 1
+( 512 -224 -384 ) ( 512 -224 -576 ) ( 0 -224 -384 ) Mapping/Mapping_Base_Red [ 1 0 0 0 ] [ 0 0 -1 0 ] 270 1 1
+( 0 224 -576 ) ( 0 -224 -576 ) ( 512 224 -576 ) Mapping/Mapping_Base_Red [ 1 0 0 0 ] [ 0 -1 0 32 ] 90 1 1
+( 512 224 -384 ) ( 512 -224 -384 ) ( 0 224 -384 ) Mapping/Mapping_Base [ 1 0 0 0 ] [ 0 -1 0 32 ] 0 1 1
+( 0 224 -384 ) ( 0 224 -576 ) ( 512 224 -384 ) Mapping/Mapping_Base_Red [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 512 224 -384 ) ( 512 224 -576 ) ( 512 -224 -384 ) Mapping/Mapping_Base [ 0 1 0 -32 ] [ 0 0 -1 0 ] 90 1 1
+}
+}
+// entity 16
+{
+"classname" "trigger_once"
+"target" "msg4"
+"_tb_group" "7"
+// brush 0
+{
+( 256 -256 -832 ) ( 256 -255 -832 ) ( 256 -256 -831 ) Mapping/Mapping_Base_Green [ 0 -1 0 0 ] [ 0 0 -1 0 ] 270 1 1
+( 0 -256 -832 ) ( 0 -256 -831 ) ( 1 -256 -832 ) Mapping/Mapping_Base_Green [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 0 -256 -1024 ) ( 1 -256 -1024 ) ( 0 -255 -1024 ) Mapping/Mapping_Base_Green [ -1 0 0 0 ] [ 0 -1 0 0 ] 270 1 1
+( 448 256 -576 ) ( 448 257 -576 ) ( 449 256 -576 ) Mapping/Mapping_Base_Green [ 1 0 0 0 ] [ 0 -1 0 0 ] 180 1 1
+( 448 256 -768 ) ( 449 256 -768 ) ( 448 256 -767 ) Mapping/Mapping_Base_Green [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 320 256 -768 ) ( 320 256 -767 ) ( 320 257 -768 ) Mapping/Mapping_Base_Green [ 0 1 0 0 ] [ 0 0 -1 0 ] 90 1 1
+}
+}
+// entity 17
+{
+"classname" "trigger_relay"
+"origin" "352 -480 -352"
+"targetname" "msg5"
+"delay" "1"
+"target" "msg6"
+}
+// entity 18
+{
+"classname" "misc_message"
+"origin" "224 -352 -352"
+"targetname" "msg5"
+"message" "On your missions, you will encounter airships such as this one. You have to defeat them using the power of birds!"
+}
+// entity 19
+{
+"classname" "ent_wave"
+"origin" "1184 -224 -2016"
+"targetname" "wave0"
+"target" "msg8"
+}
+// entity 20
+{
+"classname" "enemy_SmallEnemy_Spawn"
+"origin" "1812.5 147.5 -864"
+"target" "wave0"
+}
+// entity 21
+{
+"classname" "misc_message"
+"origin" "352 -352 -352"
+"targetname" "msg6"
+"message" "Hold {Player/Emit} to emit a trail of pheromone behind you. Birds will follow the trail, so as long as you emit, they will keep following you!"
+}
+// entity 22
+{
+"classname" "trigger_relay"
+"origin" "480 -480 -352"
+"targetname" "msg6"
+"delay" "1"
+"target" "msg7"
+}
+// entity 23
+{
+"classname" "misc_message"
+"origin" "480 -352 -352"
+"targetname" "msg7"
+"message" "Press {Player/Shoot} to fire a pheromone projectile. They will emit a trail like yours, so you can send birds towards targets."
+}
+// entity 24
+{
+"classname" "trigger_relay"
+"origin" "224 -224 -352"
+"targetname" "msg5"
+"delay" "1"
+"target" "wave0"
+}
+// entity 25
+{
+"classname" "misc_message"
+"origin" "1760 -480 -352"
+"targetname" "msg8"
+"message" "Well done! Now, you are equipped to play the rest of the demo!"
+}
+// entity 26
+{
+"classname" "trigger_relay"
+"origin" "1952 -224 -2016"
+"targetname" "msg8"
+"delay" "10"
+}
+// entity 27
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "Hidden"
+"_tb_id" "1"
+"_tb_layer_sort_index" "1"
+"_tb_layer_locked" "1"
+"_tb_layer_hidden" "1"
+"_tb_layer_omit_from_export" "1"
+// brush 0
+{
+( -4096 4096 1984 ) ( -4096 4095.75 1984 ) ( -4096 4096 1983.75 ) Mapping/Mapping_Base [ 0 4 4.898587196589413e-16 0 ] [ 0 -4.898587196589413e-16 4 0 ] 180 1 1
+( -3072 -4096 1920 ) ( -3071.75 -4096 1920 ) ( -3072 -4096 1919.75 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 -4.898587196589413e-16 4 0 ] 0 1 1
+( -3072 -4096 0 ) ( -3072 -4096.25 0 ) ( -3071.75 -4096 0 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 4 4.898587196589413e-16 0 ] 270 1 1
+( -4096 4096 2048 ) ( -4095.75 4096 2048 ) ( -4096 4095.75 2048 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 4 4.898587196589413e-16 0 ] 270 1 1
+( -4096 4096 1984 ) ( -4096 4096 1983.75 ) ( -4095.75 4096 1984 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 -4.898587196589413e-16 4 0 ] 0 1 1
+( -3968 0 0 ) ( -3072 -32 1920 ) ( -3072 0 1920 ) Mapping/Mapping_Base [ 0 -4 -4.898587196589413e-16 0 ] [ 1.6915418613244955 -4.439017127345999e-16 3.624732559981062 0 ] 168.72937 1 1
+( -3072 -4096 1920 ) ( -3072 -4096 1919.75 ) ( -3072 -4096.25 1920 ) Mapping/Mapping_Base [ 0 -4 -4.898587196589413e-16 0 ] [ 0 -4.898587196589413e-16 4 0 ] 180 1 1
+}
+// brush 1
+{
+( -4096 -4096 -1984 ) ( -4096 -4095.75 -1984 ) ( -4096 -4096 -1983.75 ) Mapping/Mapping_Base [ 0 -4 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( -4096 -4096 -1984 ) ( -4096 -4096 -1983.75 ) ( -4095.75 -4096 -1984 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( -4096 -4096 -1984 ) ( -4095.75 -4096 -1984 ) ( -4096 -4095.75 -1984 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 -4 0 0 ] 270 1 1
+( -3072 4096 0 ) ( -3072 4096.25 0 ) ( -3071.75 4096 0 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 -4 0 0 ] 180 1 1
+( -3072 4096 -1920 ) ( -3071.75 4096 -1920 ) ( -3072 4096 -1919.75 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( -3968 0 0 ) ( -3072 32 -1920 ) ( -3072 0 -1920 ) Mapping/Mapping_Base [ 0 4 0 0 ] [ 1.6915418613244955 0 -3.624732559981062 0 ] 270 1 1
+( -3072 4096 -1920 ) ( -3072 4096 -1919.75 ) ( -3072 4096.25 -1920 ) Mapping/Mapping_Base [ 0 4 0 0 ] [ 0 0 -4 0 ] 270 1 1
+}
+// brush 2
+{
+( -4096 4096 -1984 ) ( -4096 4096 -1983.75 ) ( -4096 4095.75 -1984 ) Mapping/Mapping_Base [ 2.4492935982947074e-16 -4 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( 4096 3072 -1920 ) ( 4096 3072 -1919.75 ) ( 4096.25 3072 -1920 ) Mapping/Mapping_Base [ 4 2.4492935982947074e-16 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( 0 3968 0 ) ( 32 3072 -1920 ) ( 0 3072 -1920 ) Mapping/Mapping_Base [ 4 2.4492935982947074e-16 0 0 ] [ 1.0357706630474004e-16 -1.6915418613244955 -3.624732559981062 63.999756 ] 315.84558 1 1
+( -4096 4096 -1984 ) ( -4096 4095.75 -1984 ) ( -4095.75 4096 -1984 ) Mapping/Mapping_Base [ -2.4492935982947074e-16 4 0 0 ] [ -4 -2.4492935982947074e-16 0 0 ] 180 1 1
+( 4096 3072 0 ) ( 4096.25 3072 0 ) ( 4096 3071.75 0 ) Mapping/Mapping_Base [ 2.4492935982947074e-16 -4 0 0 ] [ -4 -2.4492935982947074e-16 0 0 ] 270 1 1
+( -4096 4096 -1984 ) ( -4095.75 4096 -1984 ) ( -4096 4096 -1983.75 ) Mapping/Mapping_Base [ -4 -2.4492935982947074e-16 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( 4096 3072 -1920 ) ( 4096 3071.75 -1920 ) ( 4096 3072 -1919.75 ) Mapping/Mapping_Base [ -2.4492935982947074e-16 4 0 0 ] [ 0 0 -4 0 ] 270 1 1
+}
+// brush 3
+{
+( 3072 -4096 -1920 ) ( 3072 -4096 -1919.75 ) ( 3072 -4096.25 -1920 ) Mapping/Mapping_Base [ -4.898587196589412e-16 -4 0 0 ] [ 0 0 -4 0 ] 90 1 1
+( 3968 0 0 ) ( 3072 -32 -1920 ) ( 3072 0 -1920 ) Mapping/Mapping_Base [ -4.898587196589412e-16 -4 0 0 ] [ -1.6915418613244955 2.0715413260947986e-16 -3.624732559981062 0 ] 358.30884 1 1
+( 3072 -4096 -1920 ) ( 3071.75 -4096 -1920 ) ( 3072 -4096 -1919.75 ) Mapping/Mapping_Base [ 4 -4.898587196589412e-16 0 0 ] [ 0 0 -4 0 ] 90 1 1
+( 4096 4096 -1984 ) ( 4095.75 4096 -1984 ) ( 4096 4095.75 -1984 ) Mapping/Mapping_Base [ 4 -4.898587196589412e-16 0 0 ] [ 4.898587196589412e-16 4 0 0 ] 270 1 1
+( 3072 -4096 0 ) ( 3072 -4096.25 0 ) ( 3071.75 -4096 0 ) Mapping/Mapping_Base [ -4 4.898587196589412e-16 0 0 ] [ 4.898587196589412e-16 4 0 0 ] 180 1 1
+( 4096 4096 -1984 ) ( 4096 4096 -1983.75 ) ( 4095.75 4096 -1984 ) Mapping/Mapping_Base [ -4 4.898587196589412e-16 0 0 ] [ 0 0 -4 0 ] 90 1 1
+( 4096 4096 -1984 ) ( 4096 4095.75 -1984 ) ( 4096 4096 -1983.75 ) Mapping/Mapping_Base [ 4.898587196589412e-16 4 0 0 ] [ 0 0 -4 0 ] 90 1 1
+}
+// brush 4
+{
+( -4096 -3072 -1920 ) ( -4096 -3071.75 -1920 ) ( -4096 -3072 -1919.75 ) Mapping/Mapping_Base [ -1.2246467991473533e-15 -4 0 0 ] [ 0 0 -4 0 ] 0 1 1
+( 4096 -4096 -1984 ) ( 4095.75 -4096 -1984 ) ( 4096 -4096 -1983.75 ) Mapping/Mapping_Base [ 4 -1.2246467991473533e-15 0 0 ] [ 0 0 -4 0 ] 0 1 1
+( 4096 -4096 -1984 ) ( 4096 -4095.75 -1984 ) ( 4095.75 -4096 -1984 ) Mapping/Mapping_Base [ -1.2246467991473533e-15 -4 0 0 ] [ 4 -1.2246467991473533e-15 0 0 ] 90 1 1
+( -4096 -3072 0 ) ( -4096.25 -3072 0 ) ( -4096 -3071.75 0 ) Mapping/Mapping_Base [ 1.2246467991473533e-15 4 0 0 ] [ 4 -1.2246467991473533e-15 0 0 ] 180 1 1
+( 0 -3968 0 ) ( -32 -3072 -1920 ) ( 0 -3072 -1920 ) Mapping/Mapping_Base [ -4 1.2246467991473533e-15 0 0 ] [ 5.178853315236998e-16 1.6915418613244955 -3.624732559981062 63.999756 ] 130.7721 1 1
+( -4096 -3072 -1920 ) ( -4096 -3072 -1919.75 ) ( -4096.25 -3072 -1920 ) Mapping/Mapping_Base [ -4 1.2246467991473533e-15 0 0 ] [ 0 0 -4 0 ] 0 1 1
+( 4096 -4096 -1984 ) ( 4096 -4096 -1983.75 ) ( 4096 -4095.75 -1984 ) Mapping/Mapping_Base [ 1.2246467991473533e-15 4 0 0 ] [ 0 0 -4 0 ] 0 1 1
+}
+}
+// entity 28
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "Floor"
+"_tb_id" "2"
+"_tb_layer_sort_index" "2"
+"_tb_layer_locked" "1"
+"_tb_layer_omit_from_export" "1"
+// brush 0
+{
+( -4096 -4096 -2112 ) ( -4096 -4095.75 -2112 ) ( -4096 -4096 -2111.75 ) Mapping/Mapping_Base [ 0 -4 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( -4096 -4096 -2112 ) ( -4096 -4096 -2111.75 ) ( -4095.75 -4096 -2112 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( -4096 -4096 -2112 ) ( -4095.75 -4096 -2112 ) ( -4096 -4095.75 -2112 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 -4 0 0 ] 270 1 1
+( -3072 -3072 -2048 ) ( -3072 -3071.75 -2048 ) ( -3071.75 -3072 -2048 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 -4 0 0 ] 0 1 1
+( -3072 0 -1792 ) ( -3071.75 0 -1792 ) ( -3072 0 -1791.75 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 0 -4 0 ] 0 1 1
+( 0 -3072 -1792 ) ( 0 -3072 -1791.75 ) ( 0 -3071.75 -1792 ) Mapping/Mapping_Base [ 0 4 0 0 ] [ 0 0 -4 0 ] 90 1 1
+}
+// brush 1
+{
+( 0 -4096 -2112 ) ( 0 -4095.75 -2112 ) ( 0 -4096 -2111.75 ) Mapping/Mapping_Base [ 0 -4 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( 0 -4096 -2112 ) ( 0 -4096 -2111.75 ) ( 0.25 -4096 -2112 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 0 -4 0 ] 270 1 1
+( 0 -4096 -2112 ) ( 0.25 -4096 -2112 ) ( 0 -4095.75 -2112 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 -4 0 0 ] 270 1 1
+( 1024 -3072 -2048 ) ( 1024 -3071.75 -2048 ) ( 1024.25 -3072 -2048 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 -4 0 0 ] 0 1 1
+( 1024 0 -1792 ) ( 1024.25 0 -1792 ) ( 1024 0 -1791.75 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 0 -4 0 ] 0 1 1
+( 4096 -3072 -1792 ) ( 4096 -3072 -1791.75 ) ( 4096 -3071.75 -1792 ) Mapping/Mapping_Base [ 0 4 0 0 ] [ 0 0 -4 0 ] 90 1 1
+}
+// brush 2
+{
+( 0 0 -2112 ) ( 0 0.25 -2112 ) ( 0 0 -2111.75 ) Mapping/Mapping_Base [ 0 -4 0 0 ] [ 0 0 -4 0 ] 90 1 1
+( 0 0 -2112 ) ( 0 0 -2111.75 ) ( 0.25 0 -2112 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 0 -4 0 ] 90 1 1
+( 0 0 -2112 ) ( 0.25 0 -2112 ) ( 0 0.25 -2112 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 -4 0 0 ] 90 1 1
+( 1024 1024 -2048 ) ( 1024 1024.25 -2048 ) ( 1024.25 1024 -2048 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 -4 0 0 ] 180 1 1
+( 1024 4096 -1792 ) ( 1024.25 4096 -1792 ) ( 1024 4096 -1791.75 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 0 -4 0 ] 180 1 1
+( 4096 1024 -1792 ) ( 4096 1024 -1791.75 ) ( 4096 1024.25 -1792 ) Mapping/Mapping_Base [ 0 4 0 0 ] [ 0 0 -4 0 ] 270 1 1
+}
+// brush 3
+{
+( -4096 0 -2112 ) ( -4096 0.25 -2112 ) ( -4096 0 -2111.75 ) Mapping/Mapping_Base [ 0 -4 0 0 ] [ 0 0 -4 0 ] 90 1 1
+( -4096 0 -2112 ) ( -4096 0 -2111.75 ) ( -4095.75 0 -2112 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 0 -4 0 ] 90 1 1
+( -4096 0 -2112 ) ( -4095.75 0 -2112 ) ( -4096 0.25 -2112 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 -4 0 0 ] 90 1 1
+( -3072 1024 -2048 ) ( -3072 1024.25 -2048 ) ( -3071.75 1024 -2048 ) Mapping/Mapping_Base [ 4 0 0 0 ] [ 0 -4 0 0 ] 180 1 1
+( -3072 4096 -1792 ) ( -3071.75 4096 -1792 ) ( -3072 4096 -1791.75 ) Mapping/Mapping_Base [ -4 0 0 0 ] [ 0 0 -4 0 ] 180 1 1
+( 0 1024 -1792 ) ( 0 1024 -1791.75 ) ( 0 1024.25 -1792 ) Mapping/Mapping_Base [ 0 4 0 0 ] [ 0 0 -4 0 ] 270 1 1
+}
+}
+// entity 29
+{
+"classname" "func_group"
+"_tb_type" "_tb_layer"
+"_tb_name" "Enemies"
+"_tb_id" "3"
+"_tb_layer_sort_index" "0"
+}
