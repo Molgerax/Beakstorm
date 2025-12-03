@@ -57,6 +57,9 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         private float _fov;
         private float _fovSpeed;
+
+        private Vector3 _pointingVector;
+        private Vector3 _pointingVectorUp;
         
         public override float Speed01(float speed) => (speed - minSpeed) / (maxSpeed * 2 - minSpeed);
 
@@ -134,48 +137,52 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             float pitch = Vector3.SignedAngle(Vector3.up, forwards, glider.T.right);
             
+            // Rotate Pitch directly by y-input
             localEulerAngles.x -= inputVector.y * dt * GetSteerSpeed(glider);
 
+            // Stalling to pitch down when too slow
             if (glider.Speed < stallSpeed && pitch > 0 && pitch < 170)
             {
                 localEulerAngles.x += dt * stalling * steerSpeed;
             }
 
+            // pitching down when overhead
             if (pitch < 0)
             {
                 localEulerAngles.x -= dt * steerSpeed * 0.125f;
             }
             
+            // reset rotations
             if (localEulerAngles.x > 180)
                 localEulerAngles.x -= 360;
 
             if (localEulerAngles.x < -180)
                 localEulerAngles.x += 360;
 
+            // yaw accel directly from input
             float yAcceleration = inputVector.x * dt * GetSteerSpeed(glider);
 
             Vector3 up = Vector3.up;
 
+            // forces to calculate the roll of the glider, visual only
             Vector3 forces = Vector3.zero;
             forces += Vector3.down * gravity;
 
             Vector3 angularVelocity = Vector3.up * (yAcceleration * Mathf.Deg2Rad) / dt;
             float radius = Mathf.Sqrt(glider.Velocity.sqrMagnitude / angularVelocity.sqrMagnitude);
-            
             Vector3 centripetalForce = Vector3.Cross(angularVelocity,  glider.T.forward * glider.Speed);
-
             //centripetalForce = (glider.Velocity - glider.OldVelocity) / dt;
-            
             forces += centripetalForce;
             
             float targetRoll = -Vector3.SignedAngle(-up, forces.normalized, glider.Velocity.normalized);
 
             glider.Roll = Mathf.Lerp(glider.Roll, targetRoll, 1 - Mathf.Exp(-rollSpeed * dt));
 
+            // reset flipping
             if (_flipping && pitch > 0 && Mathf.Abs(glider.Roll) < 10f)
                 _flipping = false;
             
-            
+            // handle flipping, so glider resets
             if (pitch < 0 && Mathf.Abs(yAcceleration) > 0.5f && !_flipping && Mathf.Abs(glider.Roll) < 10f)
             {
                 float angleDist = 180 - (localEulerAngles.x % 180) * 2;
@@ -191,6 +198,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             localEulerAngles.y += yAcceleration;
             localEulerAngles.z = glider.Roll;
 
+            // turn based on wind
             Vector3 wind = glider.ExternalWind;
             Vector3 velocity = glider.Speed * glider.T.forward;
             Vector3 windDirection = (wind + velocity).normalized;
@@ -230,6 +238,41 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             forward = Vector3.forward;
             
+            UpdateThrustAndOverCharge(glider, dt, ref force);
+            
+            float appliedThrust = glider.Thrust;
+
+            force += appliedThrust * mass;
+            force += GetThrustFromWind(glider.T.forward, glider.ExternalWind) * mass;
+
+            glider.ThrustVariable.Min = minThrust;
+            glider.ThrustVariable.Max = maxThrust;
+            glider.ThrustVariable.Set(glider.Thrust);
+
+            force -= gravityPull * mass * angleOfAttackCurve.Evaluate(angle);
+            //force += (angleStrength * gravity * mass);
+            
+            float drag = CalculateDrag(glider.Velocity, glider.BreakInput ? breakDrag : 0);
+            float maxSpeedAoa = aoaMaxSpeed.Evaluate(angle) * maxSpeed;
+
+            //force *= Mathf.Clamp01(1 - glider.Speed / maxSpeedAoa);
+
+            force += drag * mass;
+            
+            //if (glider.Speed > maxSpeedAoa)
+            //    force -= Mathf.Min((glider.Speed - maxSpeedAoa) / dt, maxSpeedReduction);
+            
+            glider.Speed += (force / mass) * dt;
+
+            
+            //_speed += (inputStrength + angleStrength * Mathf.Abs(angleStrength)) * acceleration * Time.deltaTime;
+            glider.Speed = Mathf.Clamp(glider.Speed, minSpeed, maxSpeed * 2);
+
+            glider.Velocity = glider.T.forward * glider.Speed;
+        }
+
+        private void UpdateThrustAndOverCharge(GliderController glider, float dt, ref float force)
+        {
             float inputStrength = 0;
             inputStrength += glider.ThrustInput ? 1 : 0;
             if (glider.BreakInput)
@@ -263,7 +306,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             //if (Mathf.Abs(inputStrength) < 0.1f)
             glider.Thrust =
-                    Mathf.Lerp(glider.Thrust, idleThrust, 1 - Mathf.Exp(-throttleReset * dt));
+                Mathf.Lerp(glider.Thrust, idleThrust, 1 - Mathf.Exp(-throttleReset * dt));
             
             
             
@@ -272,35 +315,6 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             glider.Thrust01 = glider.Thrust / maxThrust;
 
-            float appliedThrust = glider.Thrust;
-
-            force += appliedThrust * mass;
-            force += GetThrustFromWind(glider.T.forward, glider.ExternalWind) * mass;
-
-            glider.ThrustVariable.Min = minThrust;
-            glider.ThrustVariable.Max = maxThrust;
-            glider.ThrustVariable.Set(glider.Thrust);
-
-            force -= gravityPull * mass * angleOfAttackCurve.Evaluate(angle);
-            //force += (angleStrength * gravity * mass);
-            
-            float drag = CalculateDrag(glider.Velocity, glider.BreakInput ? breakDrag : 0);
-            float maxSpeedAoa = aoaMaxSpeed.Evaluate(angle) * maxSpeed;
-
-            //force *= Mathf.Clamp01(1 - glider.Speed / maxSpeedAoa);
-
-            force += drag * mass;
-            
-            //if (glider.Speed > maxSpeedAoa)
-            //    force -= Mathf.Min((glider.Speed - maxSpeedAoa) / dt, maxSpeedReduction);
-            
-            glider.Speed += (force / mass) * dt;
-
-            
-            //_speed += (inputStrength + angleStrength * Mathf.Abs(angleStrength)) * acceleration * Time.deltaTime;
-            glider.Speed = Mathf.Clamp(glider.Speed, minSpeed, maxSpeed * 2);
-
-            glider.Velocity = glider.T.forward * glider.Speed;
         }
 
         private float CalculateDrag(Vector3 velocity, float coAdditive = 0)
