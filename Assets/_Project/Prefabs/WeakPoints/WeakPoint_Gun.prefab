@@ -61,6 +61,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,6 +84,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -195,6 +198,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -216,6 +221,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -268,8 +274,8 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 35ccb82c139f5d04088a0293faa56936, type: 2}
-  eventName: play_birdAttack
   target: {fileID: 8607971040296969732}
+  autoStartStop: 0
 --- !u!1 &3493641205500488778
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,7 +371,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 819277530142602462}
-  - component: {fileID: 2827322097758429007}
   - component: {fileID: 2471771447073840347}
   m_Layer: 0
   m_Name: GunTip
@@ -389,19 +394,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4234283313603487405}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2827322097758429007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3877339331152747645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 390b8762f5bab554a9ccc23b9a575cfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 142303867010736475, guid: bf9ff575f08c2354c91464bd8fc49a10, type: 3}
 --- !u!114 &2471771447073840347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,8 +410,8 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: e95756c1395feeb48bf5ebe0e056ae7b, type: 2}
-  eventName: play_birdAttack
   target: {fileID: 3877339331152747645}
+  autoStartStop: 0
 --- !u!1 &7100931521441752871
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,6 +474,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -503,6 +497,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -583,9 +578,6 @@ MonoBehaviour:
     _PersistentCalls:
     - _Target: {fileID: 2471771447073840347}
       _MemberName: PostEvent
-      _PersistentArguments: []
-    - _Target: {fileID: 2827322097758429007}
-      _MemberName: Spawn
       _PersistentArguments: []
 --- !u!135 &4987258195435060466
 SphereCollider:
@@ -702,8 +694,8 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: c5a771c5f9c236b4ea026bd23535de1a, type: 2}
-  eventName: play_birdAttack
   target: {fileID: 8607971040296969732}
+  autoStartStop: 0
 --- !u!1 &9162173147694848423
 GameObject:
   m_ObjectHideFlags: 0

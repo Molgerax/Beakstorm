@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: EnemyWeaponProjectile
   m_EditorClassIdentifier: 
   chargeTime: 1
-  detectionRange: 125
-  weaponSpread: 10
-  initialVelocity: 180
+  fireRate: 0.1
+  projectilesInBurst: 6
+  detectionRange: 250
+  weaponSpread: 2
+  initialVelocity: 260
   projectilePrefab: {fileID: 5012512307083224738, guid: bb217b280b976084b8519755fe9150c1, type: 3}
+  explosionLightPrefab: {fileID: 0}
+  lifeTimeToPlayer: 0

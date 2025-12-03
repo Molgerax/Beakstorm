@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: EnemyWeaponProjectileHeavy
   m_EditorClassIdentifier: 
   chargeTime: 3
-  detectionRange: 200
-  weaponSpread: 10
-  initialVelocity: 250
-  projectilePrefab: {fileID: 5012512307083224738, guid: bb217b280b976084b8519755fe9150c1, type: 3}
+  fireRate: 0
+  projectilesInBurst: 1
+  detectionRange: 300
+  weaponSpread: 1
+  initialVelocity: 180
+  projectilePrefab: {fileID: 5012512307083224738, guid: 4015e68eff50b9b4c9f0465efdda6a61, type: 3}
+  explosionLightPrefab: {fileID: 142303867010736475, guid: bf9ff575f08c2354c91464bd8fc49a10, type: 3}
+  lifeTimeToPlayer: 1

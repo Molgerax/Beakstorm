@@ -1,9 +1,9 @@
 using System;
 using Beakstorm.Gameplay.Player;
-using Beakstorm.Gameplay.Projectiles;
 using Beakstorm.Pausing;
 using UltEvents;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Beakstorm.Gameplay.Enemies
 {
@@ -17,6 +17,8 @@ namespace Beakstorm.Gameplay.Enemies
         [SerializeField] private UltEvent onFire;
         
         private float _chargeTime = 0;
+        private int _ammoCount;
+        private float _fireDelay;
 
         private Vector3 _initForward;
         private float _currentAngle;
@@ -53,20 +55,32 @@ namespace Beakstorm.Gameplay.Enemies
             if (!weaponData)
                 return;
             
-            if (IsPlayerInRange())
+            if (IsPlayerInRange() && _ammoCount > 0)
             {
-                _chargeTime += deltaTime;
+                _fireDelay += deltaTime;
+
+                if (_fireDelay > weaponData.FireRate)
+                {
+                    Fire();
+                    _fireDelay = 0;
+                    _ammoCount--;
+                }
             }
             else
             {
-                _chargeTime -= deltaTime;
-                _chargeTime = Mathf.Max(_chargeTime, 0);
+                _fireDelay = Mathf.MoveTowards(_fireDelay, 0, deltaTime);
+                
+                if (_ammoCount < weaponData.ProjectilesInBurst)
+                    _chargeTime += deltaTime;
             }
-            
+
+            if (_ammoCount == 0)
+                _chargeTime += deltaTime;
+                
             if (_chargeTime > weaponData.ChargeTime)
             {
                 _chargeTime = 0;
-                Fire();
+                _ammoCount = weaponData.ProjectilesInBurst;
             }
         }
 
@@ -106,17 +120,34 @@ namespace Beakstorm.Gameplay.Enemies
 
             Vector3 predictedPos = playerPos + playerVel * Vector3.Distance(playerPos, pos) / weaponData.InitialVelocity;
             
-            Vector3 direction = predictedPos - pos;
+            Vector3 direction = (predictedPos - pos).normalized;
+            direction = GetShotDirection(direction);
             
             _currentAngle = Vector3.Angle(_initForward, direction);
             if (_currentAngle > limitAngle)
                 return;
             
-            weaponData.Fire(pos, direction.normalized);
+            weaponData.Fire(pos, direction.normalized, predictedPos);
             
             onFire?.Invoke();
         }
         
+        private Vector3 GetShotDirection(Vector3 initDirection)
+        {
+            float t = Random.Range(0f, weaponData.WeaponSpread) / 360f;
+            
+            float inclination = Mathf.Acos(1 - 2 * t);
+            float azimuth = Random.Range(0, Mathf.PI * 2);
+
+            float x = Mathf.Sin(inclination) * Mathf.Cos(azimuth);
+            float y = Mathf.Sin(inclination) * Mathf.Sin(azimuth);
+            float z = Mathf.Cos(inclination);
+
+            Vector3 target = new Vector3(x, y, z);
+            Quaternion initDir = Quaternion.LookRotation(initDirection);
+
+            return initDir * target;
+        }
         
         private bool IsPlayerInRange()
         {
@@ -129,7 +160,12 @@ namespace Beakstorm.Gameplay.Enemies
             Vector3 playerPos = PlayerController.Instance.transform.position;
 
             float dist = Vector3.Distance(playerPos, transform.position);
-            return dist < weaponData.DetectionRange;
+            if (dist > weaponData.DetectionRange)
+                return false;
+
+            Vector3 dir = playerPos - transform.position;
+            Ray ray = new(transform.position, dir);
+            return true; //Physics.Raycast(ray, dir.magnitude - 10, Int32.MaxValue, QueryTriggerInteraction.Ignore) == false;
         }
 
         private void OnDrawGizmosSelected()
