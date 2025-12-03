@@ -8,6 +8,8 @@ namespace Beakstorm.Gameplay.Player
     [DefaultExecutionOrder(-20)]
     public class CameraController : MonoBehaviour
     {
+        public static CameraController Instance;
+        
         #region SerializeFields
         
         [SerializeField] private Transform playerTarget;
@@ -28,6 +30,8 @@ namespace Beakstorm.Gameplay.Player
         
         [SerializeField]
         [Min(0f)] private float lookThreshold = 0.5f;
+
+        [SerializeField] private bool disableRotation = false;
 
         #endregion
 
@@ -58,6 +62,14 @@ namespace Beakstorm.Gameplay.Player
         {
             _inputs = PlayerInputs.Instance;
             _headOffset = cameraHead.localPosition;
+
+            Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this)
+                Instance = null;
         }
 
         private void OnEnable()
@@ -87,6 +99,7 @@ namespace Beakstorm.Gameplay.Player
 
         #endregion
 
+        public void SetRotationEnabled(bool value) => disableRotation = !value;
 
         private void InputTimeHandling()
         {
@@ -129,7 +142,8 @@ namespace Beakstorm.Gameplay.Player
                     _outputRotation = _fixedRotation;
             }
 
-            cameraHead.localRotation = _outputRotation;
+            if (!disableRotation)
+                cameraHead.localRotation = _outputRotation;
         }
 
         private void OnSwitchCameraInput(InputAction.CallbackContext callbackContext)

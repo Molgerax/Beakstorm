@@ -65,6 +65,20 @@ namespace Beakstorm.Gameplay.Player.Flying
         public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.WhenLevelStarts;
 
         private List<WindDraft> _drafts = new();
+
+
+        public FlightControlStrategy ControlStrategy
+        {
+            get => controlStrategy;
+            set
+            {
+                controlStrategy = value;
+                if (controlStrategy != null)
+                {
+                    controlStrategy.Apply();
+                }
+            }
+        }
         
 
         #region Mono Methods
@@ -76,6 +90,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             _oldPosition = _position;
             
             controlStrategy.Initialize(this, Time.deltaTime);
+            controlStrategy.Apply();
             _initialized = true;
         }
         
@@ -129,6 +144,12 @@ namespace Beakstorm.Gameplay.Player.Flying
             float dt = Time.fixedDeltaTime;
             
             controlStrategy.FixedUpdateFlight(this, dt);
+        }
+
+        private void OnValidate()
+        {
+            if (controlStrategy)
+                controlStrategy.Apply();
         }
 
         #endregion
