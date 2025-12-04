@@ -45,6 +45,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 2167621570866657911, guid: d2731b1c02496264396a0bdf35f8efd2, type: 3}
+--- !u!1 &2752943986242054539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5102516582454068186}
+  - component: {fileID: 2367142154324492190}
+  m_Layer: 0
+  m_Name: SpawnImpact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5102516582454068186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2752943986242054539}
+  serializedVersion: 2
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3643450096948898207}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
+--- !u!114 &2367142154324492190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2752943986242054539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 390b8762f5bab554a9ccc23b9a575cfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Projectiles.ProjectileSpawner
+  projectilePrefab: {fileID: 3283838464878201235, guid: a8917c1498c9fa845b56115561b2e041, type: 3}
 --- !u!1 &7264894178766051763
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,6 +127,7 @@ Transform:
   m_Children:
   - {fileID: 7115677239951796612}
   - {fileID: 2333425008883805666}
+  - {fileID: 5102516582454068186}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5012512307083224738
@@ -136,6 +182,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: 0
   drag: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  onCollision:
+    _PersistentCalls:
+    - _Target: {fileID: 2367142154324492190}
+      _MemberName: SpawnAtPoint
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: 
+        _X: 7
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+      - _Type: 14
+        _Int: 1
+        _String: 
+        _X: 9
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 5012512307083224738}
+      _MemberName: Deactivate
+      _PersistentArguments: []
 --- !u!54 &-5033398536401664210
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -199,6 +272,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageValue: 1
+  onCollide:
+    _PersistentCalls:
+    - _Target: {fileID: 2367142154324492190}
+      _MemberName: Spawn
+      _PersistentArguments: []
+    - _Target: {fileID: 5012512307083224738}
+      _MemberName: Deactivate
+      _PersistentArguments: []
 --- !u!1001 &7292822869209632367
 PrefabInstance:
   m_ObjectHideFlags: 0
