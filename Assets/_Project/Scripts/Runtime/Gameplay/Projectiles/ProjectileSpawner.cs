@@ -17,11 +17,17 @@ namespace Beakstorm.Gameplay.Projectiles
 
         public Projectile Spawn()
         {
+            var t = transform;
+            return SpawnAtPoint(t.position, t.rotation);
+        }
+        
+        public Projectile SpawnAtPoint(Vector3 position, Quaternion rotation)
+        {
             Projectile projectile = GetProjectile();
             var t = transform;
             var projectileTransform = projectile.transform;
-            projectileTransform.position = t.position;
-            projectileTransform.rotation = t.rotation;
+            projectileTransform.position = position;
+            projectileTransform.rotation = rotation;
 
             projectile.Spawn();
             return projectile;
