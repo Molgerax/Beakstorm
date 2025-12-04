@@ -14,7 +14,11 @@ namespace Beakstorm.Gameplay.Targeting
         
         public Faction Faction => faction;
 
-        private void OnEnable() => Targets.Add(this);
+        private void OnEnable()
+        {
+            Targets ??= new(64);
+            Targets.Add(this);
+        }
 
         private void OnDisable() => Targets.Remove(this);
 

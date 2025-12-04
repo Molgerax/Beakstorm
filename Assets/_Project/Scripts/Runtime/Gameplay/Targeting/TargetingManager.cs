@@ -17,7 +17,7 @@ namespace Beakstorm.Gameplay.Targeting
         {
             if (!viewAnchor)
             {
-                if (Camera.main is not null)
+                if (Camera.main != null)
                     viewAnchor = Camera.main.transform;
                 else
                     viewAnchor = transform;

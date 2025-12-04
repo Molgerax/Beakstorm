@@ -19,7 +19,7 @@ namespace Beakstorm.Gameplay.Targeting
             bool value = false;
             foreach (Faction targetFaction in targetFactions)
             {
-                if (target.Faction == targetFaction)
+                if (target.Faction.name == targetFaction.name)
                     value = true;
             }
             return value;
