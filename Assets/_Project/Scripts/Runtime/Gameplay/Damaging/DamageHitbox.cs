@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UltEvents;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Damaging
@@ -6,6 +7,7 @@ namespace Beakstorm.Gameplay.Damaging
     public class DamageHitbox : MonoBehaviour
     {
         [SerializeField, Min(0)] private int damageValue;
+        [SerializeField] private UltEvent onCollide;
         
         private List<IDamageable> _damagedObjects;
 
@@ -28,6 +30,8 @@ namespace Beakstorm.Gameplay.Damaging
             
             damageable.TakeDamage(damageValue);
             _damagedObjects.Add(damageable);
+            
+            onCollide?.Invoke();
         }
 
         private void OnTriggerEnter(Collider other)

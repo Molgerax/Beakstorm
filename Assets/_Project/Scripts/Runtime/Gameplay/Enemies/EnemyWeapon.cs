@@ -11,6 +11,8 @@ namespace Beakstorm.Gameplay.Enemies
     {
         [SerializeField] private EnemyWeaponData weaponData;
 
+        [SerializeField] private Transform[] firePoints;
+
         [SerializeField] private Transform weaponPivot;
 
         [SerializeField, Range(0, 180)] private float limitAngle = 90;
@@ -22,8 +24,23 @@ namespace Beakstorm.Gameplay.Enemies
 
         private Vector3 _initForward;
         private float _currentAngle;
-        
 
+
+        private int _firePointIndex;
+
+        private Vector3 GetFirePoint()
+        {
+            if (firePoints == null || firePoints.Length == 0)
+                return transform.position;
+            
+            _firePointIndex = _firePointIndex % firePoints.Length;
+            Transform t = firePoints[_firePointIndex];
+            _firePointIndex = (_firePointIndex + 1) % firePoints.Length;
+            
+            if (t == null)
+                return transform.position;
+            return t.position;
+        }
 
         private void Awake()
         {
@@ -116,7 +133,7 @@ namespace Beakstorm.Gameplay.Enemies
             Vector3 playerPos = PlayerController.Instance.Position;
             Vector3 playerVel = PlayerController.Instance.Velocity;
             
-            Vector3 pos = transform.position;
+            Vector3 pos = GetFirePoint();
 
             Vector3 predictedPos = playerPos + playerVel * Vector3.Distance(playerPos, pos) / weaponData.InitialVelocity;
             

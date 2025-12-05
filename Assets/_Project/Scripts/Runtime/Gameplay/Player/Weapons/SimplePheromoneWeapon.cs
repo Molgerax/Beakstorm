@@ -23,7 +23,8 @@ namespace Beakstorm.Gameplay.Player.Weapons
             var projectileInstance = ProjectileManager.Instance.GetProjectile(projectilePrefab);
             var projTransform = projectileInstance.transform;
             projTransform.position = fireInfo.InitialPosition;
-
+            projTransform.rotation = Quaternion.LookRotation(fireInfo.InitialDirection);
+            projectileInstance.Spawn();
 
             if (projectileInstance.TryGetComponent(out SimpleMovementHandler movementHandler))
             {
