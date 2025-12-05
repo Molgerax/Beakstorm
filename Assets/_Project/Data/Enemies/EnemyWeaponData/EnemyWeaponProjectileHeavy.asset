@@ -18,6 +18,6 @@ MonoBehaviour:
   detectionRange: 300
   weaponSpread: 1
   initialVelocity: 180
-  projectilePrefab: {fileID: 5012512307083224738, guid: 4015e68eff50b9b4c9f0465efdda6a61, type: 3}
+  projectilePrefab: {fileID: 6687366726720949875, guid: 4015e68eff50b9b4c9f0465efdda6a61, type: 3}
   explosionLightPrefab: {fileID: 142303867010736475, guid: bf9ff575f08c2354c91464bd8fc49a10, type: 3}
   lifeTimeToPlayer: 1
