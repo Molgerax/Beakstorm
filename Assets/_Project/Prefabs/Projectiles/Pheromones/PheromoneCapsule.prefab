@@ -61,6 +61,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,6 +84,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -98,7 +101,6 @@ GameObject:
   - component: {fileID: 5012512307083224738}
   - component: {fileID: 2981456697708023891}
   - component: {fileID: 8417193104476582687}
-  - component: {fileID: 238433144582504019}
   - component: {fileID: -5033398536401664210}
   - component: {fileID: 1407406865008997820}
   - component: {fileID: 7247312149404298291}
@@ -142,6 +144,8 @@ MonoBehaviour:
   maximumCapacity: 128
   onSpawn:
     _PersistentCalls: []
+  onDetach:
+    _PersistentCalls: []
 --- !u!114 &2981456697708023891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,20 +181,6 @@ MonoBehaviour:
       _MemberName: Deactivate
       _PersistentArguments: []
   autoStart: 1
---- !u!114 &238433144582504019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7264894178766051763}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cd18d6dbe9579f4cb19f774bf43fbaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gravity: 5
-  drag: 0.001
 --- !u!54 &-5033398536401664210
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -198,10 +188,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7264894178766051763}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -256,6 +246,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
+  allowOtherTrigger: 0
   onTriggerEnter:
     _PersistentCalls:
     - _Target: {fileID: 8417193104476582687}
@@ -275,13 +266,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb8eed963b2bc04dbe3d7265f7ecb29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Velocity: {x: 0, y: 0, z: 0}
-  MomentaryForce: {x: 0, y: 0, z: 0}
-  InitPosition: {x: 0, y: 0, z: 0}
-  InitDirection: {x: 0, y: 0, z: 0}
-  TargetPos: {x: 0, y: 0, z: 0}
-  TargetNormal: {x: 0, y: 0, z: 0}
-  Speed: 0
-  Random: 0
-  ElapsedTime: 0
-  TargetTime: 0

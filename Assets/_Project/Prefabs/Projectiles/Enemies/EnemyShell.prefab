@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultCapacity: 32
-  maximumCapacity: 64
+  maximumCapacity: 256
   onSpawn:
     _PersistentCalls: []
   onDetach:
