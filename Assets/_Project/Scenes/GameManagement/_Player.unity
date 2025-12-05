@@ -1223,7 +1223,7 @@ GameObject:
   - component: {fileID: 737318624}
   - component: {fileID: 737318626}
   - component: {fileID: 737318627}
-  - component: {fileID: 737318628}
+  - component: {fileID: 737318631}
   - component: {fileID: 737318630}
   - component: {fileID: 737318629}
   m_Layer: 0
@@ -1269,7 +1269,7 @@ MonoBehaviour:
   m_LegacyPriority: 0
   Target:
     TrackingTarget: {fileID: 1060014458}
-    LookAtTarget: {fileID: 1060014458}
+    LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 60.000004
@@ -1319,22 +1319,9 @@ MonoBehaviour:
   Damping: {x: 0.1, y: 0.1, z: 0.1}
   Lookahead:
     Enabled: 0
-    Time: 0.057
+    Time: 0.1
     Smoothing: 4.9
     IgnoreY: 0
---- !u!114 &737318628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 737318622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damping: 0
 --- !u!114 &737318629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1399,6 +1386,19 @@ MonoBehaviour:
     FrequencyGain: 4
     Duration: 0.5
     m_NoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!114 &737318631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737318622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineRotateWithFollowTarget
+  Damping: 0
 --- !u!1 &792473385
 GameObject:
   m_ObjectHideFlags: 0
