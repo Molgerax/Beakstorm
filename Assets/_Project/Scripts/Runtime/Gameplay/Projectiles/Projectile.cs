@@ -1,3 +1,4 @@
+using System;
 using UltEvents;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -18,6 +19,8 @@ namespace Beakstorm.Gameplay.Projectiles
         private Transform _poolTransform;
         public Transform PoolTransform { set => _poolTransform = value; }
 
+        [NonSerialized] public bool Released;
+        
         public int DefaultCapacity => defaultCapacity;
         public int MaximumCapacity => maximumCapacity;
         
@@ -28,6 +31,8 @@ namespace Beakstorm.Gameplay.Projectiles
         
         public void Deactivate()
         {
+            if (Released)
+                return;
             _objectPool.Release(this);
         }
 

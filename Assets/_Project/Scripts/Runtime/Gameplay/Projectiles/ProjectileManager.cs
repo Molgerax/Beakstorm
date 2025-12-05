@@ -7,7 +7,7 @@ namespace Beakstorm.Gameplay.Projectiles
     {
         public static ProjectileManager Instance;
 
-        private Dictionary<Projectile, ProjectilePool> _projectilePools = new();
+        private readonly Dictionary<string, ProjectilePool> _projectilePools = new();
 
         private void Awake()
         {
@@ -27,11 +27,11 @@ namespace Beakstorm.Gameplay.Projectiles
 
         public ProjectilePool GetPool(Projectile prefab)
         {
-            if (_projectilePools.TryGetValue(prefab, out ProjectilePool pool))
+            if (_projectilePools.TryGetValue(prefab.gameObject.name, out ProjectilePool pool))
                 return pool;
             
             pool = new ProjectilePool(prefab, this);
-            _projectilePools.Add(prefab, pool);
+            _projectilePools.Add(prefab.gameObject.name, pool);
             return pool;
         }
         
