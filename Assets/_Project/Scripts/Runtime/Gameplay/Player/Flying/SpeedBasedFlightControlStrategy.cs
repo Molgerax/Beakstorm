@@ -1,4 +1,5 @@
 using Beakstorm.Core.Variables;
+using Beakstorm.Utility;
 using Beakstorm.Utility.Extensions;
 using Unity.Mathematics;
 using UnityEngine;
@@ -8,58 +9,61 @@ namespace Beakstorm.Gameplay.Player.Flying
     [CreateAssetMenu(menuName = "Beakstorm/Player/FlightControlStrategy/SpeedBased")]
     public class SpeedBasedFlightControlStrategy : FlightControlStrategy
     {
-        [SerializeField] private float maxSpeed = 60f;
-        [SerializeField] private float minSpeed = 10f;
-        [SerializeField] private float stallSpeed = 10f;
+        [SerializeField] protected float maxSpeed = 60f;
+        [SerializeField] protected float minSpeed = 10f;
+        [SerializeField] protected float stallSpeed = 10f;
 
-        [SerializeField] private float cruiseSpeed = 40;
+        [SerializeField] protected float cruiseSpeed = 40;
         
-        [SerializeField] private float mass = 100;
+        [SerializeField] protected float mass = 100;
+
+        [Header("Camera")] 
+        [SerializeField] protected float lookAheadDist = 10;
 
         [Header("Thrust")]
-        [SerializeField] private float throttleSpeed = 1f;
-        [SerializeField] private float throttleReset = 1f;
-        [SerializeField] private float minThrust = 10f;
-        [SerializeField] private float idleThrust = 20f;
-        [SerializeField] private float maxThrust = 100f;
+        [SerializeField] protected float throttleSpeed = 1f;
+        [SerializeField] protected float throttleReset = 1f;
+        [SerializeField] protected float minThrust = 10f;
+        [SerializeField] protected float idleThrust = 20f;
+        [SerializeField] protected float maxThrust = 100f;
         
         [Header("OverCharge")]
-        [SerializeField, Min(0)] private float chargeRate = 1;
-        [SerializeField, Min(0)] private float dischargeRate = 1;
-        [SerializeField, Min(0)] private float dischargeMult = 1;
-        [SerializeField, Min(0)] private float chargeCapacity = 10;
+        [SerializeField, Min(0)] protected float chargeRate = 1;
+        [SerializeField, Min(0)] protected float dischargeRate = 1;
+        [SerializeField, Min(0)] protected float dischargeMult = 1;
+        [SerializeField, Min(0)] protected float chargeCapacity = 10;
 
         [Header("Drag")] 
-        [SerializeField] private float breakDrag = 1f;
+        [SerializeField] protected float breakDrag = 1f;
 
-        [SerializeField] private AnimationCurve angleOfAttackCurve = AnimationCurve.EaseInOut(-90, 0, 90, 0);
+        [SerializeField] protected AnimationCurve angleOfAttackCurve = AnimationCurve.EaseInOut(-90, 0, 90, 0);
 
-        [SerializeField] private AnimationCurve aoaMaxSpeed = AnimationCurve.EaseInOut(0, 1, 90, 1);
+        [SerializeField] protected AnimationCurve aoaMaxSpeed = AnimationCurve.EaseInOut(0, 1, 90, 1);
 
-        [SerializeField] private float gravity = 10;
+        [SerializeField] protected float gravity = 10;
         
-        [SerializeField] private float rollSpeed = 3;
+        [SerializeField] protected float rollSpeed = 3;
 
-        [SerializeField] private float steerSpeed = 60;
-        [SerializeField] private AnimationCurve steerThrustCurve = AnimationCurve.Constant(0, 100, 1);
+        [SerializeField] protected float steerSpeed = 60;
+        [SerializeField] protected AnimationCurve steerThrustCurve = AnimationCurve.Constant(0, 100, 1);
 
         [SerializeField] private AnimationCurve debugCurve;
 
 
-        private bool _flipping;
+        protected bool _flipping;
 
-        [SerializeField] private float _a;
-        [SerializeField] private float _b;
-        [SerializeField] private float _c;
+        [SerializeField] protected float _a;
+        [SerializeField] protected float _b;
+        [SerializeField] protected float _c;
 
-        private float _windXVel;
-        private float _windYVel;
+        protected float _windXVel;
+        protected float _windYVel;
 
-        private float _fov;
-        private float _fovSpeed;
+        protected float _fov;
+        protected float _fovSpeed;
 
-        private Vector3 _pointingVector;
-        private Vector3 _pointingVectorUp;
+        protected Vector3 _pointingVector;
+        protected Vector3 _pointingVectorUp;
         
         public override float Speed01(float speed) => (speed - minSpeed) / (maxSpeed * 2 - minSpeed);
 
@@ -83,6 +87,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             glider.Rigidbody.useGravity = false;
 
             glider.EulerAngles = glider.T.eulerAngles;
+            glider.EulerAngles = Vector3.forward;
             
             glider.Velocity = Vector3.forward * stallSpeed;
 
@@ -123,7 +128,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             //glider.FovFactor = glider.Speed01;
         }
 
-        private void UpdateSteering(GliderController glider, float dt)
+        protected virtual void UpdateSteering(GliderController glider, float dt)
         {
             Vector2 inputVector = glider.MoveInput;
 
@@ -132,6 +137,8 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             Vector3 localEulerAngles = glider.T.localEulerAngles;
             localEulerAngles = glider.EulerAngles;
+
+            Vector3 ogAngles = localEulerAngles;
             
             float stalling = 1 - Mathf.Clamp01((glider.Speed - minSpeed) / (stallSpeed - minSpeed));
 
@@ -159,6 +166,10 @@ namespace Beakstorm.Gameplay.Player.Flying
             if (localEulerAngles.x < -180)
                 localEulerAngles.x += 360;
 
+            
+            if (pitch < 0 && !CameraController.UseManualCamera)
+                inputVector.x *= -1;
+            
             // yaw accel directly from input
             float yAcceleration = inputVector.x * dt * GetSteerSpeed(glider);
 
@@ -212,12 +223,17 @@ namespace Beakstorm.Gameplay.Player.Flying
             localEulerAngles.y =
                 Mathf.SmoothDampAngle(localEulerAngles.y, localEulerAngles.y + windY, ref _windYVel, 1f);
 
+
+            Vector3 angleDiff = localEulerAngles - ogAngles;
+            CameraController.Instance.LookAhead.x = Mathf.Sin(angleDiff.y * Mathf.Deg2Rad) * lookAheadDist;
+            CameraController.Instance.LookAhead.y = -Mathf.Sin(angleDiff.x * Mathf.Deg2Rad) * lookAheadDist;
+            
             glider.EulerAngles = localEulerAngles;
 
             glider.T.localRotation = Quaternion.Euler(glider.EulerAngles);
         }
 
-        private void UpdateAcceleration(GliderController glider, float dt)
+        protected void UpdateAcceleration(GliderController glider, float dt)
         {
             Vector3 forward = glider.T.forward;
 
@@ -271,7 +287,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             glider.Velocity = glider.T.forward * glider.Speed;
         }
 
-        private void UpdateThrustAndOverCharge(GliderController glider, float dt, ref float force)
+        protected void UpdateThrustAndOverCharge(GliderController glider, float dt, ref float force)
         {
             float inputStrength = 0;
             inputStrength += glider.ThrustInput ? 1 : 0;
@@ -317,7 +333,7 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         }
 
-        private float CalculateDrag(Vector3 velocity, float coAdditive = 0)
+        protected float CalculateDrag(Vector3 velocity, float coAdditive = 0)
         {
             float v = velocity.magnitude;
 
@@ -334,7 +350,7 @@ namespace Beakstorm.Gameplay.Player.Flying
         }
 
 
-        private float GetThrustFromWind(Vector3 heading, Vector3 wind)
+        protected float GetThrustFromWind(Vector3 heading, Vector3 wind)
         {
             if (wind.magnitude < 0.1f)
                 return 0;
@@ -345,7 +361,7 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         
         [ContextMenu("Calculate Coefficients")]
-        private void CalculateCoefficients()
+        protected void CalculateCoefficients()
         {
             Vector2 p0, p1, p2;
             p0 = new(minSpeed, minThrust);
@@ -369,7 +385,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             debugCurve = new AnimationCurve(keyframes);
         }
 
-        private void CalculateQuadraticCoefficients(Vector2 p0, Vector2 p1, Vector2 p2, out float a, out float b,
+        protected void CalculateQuadraticCoefficients(Vector2 p0, Vector2 p1, Vector2 p2, out float a, out float b,
             out float c)
         {
             float3x3 matrix = new(

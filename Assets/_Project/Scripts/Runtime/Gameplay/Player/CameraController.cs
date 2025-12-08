@@ -55,7 +55,13 @@ namespace Beakstorm.Gameplay.Player
 
         private float _timeSinceCenter;
 
+        public Vector3 LookAhead;
+        private Vector3 _lookAheadSmooth;
+        private Vector3 _lookAheadSmoothSpeed;
+
         [SerializeField] private Vector3 _headOffset;
+        
+        public static bool UseManualCamera { get; private set; }
         
         #region Mono Methods
         private void Awake()
@@ -90,6 +96,7 @@ namespace Beakstorm.Gameplay.Player
             transform.position = playerTarget.position;
             
             OnLookInput();
+            UseManualCamera = _useManualCamera;
 
             if (_headOffset.sqrMagnitude > 0)
                 cameraHead.localPosition = playerTarget.TransformDirection(_headOffset);
@@ -156,18 +163,28 @@ namespace Beakstorm.Gameplay.Player
 
         private void HandleFixedCamera()
         {
-            Vector3 forward = playerTarget.forward;
+            Vector3 up = Vector3.Dot(playerTarget.up, Vector3.up) > 0 ? Vector3.up : Vector3.down;
+
+            _lookAheadSmooth = Vector3.SmoothDamp(_lookAheadSmooth, LookAhead, ref _lookAheadSmoothSpeed, 0.1f);
+            _lookAheadSmooth = Vector3.zero;
+            
+            Vector3 playerForward = playerTarget.forward;
+            Vector3 playerRight = Vector3.Cross(up, playerForward).normalized;
+            Vector3 playerUp = Vector3.Cross(playerForward, playerRight).normalized;
+            
+            Vector3 lookAheadForward = (playerForward + playerRight * _lookAheadSmooth.x + playerUp * _lookAheadSmooth.y + playerForward * _lookAheadSmooth.z);
+            lookAheadForward.Normalize();
+            
             Quaternion playerRotation = playerTarget.rotation;
 
             Vector3 eulerAngles = playerRotation.eulerAngles;
             eulerAngles.z = 0;
             //playerRotation = Quaternion.Euler(eulerAngles);
 
-            Vector3 up = Vector3.Dot(playerTarget.up, Vector3.up) > 0 ? Vector3.up : Vector3.down;
 
             Quaternion targetRotation =
-                Quaternion.LookRotation(new Vector3(forward.x, 0, forward.z).normalized, up);
-            targetRotation = Quaternion.LookRotation(forward, up);
+                Quaternion.LookRotation(new Vector3(playerForward.x, 0, playerForward.z).normalized, up);
+            targetRotation = Quaternion.LookRotation(lookAheadForward, up);
 
             playerRotation = Quaternion.Slerp(playerRotation, targetRotation, yAlpha);
             playerRotation = targetRotation;

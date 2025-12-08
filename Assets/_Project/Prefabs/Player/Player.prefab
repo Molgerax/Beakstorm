@@ -1677,6 +1677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <T>k__BackingField: {fileID: 0}
+  <Model>k__BackingField: {fileID: 4645228151657795752}
   controlStrategy: {fileID: 11400000, guid: 2a387c860d97f0943b7bacd39157a53b, type: 2}
   speedVariable: {fileID: 11400000, guid: e57bae1dde6fda34fb568f7184446306, type: 2}
   thrustVariable: {fileID: 11400000, guid: 8578a64aed3d1cf45ba8972c3924dba0, type: 2}

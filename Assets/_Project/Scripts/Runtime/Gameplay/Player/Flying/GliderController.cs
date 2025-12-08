@@ -14,6 +14,8 @@ namespace Beakstorm.Gameplay.Player.Flying
     public class GliderController : MonoBehaviour, IOnSceneLoad
     {
         [field:SerializeField] public Transform T { get; private set; }
+        
+        [field:SerializeField] public Transform Model { get; private set; }
 
         [SerializeField] private FlightControlStrategy controlStrategy;
 
