@@ -537,50 +537,50 @@ MonoBehaviour:
   - MapName: Lit
     Path: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: Lit
+    AddressableName: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: WeakPoint_Cloth
     Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Cloth.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: WeakPoint_Cloth
+    AddressableName: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Cloth.mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: m_rope
     Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_rope.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: m_rope
+    AddressableName: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_rope.mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: WeakPoint_Socket_MetalAccent
     Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_MetalAccent.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: WeakPoint_Socket_MetalAccent
+    AddressableName: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_MetalAccent.mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: m_metal
     Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: m_metal
+    AddressableName: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal.mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: WeakPoint_Mat
     Path: Assets/_Project/Materials/Test/WeakPoint_Mat.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: WeakPoint_Mat
+    AddressableName: Assets/_Project/Materials/Test/WeakPoint_Mat.mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: WeakPoint_Socket_Metal
     Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_Metal.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: WeakPoint_Socket_Metal
+    AddressableName: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_Metal.mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: m_ShipMedium
     Path: Assets/_Project/Art/Materials/m_ShipMedium.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: m_ShipMedium
+    AddressableName: Assets/_Project/Art/Materials/m_ShipMedium.mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: m_ShipGlass
     Path: Assets/_Project/Art/Materials/m_ShipGlass.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: m_ShipGlass
+    AddressableName: Assets/_Project/Art/Materials/m_ShipGlass.mat
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: m_metal_accent
     Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal_accent.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: m_metal_accent
+    AddressableName: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal_accent.mat
     SpawnOffset: {x: 0, y: 0, z: 0}

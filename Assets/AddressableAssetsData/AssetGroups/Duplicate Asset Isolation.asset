@@ -1,0 +1,418 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Duplicate Asset Isolation
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Duplicate Asset Isolation
+  m_GUID: 9598572efa342c1438161d77927ec792
+  m_SerializeEntries:
+  - m_GUID: 008db56e001deef418324d7442cc7745
+    m_Address: Assets/Wwise/ScriptableObjects/Event/761E02DC-A217-4203-B3E7-FF5CEC0F556D.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0094bd297d2eb3349bc6dfe17cb180d6
+    m_Address: Assets/_Project/Prefabs/Enemies/Bunker.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0406db5a14f94604a8c57ccfbc9f3b46
+    m_Address: Packages/com.unity.render-pipelines.universal/Shaders/Particles/ParticlesUnlit.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e92cba4c942da64bbacbbd2715d3916
+    m_Address: Assets/Wwise/ScriptableObjects/Event/DB96070E-B423-4C7A-B910-83254A8A4F02.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1321a956d0eaa864d80d76a193ac49e1
+    m_Address: Assets/_Project/Shaders/Graphs/Enemies/WeakPoint.shadergraph
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 13c02b14c4d048fa9653293d54f6e0e1
+    m_Address: Packages/com.unity.render-pipelines.universal/Shaders/2D/Sprite-Unlit-Default.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1972ec8ecbdb700468a044cbe1902126
+    m_Address: Assets/_Project/Prefabs/Enemies/MediumEnemy.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 259f5f7bac6898a488190200502482e0
+    m_Address: Assets/_Project/Art/Meshes/Torus.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 268eba94870643445be9f363204548d1
+    m_Address: Assets/_Project/Data/Enemies/MediumEnemy.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27e0736fd8951f24b90b5f9c3137b684
+    m_Address: Assets/_Project/Art/Meshes/ColliderCircle.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 286a8cf567230d649b480f53cea6c64a
+    m_Address: Assets/_Project/Art/Materials/Textures/ShipMedium_roughness.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31321ba15b8f8eb4c954353edc038b1d
+    m_Address: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35ccb82c139f5d04088a0293faa56936
+    m_Address: Assets/Wwise/ScriptableObjects/Event/8FF6B736-2268-41E2-89B2-A6875B2A7CD2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36e335017ad71d54fbb10842863188ae
+    m_Address: Packages/com.unity.render-pipelines.core/Runtime/RenderPipelineResources/FallbackShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3acb73fb6b834ff418b37ec08513ce4a
+    m_Address: Assets/_Project/Art/Materials/m_ShipGlass.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cae5f0ff36fe7c44978302f456b892b
+    m_Address: Assets/_Project/Materials/VFX/Projectiles/ImpactFlash2D.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d1806148b32ff4499390e8dcc834107
+    m_Address: Assets/_Project/Shaders/Graphs/Master/Objects_Master.shadergraph
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d5e8143ee07477428eaebca800db3ec
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_ClothPop.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4015e68eff50b9b4c9f0465efdda6a61
+    m_Address: Assets/_Project/Prefabs/Projectiles/Enemies/ExplosiveShell.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 408fbf264103d5a4089f1147c35746e2
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_Metal.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 419a2eda202d8484194276bd4f7cb88a
+    m_Address: Assets/_Project/Prefabs/Projectiles/Enemies/Explosion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 469819b5121c4114cabef5ff8abac34e
+    m_Address: Assets/_Project/Art/Meshes/ElongatedSphere.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c4c45416a2b73a439c43a5c7a06d573
+    m_Address: Assets/_Project/Prefabs/Enemies/SmallEnemy.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4dfb57a49bcf69543818600b170ef672
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Cloth.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5206a30cda5bd1344aa4cb648cb04da5
+    m_Address: Assets/_Project/Art/VFX/MuzzleFlash/MuzzleFlash_Side.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5424d182223946a41947cbdb185313ba
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_Socket_MetalAccent.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 596de7cfbf167f6458e883d57de22210
+    m_Address: Assets/_Project/Art/VFX/MuzzleFlash/MuzzleFlash_Front.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 59b2c3925b2c9634b91715e4e2e04d7a
+    m_Address: Assets/_Project/Art/VFX/MuzzleFlash/ImpactFlash.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 658d5b331bfb6804ab5e2cc8165c94ff
+    m_Address: Assets/_Project/Data/Enemies/SmallEnemy_Gun.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 659480bc0fe8f584fbaa14dfe73dfde8
+    m_Address: Assets/_Project/Art/UI/White.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 666903557715b344b8c2359285142183
+    m_Address: Assets/_Project/Art/Meshes/Ships/HangarShip.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69707b6cc0c3b0f4c90907c0f08aad28
+    m_Address: Assets/_Project/Materials/Trails/EnemyShell_TrailMat.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78df4e61da989644c82bd57986166456
+    m_Address: Assets/_Project/Prefabs/Enemies/HangarShip.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ba8a0e6dc50d234a8af640126856da2
+    m_Address: Assets/_Project/Art/UI/WeaponIcons/Simple.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87ac85f74923ee0418e1686d545d0d1a
+    m_Address: Assets/_Project/Prefabs/Projectiles/BalloonPop_VFX.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 888bf7dc09efa9b44973ae3552d4137b
+    m_Address: Assets/_Project/Art/Meshes/ImpactFlash.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88ae72df74790da4ba585e51a16fa7c2
+    m_Address: Assets/_Project/Prefabs/Projectiles/ShockWave.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c8a897efd818f141a7380e282676f22
+    m_Address: Assets/_Project/Data/Enemies/EnemyWeaponData/EnemyWeaponProjectile.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 913a821c31a294648b252b73bdf8fa3f
+    m_Address: Assets/_Project/Prefabs/Enemies/SmallEnemy_Gun.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 933532a4fcc9baf4fa0491de14d08ed7
+    m_Address: Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93d116b213a7e2448a690227e43624d7
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_rope.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 950a941d5d633d24baaff15c3655b1ed
+    m_Address: Assets/Wwise/ScriptableObjects/Event/C5E530F5-0D37-4545-9A90-3F92F99C3DEB.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97f0a60cab5172d4687b907c2a22318e
+    m_Address: Assets/_Project/Materials/Test/WeakPoint_Mat.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a6ef3ffb0208ec499c527dfb6880a4c
+    m_Address: Assets/_Project/Prefabs/Enemies/SimpleTurret.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b0e86d9e886e0949a950384e5d27c4c
+    m_Address: Assets/_Project/Art/Materials/Textures/ShipMedium_diffuse.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c3db9fbb5321f140a7079d595366f08
+    m_Address: Assets/_Project/Data/UI/Indicators/EnemyIndicatorSettings.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dfc825aed78fcd4ba02077103263b40
+    m_Address: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Sprite-Unlit-Default.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f89a0ee1d9a14f40b7b99975bb7669b
+    m_Address: Assets/_Project/Materials/VFX/Projectiles/MuzzleFlash2D_Side.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2cc87673c3d73245ace52fe00e32eba
+    m_Address: Assets/_Project/Art/Meshes/MuzzleFlash2D.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5f299a4bad894f4aaaf6fdd7e00df62
+    m_Address: Assets/_Project/Art/Meshes/Ships/ShipMedium/ShipMedium.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a737c76db85717a4a8a6b5affc0c8c00
+    m_Address: Assets/_Project/Art/Meshes/Ships/LongCapsule.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8917c1498c9fa845b56115561b2e041
+    m_Address: Assets/_Project/Prefabs/Projectiles/ImpactFlash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a91ba4e46668b114ca1e15256d4a0a53
+    m_Address: Assets/_Project/Prefabs/Projectiles/MuzzleFlash.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac9742790ea2f954d9ede02c91cd2340
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/WeakPoint_Balloon.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b24d91c0375f5dc438ab053d1c76ceaa
+    m_Address: Assets/_Project/Data/Enemies/Bunker.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b789c853dd4b83a4780555c09ae3c54d
+    m_Address: Assets/_Project/Art/Materials/Textures/ShipMedium_n.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba12d084cda02de4b9712b85732218d4
+    m_Address: Assets/_Project/Data/Enemies/SmallEnemy.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb217b280b976084b8519755fe9150c1
+    m_Address: Assets/_Project/Prefabs/Projectiles/Enemies/EnemyShell.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be1980ba416d34f41b5a9e8bbc5eff2c
+    m_Address: Assets/_Project/Data/Targeting/Factions/EnemyFaction.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf9ff575f08c2354c91464bd8fc49a10
+    m_Address: Assets/_Project/Prefabs/Projectiles/ExplosionLight.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c2e057d6d978a9d4d96fc53bbf4c1324
+    m_Address: Assets/_Project/Art/Materials/m_ShipMedium.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c5a771c5f9c236b4ea026bd23535de1a
+    m_Address: Assets/Wwise/ScriptableObjects/Event/475EC075-A4E2-4EBC-BDA4-6D8BBFBD4E09.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9dde0810819f0f4fa5f163b86aaec12
+    m_Address: Assets/_Project/Data/Enemies/EnemyWeaponData/EnemyWeaponProjectileHeavy.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2731b1c02496264396a0bdf35f8efd2
+    m_Address: Assets/_Project/Prefabs/Projectiles/Trails/EnemyShell_Trail.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d53e564b774c9e04abcae231512c9e6c
+    m_Address: Assets/_Project/Materials/VFX/Projectiles/GunProjectile.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d62e846475ee4db45b4f5deacdb87d5f
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal_accent.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d828bc332dfd7284c84f4638f0d12a85
+    m_Address: Assets/_Project/Shaders/Graphs/Enemies/WeakPoint_Pop.shadergraph
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d97ee691e88c7114da9f19ec8f29d75a
+    m_Address: Assets/_Project/Materials/VFX/Projectiles/MuzzleFlash2D_Front.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: daf2221852f16b54984af8d9cd05f8b3
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1ea9a3671cfade40a84c1ecdf467aef
+    m_Address: Assets/_Project/Data/Enemies/HangarShip.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5ecaa89589db8047831b5cef284e9e7
+    m_Address: Assets/_Project/Art/UI/IndicatorArrow_Flat.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6e9a19c3678ded42a3bc431ebef7dbd
+    m_Address: Packages/com.unity.render-pipelines.universal/Shaders/Utils/FallbackError.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e95756c1395feeb48bf5ebe0e056ae7b
+    m_Address: Assets/Wwise/ScriptableObjects/Event/8C0ABA2E-B8AD-4BAF-BA8E-858325700539.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec9e769268f290b449ee4571a05eabde
+    m_Address: Assets/_Project/Data/Enemies/SimpleTurret.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f102139739c1711489d4cded2741c110
+    m_Address: Assets/Wwise/ScriptableObjects/GameParameter/72E92ADE-BE1F-4B70-8891-60E3CDC00CF9.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f32681b57fb08664789a797b7405d784
+    m_Address: Assets/Wwise/ScriptableObjects/Event/02A07C88-BA95-4FDE-8B54-D4105F030C80.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3962948da233ea448789a0c6feccfff
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/WeakPoint_Socket.fbx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f75b0ddd3ed746645bd2b1a3f1970239
+    m_Address: Assets/_Project/Shaders/Graphs/Effects/GunProjectile.shadergraph
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff5cbf242b7589d4baafc630eecff146
+    m_Address: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/WeakPoint_RopePop.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d8aeb4f9e09ee8343902018e14c13f32, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 92dbfafc05d49e24782419eafadb7260, type: 2}
+    - {fileID: 11400000, guid: 050e66327dce0be438a0fac41479bb2b, type: 2}
