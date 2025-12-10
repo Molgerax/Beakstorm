@@ -48,6 +48,8 @@ MonoBehaviour:
   enemy: {fileID: 11400000, guid: 658d5b331bfb6804ab5e2cc8165c94ff, type: 2}
   spawnDelay: 0
   spawnParent: {fileID: 0}
+  auxiliaryData:
+    waypoint: {fileID: 0}
 --- !u!1001 &7274469436896247925
 PrefabInstance:
   m_ObjectHideFlags: 0

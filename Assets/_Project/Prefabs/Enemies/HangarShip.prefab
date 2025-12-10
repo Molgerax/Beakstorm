@@ -196,6 +196,7 @@ GameObject:
   - component: {fileID: 8380030919837711645}
   - component: {fileID: 8076832018502079435}
   - component: {fileID: 2845674358343340967}
+  - component: {fileID: 5275666619648537179}
   - component: {fileID: 4535853692409759224}
   - component: {fileID: 8097503753773046338}
   m_Layer: 0
@@ -261,7 +262,7 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-    - _Target: {fileID: 4535853692409759224}
+    - _Target: {fileID: 5275666619648537179}
       _MemberName: Initialize
       _PersistentArguments: []
   onHealthZero:
@@ -326,6 +327,20 @@ MonoBehaviour:
       _MemberName: Despawn
       _PersistentArguments: []
   autoStart: 0
+--- !u!114 &5275666619648537179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2184576747408264296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff6f1828b1d2d094a9afe46c2d0c0d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Movement.MovementHandler
+  movementBehaviours:
+  - {fileID: 4535853692409759224}
 --- !u!114 &4535853692409759224
 MonoBehaviour:
   m_ObjectHideFlags: 0

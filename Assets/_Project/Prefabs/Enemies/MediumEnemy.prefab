@@ -436,7 +436,9 @@ GameObject:
   - component: {fileID: 8203474729422093015}
   - component: {fileID: 6341619872662283019}
   - component: {fileID: 5472652922921227751}
+  - component: {fileID: 6241846310079000482}
   - component: {fileID: 4496462160914636617}
+  - component: {fileID: 8900443706591581442}
   - component: {fileID: 7491312894083225664}
   m_Layer: 0
   m_Name: MediumEnemy
@@ -504,9 +506,20 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-    - _Target: {fileID: 4496462160914636617}
+    - _Target: {fileID: 6241846310079000482}
       _MemberName: Initialize
       _PersistentArguments: []
+    - _Target: {fileID: 8900443706591581442}
+      _MemberName: set_enabled
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 5472652922921227751}
@@ -528,6 +541,17 @@ MonoBehaviour:
       _PersistentArguments:
       - _Type: 1
         _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 8900443706591581442}
+      _MemberName: set_enabled
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
         _String: 
         _X: 0
         _Y: 0
@@ -583,6 +607,21 @@ MonoBehaviour:
       _MemberName: Despawn
       _PersistentArguments: []
   autoStart: 0
+--- !u!114 &6241846310079000482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120369539214848294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff6f1828b1d2d094a9afe46c2d0c0d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Movement.MovementHandler
+  movementBehaviours:
+  - {fileID: 4496462160914636617}
+  - {fileID: 8900443706591581442}
 --- !u!114 &4496462160914636617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,6 +635,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emergeTime: 10
+--- !u!114 &8900443706591581442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120369539214848294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f6e48ba5f924979b56688c9235b0a7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Enemies.EnemyBehaviour.EnemyFollowPath
+  speed: 10
 --- !u!54 &7491312894083225664
 Rigidbody:
   m_ObjectHideFlags: 0
