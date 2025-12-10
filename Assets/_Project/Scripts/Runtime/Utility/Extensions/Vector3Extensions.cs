@@ -42,5 +42,15 @@ namespace Beakstorm.Utility.Extensions
         }
         
         #endregion
+
+
+        #region Slerp
+
+        public static Vector3 SlerpOffset(this Vector3 a, Vector3 b, float t, Vector3 center)
+        {
+            return Vector3.Slerp(a - center, b - center, t) + center;
+        }
+        
+        #endregion
     }
 }
