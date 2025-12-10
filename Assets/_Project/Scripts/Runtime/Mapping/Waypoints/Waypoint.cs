@@ -11,7 +11,7 @@ namespace Beakstorm.Mapping.Waypoints
 
         [SerializeField] private WaypointSmoothing smoothing = WaypointSmoothing.Linear;
 
-        [SerializeField] private Waypoint previousWaypoint;
+        [SerializeField, NoTremble] private Waypoint previousWaypoint;
 
         public Vector3 GetTangent(Waypoint waypoint)
         {
@@ -68,7 +68,7 @@ namespace Beakstorm.Mapping.Waypoints
                 for (int i = 1; i < resolution; i++)
                 {
                     float t = i / (resolution - 1f);
-                    Vector3 pos = Interpolate(this, waypoint, t);
+                    Vector3 pos = Interpolate(this, waypoint, t, out _);
                     Gizmos.DrawLine(previousPos, pos);
                     previousPos = pos;
                 }
@@ -78,25 +78,58 @@ namespace Beakstorm.Mapping.Waypoints
             }
         }
 
-        public static Vector3 Interpolate(Waypoint a, Waypoint b, float t)
+        public static float GetDistance(Waypoint a, Waypoint b)
+        {
+            if (!a || !b)
+                return 0;
+        
+            Vector3 posA = a.transform.position;
+            Vector3 posB = b.transform.position;
+            Vector3 dirA = a.GetTangent(b);
+            Vector3 dirB = b.GetTangent();
+            
+            float sum = 0;
+            int resolution = 16;
+            Vector3 posPrevious = posA;
+            for (int i = 1; i < resolution; i++)
+            {
+                float t = i / (resolution - 1f);
+            
+                Vector3 evaluateA = Interpolate(posA, dirA, posB,
+                    dirB, t, a.smoothing, out _);
+                Vector3 evaluateB = Interpolate(posA, dirA, posB,
+                    dirB, t, b.smoothing, out _);
+
+                Vector3 pos = Vector3.Lerp(evaluateA, evaluateB, t);
+                sum += Vector3.Distance(pos, posPrevious);
+                posPrevious = pos;
+            }
+            return sum;
+        }
+        
+        public static Vector3 Interpolate(Waypoint a, Waypoint b, float t, out Vector3 forward)
         {
             Vector3 posA = a.transform.position;
             Vector3 posB = b.transform.position;
             Vector3 dirA = a.GetTangent(b);
             Vector3 dirB = b.GetTangent();
-         
-            Vector3 evaluateA = Interpolate(posA, dirA, posB,
-                dirB, t, a.smoothing);
-            Vector3 evaluateB = Interpolate(posA, dirA, posB,
-                dirB, t, b.smoothing);
 
+            Vector3 forwardA, forwardB;
+            
+            Vector3 evaluateA = Interpolate(posA, dirA, posB,
+                dirB, t, a.smoothing, out forwardA);
+            Vector3 evaluateB = Interpolate(posA, dirA, posB,
+                dirB, t, b.smoothing, out forwardB);
+
+            forward = Vector3.Slerp(forwardA, forwardB, t);
             return Vector3.Lerp(evaluateA, evaluateB, t);
         }
 
-        private static Vector3 Interpolate(Vector3 a, Vector3 dirA, Vector3 b, Vector3 dirB, float t, WaypointSmoothing smoothing)
+        private static Vector3 Interpolate(Vector3 a, Vector3 dirA, Vector3 b, Vector3 dirB, float t, WaypointSmoothing smoothing, out Vector3 forward)
         {
             Vector3 c, d;
             float dist;
+            forward = (b - a).normalized;
         
             switch (smoothing)
             {
@@ -109,6 +142,7 @@ namespace Beakstorm.Mapping.Waypoints
                     c = Vector3.Lerp(a, average, 0.67f);
                     d = Vector3.Lerp(b, average, 0.67f);
 
+                    forward = BezierMath.BezierDerivative(a, c, d, b, t).normalized;
                     return BezierMath.BezierPos(a, c, d, b, t);
                 
                 case WaypointSmoothing.Cubic:
@@ -116,6 +150,7 @@ namespace Beakstorm.Mapping.Waypoints
                     c = a + dirA * dist * 0.33f;
                     d = b - dirB * dist * 0.33f;
 
+                    forward = BezierMath.BezierDerivative(a, c, d, b, t).normalized;
                     return BezierMath.BezierPos(a, c, d, b, t);
                 
                 default:

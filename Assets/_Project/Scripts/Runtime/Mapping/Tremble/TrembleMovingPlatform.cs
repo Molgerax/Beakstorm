@@ -1,17 +1,23 @@
 ﻿using Beakstorm.Mapping.Waypoints;
+using Beakstorm.Simulation.Collisions.SDF;
+using Beakstorm.Simulation.Collisions.SDF.Shapes;
 using TinyGoose.Tremble;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Beakstorm.Mapping.Tremble
 {
-    [PointEntity("platform", category:"func", size: 16f, colour:"0 0.5 1.0")]
+    //[PointEntity("platform", category:"func", colour:"0 0.5 1.0", size: 16)]
+    [BrushEntity("platform", category:"func", type: BrushType.Solid, colour:"0 0.5 1.0")]
     public class TrembleMovingPlatform : TriggerBehaviour, IOnImportFromMapEntity
     {
         [SerializeField, NoTremble] private float speed = 5f;
 
         [SerializeField, Tremble("target")] private Waypoint waypoint;
         [Tremble("speed")] private float _trembleSpeed = 64;
-
+        
+        [Tremble("sdfMaterial")] private SdfMaterialType _sdfMaterialType = SdfMaterialType.None;
+        
         [SerializeField] private bool autoStart;
 
         private bool _triggered;
@@ -88,6 +94,17 @@ namespace Beakstorm.Mapping.Tremble
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
             speed = (_trembleSpeed * TrembleSyncSettings.Get().ImportScale);
+            
+            MeshCollider meshCollider = GetComponent<MeshCollider>();
+            Bounds bounds = meshCollider.bounds;
+            
+            BoxCollider boxCollider = gameObject.AddComponent<BoxCollider>();
+
+            SdfBox sdfBox = gameObject.AddComponent<SdfBox>();
+            sdfBox.SetDimensions(boxCollider.center, boxCollider.size);
+            sdfBox.SetMaterialType(_sdfMaterialType);
+            
+            CoreUtils.Destroy(boxCollider);
         }
     }
 }
