@@ -10,7 +10,8 @@ namespace Beakstorm.Simulation.Collisions.SDF
         [SerializeField] protected SdfMaterialType materialType = SdfMaterialType.None;
 
         public void SetMaterialType(SdfMaterialType type) => materialType = type;
-        
+
+        private WeakPoint _weakPoint;
         
         protected abstract SdfShapeType Type();
 
@@ -49,7 +50,13 @@ namespace Beakstorm.Simulation.Collisions.SDF
         public float3 BoundsMax() => _boundsMax + GrowBounds;
         public AbstractSdfData SdfData() => _sdfData;
 
-        protected virtual void OnEnable() => SdfShapeManager.AddShape(this);
+        protected virtual void OnEnable()
+        {
+            _weakPoint = GetComponent<WeakPoint>();
+            if (!_weakPoint)
+                SdfShapeManager.AddShape(this);
+        }
+
         protected virtual void OnDisable() => SdfShapeManager.RemoveShape(this);
 
         public static bool TestSdf(Vector3 pos, AbstractSdfData data, out float dist, out Vector3 normal)
@@ -129,6 +136,29 @@ namespace Beakstorm.Simulation.Collisions.SDF
             Translate = pos;
             Data = data;
             Type = type;
+        }
+        
+
+
+        public static AbstractSdfData Null => new AbstractSdfData();
+        
+        public static bool operator ==(AbstractSdfData lhs, AbstractSdfData rhs)
+        {
+            return (Vector3)lhs.Translate == (Vector3)rhs.Translate
+                && (Vector3)lhs.Data == (Vector3)rhs.Data
+                && (Vector3)lhs.XAxis == (Vector3)rhs.XAxis
+                && (Vector3)lhs.YAxis == (Vector3)rhs.YAxis
+                && (Vector3)lhs.ZAxis == (Vector3)rhs.ZAxis
+                && lhs.Type == rhs.Type;
+        }
+        public static bool operator !=(AbstractSdfData lhs, AbstractSdfData rhs)
+        {
+            return (Vector3)lhs.Translate != (Vector3)rhs.Translate
+                   || (Vector3)lhs.Data != (Vector3)rhs.Data
+                   || (Vector3)lhs.XAxis != (Vector3)rhs.XAxis
+                   || (Vector3)lhs.YAxis != (Vector3)rhs.YAxis
+                   || (Vector3)lhs.ZAxis != (Vector3)rhs.ZAxis
+                   || lhs.Type != rhs.Type;
         }
     }
 }

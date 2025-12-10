@@ -1,5 +1,9 @@
-using System;
+using Beakstorm.Mapping;
+using Beakstorm.Simulation.Collisions.SDF;
+using Beakstorm.Utility.Extensions;
+using TinyGoose.Tremble;
 using UltEvents;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Beakstorm.Simulation.Collisions
@@ -7,10 +11,9 @@ namespace Beakstorm.Simulation.Collisions
     public class WeakPoint : MonoBehaviour
     {
         [SerializeField] private int maxHealth = 100;
-        [SerializeField] private int currentHealth;
-        [SerializeField] private UltEvent onInitialize;
-        [SerializeField] public UltEvent onHealthZero;
-        [SerializeField] private UltEvent onDamageTaken;
+        [SerializeField, NoTremble] private UltEvent onInitialize;
+        [SerializeField, NoTremble] public UltEvent onHealthZero;
+        [SerializeField, NoTremble] private UltEvent onDamageTaken;
 
         [SerializeField] private bool autoInitialize = false;
         
@@ -20,14 +23,20 @@ namespace Beakstorm.Simulation.Collisions
 
         [SerializeField] private Renderer meshRenderer;
 
-        private bool _destroyed = true; 
+        [SerializeField] private TriggerBehaviour[] triggerTargets;
 
-        public Vector4 PositionRadius
+        private bool _destroyed = true;
+        private int _currentHealth;
+
+        private AbstractSdfShape _sdfShape;
+
+        public AbstractSdfData SdfData
         {
             get
             {
-                Vector3 pos = Position;
-                return new(pos.x, pos.y, pos.z, Radius);
+                if (!IsValid)
+                    return new AbstractSdfData();
+                return _sdfShape ? _sdfShape.SdfData() : new AbstractSdfData(Position, new float3(Radius, 0, 0), 0);
             }
         }
 
@@ -41,9 +50,9 @@ namespace Beakstorm.Simulation.Collisions
 
         public Vector3 Position => transform.TransformPoint(offset);
         public int MaxHealth => maxHealth;
-        public int CurrentHealth => currentHealth;
-        public float CurrentHealth01 => (float) currentHealth / maxHealth;
-        public bool IsDestroyed => currentHealth <= 0 || _destroyed;
+        public int CurrentHealth => _currentHealth;
+        public float CurrentHealth01 => (float) _currentHealth / maxHealth;
+        public bool IsDestroyed => _currentHealth <= 0 || _destroyed;
 
         public bool IsValid
         {
@@ -62,7 +71,7 @@ namespace Beakstorm.Simulation.Collisions
             if (_destroyed == false)
                 return;
             
-            currentHealth = maxHealth;
+            _currentHealth = maxHealth;
             Subscribe();
             onInitialize?.Invoke();
             
@@ -80,6 +89,8 @@ namespace Beakstorm.Simulation.Collisions
         {
             if (autoInitialize)
                 Initialize();
+
+            _sdfShape = GetComponent<AbstractSdfShape>();
         }
 
         private void OnDisable()
@@ -106,11 +117,11 @@ namespace Beakstorm.Simulation.Collisions
             if (value > 0)
                 onDamageTaken?.Invoke();
             
-            currentHealth -= value;
+            _currentHealth -= value;
 
             UpdateRenderer();
             
-            if (currentHealth <= 0)
+            if (_currentHealth <= 0)
                 HealthZero();
         }
 
@@ -131,11 +142,19 @@ namespace Beakstorm.Simulation.Collisions
                 return;
             _destroyed = true;
             
-            currentHealth = 0;
+            _currentHealth = 0;
             onHealthZero?.Invoke();
+            triggerTargets.TryTrigger();
             Unsubscribe();
         }
 
+        public void SetFromTremble(TriggerBehaviour[] target, int health)
+        {
+            maxHealth = health;
+            triggerTargets = target;
+            autoInitialize = true;
+        }
+        
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;

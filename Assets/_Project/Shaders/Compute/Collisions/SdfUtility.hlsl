@@ -41,6 +41,7 @@ SdfQueryInfo sdfCone(float3 p, AbstractSdfData data);
 SdfQueryInfo sdfTorus(float3 p, AbstractSdfData data);
 
 
+float largestElement(float3 value);
 float3 getLargest(float3 value);
 inline float3 inverseLerp(float3 from, float3 to, float3 value);
 float3 ClosestPointOnBox(float3 center, float3 bounds, float3 p);
@@ -409,6 +410,69 @@ SdfQueryInfo sdfTorus(float3 p, AbstractSdfData data)
 }
 
 
+// ------- Bounding Boxes
+
+void bbGeneric(AbstractSdfData data, out float3 minimum, out float3 maximum);
+void bbSphere(AbstractSdfData data, out float3 minimum, out float3 maximum);
+void bbBox(AbstractSdfData data, out float3 minimum, out float3 maximum);
+void bbLine(AbstractSdfData data, out float3 minimum, out float3 maximum);
+void bbCone(AbstractSdfData data, out float3 minimum, out float3 maximum);
+void bbTorus(AbstractSdfData data, out float3 minimum, out float3 maximum);
+
+void bbGeneric(AbstractSdfData data, out float3 minimum, out float3 maximum)
+{
+    minimum = 0;
+    maximum = 0;
+    const uint type = data.Type & 0x0F;
+    
+    if (type == SDF_SPHERE)
+    {
+        bbSphere(data, minimum, maximum);
+        return;
+    }
+    if (type == SDF_BOX)
+    {
+        bbBox(data, minimum, maximum);
+        return;
+    }
+    if (type == SDF_LINE)
+    {
+        bbLine(data, minimum, maximum);
+        return;
+    }
+    if (type == SDF_CONE)
+    {
+        bbLine(data, minimum, maximum);
+        return;
+    }
+    if (type == SDF_TORUS)
+    {
+        bbLine(data, minimum, maximum);
+        return;
+    }
+}
+
+
+void bbSphere(AbstractSdfData data, out float3 minimum, out float3 maximum)
+{
+    minimum = data.Translate - data.Data.x;
+    maximum = data.Translate + data.Data.x;
+}
+
+void bbBox(AbstractSdfData data, out float3 minimum, out float3 maximum)
+{
+    float largest = largestElement(data.Data) * 1.73;
+    
+    minimum = data.Translate - largest;
+    maximum = data.Translate + largest;
+}
+
+void bbLine(AbstractSdfData data, out float3 minimum, out float3 maximum)
+{
+    minimum = data.Translate - (data.Data.x + data.Data.y);
+    maximum = data.Translate + (data.Data.x + data.Data.y);
+}
+
 
 // ------- SDF OPERATORS
 
@@ -464,6 +528,15 @@ inline float3 inverseLerp(float3 from, float3 to, float3 value)
     return (value -from) / (to - from);
 }
 
+float largestElement(float3 value)
+{
+    if (value.x > value.y && value.x > value.z)
+        return value.x;
+    
+    if (value.y > value.z)
+        return value.y;
+    return value.z;
+}
 
 float3 getLargest(float3 value)
 {
