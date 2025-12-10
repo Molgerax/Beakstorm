@@ -647,7 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6e48ba5f924979b56688c9235b0a7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Enemies.EnemyBehaviour.EnemyFollowPath
-  speed: 10
+  speed: 30
 --- !u!54 &7491312894083225664
 Rigidbody:
   m_ObjectHideFlags: 0
