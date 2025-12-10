@@ -8,6 +8,7 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField, Min(0)] private float emissionRate = 60;
         [SerializeField, Range(0, 10)] private float lifeTime = 3;
         [SerializeField] private float velocityFactor = 1f;
+        [SerializeField] private bool emitOverDistance;
         
         private PheromoneBehaviourData _behaviourData;
 
@@ -29,9 +30,16 @@ namespace Beakstorm.Simulation.Particles
             set => velocityFactor = value;
         }
         
+        public bool EmitOverDistance
+        {
+            get => emitOverDistance;
+            set => emitOverDistance = value;
+        }
+        
         private float _initEmissionRate;
         private float _initLifeTime;
         private float _initVelocityFactor;
+        private bool _initEmitOverDistance;
         
         private float _remainder = 0;
         private float _duration;
@@ -47,6 +55,7 @@ namespace Beakstorm.Simulation.Particles
             _initEmissionRate = emissionRate;
             _initLifeTime = lifeTime;
             _initVelocityFactor = velocityFactor;
+            _initEmitOverDistance = emitOverDistance;
         }
 
         public void SetBehaviourData(PheromoneBehaviourData data)
@@ -73,7 +82,9 @@ namespace Beakstorm.Simulation.Particles
             UpdatePositions();
             ApplyBehaviour(deltaTime);
 
-            float emissionPerFrame = EmissionRate * deltaTime;
+            float travelledDist = Vector3.Distance(_oldPosition, _position);
+            
+            float emissionPerFrame = emitOverDistance ? EmissionRate * travelledDist : EmissionRate * deltaTime;
             emissionPerFrame += _remainder;
             _remainder = emissionPerFrame % 1;
 
@@ -123,6 +134,7 @@ namespace Beakstorm.Simulation.Particles
                 LifeTime = _initLifeTime;
                 EmissionRate = _initEmissionRate;
                 VelocityFactor = _initVelocityFactor;
+                EmitOverDistance = _initEmitOverDistance;
             }
 
             UpdatePositions();

@@ -161,6 +161,7 @@ MonoBehaviour:
   emissionRate: 384
   lifeTime: 3.5
   velocityFactor: 1
+  emitOverDistance: 0
 --- !u!114 &8417193104476582687
 MonoBehaviour:
   m_ObjectHideFlags: 0
