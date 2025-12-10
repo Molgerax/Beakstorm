@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Encounters.Procedural.EnemySpawnPoint
   enemy: {fileID: 11400000, guid: ec9e769268f290b449ee4571a05eabde, type: 2}
-  waveIndex: 0
   spawnDelay: 0
   spawnParent: {fileID: 0}
 --- !u!1001 &7131682688561142106

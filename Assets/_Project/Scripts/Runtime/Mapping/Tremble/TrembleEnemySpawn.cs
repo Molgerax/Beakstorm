@@ -9,7 +9,6 @@ namespace Beakstorm.Mapping.Tremble
     //[PrefabEntity(category:"enemy")]
     public class TrembleEnemySpawn : MonoBehaviour, IOnImportFromMapEntity, IOnLiveUpdate
     {
-        [SerializeField] private int waveIndex = 0;
         [SerializeField] private float spawnDelay = 0;
 
         [SerializeField]
@@ -69,7 +68,7 @@ namespace Beakstorm.Mapping.Tremble
         private EnemySpawnPoint AttachEnemySpawnPoint(GameObject go)
         {
             EnemySpawnPoint spawnPoint = go.AddComponent<EnemySpawnPoint>();
-            spawnPoint.Init(Enemy, waveIndex, spawnDelay);
+            spawnPoint.Init(Enemy, spawnDelay);
             
             
             WaveData waveData = FindOrCreateWaveData();

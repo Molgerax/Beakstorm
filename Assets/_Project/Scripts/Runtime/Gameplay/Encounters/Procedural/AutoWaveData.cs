@@ -33,7 +33,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
             foreach (EnemySpawnPoint enemySpawnPoint in spawns)
             {
-                if (enemySpawnPoint.WaveIndex == waveIndex)
+                if (enemySpawnPoint.WaveData == null)
                     spawnPoints.Add(enemySpawnPoint);
             }
         }

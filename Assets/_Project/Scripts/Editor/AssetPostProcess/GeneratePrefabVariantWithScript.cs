@@ -31,7 +31,9 @@ namespace Beakstorm.AssetPostProcess.Editor
         static void ProcessAsset(EnemySO enemySo)
         {
             if (enemySo == null)
-                    return;
+                return;
+            if (enemySo.Prefab == null)
+                return;
             
             GameObject enemyPrefab = enemySo.Prefab.gameObject;
             
@@ -87,7 +89,7 @@ namespace Beakstorm.AssetPostProcess.Editor
             GameObject prefabVariant = new GameObject(source.name + "_Spawner");
 
             EnemySpawnPoint script = prefabVariant.AddComponent<EnemySpawnPoint>();
-            script.Init(enemy, 0, 0);
+            script.Init(enemy, 0);
             
             GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(source);
             instance.transform.SetParent(prefabVariant.transform, false);
