@@ -1,9 +1,9 @@
 using Beakstorm.Mapping.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Gameplay.Enemies.EnemyBehaviour
+namespace Beakstorm.Gameplay.Movement
 {
-    public class EnemyEmerge : MonoBehaviour
+    public class MoveEmerge : MovementBehaviour
     {
         [SerializeField] private float emergeTime = 10f;
 
@@ -13,17 +13,17 @@ namespace Beakstorm.Gameplay.Enemies.EnemyBehaviour
 
         private float LowerBound => MapWorldSpawn.Instance ? MapWorldSpawn.Instance.MapLowerBound : -256;
 
-        public void Initialize()
+        public override void Initialize(Transform t)
         {
-            _spawnPos = transform.position;
+            _spawnPos = t.position;
             _emergePos = _spawnPos;
             _emergePos.y = LowerBound;
-            transform.position = _emergePos;
+            t.position = _emergePos;
 
             _emergeTimer = emergeTime;
         }
     
-        private void Update()
+        public override void ApplyMovement(Transform tr)
         {
             if (_emergeTimer > 0)
             {
@@ -31,11 +31,11 @@ namespace Beakstorm.Gameplay.Enemies.EnemyBehaviour
 
                 t = 1 - (1-t) * (1-t);
                 
-                transform.position = Vector3.Lerp(_emergePos, _spawnPos, t);
+                tr.position = Vector3.Lerp(_emergePos, _spawnPos, t);
                 _emergeTimer -= Time.deltaTime;
 
                 if (_emergeTimer <= 0)
-                    transform.position = _spawnPos;
+                    tr.position = _spawnPos;
             }
         }
     }
