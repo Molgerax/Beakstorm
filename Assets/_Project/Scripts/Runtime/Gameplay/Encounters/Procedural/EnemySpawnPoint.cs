@@ -1,5 +1,7 @@
 using System.Threading;
 using Beakstorm.Gameplay.Enemies;
+using Beakstorm.Gameplay.Movement;
+using Beakstorm.Mapping.Waypoints;
 using Cysharp.Threading.Tasks;
 using TinyGoose.Tremble;
 using UnityEngine;
@@ -14,9 +16,12 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         [SerializeField, Min(0)] private float spawnDelay;
 
         [SerializeField, Tremble("parent")] private Transform spawnParent;
+        [Tremble("waypoint")] private Waypoint _waypoint;
         
         [Tremble("target")] private WaveData _waveData;
 
+        [SerializeField] private SpawnAuxiliaryData auxiliaryData;
+        
         public WaveData WaveData => _waveData;
         
         public void Init(EnemySO enemy, float spawnDelay)
@@ -26,6 +31,9 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         }
         
         public bool IsValid => enemy;
+
+        public AuxiliaryData AuxiliaryData => auxiliaryData;
+
         public EnemySO Enemy => enemy;
         public TransformData TransformData => new (transform, spawnParent);
         public EnemySpawnDataEntry.WaitCondition WaitCondition => EnemySpawnDataEntry.WaitCondition.WaitForDelay;
@@ -45,9 +53,30 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
             AddToWaveData();
+
+            auxiliaryData = new SpawnAuxiliaryData(_waypoint);
             
             if (gameObject.transform.GetChild(0))
                 CoreUtils.Destroy(gameObject.transform.GetChild(0).gameObject);
+        }
+
+        [System.Serializable]
+        public class SpawnAuxiliaryData : AuxiliaryData
+        {
+            public Waypoint waypoint;
+
+            public SpawnAuxiliaryData(Waypoint wp)
+            {
+                waypoint = wp;
+            }
+            
+            public override void Apply(EnemyController enemy)
+            {
+                if (enemy.TryGetComponent(out MoveFollowPath followPath))
+                {
+                    followPath.SetWaypoint(waypoint);
+                }
+            }
         }
     }
 }

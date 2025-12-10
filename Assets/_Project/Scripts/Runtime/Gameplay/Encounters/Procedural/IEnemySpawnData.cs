@@ -14,6 +14,13 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public float SpawnDelay { get; }
 
         public UniTask GetWaitCondition(CancellationToken token);
+        
+        public AuxiliaryData AuxiliaryData { get; } 
+    }
+
+    public class AuxiliaryData
+    {
+        public virtual void Apply(EnemyController enemy) { }
     }
     
     public static class EnemySpawnDataExtensions
@@ -22,6 +29,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         {
             EnemyController e = data.Enemy.GetEnemyInstance();
             e.Spawn(data.TransformData);
+            data.AuxiliaryData?.Apply(e);
             return e;
         }
     }

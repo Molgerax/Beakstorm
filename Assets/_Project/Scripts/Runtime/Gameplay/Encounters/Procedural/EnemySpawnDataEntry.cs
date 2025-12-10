@@ -25,7 +25,9 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public float SpawnDelay => spawnDelay;
 
         public bool IsValid => enemy;
-        
+
+        public AuxiliaryData AuxiliaryData => null;
+
         public EnemySpawnDataEntry(EnemySpawner spawner, float delay = 0, WaitCondition waitCondition = WaitCondition.WaitForDelay)
         {
             this.enemy = spawner.EnemySo;
