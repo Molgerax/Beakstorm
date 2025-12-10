@@ -88,7 +88,7 @@ namespace Beakstorm.Gameplay.Player.Flying
         public void OnSceneLoaded()
         {
             PlayerStartPosition.SetPlayer(T);
-            _position = transform.position;
+            _position = T.position;
             _oldPosition = _position;
             
             controlStrategy.Initialize(this, Time.deltaTime);

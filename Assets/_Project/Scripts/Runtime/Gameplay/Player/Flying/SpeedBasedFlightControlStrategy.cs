@@ -87,9 +87,8 @@ namespace Beakstorm.Gameplay.Player.Flying
             glider.Rigidbody.useGravity = false;
 
             glider.EulerAngles = glider.T.eulerAngles;
-            glider.EulerAngles = Vector3.forward;
             
-            glider.Velocity = Vector3.forward * stallSpeed;
+            glider.Velocity = glider.T.forward * stallSpeed;
 
             _fov = 0;
             CalculateCoefficients();
