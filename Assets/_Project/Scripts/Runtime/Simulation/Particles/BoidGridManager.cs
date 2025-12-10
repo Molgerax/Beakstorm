@@ -128,6 +128,9 @@ namespace Beakstorm.Simulation.Particles
                     int updateKernel = boidComputeShader.FindKernel("Update");
                     RunSimulation(updateKernel, SimulationTime.DeltaTime);
 
+                    int collideKernel = boidComputeShader.FindKernel("CollideBVH");
+                    RunSimulation(collideKernel, SimulationTime.DeltaTime);
+
                     _hash.Update();
                     SwapBuffers();
                 }
