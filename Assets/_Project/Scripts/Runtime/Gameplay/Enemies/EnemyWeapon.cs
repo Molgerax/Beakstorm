@@ -22,7 +22,6 @@ namespace Beakstorm.Gameplay.Enemies
         private int _ammoCount;
         private float _fireDelay;
 
-        private Vector3 _initForward;
         private float _currentAngle;
 
 
@@ -40,11 +39,6 @@ namespace Beakstorm.Gameplay.Enemies
             if (t == null)
                 return transform.position;
             return t.position;
-        }
-
-        private void Awake()
-        {
-            _initForward = transform.forward;
         }
 
         private void OnEnable()
@@ -117,7 +111,7 @@ namespace Beakstorm.Gameplay.Enemies
             
             Vector3 direction = predictedPos - pos;
 
-            Vector3 clampedDirection = Vector3.RotateTowards(_initForward, direction.normalized, limitAngle * Mathf.Deg2Rad, 1);
+            Vector3 clampedDirection = Vector3.RotateTowards(transform.forward, direction.normalized, limitAngle * Mathf.Deg2Rad, 1);
 
             weaponPivot.rotation = Quaternion.LookRotation(clampedDirection);
         }
@@ -140,7 +134,7 @@ namespace Beakstorm.Gameplay.Enemies
             Vector3 direction = (predictedPos - pos).normalized;
             direction = GetShotDirection(direction);
             
-            _currentAngle = Vector3.Angle(_initForward, direction);
+            _currentAngle = Vector3.Angle(transform.forward, direction);
             if (_currentAngle > limitAngle)
                 return;
             
