@@ -63,6 +63,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a9d0bea3d1b8444c8dab60e4dc62335
+    m_Address: SnakeEnemy_Spawn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ee93937e6bebee64fb948a62ff3fc43f
     m_Address: ShieldedEnemy_Spawn
     m_ReadOnly: 0

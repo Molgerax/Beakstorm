@@ -43,6 +43,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Map
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5d2a0fd2574281498a196d0d3275ed2
+    m_Address: Assets/_Project/Maps/Castle0.map
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Map
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d8aeb4f9e09ee8343902018e14c13f32, type: 2}
   m_SchemaSet:

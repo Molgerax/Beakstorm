@@ -387,6 +387,12 @@ MonoBehaviour:
     m_ResolutionX: 2
     m_ResolutionY: 2
     m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: a1db26dd1132c4e48867aeabae5c1a92, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
   m_PipelineSplitMesh: 0
   m_PipelineSmoothMeshNormals: 1
   m_PipelineSimplifyCollisionMeshes: 1
@@ -464,6 +470,11 @@ MonoBehaviour:
     FullTypeName: UnityEngine.GameObject
     AddressableName: SmallEnemy_Spawn
     SpawnOffset: {x: -0, y: -7.0047092, z: -0}
+  - MapName: enemy_SnakeEnemy_Spawn
+    Path: Assets/_Generated/TremblePrefabs/EnemySpawnPoint/SnakeEnemy_Spawn.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: SnakeEnemy_Spawn
+    SpawnOffset: {x: -0, y: -0, z: 72.443954}
   - MapName: prefab_weapon_pickup
     Path: Assets/_Project/Prefabs/Pickups/Weapons/WeaponPickup.prefab
     FullTypeName: UnityEngine.GameObject
@@ -583,4 +594,9 @@ MonoBehaviour:
     Path: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal_accent.mat
     FullTypeName: UnityEngine.Material
     AddressableName: Assets/_Project/Art/Meshes/Ships/WeakPoints/Materials/m_metal_accent.mat
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_Default
+    Path: Assets/_Project/Art/Materials/m_Default.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_Default
     SpawnOffset: {x: 0, y: 0, z: 0}
