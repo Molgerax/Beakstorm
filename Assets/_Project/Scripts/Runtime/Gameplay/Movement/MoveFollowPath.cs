@@ -18,6 +18,8 @@ namespace Beakstorm.Gameplay.Movement
         
         private Vector3 _moveTargetForward;
 
+        private float _cachedWaypointDistance;
+
         public override void Initialize(Transform t)
         {
             _finished = false;
@@ -50,8 +52,9 @@ namespace Beakstorm.Gameplay.Movement
             {
                 while (Vector3.Distance(posA, _moveTargetPoint) < moveDist && _waypointB)
                 {
-                    _waypointT = Mathf.MoveTowards(_waypointT, 1, 0.1f);
-                    _moveTargetPoint = Waypoint.Interpolate(_waypointA, _waypointB, _waypointT);
+                    float tDelta = _cachedWaypointDistance > 0 ? moveDist / _cachedWaypointDistance : 0.1f;
+                    _waypointT = Mathf.MoveTowards(_waypointT, 1, tDelta);
+                    _moveTargetPoint = Waypoint.Interpolate(_waypointA, _waypointB, _waypointT, out _moveTargetForward);
 
                     if (_waypointT > 0.99f)
                     {
@@ -62,6 +65,7 @@ namespace Beakstorm.Gameplay.Movement
             else
             {
                 _moveTargetPoint = _waypointB.transform.position;
+                _moveTargetForward = (_moveTargetPoint - posA).normalized;
             }
             
             posA = Vector3.MoveTowards(posA, _moveTargetPoint, moveDist);
@@ -74,10 +78,10 @@ namespace Beakstorm.Gameplay.Movement
             t.position = posA;
 
 
-            if (Vector3.Distance(posA, _moveTargetPoint) < 0.1)
+            if (_moveTargetForward.magnitude == 0)
                 return;
 
-            t.rotation = Quaternion.RotateTowards(t.rotation, Quaternion.LookRotation(_moveTargetPoint - posA),
+            t.rotation = Quaternion.RotateTowards(t.rotation, Quaternion.LookRotation(_moveTargetForward),
                 Time.deltaTime * speed);
         }
 
@@ -93,6 +97,9 @@ namespace Beakstorm.Gameplay.Movement
             {
                 _moveTargetPoint = _waypointA ? _waypointA.transform.position : _waypointB.transform.position;
                 _waypointT = 0;
+
+                if (_waypointA && _waypointB)
+                    _cachedWaypointDistance = Waypoint.GetDistance(_waypointA, _waypointB);
             }
             else
             {
