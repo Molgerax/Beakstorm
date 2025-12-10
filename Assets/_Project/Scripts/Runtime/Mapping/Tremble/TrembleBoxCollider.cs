@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 
 namespace Beakstorm.Mapping.Tremble
 {
-    [BrushEntity("box", category:"collision", type: BrushType.Solid)]
+    [BrushEntity("collision_box", category:"func", type: BrushType.Solid)]
     public class TrembleBoxCollider : TriggerBehaviour, IOnImportFromMapEntity
     {
         [Tremble("parent")] private Transform _parent;
