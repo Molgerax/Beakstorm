@@ -927,11 +927,30 @@ namespace TinyGoose.Tremble.Editor
 			string version = SyncSettings.TrenchBroomGameConfigVersion;
 
 			StringBuilder brushes = new();
+			
+			brushes.AppendLine("{");
+			brushes.AppendLine($"\t\t\t\t\"name\": \"Func\",");
+			brushes.AppendLine($"\t\t\t\t\"attribs\": [],");
+			brushes.AppendLine($"\t\t\t\t\"match\": \"classname\",");
+			brushes.AppendLine($"\t\t\t\t\"pattern\": \"func*\"");
+			brushes.Append("\t\t\t}");
+			
+			brushes.AppendLine(",");
+			brushes.Append("\t\t\t");
+			
+			brushes.AppendLine("{");
+			brushes.AppendLine($"\t\t\t\t\"name\": \"Trigger\",");
+			brushes.AppendLine($"\t\t\t\t\"attribs\": [ \"transparent\" ],");
+			brushes.AppendLine($"\t\t\t\t\"match\": \"classname\",");
+			brushes.AppendLine($"\t\t\t\t\"pattern\": \"trigger*\"");
+			brushes.Append("\t\t\t}");
+
+			
 			for (int brushIdx = 0; brushIdx < invisibleBrushes.Count; brushIdx++)
 			{
 				string invisibleBrush = invisibleBrushes[brushIdx];
 
-				if (brushIdx > 0)
+				if (brushIdx > 0 || true)
 				{
 					brushes.AppendLine(",");
 					brushes.Append("\t\t\t");
