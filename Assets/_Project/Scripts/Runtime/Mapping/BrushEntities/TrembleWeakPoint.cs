@@ -13,6 +13,7 @@ namespace Beakstorm.Mapping.BrushEntities
     {
         [SerializeField, Tremble("target")] private TriggerBehaviour[] targets;
         [SerializeField, Tremble("health")] private int health = 100;
+        [SerializeField, Tremble("type")] private WeakPointData data;
         [SerializeField, Tremble("kill")] private bool kill = true;
 
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
@@ -31,7 +32,7 @@ namespace Beakstorm.Mapping.BrushEntities
             }
 
             var weakPoint = gameObject.AddComponent<WeakPoint>();
-            weakPoint.SetFromTremble(targets, health);
+            weakPoint.SetFromTremble(targets, health, data);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Beakstorm.Simulation.Collisions
         [SerializeField, NoTremble] private UltEvent onInitialize;
         [SerializeField, NoTremble] public UltEvent onHealthZero;
         [SerializeField, NoTremble] private UltEvent onDamageTaken;
+        [SerializeField] private TriggerBehaviour[] triggerTargets;
 
         [SerializeField] private bool autoInitialize = false;
         
@@ -21,9 +22,11 @@ namespace Beakstorm.Simulation.Collisions
         [SerializeField] private Vector3 offset;
         [SerializeField] private float radius = 1;
 
+        [Header("Feedback")]
         [SerializeField] private Renderer meshRenderer;
-
-        [SerializeField] private TriggerBehaviour[] triggerTargets;
+        [SerializeField] private WeakPointData weakPointData;
+        [SerializeField] private GameObject soundSource;
+        
 
         private bool _destroyed = true;
         private int _currentHealth;
@@ -40,6 +43,8 @@ namespace Beakstorm.Simulation.Collisions
             }
         }
 
+        public GameObject SoundSource => soundSource ? soundSource : gameObject;
+        
         public float Radius => radius * AverageScale();
 
         private float AverageScale()
@@ -113,9 +118,13 @@ namespace Beakstorm.Simulation.Collisions
         {
             if (_destroyed)
                 return;
-            
+
             if (value > 0)
+            {
                 onDamageTaken?.Invoke();
+                if (weakPointData)
+                    weakPointData.OnDamage(this, value);
+            }
             
             _currentHealth -= value;
 
@@ -145,13 +154,18 @@ namespace Beakstorm.Simulation.Collisions
             _currentHealth = 0;
             onHealthZero?.Invoke();
             triggerTargets.TryTrigger();
+            
+            if (weakPointData)
+                weakPointData.OnDefeat(this);
+            
             Unsubscribe();
         }
 
-        public void SetFromTremble(TriggerBehaviour[] target, int health)
+        public void SetFromTremble(TriggerBehaviour[] target, int health, WeakPointData data = null)
         {
             maxHealth = health;
             triggerTargets = target;
+            weakPointData = data;
             autoInitialize = true;
         }
         
