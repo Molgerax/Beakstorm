@@ -110,22 +110,17 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
     positionA = (maximum + minimum) / 2;
     radius = largestElement(maximum - minimum);
 
-
-    int3 originCell = GetGridCellId(positionA, _HashCellSize, _SimulationCenter, _SimulationSize);
     uint3 cellDimensions = _CellDimensions;
 
-    int sideLength = GetCellCoverageSideLength(radius, _HashCellSize);
+    int3 cellMin = GetGridCellId(minimum, _HashCellSize, _SimulationCenter, _SimulationSize);
+    int3 cellMax = GetGridCellId(maximum, _HashCellSize, _SimulationCenter, _SimulationSize);
+    int3 sideLengths = cellMax - cellMin + 1;
     
-    int3 cellOffset = GetCellOffset(positionA, sideLength, _HashCellSize);
-
-    uint ogKey = KeyFromCellId(originCell, cellDimensions);
-
-    
-    for(int iterator = 0; iterator < sideLength * sideLength * sideLength; iterator++)
+    for(int iterator = 0; iterator < sideLengths.x * sideLengths.y * sideLengths.z; iterator++)
     {
-        int3 offset3D = GetIntegerOffsets3D(sideLength, iterator) + cellOffset;
+        int3 cellId = GetGridCellIdFromBounds(cellMin, cellMax, iterator);
         
-        uint key = KeyFromCellId(originCell + offset3D, cellDimensions);
+        uint key = KeyFromCellId(cellId, cellDimensions);
         uint currIndex = _GridOffsetBuffer[key-1];
         uint nextIndex = _GridOffsetBuffer[key+0];
     
