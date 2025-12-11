@@ -166,8 +166,8 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: 35ccb82c139f5d04088a0293faa56936, type: 2}
-  eventName: play_birdAttack
   target: {fileID: 6469950291410257219}
+  autoStartStop: 0
 --- !u!1 &1236125988240943422
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +262,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 250
-  currentHealth: 0
   onInitialize:
     _PersistentCalls:
     - _Target: {fileID: 6713312725758719694}
@@ -278,9 +277,6 @@ MonoBehaviour:
         _Object: {fileID: 0}
   onHealthZero:
     _PersistentCalls:
-    - _Target: {fileID: 5197853455325238595}
-      _MemberName: PostEvent
-      _PersistentArguments: []
     - _Target: {fileID: 6713312725758719694}
       _MemberName: SetActive
       _PersistentArguments:
@@ -299,14 +295,14 @@ MonoBehaviour:
       _MemberName: SpawnWithScale
       _PersistentArguments: []
   onDamageTaken:
-    _PersistentCalls:
-    - _Target: {fileID: 506786258487550780}
-      _MemberName: PostEvent
-      _PersistentArguments: []
+    _PersistentCalls: []
+  triggerTargets: []
   autoInitialize: 0
   offset: {x: 0, y: 14.66, z: 0}
   radius: 10.2
   meshRenderer: {fileID: 5572208652208514414}
+  weakPointData: {fileID: 11400000, guid: 178cfdcc19e6ea44caff965d0772a85b, type: 2}
+  soundSource: {fileID: 6469950291410257219}
 --- !u!1 &5160215354378138769
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,8 +430,8 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: c5a771c5f9c236b4ea026bd23535de1a, type: 2}
-  eventName: play_birdAttack
   target: {fileID: 6469950291410257219}
+  autoStartStop: 0
 --- !u!1 &6713312725758719694
 GameObject:
   m_ObjectHideFlags: 0
