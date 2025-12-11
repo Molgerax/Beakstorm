@@ -22,6 +22,6 @@ namespace Beakstorm.Gameplay.Enemies
         public virtual void OnMonoEnable() {}
         public virtual void OnMonoDisable() {}
         
-        public abstract void Fire(Vector3 position, Vector3 direction, Vector3 targetPos);
+        public abstract void Fire(Vector3 position, Vector3 direction, Vector3 targetPos, Transform t = null);
     }
 }
