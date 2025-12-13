@@ -31,7 +31,7 @@ namespace Beakstorm.Mapping.Tremble
 
             if (sdf)
             {
-                var tex = sdf.InitializeFromScript(_sdfCompute, _sdfCombineCompute, worldSpawn.SdfMaterialType, worldSpawn.SdfResolution, root, true);
+                var tex = sdf.InitializeFromScript(_sdfCompute, _sdfCombineCompute, worldSpawn.SdfMaterialType, worldSpawn.SdfResolution, worldSpawn.gameObject, true);
                 if (tex)
                     TrembleMapImportSettings.Current.SaveObjectInMap("sdf_texture", tex);
             }

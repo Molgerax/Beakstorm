@@ -26,7 +26,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         
         public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.Third;
         
-        public Texture3D InitializeFromScript(ComputeShader cs, ComputeShader combineSdfCs, SdfMaterialType materialType, int resolution, GameObject parent, bool allMeshChildren)
+        public Texture3D InitializeFromScript(ComputeShader cs, ComputeShader combineSdfCs, SdfMaterialType materialType, int resolution, GameObject parent, bool allMeshChildren, bool noLongerReadable = true)
         {
             if (!this.cs)
                 this.cs = cs;
@@ -39,15 +39,23 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             this.allMeshChildren = allMeshChildren;
             this.materialType = materialType;
             
-            BakeToObject();
+            BakeToObject(noLongerReadable);
             return textureAsset;
         }
 
-        private void BakeToObject()
+        public bool GetBounds(out Vector3 min, out Vector3 max)
+        {
+            min = _cachedBounds.min;
+            max = _cachedBounds.max;
+
+            return _cachedBounds.size.magnitude > 0;
+        }
+        
+        private void BakeToObject(bool noLongerReadable = true)
         {
 #if UNITY_EDITOR
             Init();
-            var result = BakeTexture3D.RenderTextureToTexture3D(_sdfTexture);
+            var result = BakeTexture3D.RenderTextureToTexture3D(_sdfTexture, noLongerReadable);
             textureAsset = result ? result : null;
             Release();
 #endif
@@ -118,6 +126,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         {
             Release();
             
+            if (!cs)
+                return;
+            
             _sdfTexture = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.RFloat);
             _sdfTexture.volumeDepth = resolution;
             _sdfTexture.dimension = TextureDimension.Tex3D;
@@ -142,6 +153,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         [ContextMenu("Bake")]
         public void Bake()
         {
+            if (!cs)
+                return;
+            
             if (!allMeshChildren)
             {
                 if (Target.TryGetComponent(out MeshFilter meshFilter) && Target.TryGetComponent(out MeshRenderer meshRenderer))
