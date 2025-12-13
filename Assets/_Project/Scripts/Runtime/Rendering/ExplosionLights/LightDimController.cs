@@ -23,8 +23,10 @@ namespace Beakstorm.Rendering.ExplosionLights
                 if (explosionLight)
                     dim = Mathf.Min(dim, explosionLight.DimFactor);
             }
+
+            float inverseDim = 1 - dim;
             
-            Shader.SetGlobalFloat(DimFactor, dim);
+            Shader.SetGlobalFloat(DimFactor, inverseDim);
             Shader.SetGlobalInteger(DimMask, layerMask);
         }
 
