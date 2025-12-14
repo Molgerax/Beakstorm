@@ -26,7 +26,9 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         
         public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.Third;
         
-        public Texture3D InitializeFromScript(ComputeShader cs, ComputeShader combineSdfCs, SdfMaterialType materialType, int resolution, GameObject parent, bool allMeshChildren, bool noLongerReadable = true)
+        public Texture3D InitializeFromScript(ComputeShader cs, ComputeShader combineSdfCs, SdfMaterialType materialType, 
+            int resolution, GameObject parent, bool allMeshChildren, bool noLongerReadable = true,
+            MeshCollider[] meshColliders = null, float unionSmoothing = 0)
         {
             if (!this.cs)
                 this.cs = cs;
@@ -39,7 +41,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             this.allMeshChildren = allMeshChildren;
             this.materialType = materialType;
             
-            BakeToObject(noLongerReadable);
+            BakeToObject(noLongerReadable, meshColliders, unionSmoothing);
             return textureAsset;
         }
 
@@ -51,10 +53,11 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             return _cachedBounds.size.magnitude > 0;
         }
         
-        private void BakeToObject(bool noLongerReadable = true)
+        private void BakeToObject(bool noLongerReadable = true, MeshCollider[] meshColliders = null, float unionSmoothing = 0)
         {
 #if UNITY_EDITOR
-            Init();
+            if (Init())
+                Bake(meshColliders, unionSmoothing);
             var result = BakeTexture3D.RenderTextureToTexture3D(_sdfTexture, noLongerReadable);
             textureAsset = result ? result : null;
             Release();
@@ -119,15 +122,16 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
                 return;
             }
 
-            Init();
+            if (Init())
+                Bake();
         }
 
-        private void Init()
+        private bool Init()
         {
             Release();
             
             if (!cs)
-                return;
+                return false;
             
             _sdfTexture = new RenderTexture(resolution, resolution, 0, RenderTextureFormat.RFloat);
             _sdfTexture.volumeDepth = resolution;
@@ -135,8 +139,8 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             _sdfTexture.enableRandomWrite = true;
             _sdfTexture.name = gameObject.name + "_SDF";
             _sdfTexture.Create();
-            
-            Bake();
+
+            return true;
         }
 
         private void Release()
@@ -151,10 +155,17 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         }
 
         [ContextMenu("Bake")]
-        public void Bake()
+        public void Bake(MeshCollider[] meshColliders = null, float unionSmoothing = 0)
         {
             if (!cs)
                 return;
+
+            if (meshColliders != null)
+            {
+                if (BakeFromMeshColliders(meshColliders, unionSmoothing))
+                    _initialized = true ;
+                return;
+            }
             
             if (!allMeshChildren)
             {
@@ -172,17 +183,29 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
                 return;
             }
 
-
             _meshColliders = Target.GetComponentsInChildren<MeshCollider>();
-            if (_meshColliders == null || _meshColliders.Length == 0)
+            
+            if (BakeFromMeshColliders(_meshColliders))
+                _initialized = true ;
+        }
+
+        public bool BakeFromMeshColliders(MeshCollider[] meshColliders, float unionSmoothing = 0)
+        {
+            if (!cs)
+                return false;
+
+            if (!_sdfTexture)
+                Init();
+
+            if (meshColliders == null || meshColliders.Length == 0)
             {
                 Debug.LogError($"SDF Texture {name} contains no mesh colliders, skipping.");
-                return;
+                return false;
             }
             
             Bounds allBounds = new Bounds();
             bool init = false;
-            foreach (MeshCollider meshCollider in _meshColliders)
+            foreach (MeshCollider meshCollider in meshColliders)
             {
                 if (meshCollider.isTrigger)
                     continue;
@@ -207,29 +230,48 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             tempSdf.volumeDepth = resolution;
             tempSdf.dimension = TextureDimension.Tex3D;
             tempSdf.enableRandomWrite = true;
-            tempSdf.name = gameObject.name + "_SDF";
+            tempSdf.name = gameObject.name + "Temp_SDF";
             tempSdf.Create();
 
-            combineSdfCs.SetInt(PropertyIDs.Resolution, resolution);
-            combineSdfCs.SetTexture(0, PropertyIDs.TextureWrite, tempSdf);
-            combineSdfCs.DispatchExact(0, Resolution);
+            int clearKernel = combineSdfCs.FindKernel("Clear");
+            int combineKernel = combineSdfCs.FindKernel("Combine");
+            int subtractKernel = combineSdfCs.FindKernel("Subtract");
+            int noiseKernel = combineSdfCs.FindKernel("Noise");
             
-            foreach (MeshCollider meshCollider in _meshColliders)
+            combineSdfCs.SetInt(PropertyIDs.Resolution, resolution);
+            combineSdfCs.SetInt(PropertyIDs.ClearValue, 0);
+            combineSdfCs.SetTexture(clearKernel, PropertyIDs.TextureWrite, tempSdf);
+            combineSdfCs.DispatchExact(clearKernel, Resolution);
+            
+            combineSdfCs.SetInt(PropertyIDs.Resolution, resolution);
+            combineSdfCs.SetInt(PropertyIDs.ClearValue, 10000);
+            combineSdfCs.SetTexture(clearKernel, PropertyIDs.TextureWrite, _sdfTexture);
+            combineSdfCs.DispatchExact(clearKernel, Resolution);
+
+            foreach (MeshCollider meshCollider in meshColliders)
             {
                 if (meshCollider.isTrigger)
                     continue;
                 
-                BakeSingleMesh(_sdfTexture, meshCollider, allBounds, allVoxelSize);
-                
-                combineSdfCs.SetTexture(1, PropertyIDs.TextureRead, tempSdf);
-                combineSdfCs.SetTexture(1, PropertyIDs.TextureWrite, _sdfTexture);
-                combineSdfCs.DispatchExact(1, Resolution);
+                BakeSingleMesh(tempSdf, meshCollider, allBounds, allVoxelSize);
+
+                combineSdfCs.SetTexture(combineKernel, PropertyIDs.TextureRead, tempSdf);
+                combineSdfCs.SetTexture(combineKernel, PropertyIDs.TextureWrite, _sdfTexture);
+                combineSdfCs.SetFloat(PropertyIDs.UnionSmoothing, unionSmoothing);
+
+                combineSdfCs.DispatchExact(combineKernel, Resolution);
             }
+            
+            combineSdfCs.SetTexture(noiseKernel, PropertyIDs.TextureWrite, _sdfTexture);
+            combineSdfCs.SetVector(PropertyIDs.BoundsMin, allBounds.min);
+            combineSdfCs.SetVector(PropertyIDs.BoundsMax, allBounds.max);
+            combineSdfCs.DispatchExact(noiseKernel, Resolution);
             
             tempSdf.Release();
 
-            _initialized = true;
+            return true;
         }
+        
 
         private void BakeSingleMesh(RenderTexture texture, MeshFilter filter, Bounds bounds, float voxelSize)
         {
@@ -368,6 +410,11 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             public static readonly int TextureRead = Shader.PropertyToID("_TextureRead");
             public static readonly int TextureWrite = Shader.PropertyToID("_TextureWrite");
             public static readonly int Resolution = Shader.PropertyToID("_Resolution");
+            public static readonly int ClearValue = Shader.PropertyToID("_ClearValue");
+            public static readonly int UnionSmoothing = Shader.PropertyToID("_UnionSmoothing");
+            
+            public static readonly int BoundsMin = Shader.PropertyToID("_BoundsMin");
+            public static readonly int BoundsMax = Shader.PropertyToID("_BoundsMax");
         }
     }
 }

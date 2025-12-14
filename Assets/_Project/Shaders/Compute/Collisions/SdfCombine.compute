@@ -1,21 +1,61 @@
 #pragma kernel Clear
 #pragma kernel Combine
+#pragma kernel Subtract
+#pragma kernel Noise
 
 #define THREAD_GROUP_SIZE 4
+
+
+#include "../SimplexNoise.hlsl"
+
 
 Texture3D<float> _TextureRead;
 
 RWTexture3D<float> _TextureWrite;
 uint _Resolution;
+float _ClearValue;
+float _UnionSmoothing;
 
+float3 _BoundsMin;
+float3 _BoundsMax;
 
 [numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
 void Clear (uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= _Resolution || id.y >= _Resolution || id.z >= _Resolution)
         return;
-    _TextureWrite[id.xyz] = 10000;
+    _TextureWrite[id.xyz] = _ClearValue;
 }
+
+
+float Union(float a, float b)
+{
+    return min(a, b);
+}
+
+float SmoothUnion(float a, float b)
+{
+    float k = _UnionSmoothing * 4;
+
+    if (k == 0)
+        return Union(a,b);
+    
+    float h = max(k - abs(a-b), 0.0);
+    return min(a, b) - h * h * 0.25 / k;
+}
+
+float Subtraction(float a, float b)
+{
+    return max(-a, b);
+}
+
+float SmoothSubtraction(float a, float b)
+{
+    if (_UnionSmoothing == 0)
+        return Subtraction(a,b);
+    return -SmoothUnion(a, -b);
+}
+
 
 [numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
 void Combine (uint3 id : SV_DispatchThreadID)
@@ -28,5 +68,56 @@ void Combine (uint3 id : SV_DispatchThreadID)
     float read = _TextureRead[id];
     float write = _TextureWrite[id];
     
-    _TextureWrite[voxel] = min(read, write);
+    _TextureWrite[voxel] = SmoothUnion(read, write);
+}
+
+
+[numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
+void Subtract (uint3 id : SV_DispatchThreadID)
+{
+    const uint3 voxel = id;
+    
+    if (id.x >= _Resolution || id.y >= _Resolution || id.z >= _Resolution)
+        return;
+
+    float read = _TextureRead[id];
+    float write = _TextureWrite[id];
+    
+    _TextureWrite[voxel] = SmoothSubtraction(read, write);
+}
+
+[numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
+void Noise (uint3 id : SV_DispatchThreadID)
+{
+    const uint3 voxel = id;
+    
+    if (id.x >= _Resolution || id.y >= _Resolution || id.z >= _Resolution)
+        return;
+
+    float write = _TextureWrite[id];
+
+    float3 uv = id.xyz / (_Resolution - 1.0);
+    float3 samplePos = lerp(_BoundsMin, _BoundsMax, uv);
+
+    float lacunarity = 1;
+    float scale = 1;
+    float weightSum = 1;
+
+    samplePos /= 512;
+    float noise = SimplexNoise3D(samplePos);
+    
+    for (int i = 0; i < 4; i++)
+    {
+        lacunarity *= 0.5;
+        scale *= 2;
+        weightSum += lacunarity;
+        noise += SimplexNoise3D(samplePos * scale) * lacunarity;
+    }
+
+    noise /= weightSum;
+    
+    noise = noise * 2 - 1;
+    noise *= 30;
+    
+    _TextureWrite[voxel] = write + noise;
 }

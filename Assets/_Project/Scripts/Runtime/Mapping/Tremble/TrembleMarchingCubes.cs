@@ -7,5 +7,6 @@ namespace Beakstorm.Mapping.Tremble
     public class TrembleMarchingCubes : MonoBehaviour
     {
         [Tremble("surface")] public float surface = 0f;
+        [Tremble("smoothing")] public float smoothing = 2f;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Beakstorm.Rendering.MarchingCubes;
 using Beakstorm.Simulation.Collisions.SDF.Shapes;
+using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -35,39 +36,87 @@ namespace Beakstorm.Mapping.Tremble
                 return;
 
 
-            foreach (var cube in marchingCubes)
+            List<GameObject> layersAndGroups = new();
+
+            foreach (TrembleMarchingCubes cube in marchingCubes)
             {
-                MeshFilter meshFilter = cube.GetComponent<MeshFilter>();
-                if (!meshFilter || !meshFilter.sharedMesh)
+                GameObject parentObject = cube.transform.parent.gameObject;
+                if (parentObject == root)
                     continue;
                 
-                SdfTextureField sdf = cube.gameObject.GetComponent<SdfTextureField>();
-                if (!sdf)
-                    sdf = cube.gameObject.AddComponent<SdfTextureField>();
-                
-                var tex = sdf.InitializeFromScript(_sdfCompute, _sdfCombineCompute, worldSpawn.SdfMaterialType, worldSpawn.SdfResolution, cube.gameObject, true, false);
+                if (!layersAndGroups.Contains(parentObject))
+                    layersAndGroups.Add(parentObject);
+            }
 
+
+            foreach (GameObject layer in layersAndGroups)
+            {
+                var cubesLocal = layer.GetComponentsInChildren<TrembleMarchingCubes>();
+
+                List<MeshCollider> colliders = new();
+
+                Material cloudMaterial = null;
+
+                float surface = 0;
+                float unionSmoothing = 0;
+                int count = 0;
+                foreach (var cube in cubesLocal)
+                {
+                    colliders.Add(cube.GetComponent<MeshCollider>());
+                    
+                    count++;
+                    surface += cube.surface;
+                    unionSmoothing = Mathf.Max(cube.smoothing, unionSmoothing);
+
+                    if (cube.TryGetComponent(out MeshRenderer mr))
+                    {
+                        cloudMaterial = mr.sharedMaterial;
+                        CoreUtils.Destroy(mr);
+                    }
+                }
+                surface /= count;
+                
+                SdfTextureField sdf = layer.GetOrAddComponent<SdfTextureField>();
+                
+                var tex = sdf.InitializeFromScript(_sdfCompute, _sdfCombineCompute, worldSpawn.SdfMaterialType, 
+                    worldSpawn.SdfResolution, layer, true, false, colliders.ToArray(), unionSmoothing);
+                
                 if (!tex || !tex.isReadable)
                     continue;
 
                 sdf.GetBounds(out Vector3 min, out Vector3 max);
 
-                Marching marching = new MarchingCubes(cube.surface);
+                Marching marching = new MarchingCubes(surface);
 
                 List<Vector3> vertices = new();
                 List<int> indices = new();
 
+                MeshFilter meshFilter = layer.GetOrAddComponent<MeshFilter>();
+                MeshRenderer meshRenderer = layer.GetOrAddComponent<MeshRenderer>();
+
+                if (meshRenderer.sharedMaterial == null)
+                    meshRenderer.sharedMaterial = cloudMaterial;
+
                 Mesh mesh = meshFilter.sharedMesh;
+
+                bool saveToAsset = false;
+
+                if (mesh == null)
+                {
+                    mesh = new Mesh();
+                    mesh.name = layer.name + "_cloudMesh";
+                    saveToAsset = true;
+                }
 
                 marching.Generate(tex, vertices, indices);
 
                 Vector3 center = sdf.transform.position;
-                max -= center - Vector3.one * 2;
-                min -= center - Vector3.one * 2;
+                //max -= center - Vector3.one * 2;
+                //min -= center - Vector3.one * 2;
 
                 Vector3 resolution = new(tex.width, tex.height, tex.depth);
                 Vector3 cornerA = Vector3.zero;
-                Vector3 cornerB = resolution;
+                Vector3 cornerB = resolution - Vector3.one;
                 
                 for (var index = 0; index < vertices.Count; index++)
                 {
@@ -82,7 +131,14 @@ namespace Beakstorm.Mapping.Tremble
                 mesh.RecalculateNormals();
                 mesh.RecalculateTangents();
                 mesh.RecalculateBounds();
+
+                meshFilter.sharedMesh = mesh;
                 
+                if (saveToAsset)
+                    TrembleMapImportSettings.Current.SaveObjectInMap(mesh.name, mesh);
+                
+                
+                //TrembleMapImportSettings.Current.SaveObjectInMap(tex.name, tex);
                 CoreUtils.Destroy(tex);
                 CoreUtils.Destroy(sdf);
             }
