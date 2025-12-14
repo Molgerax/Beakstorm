@@ -18,6 +18,7 @@ float _UnionSmoothing;
 
 float3 _BoundsMin;
 float3 _BoundsMax;
+float _NoiseStrength;
 
 [numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
 void Clear (uint3 id : SV_DispatchThreadID)
@@ -117,7 +118,7 @@ void Noise (uint3 id : SV_DispatchThreadID)
     noise /= weightSum;
     
     noise = noise * 2 - 1;
-    noise *= 30;
+    noise *= _NoiseStrength;
     
     _TextureWrite[voxel] = write + noise;
 }

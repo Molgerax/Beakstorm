@@ -15,12 +15,15 @@ namespace Beakstorm.Mapping.Tremble
         
         [SerializeField, Range(1, 5)] private int peaceStartIndex = 1;
 
+        [SerializeField] private float cloudNoiseStrength = 30
+            ;
         public static MapWorldSpawn Instance;
         
         public int PeaceStartIndex => peaceStartIndex;
         public int SdfResolution => sdfResolution;
         public SdfMaterialType SdfMaterialType => sdfMaterialType;
         public float MapLowerBound => mapLowerBound;
+        public float CloudNoiseStrength => cloudNoiseStrength;
 
         private void OnEnable()
         {

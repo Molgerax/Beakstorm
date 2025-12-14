@@ -30,6 +30,8 @@ namespace Beakstorm.Mapping.Tremble
         {
             MapWorldSpawn worldSpawn = GetWorldspawn<MapWorldSpawn>();
 
+            float noiseStrength = worldSpawn.CloudNoiseStrength;
+
             var marchingCubes = root.GetComponentsInChildren<TrembleMarchingCubes>();
             
             if (marchingCubes == null || marchingCubes.Length == 0)
@@ -79,7 +81,8 @@ namespace Beakstorm.Mapping.Tremble
                 SdfTextureField sdf = layer.GetOrAddComponent<SdfTextureField>();
                 
                 var tex = sdf.InitializeFromScript(_sdfCompute, _sdfCombineCompute, worldSpawn.SdfMaterialType, 
-                    worldSpawn.SdfResolution, layer, true, false, colliders.ToArray(), unionSmoothing);
+                    worldSpawn.SdfResolution, layer, true, false, colliders.ToArray(), unionSmoothing,
+                    noiseStrength);
                 
                 if (!tex || !tex.isReadable)
                     continue;

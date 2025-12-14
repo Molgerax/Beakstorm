@@ -28,7 +28,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         
         public Texture3D InitializeFromScript(ComputeShader cs, ComputeShader combineSdfCs, SdfMaterialType materialType, 
             int resolution, GameObject parent, bool allMeshChildren, bool noLongerReadable = true,
-            MeshCollider[] meshColliders = null, float unionSmoothing = 0)
+            MeshCollider[] meshColliders = null, float unionSmoothing = 0, float noise = 0)
         {
             if (!this.cs)
                 this.cs = cs;
@@ -41,7 +41,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             this.allMeshChildren = allMeshChildren;
             this.materialType = materialType;
             
-            BakeToObject(noLongerReadable, meshColliders, unionSmoothing);
+            BakeToObject(noLongerReadable, meshColliders, unionSmoothing, noise);
             return textureAsset;
         }
 
@@ -53,11 +53,11 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             return _cachedBounds.size.magnitude > 0;
         }
         
-        private void BakeToObject(bool noLongerReadable = true, MeshCollider[] meshColliders = null, float unionSmoothing = 0)
+        private void BakeToObject(bool noLongerReadable = true, MeshCollider[] meshColliders = null, float unionSmoothing = 0, float noise = 0)
         {
 #if UNITY_EDITOR
             if (Init())
-                Bake(meshColliders, unionSmoothing);
+                Bake(meshColliders, unionSmoothing, noise);
             var result = BakeTexture3D.RenderTextureToTexture3D(_sdfTexture, noLongerReadable);
             textureAsset = result ? result : null;
             Release();
@@ -155,14 +155,14 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         }
 
         [ContextMenu("Bake")]
-        public void Bake(MeshCollider[] meshColliders = null, float unionSmoothing = 0)
+        public void Bake(MeshCollider[] meshColliders = null, float unionSmoothing = 0, float noise = 0)
         {
             if (!cs)
                 return;
 
             if (meshColliders != null)
             {
-                if (BakeFromMeshColliders(meshColliders, unionSmoothing))
+                if (BakeFromMeshColliders(meshColliders, unionSmoothing, noise))
                     _initialized = true ;
                 return;
             }
@@ -189,7 +189,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
                 _initialized = true ;
         }
 
-        public bool BakeFromMeshColliders(MeshCollider[] meshColliders, float unionSmoothing = 0)
+        public bool BakeFromMeshColliders(MeshCollider[] meshColliders, float unionSmoothing = 0, float noise = 0)
         {
             if (!cs)
                 return false;
@@ -261,12 +261,16 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
 
                 combineSdfCs.DispatchExact(combineKernel, Resolution);
             }
-            
-            combineSdfCs.SetTexture(noiseKernel, PropertyIDs.TextureWrite, _sdfTexture);
-            combineSdfCs.SetVector(PropertyIDs.BoundsMin, allBounds.min);
-            combineSdfCs.SetVector(PropertyIDs.BoundsMax, allBounds.max);
-            combineSdfCs.DispatchExact(noiseKernel, Resolution);
-            
+
+            if (noise != 0)
+            {
+                combineSdfCs.SetTexture(noiseKernel, PropertyIDs.TextureWrite, _sdfTexture);
+                combineSdfCs.SetFloat(PropertyIDs.NoiseStrength, noise);
+                combineSdfCs.SetVector(PropertyIDs.BoundsMin, allBounds.min);
+                combineSdfCs.SetVector(PropertyIDs.BoundsMax, allBounds.max);
+                combineSdfCs.DispatchExact(noiseKernel, Resolution);
+            }
+
             tempSdf.Release();
 
             return true;
@@ -415,6 +419,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             
             public static readonly int BoundsMin = Shader.PropertyToID("_BoundsMin");
             public static readonly int BoundsMax = Shader.PropertyToID("_BoundsMax");
+            public static readonly int NoiseStrength = Shader.PropertyToID("_NoiseStrength");
         }
     }
 }
