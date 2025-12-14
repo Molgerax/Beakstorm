@@ -5,7 +5,7 @@
 float _DimFactor;
 uint _DimMask;
 
-#define DIM_FACTOR 1.0 - _DimFactor
+#define DIM_FACTOR (1.0 - _DimFactor)
 
 #ifndef SHADERGRAPH_PREVIEW
 struct Surface
