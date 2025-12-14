@@ -944,6 +944,16 @@ namespace TinyGoose.Tremble.Editor
 			brushes.AppendLine($"\t\t\t\t\"match\": \"classname\",");
 			brushes.AppendLine($"\t\t\t\t\"pattern\": \"trigger*\"");
 			brushes.Append("\t\t\t}");
+			
+			brushes.AppendLine(",");
+			brushes.Append("\t\t\t");
+			
+			brushes.AppendLine("{");
+			brushes.AppendLine($"\t\t\t\t\"name\": \"Cloud\",");
+			brushes.AppendLine($"\t\t\t\t\"attribs\": [ ],");
+			brushes.AppendLine($"\t\t\t\t\"match\": \"classname\",");
+			brushes.AppendLine($"\t\t\t\t\"pattern\": \"misc_cloud\"");
+			brushes.Append("\t\t\t}");
 
 			
 			for (int brushIdx = 0; brushIdx < invisibleBrushes.Count; brushIdx++)
