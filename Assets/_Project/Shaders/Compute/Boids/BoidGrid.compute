@@ -474,8 +474,8 @@ void Update (uint3 id : SV_DispatchThreadID)
     
     float3 predictedPosition = currentPosition + _DeltaTime * clampVector(velocity + acceleration * _DeltaTime, minSpeed, maxSpeed);
     
-    //SdfQueryInfo sdfInfo = GetClosestDistance(predictedPosition, 0, 1 << PHEROMONE_ONLY);
-    //acceleration += sdfForce(sdfInfo, _AvoidDistance, maxForce) * saturate(1 - 2 * boid.exposure);
+    SdfQueryInfo sdfInfo = GetClosestDistance(predictedPosition, 0, 1 << PHEROMONE_ONLY);
+    acceleration += sdfForce(sdfInfo, _AvoidDistance, maxForce) * saturate(1 - 2 * boid.exposure);
 
     
     velocity += acceleration * _DeltaTime;
