@@ -242,8 +242,8 @@ namespace Beakstorm.Simulation.Particles
                 boidComputeShader.SetFloat(PropertyIDs.PheromoneSmoothingRadius, p.SmoothingRadius);
                 boidComputeShader.SetInt(PropertyIDs.PheromoneTotalCount, p.AgentCount);
                 
-                boidComputeShader.SetVector(PropertyIDs.PheromoneCenter, p.SimulationCenter);
-                boidComputeShader.SetVector(PropertyIDs.PheromoneSize, p.SimulationSize);
+                boidComputeShader.SetVector(PropertyIDs.PheromoneCenter, p.Hash.Center);
+                boidComputeShader.SetVector(PropertyIDs.PheromoneSize, p.Hash.Size);
                 boidComputeShader.SetInts(PropertyIDs.PheromoneCellDimensions, p.Hash.Dimensions);
                 
                 boidComputeShader.SetBuffer(kernelId, PropertyIDs.PheromoneBuffer, p.AgentBufferRead);
@@ -292,7 +292,7 @@ namespace Beakstorm.Simulation.Particles
                 lightProbeProxyVolume = null,
                 receiveShadows = true,
                 shadowCastingMode = ShadowCastingMode.On,
-                worldBounds = new Bounds(transform.position, simulationSpace * 100), 
+                worldBounds = new Bounds(SimulationCenter, SimulationSize * 100), 
                 matProps = _propertyBlock,
             };
             
