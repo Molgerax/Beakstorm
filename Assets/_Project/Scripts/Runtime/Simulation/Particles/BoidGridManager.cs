@@ -88,6 +88,8 @@ namespace Beakstorm.Simulation.Particles
 
         private float GetHashCellSize()
         {
+            return hashCellSize;
+            
             if (!neutralState && !exposedState)
                 return hashCellSize;
             

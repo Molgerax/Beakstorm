@@ -190,7 +190,11 @@ void LimitToBounds(inout float3 pos, inout float3 oldPos)
     mask += 1 - step(uv, 1);
 
     float3 normal = normalize(mask);
-    
+
+    pos -= _SimulationSize * mask;
+    oldPos -= _SimulationSize * mask;
+
+    return;
 
     float3 vel = pos - oldPos;
     float3 flattenVelocity = -dot(vel + normal * -dist, normal) * normal;
