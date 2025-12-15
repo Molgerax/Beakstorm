@@ -99,22 +99,7 @@ namespace Beakstorm.ComputeHelpers
 
         public void Update()
         {
-            //UpdateGrid();
-            //BitonicMergeSort.SortAndCalculateOffsets(_sortShader, IndexBuffer, CellIdBuffer, PointerBuffer, true);
-
-            int3 gridId = GetGridCellId(_center);
-            float3 offset = (float3)_center - GetPosFromGridCell(gridId);
-
-            Vector3 newPos = ParticleSimulationCenter.Instance
-                ? ParticleSimulationCenter.Instance.transform.position
-                : _simulation.SimulationCenter;
-
-            newPos.y = _center.y;
-            
-            gridId = GetGridCellId(newPos);
-            _snappedCenter = offset + GetPosFromGridCell(gridId);
-            
-            Debug.Log($"Snapped Center: {_snappedCenter}");
+            CalculateSnappedCenter();
 
             ClearGridOffsets();
             UpdateGrid();
@@ -124,6 +109,27 @@ namespace Beakstorm.ComputeHelpers
             ReorderBoids();
         }
 
+        private void CalculateSnappedCenter()
+        {
+            int3 gridId = GetGridCellId(_center);
+            float3 offset = (float3)_center - GetPosFromGridCell(gridId);
+
+            Vector3 newPos = ParticleSimulationCenter.Instance
+                ? ParticleSimulationCenter.Instance.transform.position
+                : _simulation.SimulationCenter;
+            
+            var border = ParticleSimulationBorders.Instance;
+            if (border)
+            {
+                newPos = border.SnapCenterToBounds(newPos, _size);
+            }
+
+            newPos.y = _center.y;
+            
+            gridId = GetGridCellId(newPos);
+            _snappedCenter = offset + GetPosFromGridCell(gridId);
+        }
+        
         public void SetShaderProperties(ComputeShader cs)
         {
             cs.SetInt(PropertyIDs.AgentCount, _agentCount);
