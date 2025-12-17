@@ -31,13 +31,7 @@ namespace Beakstorm.Rendering.MarchingCubes
             WindingOrder = new int[] { 0, 1, 2 };
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="voxels"></param>
-        /// <param name="verts"></param>
-        /// <param name="indices"></param>
-        public virtual void Generate(Texture3D voxels, IList<Vector3> verts, IList<int> indices)
+        public virtual void Generate(Texture3D voxels, IList<Vector3> verts, IList<int> indices, IList<Vector3> normals = null)
         {
             int width = voxels.width;
             int height = voxels.height;
@@ -60,7 +54,7 @@ namespace Beakstorm.Rendering.MarchingCubes
                             iy = y + VertexOffset[i, 1];
                             iz = z + VertexOffset[i, 2];
 
-                            Cube[i] = -voxels.GetPixel(ix, iy, iz).r;
+                            Cube[i] = -GetVoxel(ix, iy, iz, voxels);
                         }
 
                         //Perform algorithm
@@ -68,6 +62,120 @@ namespace Beakstorm.Rendering.MarchingCubes
                     }
                 }
             }
+
+            if (normals != null)
+            {
+                for (int index = 0; index < verts.Count; index++)
+                {
+                    //Presumes the vertex is in local space where
+                    //the min value is 0 and max is width/height/depth.
+                    Vector3 p = verts[index];
+
+                    float u = p.x / (width - 1.0f);
+                    float v = p.y / (height - 1.0f);
+                    float w = p.z / (depth - 1.0f);
+
+                    Vector3 n = GetVoxelDerivative(u, v, w, voxels);
+
+                    normals.Add(n);
+                }
+            }
+        }
+
+        protected float GetVoxel(int x, int y, int z, Texture3D tex)
+        {
+            int width = tex.width;
+            int height = tex.height;
+            int depth = tex.depth;
+
+            x = Mathf.Clamp(x, 0, width - 1);
+            y = Mathf.Clamp(y, 0, height - 1);
+            z = Mathf.Clamp(z, 0, depth - 1);
+            
+            return tex.GetPixel(x, y, z).r;
+        }
+        
+        public float GetVoxel(float u, float v, float w, Texture3D tex)
+        {
+            int width = tex.width;
+            int height = tex.height;
+            int depth = tex.depth;
+        
+            float x = u * (width - 1);
+            float y = v * (height - 1);
+            float z = w * (depth - 1);
+
+            int xi = (int)Mathf.Floor(x);
+            int yi = (int)Mathf.Floor(y);
+            int zi = (int)Mathf.Floor(z);
+
+            float v000 = GetVoxel(xi, yi, zi, tex);
+            float v100 = GetVoxel(xi + 1, yi, zi, tex);
+            float v010 = GetVoxel(xi, yi + 1, zi, tex);
+            float v110 = GetVoxel(xi + 1, yi + 1, zi, tex);
+
+            float v001 = GetVoxel(xi, yi, zi + 1, tex);
+            float v101 = GetVoxel(xi + 1, yi, zi + 1, tex);
+            float v011 = GetVoxel(xi, yi + 1, zi + 1, tex);
+            float v111 = GetVoxel(xi + 1, yi + 1, zi + 1, tex);
+
+            float tx = Mathf.Clamp01(x - xi);
+            float ty = Mathf.Clamp01(y - yi);
+            float tz = Mathf.Clamp01(z - zi);
+
+            //use bilinear interpolation the find these values.
+            float v0 = BLerp(v000, v100, v010, v110, tx, ty);
+            float v1 = BLerp(v001, v101, v011, v111, tx, ty);
+
+            //Now lerp those values for the final trilinear interpolation.
+            return Lerp(v0, v1, tz);
+        }
+        
+        protected Vector3 GetVoxelDerivative(int x, int y, int z, Texture3D tex)
+        {
+            float dx_p1 = GetVoxel(x + 1, y, z, tex);
+            float dy_p1 = GetVoxel(x, y + 1, z, tex);
+            float dz_p1 = GetVoxel(x, y, z + 1, tex);
+
+            float dx_m1 = GetVoxel(x - 1, y, z, tex);
+            float dy_m1 = GetVoxel(x, y - 1, z, tex);
+            float dz_m1 = GetVoxel(x, y, z - 1, tex);
+
+            float dx = (dx_p1 - dx_m1) * 0.5f;
+            float dy = (dy_p1 - dy_m1) * 0.5f;
+            float dz = (dz_p1 - dz_m1) * 0.5f;
+
+            return new Vector3(dx, dy, dz);
+        }
+
+        public Vector3 GetVoxelDerivative(float u, float v, float w, Texture3D tex)
+        {
+            const float h = 0.005f;
+            const float hh = h * 0.5f;
+            const float ih = 1.0f / h;
+
+            float dx_p1 = GetVoxel(u + hh, v, w, tex);
+            float dy_p1 = GetVoxel(u, v + hh, w, tex);
+            float dz_p1 = GetVoxel(u, v, w + hh, tex);
+            
+            float dx_m1 = GetVoxel(u - hh, v, w, tex);
+            float dy_m1 = GetVoxel(u, v - hh, w, tex);
+            float dz_m1 = GetVoxel(u, v, w - hh, tex);
+
+            float dx = (dx_p1 - dx_m1) * ih;
+            float dy = (dy_p1 - dy_m1) * ih;
+            float dz = (dz_p1 - dz_m1) * ih;
+
+            return new Vector3(dx, dy, dz);
+        }
+        
+        private static float Lerp(float v0, float v1, float t)
+        {
+            return v0 + (v1 - v0) * t;
+        }
+        private static float BLerp(float v00, float v10, float v01, float v11, float tx, float ty)
+        {
+            return Lerp(Lerp(v00, v10, tx), Lerp(v01, v11, tx), ty);
         }
 
         /// <summary>

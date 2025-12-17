@@ -98,6 +98,7 @@ namespace Beakstorm.Mapping.Tremble
 
                 List<Vector3> vertices = new();
                 List<int> indices = new();
+                List<Vector3> normals = new();
 
                 MeshFilter meshFilter = layer.GetOrAddComponent<MeshFilter>();
                 MeshRenderer meshRenderer = layer.GetOrAddComponent<MeshRenderer>();
@@ -116,7 +117,7 @@ namespace Beakstorm.Mapping.Tremble
                     saveToAsset = true;
                 }
 
-                marching.Generate(tex, vertices, indices);
+                marching.Generate(tex, vertices, indices, normals);
 
                 Vector3 center = sdf.transform.position;
                 //max -= center - Vector3.one * 2;
@@ -136,7 +137,11 @@ namespace Beakstorm.Mapping.Tremble
                 mesh.SetVertices(vertices);
                 mesh.SetIndices(indices, MeshTopology.Triangles, 0);
 
-                mesh.RecalculateNormals();
+                if (normals is {Count: > 0})
+                    mesh.SetNormals(normals);
+                else
+                    mesh.RecalculateNormals();
+                
                 mesh.RecalculateTangents();
                 mesh.RecalculateBounds();
 
