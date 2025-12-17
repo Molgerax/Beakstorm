@@ -5,14 +5,21 @@ namespace Beakstorm.Simulation.Settings
 {
     public class ParticleSimulationBorders : MonoBehaviour
     {
+        [SerializeField] private Vector3 offset = Vector3.zero;
         [SerializeField] private Vector3 size = Vector3.one * 1024;
 
-        public Vector3 Center => transform.position;
+        public Vector3 Center => transform.position + offset;
         public Vector3 Size => size;
         
         public static ParticleSimulationBorders Instance { get; private set; }
 
         public Bounds Bounds => new Bounds(Center, Size);
+
+        public void SetBorders(Bounds bounds)
+        {
+            offset = bounds.center - transform.position;
+            size = bounds.size;
+        }
 
         public Vector3 SnapCenterToBounds(Vector3 inCenter, Vector3 inSize)
         {
