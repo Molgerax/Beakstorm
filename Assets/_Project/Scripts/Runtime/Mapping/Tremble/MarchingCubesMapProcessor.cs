@@ -75,6 +75,11 @@ namespace Beakstorm.Mapping.Tremble
                         cloudMaterial = mr.sharedMaterial;
                         CoreUtils.Destroy(mr);
                     }
+                    if (cube.TryGetComponent(out MeshFilter mf))
+                    {
+                        CoreUtils.Destroy(mf.sharedMesh);
+                        CoreUtils.Destroy(mf);
+                    }
                 }
                 surface /= count;
                 
@@ -148,7 +153,15 @@ namespace Beakstorm.Mapping.Tremble
                 for (var index = colliders.Count - 1; index >= 0; index--)
                 {
                     var collider = colliders[index];
+                    
+                    CoreUtils.Destroy(collider.sharedMesh);
                     CoreUtils.Destroy(collider);
+                }
+
+                for (var index = cubesLocal.Length - 1; index >= 0; index--)
+                {
+                    var cube = cubesLocal[index];
+                    CoreUtils.Destroy(cube.gameObject);
                 }
 
                 var meshCollider = layer.AddComponent<MeshCollider>();
