@@ -149,4 +149,15 @@ float SimplexNoise4D(float4 p)
 	      + dot(m13, float2(dot(p3, x3), dot(p4, x4)))) * 9.0;
 }
 
+void SimplexNoise3D_float(float3 pos, out float value)
+{
+	value = SimplexNoise3D(pos);
+}
+
+void SimplexNoise4D_float(float4 pos, out float value)
+{
+	value = SimplexNoise4D(pos);
+}
+
+
 #endif
