@@ -17,8 +17,8 @@ namespace Beakstorm.Mapping.Triggers
             if (_triggered)
                 return;
             
-            //if (!layerMask.Contains(other))
-            //    return;
+            if (!layerMask.Contains(other))
+                return;
 
             _triggered = true;
             
