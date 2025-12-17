@@ -144,6 +144,16 @@ namespace Beakstorm.Mapping.Tremble
                 //TrembleMapImportSettings.Current.SaveObjectInMap(tex.name, tex);
                 CoreUtils.Destroy(tex);
                 CoreUtils.Destroy(sdf);
+                
+                for (var index = colliders.Count - 1; index >= 0; index--)
+                {
+                    var collider = colliders[index];
+                    CoreUtils.Destroy(collider);
+                }
+
+                var meshCollider = layer.AddComponent<MeshCollider>();
+                meshCollider.sharedMesh = mesh;
+                meshCollider.convex = false;
             }
         }
 
