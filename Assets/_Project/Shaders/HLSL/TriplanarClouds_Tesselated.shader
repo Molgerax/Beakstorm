@@ -135,7 +135,7 @@ Shader "Beakstorm/TriplanarClouds_Tesselated"
 
     float displacementFactor(float3 worldPos, float3 worldNormal)
     {
-        float timeOffset = _Time.x * _ScrollingSpeed;
+        float timeOffset = _Time.y * _ScrollingSpeed;
 
         //timeOffset = frac(timeOffset) * PI * 2;
         
@@ -155,7 +155,7 @@ Shader "Beakstorm/TriplanarClouds_Tesselated"
         float lacunarity = 1;
         float scale = 1;
         float weightSum = 1;
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 1; i++)
         {
             lacunarity *= 0.5;
             scale *= 2;
@@ -250,15 +250,34 @@ Shader "Beakstorm/TriplanarClouds_Tesselated"
 
         float3 worldPos = IN.positionWS;
         float3 worldNormal = (IN.normalWS);
+        float3 worldTangent = (IN.tangentWS);
         
         float noise = displacementFactor(worldPos, worldNormal);
 
+        float offset =1;
+
+        float3 worldBinormal = normalize(cross(IN.tangentWS, worldNormal));
+        
+        float d = _Height * displacementFactor(worldPos, worldNormal);
+        float dBinormal = _Height * displacementFactor(worldPos + worldBinormal * offset, worldNormal) - d;
+        float dTangent = _Height * displacementFactor(worldPos + worldTangent * offset, worldNormal) - d;
+
+        dBinormal /= offset;
+        dTangent /= offset;
+        
+        float3 newNormal = worldNormal - (dBinormal) * worldBinormal - (dTangent) * worldTangent;
+
+        worldNormal = normalize(newNormal);
+        
         float3 viewDir = SafeNormalize(GetWorldSpaceViewDir(worldPos));
 
         float rim = 1 - saturate(dot(viewDir, noise * worldNormal));
         float3 rimColor = _RimColor.rgb * pow(rim, _RimPower);
 
         LightingLambertShaded_float(worldPos, 0, worldNormal, viewDir, 0, color);
+
+        noise = saturate(noise * 0.5 + 0.5);
+        //color *= noise;
         color *= _BaseColor;
         color.rgb += rimColor * _RimColor.a;
         
