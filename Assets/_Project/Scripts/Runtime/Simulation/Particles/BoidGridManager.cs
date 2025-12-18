@@ -284,6 +284,8 @@ namespace Beakstorm.Simulation.Particles
             
             _propertyBlock ??= new MaterialPropertyBlock();
             _propertyBlock.SetBuffer(PropertyIDs.BoidBuffer, AgentBufferRead);
+
+            _hash.SetShaderProperties(_propertyBlock);
             
             RenderParams rp = new RenderParams(material)
             {
