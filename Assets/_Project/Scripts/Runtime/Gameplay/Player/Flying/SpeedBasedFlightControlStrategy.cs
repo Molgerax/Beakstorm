@@ -117,11 +117,9 @@ namespace Beakstorm.Gameplay.Player.Flying
 
             glider.OverChargeVariable.Value = glider.OverCharge;
 
-            _fov = Mathf.SmoothDamp(_fov,
-                glider.OverCharge > 0 && !glider.Discharging
-                    ? Mathf.Clamp01(glider.Speed01 - (glider.OverCharge / chargeCapacity))
-                    : glider.Speed01, 
-                ref _fovSpeed, 0.05f);
+            _fov = Mathf.SmoothDamp(_fov, glider.Speed01, ref _fovSpeed, 0.05f);
+
+            glider.LocalRotation = glider.T.localRotation;
             
             glider.FovFactor = _fov;
             //glider.FovFactor = glider.Speed01;
@@ -288,16 +286,14 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         protected void UpdateThrustAndOverCharge(GliderController glider, float dt, ref float force)
         {
-            float inputStrength = 0;
-            inputStrength += glider.ThrustInput ? 1 : 0;
+            float inputStrength = 1;
+            //inputStrength += glider.ThrustInput ? 1 : 0;
             if (glider.BreakInput)
                 inputStrength = -1;
 
-            if (glider.ThrustInput && glider.BreakInput && !glider.Discharging)
-            {
-                glider.OverCharge = Mathf.MoveTowards(glider.OverCharge, chargeCapacity, dt * chargeRate);
-            }
-            else if (glider.OverCharge > 0 && glider.Discharging)
+            bool boosting = glider.OverCharge > 0 && glider.ThrustInput && !glider.BreakInput; 
+            
+            if (boosting)
             {
                 float chargeBonus = Mathf.Clamp01(glider.OverCharge / chargeCapacity);
 
@@ -311,23 +307,23 @@ namespace Beakstorm.Gameplay.Player.Flying
                 if (glider.OverCharge == 0)
                     glider.Discharging = false;
             }
-            else if (glider.OverCharge > 0 && !glider.Discharging)
+            else if (glider.BreakInput && !glider.ThrustInput)
             {
-                if (glider.BreakInput)
-                    glider.OverCharge = 0;
-                else
-                    glider.Discharging = true;
+                glider.OverCharge = Mathf.MoveTowards(glider.OverCharge, chargeCapacity, dt * chargeRate);
+            }
+            else if (!glider.ThrustInput)
+            {
+                glider.OverCharge = Mathf.MoveTowards(glider.OverCharge, chargeCapacity, dt * chargeRate * 0.1f);
             }
             
-            //if (Mathf.Abs(inputStrength) < 0.1f)
             glider.Thrust =
                 Mathf.Lerp(glider.Thrust, idleThrust, 1 - Mathf.Exp(-throttleReset * dt));
             
             
+            if (glider.Thrust < (boosting ? maxThrust : maxThrust * 0.8f))
+                glider.Thrust = Mathf.MoveTowards(glider.Thrust, boosting ? maxThrust : maxThrust * 0.8f, inputStrength * dt * throttleSpeed);
             
-            glider.Thrust += inputStrength * dt * throttleSpeed;
             glider.Thrust = Mathf.Clamp(glider.Thrust, minThrust, maxThrust);
-
             glider.Thrust01 = glider.Thrust / maxThrust;
 
         }
