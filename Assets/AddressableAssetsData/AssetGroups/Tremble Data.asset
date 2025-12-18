@@ -21,6 +21,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 178cfdcc19e6ea44caff965d0772a85b
+    m_Address: WeakPoint_Balloon
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2b763d6de748faf4294d1c981112eba6
     m_Address: Simple_LongRangeShot
     m_ReadOnly: 0
@@ -33,8 +39,20 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61f704debad8fa3438a38a4f08c72070
+    m_Address: WeakPoint_Breakable
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 848899affe973bf47b013bbab7f99edc
     m_Address: Simple_ReversePheromoneShot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c8ab93c6a1d0cd41b3545ff9272419e
+    m_Address: WeakPoint_Turret
     m_ReadOnly: 0
     m_SerializedLabels:
     - Tremble

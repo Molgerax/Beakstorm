@@ -15,14 +15,50 @@ MonoBehaviour:
   m_GroupName: Tremble Materials
   m_GUID: 5964aa713180e0442a16c7d157a880cb
   m_SerializeEntries:
+  - m_GUID: 12a9629dd7214f548b5f27bbd5c74689
+    m_Address: Clouds/Clouds_Dark_Tess
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4b471ae6d3a024e48a88e3ebc3fe395c
     m_Address: Mapping/Mapping_Base_Blue
     m_ReadOnly: 0
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e6c7a1fd1647474096043aef288997b
+    m_Address: Mapping/TriplanarClouds_Tesselated
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7be91e60b1afb5f4ab8ee77f8679e0df
+    m_Address: Mapping/TriplanarClouds
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 860e82aa07fe1b14db004cbe8141f0d0
     m_Address: Mapping/Mapping_Base_Red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a897239472d9d3946aab85ca93cc34fa
+    m_Address: Clouds/Clouds_Dark
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae7225cbb9a5b5745bb6872906c7327e
+    m_Address: Mapping/Breakable_Red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bedbc824ae7d9c04aa531a05a2198ac8
+    m_Address: Mapping/Mapping_CollisionWalls
     m_ReadOnly: 0
     m_SerializedLabels:
     - Tremble

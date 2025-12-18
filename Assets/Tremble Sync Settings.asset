@@ -32,6 +32,14 @@ MonoBehaviour:
     - {fileID: 2100000, guid: cbf9802346300eb44bb16813962aed18, type: 2}
     - {fileID: 2100000, guid: c1955b25cba3b644ea60dc8f0615ba1c, type: 2}
     - {fileID: 2100000, guid: 4b471ae6d3a024e48a88e3ebc3fe395c, type: 2}
+    - {fileID: 2100000, guid: ae7225cbb9a5b5745bb6872906c7327e, type: 2}
+    - {fileID: 2100000, guid: bedbc824ae7d9c04aa531a05a2198ac8, type: 2}
+  - Name: Clouds
+    Materials:
+    - {fileID: 2100000, guid: 12a9629dd7214f548b5f27bbd5c74689, type: 2}
+    - {fileID: 2100000, guid: 7be91e60b1afb5f4ab8ee77f8679e0df, type: 2}
+    - {fileID: 2100000, guid: 6e6c7a1fd1647474096043aef288997b, type: 2}
+    - {fileID: 2100000, guid: a897239472d9d3946aab85ca93cc34fa, type: 2}
   m_MaterialRenderData:
   - m_Material: {fileID: 2100000, guid: d9d8676ef392ea641b99c4c1eb1ebe9f, type: 2}
     m_ExportMode: 0
@@ -393,6 +401,48 @@ MonoBehaviour:
     m_ResolutionX: 2
     m_ResolutionY: 2
     m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: ae7225cbb9a5b5745bb6872906c7327e, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 7be91e60b1afb5f4ab8ee77f8679e0df, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 6e6c7a1fd1647474096043aef288997b, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: bedbc824ae7d9c04aa531a05a2198ac8, type: 2}
+    m_ExportMode: 1
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 12a9629dd7214f548b5f27bbd5c74689, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: a897239472d9d3946aab85ca93cc34fa, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: -876546973899608171, guid: 51d20f34c875f474f86f026381f8cb9a, type: 3}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
   m_PipelineSplitMesh: 0
   m_PipelineSmoothMeshNormals: 1
   m_PipelineSimplifyCollisionMeshes: 1
@@ -404,6 +454,12 @@ MonoBehaviour:
     Enabled: 1
   - Class:
       m_MapClassName: Beakstorm.Mapping.Tremble.SdfTextureMapProcessor
+    Enabled: 1
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.MarchingCubesMapProcessor
+    Enabled: 1
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.ParticleSimulationBorderMapProcessor
     Enabled: 1
   m_LogOnImportAndSync: 0
   m_UseLiveUpdate: 1
@@ -520,6 +576,21 @@ MonoBehaviour:
     FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
     AddressableName: Simple_SpreadPheromoneShot
     SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Balloon
+    Path: Assets/_Project/Data/WeakPoints/WeakPoint_Balloon.asset
+    FullTypeName: Beakstorm.Simulation.Collisions.WeakPointData
+    AddressableName: WeakPoint_Balloon
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Breakable
+    Path: Assets/_Project/Data/WeakPoints/WeakPoint_Breakable.asset
+    FullTypeName: Beakstorm.Simulation.Collisions.WeakPointData
+    AddressableName: WeakPoint_Breakable
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: WeakPoint_Turret
+    Path: Assets/_Project/Data/WeakPoints/WeakPoint_Turret.asset
+    FullTypeName: Beakstorm.Simulation.Collisions.WeakPointData
+    AddressableName: WeakPoint_Turret
+    SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Mapping/Mapping_Base
     Path: Assets/_Project/Materials/Mapping/Mapping_Base.mat
     FullTypeName: UnityEngine.Material
@@ -544,6 +615,36 @@ MonoBehaviour:
     Path: Assets/_Project/Materials/Mapping/Mapping_Base_Blue.mat
     FullTypeName: UnityEngine.Material
     AddressableName: Mapping/Mapping_Base_Blue
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/Breakable_Red
+    Path: Assets/_Project/Materials/Mapping/Breakable_Red.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/Breakable_Red
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/Mapping_CollisionWalls
+    Path: Assets/_Project/Materials/Mapping/Mapping_CollisionWalls.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/Mapping_CollisionWalls
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Clouds/Clouds_Dark_Tess
+    Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_Dark_Tess.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Clouds/Clouds_Dark_Tess
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Clouds/Clouds_White
+    Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_White.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/TriplanarClouds
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Clouds/Clouds_White_Tess
+    Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_White_Tess.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/TriplanarClouds_Tesselated
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Clouds/Clouds_Dark
+    Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_Dark.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Clouds/Clouds_Dark
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Lit
     Path: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
