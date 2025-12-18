@@ -1,4 +1,3 @@
-using System;
 using Beakstorm.Gameplay.Player;
 using Beakstorm.Pausing;
 using UltEvents;
@@ -27,18 +26,18 @@ namespace Beakstorm.Gameplay.Enemies
 
         private int _firePointIndex;
 
-        private Vector3 GetFirePoint()
+        private Transform GetFirePoint()
         {
             if (firePoints == null || firePoints.Length == 0)
-                return transform.position;
+                return transform;
             
             _firePointIndex = _firePointIndex % firePoints.Length;
             Transform t = firePoints[_firePointIndex];
             _firePointIndex = (_firePointIndex + 1) % firePoints.Length;
             
             if (t == null)
-                return transform.position;
-            return t.position;
+                return transform;
+            return t;
         }
 
         private void OnEnable()
@@ -127,7 +126,8 @@ namespace Beakstorm.Gameplay.Enemies
             Vector3 playerPos = PlayerController.Instance.Position;
             Vector3 playerVel = PlayerController.Instance.Velocity;
             
-            Vector3 pos = GetFirePoint();
+            Transform t = GetFirePoint();
+            Vector3 pos = t.position;
 
             Vector3 predictedPos = playerPos + playerVel * Vector3.Distance(playerPos, pos) / weaponData.InitialVelocity;
             
@@ -138,7 +138,7 @@ namespace Beakstorm.Gameplay.Enemies
             if (_currentAngle > limitAngle)
                 return;
             
-            weaponData.Fire(pos, direction.normalized, predictedPos);
+            weaponData.Fire(pos, direction.normalized, predictedPos, t);
             
             onFire?.Invoke();
         }

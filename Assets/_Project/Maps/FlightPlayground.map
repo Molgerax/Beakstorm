@@ -1469,7 +1469,7 @@
 }
 // entity 3
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "angles" "0 0 0"
 "sdfMaterial" "Metal"
 // brush 0
@@ -1484,7 +1484,7 @@
 }
 // entity 4
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "angles" "0 0 0"
 "sdfMaterial" "Metal"
 // brush 0
@@ -1499,7 +1499,7 @@
 }
 // entity 5
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "angles" "0 0 0"
 "sdfMaterial" "Metal"
 // brush 0
@@ -1514,7 +1514,7 @@
 }
 // entity 6
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "angles" "0 0 0"
 "sdfMaterial" "Metal"
 // brush 0
@@ -1529,7 +1529,7 @@
 }
 // entity 7
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "angles" "0 0 0"
 "sdfMaterial" "Metal"
 // brush 0
@@ -1544,7 +1544,7 @@
 }
 // entity 8
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "angles" "0 0 0"
 "sdfMaterial" "Metal"
 // brush 0
@@ -1559,7 +1559,7 @@
 }
 // entity 9
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1573,7 +1573,7 @@
 }
 // entity 10
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1587,7 +1587,7 @@
 }
 // entity 11
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1601,7 +1601,7 @@
 }
 // entity 12
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1615,7 +1615,7 @@
 }
 // entity 13
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1629,7 +1629,7 @@
 }
 // entity 14
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1643,7 +1643,7 @@
 }
 // entity 15
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1657,7 +1657,7 @@
 }
 // entity 16
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1671,7 +1671,7 @@
 }
 // entity 17
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1685,7 +1685,7 @@
 }
 // entity 18
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1699,7 +1699,7 @@
 }
 // entity 19
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1713,7 +1713,7 @@
 }
 // entity 20
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1727,7 +1727,7 @@
 }
 // entity 21
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1741,7 +1741,7 @@
 }
 // entity 22
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1755,7 +1755,7 @@
 }
 // entity 23
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1769,7 +1769,7 @@
 }
 // entity 24
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1783,7 +1783,7 @@
 }
 // entity 25
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1797,7 +1797,7 @@
 }
 // entity 26
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1811,7 +1811,7 @@
 }
 // entity 27
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1825,7 +1825,7 @@
 }
 // entity 28
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1839,7 +1839,7 @@
 }
 // entity 29
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1853,7 +1853,7 @@
 }
 // entity 30
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1867,7 +1867,7 @@
 }
 // entity 31
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1881,7 +1881,7 @@
 }
 // entity 32
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1895,7 +1895,7 @@
 }
 // entity 33
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1909,7 +1909,7 @@
 }
 // entity 34
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1923,7 +1923,7 @@
 }
 // entity 35
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1937,7 +1937,7 @@
 }
 // entity 36
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1951,7 +1951,7 @@
 }
 // entity 37
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1965,7 +1965,7 @@
 }
 // entity 38
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1979,7 +1979,7 @@
 }
 // entity 39
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -1993,7 +1993,7 @@
 }
 // entity 40
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2007,7 +2007,7 @@
 }
 // entity 41
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2021,7 +2021,7 @@
 }
 // entity 42
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2035,7 +2035,7 @@
 }
 // entity 43
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2049,7 +2049,7 @@
 }
 // entity 44
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2063,7 +2063,7 @@
 }
 // entity 45
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2077,7 +2077,7 @@
 }
 // entity 46
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2091,7 +2091,7 @@
 }
 // entity 47
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2105,7 +2105,7 @@
 }
 // entity 48
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2119,7 +2119,7 @@
 }
 // entity 49
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2133,7 +2133,7 @@
 }
 // entity 50
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2147,7 +2147,7 @@
 }
 // entity 51
 {
-"classname" "collision_box"
+"classname" "func_collision_box"
 "sdfMaterial" "Metal"
 // brush 0
 {
@@ -2769,6 +2769,7 @@
 "_tb_name" "Hidden"
 "_tb_id" "1"
 "_tb_layer_sort_index" "2"
+"_tb_layer_locked" "1"
 "_tb_layer_hidden" "1"
 "_tb_layer_omit_from_export" "1"
 // brush 0
@@ -2888,6 +2889,7 @@
 "_tb_name" "Entities"
 "_tb_id" "6"
 "_tb_layer_sort_index" "1"
+"_tb_layer_locked" "1"
 }
 // entity 66
 {

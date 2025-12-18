@@ -41,7 +41,7 @@ namespace Beakstorm.Rendering
             return null;
         }
         
-        public static Texture3D RenderTextureToTexture3D(RenderTexture renderTexture)
+        public static Texture3D RenderTextureToTexture3D(RenderTexture renderTexture, bool noLongerReadable = true)
         {
             int width = renderTexture.width, height = renderTexture.height, depth = renderTexture.volumeDepth;
 
@@ -57,7 +57,7 @@ namespace Beakstorm.Rendering
             {
                 output.name = name;
                 output.SetPixelData(a, 0);
-                output.Apply(updateMipmaps: false, makeNoLongerReadable: true);
+                output.Apply(updateMipmaps: false, makeNoLongerReadable: noLongerReadable);
                 
                 a.Dispose();
                 renderTexture.Release();

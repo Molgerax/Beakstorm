@@ -23,7 +23,7 @@ MonoBehaviour:
   minThrust: 0
   idleThrust: 15
   maxThrust: 30
-  chargeRate: 0.75
+  chargeRate: 2
   dischargeRate: 1
   dischargeMult: 70
   chargeCapacity: 2

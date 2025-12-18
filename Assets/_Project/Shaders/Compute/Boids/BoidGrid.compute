@@ -1,6 +1,7 @@
 #pragma kernel Update
 #pragma kernel Init
 
+#pragma kernel CollideBVH
 
 #include "../RandomFunctions.hlsl"
 #include "../SpatialGrid/SpatialGridSampling.hlsl"
@@ -188,8 +189,19 @@ void LimitToBounds(inout float3 pos, inout float3 oldPos)
     int3 mask = -1 + step(0, uv);
     mask += 1 - step(uv, 1);
 
-    float3 normal = normalize(mask);
+    int3 moveMask = mask;
+    moveMask.y = 0;
     
+    mask.xz = 0;
+
+    pos -= _SimulationSize * moveMask;
+    oldPos -= _SimulationSize * moveMask;
+
+    if (dot(mask, mask) == 0)
+        return;    
+    
+    
+    float3 normal = normalize(mask);
 
     float3 vel = pos - oldPos;
     float3 flattenVelocity = -dot(vel + normal * -dist, normal) * normal;
@@ -493,7 +505,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     //collideBounds(currentPosition, oldPosition);
     
     //sdfInfo = GetClosestDistance(currentPosition, 0);
-    collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
+    //collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
     
     //currentPosition.y = _WorldPos.y;
 
@@ -609,5 +621,50 @@ void Init(uint3 id : SV_DispatchThreadID)
     
     boid.rotation = rot;//PackQuaternion(rot);
     
+    _BoidBuffer[index] = boid;
+}
+
+
+[numthreads(THREAD_BLOCK_SIZE,1,1)]
+void CollideBVH (uint3 id : SV_DispatchThreadID)
+{
+    const uint index = id.x;
+    if (index >= _AgentCount)
+        return;
+
+    Boid boid = _BoidBufferRead[index];
+
+    if (_DeltaTime == 0)
+    {
+        _BoidBuffer[index] = boid;
+        return;
+    }
+    
+    float3 currentPosition = boid.pos;
+    float3 oldPosition = boid.oldPos;
+
+    float4 rot = boid.rotation;//UnpackQuaternion(boid.rotation);
+    float3 forward = RotateVectorByQuaternion(float3(0,0,1), rot);
+
+    SdfQueryInfo sdfInfo = GetClosestDistance(currentPosition, 0, 1 << PHEROMONE_ONLY);
+    collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
+    
+    LimitToBounds(currentPosition, oldPosition);
+
+    boid.pos = currentPosition;
+    boid.oldPos = oldPosition;
+
+    float3 newForward;
+    float3 diff = boid.pos - boid.oldPos;
+    if (dot(diff, diff) > 0)
+        newForward = normalize(diff);
+    else
+        newForward = forward;
+
+    rot = QuaternionMultiply(QuaternionFromTo(forward, newForward), rot);
+    
+
+    boid.rotation = rot;//PackQuaternion(rot);
+
     _BoidBuffer[index] = boid;
 }

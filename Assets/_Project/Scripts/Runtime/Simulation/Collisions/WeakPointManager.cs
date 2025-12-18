@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Beakstorm.ComputeHelpers;
 using Beakstorm.Pausing;
+using Beakstorm.Simulation.Collisions.SDF;
 using Beakstorm.Simulation.Particles;
 using Beakstorm.Utility;
 using Unity.Collections;
@@ -31,7 +32,7 @@ namespace Beakstorm.Simulation.Collisions
         
         private static AutoFilledArray<WeakPoint> WeakPoints = new AutoFilledArray<WeakPoint>(INIT_BUFFER_SIZE); 
 
-        private Vector4[] _weakPointPositions;
+        private AbstractSdfData[] _weakPointPositions;
         private int _bufferSize = INIT_BUFFER_SIZE;
 
         private AsyncGPUReadbackRequest _request;
@@ -53,14 +54,14 @@ namespace Beakstorm.Simulation.Collisions
         {
             _bufferSize = WeakPoints.Size;
             
-            WeakPointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 4);
+            WeakPointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 16);
             DamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
             _flushDamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
          
             _damageArray = new NativeArray<int>(_bufferSize, Allocator.Persistent);
             DamageBuffer.SetData(_damageArray);
             _flushDamageBuffer.SetData(_damageArray);
-            _weakPointPositions = new Vector4[_bufferSize];
+            _weakPointPositions = new AbstractSdfData[_bufferSize];
         }
 
 
@@ -116,10 +117,10 @@ namespace Beakstorm.Simulation.Collisions
             for (int i = 0; i < WeakPointCount; i++)
             {
                 WeakPoint wp = WeakPoints[i];
-                Vector4 pos = Vector4.zero;
+                AbstractSdfData pos = default;
 
                 if (wp)
-                    pos = wp.IsValid ? wp.PositionRadius : Vector4.zero;
+                    pos = wp.IsValid ? wp.SdfData : default;
 
                 _weakPointPositions[i] = pos;
                 if (logDebugInfoPos)
@@ -213,7 +214,7 @@ namespace Beakstorm.Simulation.Collisions
                 }
                 
                 WeakPointBuffer?.Dispose();
-                WeakPointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 4);
+                WeakPointBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(float) * 16);
                 
                 DamageBuffer?.Dispose();
                 DamageBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, _bufferSize, sizeof(int) * 1);
@@ -228,7 +229,7 @@ namespace Beakstorm.Simulation.Collisions
                 _damageArray.Dispose();
                 _damageArray = new NativeArray<int>(_bufferSize, Allocator.Persistent);
 
-                _weakPointPositions = new Vector4[_bufferSize];
+                _weakPointPositions = new AbstractSdfData[_bufferSize];
                 WeakPoints.Resize(_bufferSize);
             }
         }
@@ -297,14 +298,14 @@ namespace Beakstorm.Simulation.Collisions
             
             for (var i = 0; i < _weakPointPositions.Length; i++)
             {
-                Vector4 position = _weakPointPositions[i];
-                if (position == Vector4.zero)
+                AbstractSdfData position = _weakPointPositions[i];
+                if (position == AbstractSdfData.Null)
                     continue;
 
                 if (i >= WeakPointCount)
                     continue;
                 
-                Gizmos.DrawWireSphere(position, position.w + 0.5f);
+                Gizmos.DrawWireSphere(position.Translate, position.Data.x + 0.5f);
             }
         }
 

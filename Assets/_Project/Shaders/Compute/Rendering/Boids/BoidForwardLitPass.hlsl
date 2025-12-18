@@ -142,8 +142,15 @@ float4 Fragment(Interpolators input) : SV_TARGET{
 	float3 cameraDiff = GetCameraPositionWS() - input.positionWS;
 	float distanceToCam = length(cameraDiff);
 	distanceToCam = saturate(distanceToCam / 10);
-	float dither = Dither(distanceToCam, GetNormalizedScreenSpaceUV(input.positionCS.xy));
+	float2 screenUv = GetNormalizedScreenSpaceUV(input.positionCS.xy);
+	float dither = Dither(distanceToCam, screenUv);
 	clip(dither);
+
+	float distanceToCamBorder = length(cameraDiff);
+	distanceToCamBorder = 1 - saturate((distanceToCamBorder-960) / 64);
+	
+	float distanceDither = Dither(distanceToCamBorder, screenUv);
+	clip(distanceDither);
 
 	float wing = input.color.r;
 	float beak = input.color.g;

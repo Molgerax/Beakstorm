@@ -55,7 +55,9 @@ namespace Beakstorm.Gameplay.Player
 
         private float _timeSinceCenter;
 
-        public Vector3 LookAhead;
+        [System.NonSerialized] public Vector3 LookAhead;
+        [System.NonSerialized] public bool FlipHard;
+
         private Vector3 _lookAheadSmooth;
         private Vector3 _lookAheadSmoothSpeed;
 
@@ -165,6 +167,10 @@ namespace Beakstorm.Gameplay.Player
         {
             Vector3 up = Vector3.Dot(playerTarget.up, Vector3.up) > 0 ? Vector3.up : Vector3.down;
 
+            if (FlipHard)
+                up = playerTarget.up;
+            
+            
             _lookAheadSmooth = Vector3.SmoothDamp(_lookAheadSmooth, LookAhead, ref _lookAheadSmoothSpeed, 0.1f);
             _lookAheadSmooth = Vector3.zero;
             

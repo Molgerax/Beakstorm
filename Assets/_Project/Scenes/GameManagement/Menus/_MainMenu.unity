@@ -163,6 +163,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canyon
       objectReference: {fileID: 0}
+    - target: {fileID: 213222849029601710, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4048953338964751772, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_text
       value: Canyon
@@ -283,7 +287,7 @@ PrefabInstance:
     - target: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 1597530800}
+      objectReference: {fileID: 805006311}
     - target: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
@@ -936,7 +940,7 @@ PrefabInstance:
     - target: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1597530800}
+      objectReference: {fileID: 147207062}
     - target: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
@@ -1827,6 +1831,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DebugTest
       objectReference: {fileID: 0}
+    - target: {fileID: 213222849029601710, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4048953338964751772, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
       propertyPath: m_text
       value: Debug Test
@@ -2344,17 +2352,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1597530800 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
-  m_PrefabInstance: {fileID: 86789178}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1597530804 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
@@ -2433,7 +2430,7 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 473342629}
-    m_SelectOnDown: {fileID: 1597530800}
+    m_SelectOnDown: {fileID: 147207062}
     m_SelectOnLeft: {fileID: 805006311}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1

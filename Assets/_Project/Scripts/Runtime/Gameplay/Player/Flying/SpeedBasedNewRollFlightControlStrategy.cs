@@ -48,12 +48,13 @@ namespace Beakstorm.Gameplay.Player.Flying
                 localEulerAngles.x += 360;
 
             
-            //if (pitch < 0 && !CameraController.UseManualCamera)
-            //    inputVector.x *= -1;
             
             // yaw accel directly from input
             float yAcceleration = inputVector.x * dt * GetSteerSpeed(glider);
 
+            //if (pitch < 0 && !CameraController.UseManualCamera)
+            //    yAcceleration *= -1;
+            
             Vector3 up = Vector3.up;
 
             // forces to calculate the roll of the glider, visual only
@@ -68,7 +69,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             float targetRoll = -Vector3.SignedAngle(-up, forces.normalized, glider.Velocity.normalized);
 
-            glider.Roll = Mathf.Lerp(glider.Roll, targetRoll, 1 - Mathf.Exp(-rollSpeed * dt));
+            //glider.Roll = Mathf.Lerp(glider.Roll, targetRoll, 1 - Mathf.Exp(-rollSpeed * dt));
 
             // reset flipping
             //if (_flipping && pitch > 0 && Mathf.Abs(glider.Roll) < 10f)
@@ -88,7 +89,7 @@ namespace Beakstorm.Gameplay.Player.Flying
             
 
             localEulerAngles.y += yAcceleration;
-            localEulerAngles.z = glider.Roll;
+            localEulerAngles.z = 0;
 
             // turn based on wind
             Vector3 wind = glider.ExternalWind;
@@ -111,22 +112,74 @@ namespace Beakstorm.Gameplay.Player.Flying
             
             //glider.EulerAngles = localEulerAngles;
 
-            Quaternion appliedRotation = Quaternion.AngleAxis(-inputVector.y * GetSteerSpeed(glider) * dt, glider.T.right);
-            appliedRotation = Quaternion.AngleAxis(inputVector.x * GetSteerSpeed(glider) * dt, glider.T.up) * appliedRotation;
+            Vector3 rotationAxisPitch = Vector3.Cross((glider.T.up.y >= 0 ? Vector3.up : Vector3.down), glider.T.forward);
             
+            Vector3 rotationAxisYaw = Vector3.up;
+            
+            Vector3 rotationAxisRoll = glider.T.forward;
+            
+
+            if (glider.T.up.y < 0 && !CameraController.UseManualCamera)
+                rotationAxisYaw *= -1;
+                
+            float yComponent = inputVector.normalized.y;
+
+            float steerAtAngle = Mathf.Atan2(inputVector.y, inputVector.x) * 2;
+            steerAtAngle = Mathf.Abs(Mathf.Sin(steerAtAngle));
+            
+            Debug.Log($"SteerAtAngle: {steerAtAngle}");
+            
+            if (inputVector.magnitude > 0)
+            {
+                //rotationAxisPitch = Vector3.Slerp(rotationAxisPitch, glider.T.right, steerAtAngle);
+                //rotationAxisYaw = Vector3.Slerp(rotationAxisYaw, glider.T.up, steerAtAngle);
+            }
+
+            CameraController.Instance.FlipHard = (steerAtAngle > 0.1f);
+            CameraController.Instance.FlipHard = true;
+
+
+            Quaternion appliedRotation = Quaternion.identity;
+            appliedRotation = Quaternion.AngleAxis(-inputVector.x * GetSteerSpeed(glider) * dt, rotationAxisRoll) * appliedRotation;
+            
+            appliedRotation = Quaternion.AngleAxis(-inputVector.y * GetSteerSpeed(glider) * dt, glider.T.right) * appliedRotation;
+            
+            //appliedRotation = Quaternion.AngleAxis(yAcceleration, rotationAxisYaw) * appliedRotation;
+
+
+
             glider.T.rotation = appliedRotation * glider.T.rotation;
+            //glider.T.localRotation = Quaternion.Euler(glider.EulerAngles);
+
+            appliedRotation.ToAngleAxis(out float angle, out Vector3 axis);
+            Vector3 rollAxis = Vector3.Cross(glider.T.forward, axis);
+            
+            if (rollAxis.magnitude > 0 && Mathf.Abs(angle) > 0)
+            {
+                targetRoll = Vector3.SignedAngle(-glider.T.up, rollAxis, glider.T.forward);
+            }
+            else
+            {
+                targetRoll = 0;
+            }
+
+            glider.Roll = SmoothDamp.MoveAngle(glider.Roll, targetRoll, rollSpeed, dt);
 
             glider.Roll = 0;
+            //glider.Roll = 0;
             glider.Model.localRotation = Quaternion.Euler(new Vector3(0, 0, glider.Roll));
-            
+
+            Vector3 rightedUp = glider.T.up.y >= 0 ? Vector3.up : Vector3.down;
             Quaternion rightedRotation = Quaternion.LookRotation(glider.T.forward, Vector3.up);
-            
-            if (inputVector.magnitude < 0.1f)
-                glider.T.rotation = SmoothDamp.Rotate(glider.T.rotation, rightedRotation, rollSpeed, dt);
+            Quaternion rightedRotationAtAngle = Quaternion.LookRotation(glider.T.forward, rightedUp);
+
+            //if (inputVector.magnitude < 0.1f && !glider.BreakInput)
+            //    glider.T.rotation = SmoothDamp.Rotate(glider.T.rotation, rightedRotation, rollSpeed, dt);
+            //else if (steerAtAngle < 0.1f)
+            //    glider.T.rotation = SmoothDamp.Rotate(glider.T.rotation, rightedRotationAtAngle, rollSpeed, dt);
             
             return;
             glider.T.localRotation = Quaternion.Euler(glider.EulerAngles);
-            glider.T.localRotation = Quaternion.LookRotation(glider.EulerAngles, Vector3.up);
         }
     }
 }

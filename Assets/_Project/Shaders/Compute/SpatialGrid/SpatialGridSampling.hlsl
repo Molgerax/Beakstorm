@@ -60,6 +60,14 @@ int3 GetGridCellId(float3 pos, float cellSize, float3 boundsCenter, float3 bound
     return floor( pos / cellSize);
 }
 
+int3 GetGridCellIdFromBounds(int3 minimumId, int3 maximumId, uint index)
+{
+    int3 sideLengths = (maximumId - minimumId) + 1;
+    index %= sideLengths.x * sideLengths.y * sideLengths.z;
+    int3 offset = Index1Dto3D(index, sideLengths);
+    return minimumId + offset;
+}
+
 uint KeyFromCellId(int3 cellId, int3 cellDimensions)
 {
     return Index3Dto1D(cellId, cellDimensions);

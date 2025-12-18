@@ -5,6 +5,8 @@
 float _DimFactor;
 uint _DimMask;
 
+#define DIM_FACTOR (1.0 - _DimFactor)
+
 #ifndef SHADERGRAPH_PREVIEW
 struct Surface
 {
@@ -22,7 +24,7 @@ float linearstep(float a, float b, float t)
 
 float3 CalculateGlobalIllumination(Surface s)
 {
-    return s.bakedGI * _DimFactor;
+    return s.bakedGI * DIM_FACTOR;
 }
 
 float3 CalculateCelShading(Light l, Surface s)
@@ -39,7 +41,7 @@ float3 CalculateCelShading(Light l, Surface s)
     specular = pow(specular, s.shininess);
     specular *= diffuse * s.smoothness;
 
-    float dimming = ((l.layerMask) & _DimMask) > 0 ? 1 : _DimFactor;
+    float dimming = ((l.layerMask) & _DimMask) > 0 ? 1 : DIM_FACTOR;
     
     return (diffuse + specular) * l.color * dimming;
 }
@@ -58,7 +60,7 @@ float3 CalculateLambertShading(Light l, Surface s)
     specular = pow(specular, s.shininess);
     specular *= diffuse * s.smoothness;
 
-    float dimming = ((l.layerMask) & _DimMask) > 0 ? 1 : _DimFactor;
+    float dimming = ((l.layerMask) & _DimMask) > 0 ? 1 : DIM_FACTOR;
     
     return (diffuse + specular) * l.color * dimming;
 }
@@ -68,7 +70,7 @@ void GetDimLight_float(out float3 Color)
 {
     Color = 1;
     
-    Color = _DimFactor;
+    Color = DIM_FACTOR;
 }
 
 

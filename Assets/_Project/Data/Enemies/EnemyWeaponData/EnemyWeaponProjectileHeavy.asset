@@ -20,4 +20,8 @@ MonoBehaviour:
   initialVelocity: 180
   projectilePrefab: {fileID: 6687366726720949875, guid: 4015e68eff50b9b4c9f0465efdda6a61, type: 3}
   explosionLightPrefab: {fileID: 142303867010736475, guid: bf9ff575f08c2354c91464bd8fc49a10, type: 3}
+  fireSound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 008db56e001deef418324d7442cc7745, type: 2}
   lifeTimeToPlayer: 1

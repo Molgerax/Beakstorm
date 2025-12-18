@@ -1,105 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &208120801922346992
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6356507888760285643}
-  - component: {fileID: 4060818030929217647}
-  m_Layer: 0
-  m_Name: BirdAttack
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6356507888760285643
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208120801922346992}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6537199388518082947}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4060818030929217647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208120801922346992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventReference:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: c5a771c5f9c236b4ea026bd23535de1a, type: 2}
-  eventName: play_birdAttack
-  target: {fileID: 2900037950890833205}
---- !u!1 &648608038610708809
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8362242765042287459}
-  - component: {fileID: 6082759753513318113}
-  m_Layer: 0
-  m_Name: ShipDestroy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8362242765042287459
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 648608038610708809}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6537199388518082947}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6082759753513318113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 648608038610708809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventReference:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 11400000, guid: 35ccb82c139f5d04088a0293faa56936, type: 2}
-  eventName: play_birdAttack
-  target: {fileID: 2900037950890833205}
 --- !u!1 &696901181510282128
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,9 +121,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 11.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6356507888760285643}
-  - {fileID: 8362242765042287459}
+  m_Children: []
   m_Father: {fileID: 6946547328022132843}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2902308931138649375
@@ -278,7 +176,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 250
-  currentHealth: 0
   onInitialize:
     _PersistentCalls:
     - _Target: {fileID: 2902308931138649375}
@@ -294,9 +191,6 @@ MonoBehaviour:
         _Object: {fileID: 0}
   onHealthZero:
     _PersistentCalls:
-    - _Target: {fileID: 6082759753513318113}
-      _MemberName: PostEvent
-      _PersistentArguments: []
     - _Target: {fileID: 2902308931138649375}
       _MemberName: SetActive
       _PersistentArguments:
@@ -315,14 +209,14 @@ MonoBehaviour:
       _MemberName: SpawnWithScale
       _PersistentArguments: []
   onDamageTaken:
-    _PersistentCalls:
-    - _Target: {fileID: 4060818030929217647}
-      _MemberName: PostEvent
-      _PersistentArguments: []
+    _PersistentCalls: []
+  triggerTargets: []
   autoInitialize: 0
   offset: {x: 0, y: 13.66, z: 0}
   radius: 10.2
   meshRenderer: {fileID: 5572208652208514414}
+  weakPointData: {fileID: 11400000, guid: 178cfdcc19e6ea44caff965d0772a85b, type: 2}
+  soundSource: {fileID: 2900037950890833205}
 --- !u!135 &2543976353914413433
 SphereCollider:
   m_ObjectHideFlags: 0

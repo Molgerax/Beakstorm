@@ -9,12 +9,14 @@ namespace Beakstorm.Gameplay.Enemies
         [SerializeField] protected Projectile projectilePrefab;
         [SerializeField] protected Projectile explosionLightPrefab;
 
+        [SerializeField] protected AK.Wwise.Event fireSound;
+        
         [SerializeField] private bool lifeTimeToPlayer = false;
         
         private ProjectilePool _pool;
         private ProjectilePool _lightPool;
 
-        public override void Fire(Vector3 position, Vector3 direction, Vector3 targetPos)
+        public override void Fire(Vector3 position, Vector3 direction, Vector3 targetPos, Transform t = null)
         {
             var projectileInstance = _pool.GetProjectile();
             var projTransform = projectileInstance.transform;
@@ -30,6 +32,9 @@ namespace Beakstorm.Gameplay.Enemies
             projectileInstance.Spawn();
 
             SpawnLight(position, direction);
+
+            if (t && fireSound != null)
+                fireSound.Post(t.gameObject);
         }
 
         public override void OnMonoEnable()
