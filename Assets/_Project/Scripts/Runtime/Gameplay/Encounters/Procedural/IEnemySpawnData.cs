@@ -28,8 +28,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public static EnemyController Spawn(this IEnemySpawnData data)
         {
             EnemyController e = data.Enemy.GetEnemyInstance();
-            e.Spawn(data.TransformData);
             data.AuxiliaryData?.Apply(e);
+            e.Spawn(data.TransformData);
             return e;
         }
     }

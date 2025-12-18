@@ -17,10 +17,11 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         [SerializeField, Tremble("parent")] private Transform spawnParent;
         [Tremble("waypoint")] private Waypoint _waypoint;
+        [Tremble, SpawnFlags] private bool _skipEmerge;
         
         [Tremble("target")] private WaveData _waveData;
 
-        [SerializeField] private SpawnAuxiliaryData auxiliaryData;
+        [SerializeField, NoTremble] private SpawnAuxiliaryData auxiliaryData;
         
         public WaveData WaveData => _waveData;
         
@@ -54,7 +55,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         {
             AddToWaveData();
 
-            auxiliaryData = new SpawnAuxiliaryData(_waypoint);
+            auxiliaryData = new SpawnAuxiliaryData(_waypoint, _skipEmerge);
             
             if (gameObject.transform.GetChild(0))
                 CoreUtils.Destroy(gameObject.transform.GetChild(0).gameObject);
@@ -64,10 +65,12 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public class SpawnAuxiliaryData : AuxiliaryData
         {
             public Waypoint waypoint;
+            public bool SkipEmerge;
 
-            public SpawnAuxiliaryData(Waypoint wp)
+            public SpawnAuxiliaryData(Waypoint wp, bool skipEmerge = false)
             {
                 waypoint = wp;
+                SkipEmerge = skipEmerge;
             }
             
             public override void Apply(EnemyController enemy)
@@ -75,6 +78,11 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
                 if (enemy.TryGetComponent(out MoveFollowPath followPath))
                 {
                     followPath.SetWaypoint(waypoint);
+                }
+                
+                if (enemy.TryGetComponent(out MoveEmerge emerge))
+                {
+                    emerge.enabled = !SkipEmerge;
                 }
             }
         }
