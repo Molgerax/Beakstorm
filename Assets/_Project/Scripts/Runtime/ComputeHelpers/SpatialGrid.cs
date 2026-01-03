@@ -44,6 +44,7 @@ namespace Beakstorm.ComputeHelpers
         private readonly bool _useAliveCount;
 
         private LocalKeyword _aliveCountKeyword;
+        private LocalKeyword _strideKeyword;
 
         private Vector3 _snappedCenter;
 
@@ -59,6 +60,7 @@ namespace Beakstorm.ComputeHelpers
             _useAliveCount = _aliveCountBuffer != null;
 
             _aliveCountKeyword = new LocalKeyword(_cs, "ALIVE_COUNT");
+            _strideKeyword = new LocalKeyword(_cs, "STRIDE_16");
 
             _center = simulation.SimulationCenter;
             _size = simulation.SimulationSize;
@@ -129,6 +131,11 @@ namespace Beakstorm.ComputeHelpers
             gridId = GetGridCellId(newPos);
             _snappedCenter = offset + GetPosFromGridCell(gridId);
         }
+
+        private void SetStrideKeyword()
+        {
+            _cs.SetKeyword(_strideKeyword, _agentStride == 16);
+        }
         
         public void SetShaderProperties(ComputeShader cs)
         {
@@ -165,6 +172,7 @@ namespace Beakstorm.ComputeHelpers
             int kernelId = _cs.FindKernel("UpdateGrid"); 
             
             _cs.SetKeyword(_aliveCountKeyword, _useAliveCount);
+            SetStrideKeyword();
             
             _cs.SetInt(PropertyIDs.AgentCount, _agentCount);
             _cs.SetInt(PropertyIDs.AgentStride, _agentStride);
@@ -251,6 +259,7 @@ namespace Beakstorm.ComputeHelpers
             int kernelId = _cs.FindKernel("ReorderBoids");
 
             _cs.SetKeyword(_aliveCountKeyword, _useAliveCount);
+            SetStrideKeyword();
             
             _cs.SetInt(PropertyIDs.AgentCount, _agentCount);
             _cs.SetInt(PropertyIDs.AgentStride, _agentStride);

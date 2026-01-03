@@ -6,26 +6,25 @@
 #pragma kernel ReorderBoids
 
 #pragma multi_compile _ ALIVE_COUNT
+#pragma multi_compile _ STRIDE_16
 
 #include "SpatialGridSampling.hlsl"
 
 #define THREAD_BLOCK_SIZE 1024
 
 
-struct Boid
+struct Data
 {
-    float3 pos;
-    float exposure;
-    float3 oldPos;
-    float data;
-    float4 rotation;
+    float4 pos;
+    float4 data1;
+    float4 data2;
+#if STRIDE_16
+    float4 data3;
+#endif
 };
 
-RWStructuredBuffer<Boid> _BoidBuffer;
-StructuredBuffer<Boid> _BoidBufferRead;
-
-RWStructuredBuffer<float4> _AgentBufferWrite;
-StructuredBuffer<float4> _AgentBufferRead;
+RWStructuredBuffer<Data> _AgentBufferWrite;
+StructuredBuffer<Data> _AgentBufferRead;
 
 RWStructuredBuffer<uint2> _GridBuffer;
 RWStructuredBuffer<uint> _GridOffsetBuffer;
@@ -70,8 +69,8 @@ void UpdateGrid(uint3 id : SV_DispatchThreadID)
 #endif
 
     float3 pos = 0;
-    //pos = _BoidBufferRead[index].pos;
-    pos = _AgentBufferRead[index * (_AgentStride / 4)].xyz;
+    //pos = _AgentBufferRead[index * (_AgentStride / 4)].xyz;
+    pos = _AgentBufferRead[index].pos.xyz;
     
     uint gridId = GetGridId(pos);
     uint offset;
@@ -183,13 +182,14 @@ void ReorderBoids(uint3 id : SV_DispatchThreadID)
     uint gridID = grid.x;
     uint cellOffset = grid.y;
     uint index = _GridOffsetBuffer[gridID] - 1 - cellOffset;
-    
-    uint stride = _AgentStride / 4;
 
-    [unroll(4)]
-    for (uint i = 0; i < stride; i++)
-    {
-        _AgentBufferWrite[index * stride + i] = _AgentBufferRead[id.x * stride + i];
-    }
-    //_BoidBuffer[index] = _BoidBufferRead[id.x];
+    
+    _AgentBufferWrite[index] = _AgentBufferRead[id.x];
+    
+    //uint stride = _AgentStride / 4;
+    //[unroll(4)]
+    //for (uint i = 0; i < stride; i++)
+    //{
+    //    _AgentBufferWrite[index * stride + i] = _AgentBufferRead[id.x * stride + i];
+    //}
 }
