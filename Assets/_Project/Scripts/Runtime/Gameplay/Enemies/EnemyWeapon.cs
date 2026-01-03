@@ -23,20 +23,21 @@ namespace Beakstorm.Gameplay.Enemies
 
         private float _currentAngle;
 
+        private Transform WeaponPivot => weaponPivot ? weaponPivot : transform;
 
         private int _firePointIndex;
 
         private Transform GetFirePoint()
         {
             if (firePoints == null || firePoints.Length == 0)
-                return transform;
+                return WeaponPivot;
             
             _firePointIndex = _firePointIndex % firePoints.Length;
             Transform t = firePoints[_firePointIndex];
             _firePointIndex = (_firePointIndex + 1) % firePoints.Length;
             
             if (t == null)
-                return transform;
+                return WeaponPivot;
             return t;
         }
 
@@ -56,7 +57,7 @@ namespace Beakstorm.Gameplay.Enemies
                 return;
          
             Tick(Time.deltaTime);
-            AdjustPivot();
+            AdjustPivot(Time.deltaTime);
         }
 
 
@@ -94,25 +95,47 @@ namespace Beakstorm.Gameplay.Enemies
             }
         }
 
-        private void AdjustPivot()
+        private void AdjustPivot(float deltaTime)
         {
             if (!weaponPivot)
                 return;
             if (!IsPlayerInRange())
                 return;
-            
-            Vector3 playerPos = PlayerController.Instance.Position;
-            Vector3 playerVel = PlayerController.Instance.Velocity;
-            
-            Vector3 pos = transform.position;
 
-            Vector3 predictedPos = playerPos + playerVel * Vector3.Distance(playerPos, pos) / weaponData.InitialVelocity;
+            Vector3 direction = GetPredictionDirection(weaponPivot);
             
-            Vector3 direction = predictedPos - pos;
-
             Vector3 clampedDirection = Vector3.RotateTowards(transform.forward, direction.normalized, limitAngle * Mathf.Deg2Rad, 1);
 
-            weaponPivot.rotation = Quaternion.LookRotation(clampedDirection);
+            Quaternion targetLook = Quaternion.LookRotation(clampedDirection);
+            
+            weaponPivot.rotation = Quaternion.RotateTowards(weaponPivot.rotation, targetLook, weaponData.RotationSpeed * deltaTime);
+        }
+
+        private Vector3 GetPredictedPosition(Vector3 firePos)
+        {
+            if (!PlayerController.Instance)
+                return Vector3.zero;
+        
+            Vector3 playerPos = PlayerController.Instance.Position;
+            Vector3 playerVel = PlayerController.Instance.Velocity;
+
+            Vector3 predictedPos = playerPos + playerVel * Vector3.Distance(playerPos, firePos) / weaponData.InitialVelocity;
+            return predictedPos;
+        }
+        
+        private Vector3 GetPredictionDirection(Transform firePoint = null)
+        {
+            if (!firePoint)
+                firePoint = WeaponPivot;
+            
+            if (!PlayerController.Instance)
+                return firePoint.forward;
+
+            var position = firePoint.position;
+            Vector3 predictedPos = GetPredictedPosition(position);
+            
+            Vector3 direction = (predictedPos - position).normalized;
+            return direction;
         }
         
         private void Fire()
@@ -123,19 +146,22 @@ namespace Beakstorm.Gameplay.Enemies
             if (!PlayerController.Instance)
                 return ;
 
-            Vector3 playerPos = PlayerController.Instance.Position;
-            Vector3 playerVel = PlayerController.Instance.Velocity;
-            
             Transform t = GetFirePoint();
             Vector3 pos = t.position;
 
-            Vector3 predictedPos = playerPos + playerVel * Vector3.Distance(playerPos, pos) / weaponData.InitialVelocity;
+            Vector3 direction = GetPredictionDirection(t);
+            Vector3 predictedPos = GetPredictedPosition(pos);
             
-            Vector3 direction = (predictedPos - pos).normalized;
+            direction = WeaponPivot.forward;
+            float offset = Vector3.Angle(direction, predictedPos - pos);
+            
             direction = GetShotDirection(direction);
             
             _currentAngle = Vector3.Angle(transform.forward, direction);
             if (_currentAngle > limitAngle)
+                return;
+            
+            if (offset > 20)
                 return;
             
             weaponData.Fire(pos, direction.normalized, predictedPos, t);
