@@ -161,7 +161,7 @@ namespace Beakstorm.Gameplay.Enemies
             if (_currentAngle > limitAngle)
                 return;
             
-            if (offset > 20)
+            if (offset > weaponData.FireAngleDifference)
                 return;
             
             weaponData.Fire(pos, direction.normalized, predictedPos, t);

@@ -12,6 +12,7 @@ namespace Beakstorm.Gameplay.Enemies
         [SerializeField] protected float initialVelocity = 10;
 
         [SerializeField] protected float rotationSpeed = 180;
+        [SerializeField, Range(0.1f, 180)] protected float fireAngleDifference = 20;
         
         public float ChargeTime => chargeTime;
         public float FireRate => fireRate;
@@ -20,8 +21,9 @@ namespace Beakstorm.Gameplay.Enemies
         public float WeaponSpread => weaponSpread;
         public float InitialVelocity => initialVelocity;
         public float RotationSpeed => rotationSpeed;
-        
-        
+        public double FireAngleDifference => fireAngleDifference;
+
+
         public virtual void OnMonoEnable() {}
         public virtual void OnMonoDisable() {}
         
