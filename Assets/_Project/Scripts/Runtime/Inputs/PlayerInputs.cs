@@ -28,6 +28,9 @@ namespace Beakstorm.Inputs
         public InputAction emitAction;
         public InputAction switchCameraAction;
         
+        public InputAction freeLookAction;
+
+        
         public InputAction accelerateAction;
         public InputAction brakeAction;
         public InputAction whistleAction;
@@ -56,8 +59,35 @@ namespace Beakstorm.Inputs
 
         #region Properties
 
-        public Vector2 MoveInput => moveAction.ReadValue<Vector2>() * GameplaySettings.Instance.FlightAxisInversion;
-        public Vector2 LookInput => lookAction.ReadValue<Vector2>() * GameplaySettings.Instance.LookAxisInversion * GameplaySettings.Instance.MouseSensitivity * 60;
+        public Vector2 MoveInput
+        {
+            get
+            {
+                Vector2 value = moveAction.ReadValue<Vector2>();
+
+                if (_lastActiveDevice is Mouse && !freeLookAction.IsPressed() )
+                    value += LookInputRaw * GameplaySettings.Instance.MouseSensitivity;
+
+                value = Vector2.ClampMagnitude(value, 1f);
+                
+                return value * GameplaySettings.Instance.FlightAxisInversion;
+            }
+        }
+
+        public Vector2 LookInput
+        {
+            get
+            {
+                Vector2 value = lookAction.ReadValue<Vector2>();
+
+                if (_lastActiveDevice is Mouse && !freeLookAction.IsPressed())
+                    value *= 0;
+
+                
+                return value * GameplaySettings.Instance.LookAxisInversion * (GameplaySettings.Instance.MouseSensitivity * 60);
+            }
+        }
+
         public Vector2 LookInputRaw => lookAction.ReadValue<Vector2>();
 
         public bool ConfirmBuffered => _confirmBuffered;
@@ -92,6 +122,8 @@ namespace Beakstorm.Inputs
             shootAction = _inputs.Player.Shoot;
             emitAction = _inputs.Player.Emit;
             switchCameraAction = _inputs.Player.SwitchCameraHandling;
+
+            freeLookAction = _inputs.Player.FreeLook;
 
             cycleTabsAction = _inputs.UI.CycleTabs;
             

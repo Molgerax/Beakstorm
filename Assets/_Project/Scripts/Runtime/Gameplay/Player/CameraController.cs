@@ -53,6 +53,8 @@ namespace Beakstorm.Gameplay.Player
 
         private float _roll;
 
+
+        private float _timeSinceNoLook;
         private float _timeSinceCenter;
 
         [System.NonSerialized] public Vector3 LookAhead;
@@ -112,11 +114,26 @@ namespace Beakstorm.Gameplay.Player
 
         private void InputTimeHandling()
         {
-            _timeSinceCenter = Mathf.Max(0, _timeSinceCenter - Time.deltaTime);
+            //_useManualCamera = false;
+            //return;
             
-            if (_inputs.LookInputRaw.magnitude > Mathf.Max(_timeSinceCenter / centerCooldown, lookThreshold))
+            _timeSinceCenter = Mathf.Max(0, _timeSinceCenter - Time.deltaTime);
+
+            if (_inputs.LookInput.magnitude == 0 && _useManualCamera) 
+            {
+                _timeSinceNoLook += Time.deltaTime;
+
+                if (_timeSinceNoLook > 0.15f)
+                {
+                    _timeSinceNoLook = 0;
+                    _useManualCamera = false;
+                }
+            }
+            
+            if (_inputs.LookInput.magnitude * 0.1f > Mathf.Max(_timeSinceCenter / centerCooldown, lookThreshold))
             {
                 _useManualCamera = true;
+                _timeSinceNoLook = 0;
             }
             
             if (_useManualCamera)
@@ -151,14 +168,22 @@ namespace Beakstorm.Gameplay.Player
                     _outputRotation = _fixedRotation;
             }
 
+            Quaternion final = _outputRotation;
+
+            if (_inputs.switchCameraAction.IsPressed())
+                final = Quaternion.LookRotation(-(_outputRotation * Vector3.forward), _outputRotation * Vector3.up);
+
             if (!disableRotation)
-                cameraHead.localRotation = _outputRotation;
+                cameraHead.localRotation = final;
         }
 
         private void OnSwitchCameraInput(InputAction.CallbackContext callbackContext)
         {
+            return;
+            
             _useManualCamera = false;
-            _timeSinceCenter = centerCooldown;
+            _timeSinceCenter = centerCooldown;                
+            _timeSinceNoLook = 0;
         }
 
         private float SlerpT(float t) => 1f - Mathf.Exp(-t * Time.deltaTime);
