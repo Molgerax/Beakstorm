@@ -33,7 +33,9 @@ namespace Beakstorm.Inputs
         public InputAction whistleAction;
         
         public InputAction selectPheromoneAction;
-
+        
+        public InputAction cycleTabsAction;
+        
         public Action PauseAction;
 
         public bool UseButtonsInMenu { get; private set; } = true;
@@ -90,6 +92,8 @@ namespace Beakstorm.Inputs
             shootAction = _inputs.Player.Shoot;
             emitAction = _inputs.Player.Emit;
             switchCameraAction = _inputs.Player.SwitchCameraHandling;
+
+            cycleTabsAction = _inputs.UI.CycleTabs;
             
             accelerateAction = _inputs.Player.Accelerate;
             brakeAction = _inputs.Player.Brake;
