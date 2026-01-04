@@ -7,6 +7,7 @@ namespace Beakstorm.UI.Indicators
     public class OffscreenIndicator : MonoBehaviour
     {
         [SerializeField] private Image offscreenImage;
+        [SerializeField] private Image outlineImage;
 
         [SerializeField] private BoundsIndicator boundsIndicator;
         [SerializeField] private float outOfSightOffset = 12f;
@@ -37,6 +38,9 @@ namespace Beakstorm.UI.Indicators
             offscreenImage.sprite = _settings.IndicatorTexture;
             offscreenImage.color = _settings.Color;
             _rect.localScale = Vector3.one * _settings.Scale;
+
+            outlineImage.sprite = _settings.OutlineTexture;
+            outlineImage.color = _settings.OutlineColor;
         }
         
         public void Deactivate()
@@ -121,7 +125,7 @@ namespace Beakstorm.UI.Indicators
 
         //Change the indicator Position back to the actual rectTransform coordinate system and return indicatorPosition
 
-        indicatorPosition = indicatorPosition.normalized * 384f;
+        indicatorPosition = indicatorPosition.normalized * _settings.IndicatorRadius;
         
         indicatorPosition += canvasCenter;
         return indicatorPosition;

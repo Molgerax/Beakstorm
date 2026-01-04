@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2655b92f52ac3eb4dacbbff8d61a1f98, type: 3}
-  m_Name: EnemyIndicatorSettings
+  m_Name: MissileIndicatorSettings
   m_EditorClassIdentifier: 
-  indicatorTexture: {fileID: 21300000, guid: e5ecaa89589db8047831b5cef284e9e7, type: 3}
-  color: {r: 1, g: 1, b: 1, a: 0.2509804}
+  indicatorTexture: {fileID: 21300000, guid: 2ba69952b2a39e44f9be29f8668afe17, type: 3}
+  color: {r: 1, g: 0, b: 0, a: 1}
   scale: 0.75
-  indicatorRadius: 384
+  indicatorRadius: 320
   outlineTexture: {fileID: 21300000, guid: ae25e043451b9d94b9bc1f1bf8c951cc, type: 3}
-  outlineColor: {r: 1, g: 1, b: 1, a: 0.2509804}
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}

@@ -42,7 +42,7 @@ namespace Beakstorm.UI.Indicators
             }
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             GeometryUtility.CalculateFrustumPlanes(_camera, _frustumPlanes);
             
