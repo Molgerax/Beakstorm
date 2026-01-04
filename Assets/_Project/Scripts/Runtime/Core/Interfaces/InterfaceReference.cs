@@ -42,13 +42,37 @@ namespace Beakstorm.Core.Interfaces
         public InterfaceReference(TObject target) => underlyingValue = target;
 
         public InterfaceReference(TInterface @interface) => underlyingValue = @interface as TObject;
-        
-        public static implicit operator TInterface(InterfaceReference<TInterface, TObject> i) => i.Value;
     }
 
     [Serializable]
-    public class InterfaceReference<TInterface> : InterfaceReference<TInterface, Object> where TInterface : class
+    public class InterfaceReference<TInterface> : InterfaceReference<TInterface, Object> where TInterface : class { }
+
+
+    public static class InterfaceReferenceExtensions
     {
-        public static implicit operator TInterface(InterfaceReference<TInterface> i) => i.Value;
+        public static TInterface AsInterface<TInterface>(this InterfaceReference<TInterface> i) where TInterface : class => i.Value;
+
+        public static TInterface AsInterface<TInterface>(this Object obj) where TInterface : class
+        {
+            if (!obj)
+                return null;
+        
+            if (obj is TInterface i)
+                return i;
+            return null;
+        }
+        
+        public static bool TryAsInterface<TInterface>(this Object obj, out TInterface @interface) where TInterface : class
+        {
+            @interface = null;
+            if (!obj)
+                return false;
+
+            if (obj is not TInterface i) 
+                return false;
+            
+            @interface = i;
+            return true;
+        }
     }
 }
