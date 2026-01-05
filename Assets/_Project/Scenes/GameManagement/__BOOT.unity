@@ -915,6 +915,15 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  freeLookAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 92aed7b8-0413-4b94-9e18-f1a46974e2bb
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   accelerateAction:
     m_Name: Accelerate
     m_Type: 0
@@ -947,6 +956,15 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 53350768-1f35-4fd9-ac96-a9d88b512755
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  cycleTabsAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 04d4291e-2b33-4f22-b674-2f25b7b3192a
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
