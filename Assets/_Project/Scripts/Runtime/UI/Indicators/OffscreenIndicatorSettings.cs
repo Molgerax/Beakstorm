@@ -5,14 +5,19 @@ namespace Beakstorm.UI.Indicators
     [CreateAssetMenu(menuName = "Beakstorm/UI/IndicatorSettings", fileName = "IndicatorSettings")]
     public class OffscreenIndicatorSettings : ScriptableObject
     {
+        [Header("Offscreen Indicator")]
         [SerializeField] private Sprite indicatorTexture;
         [SerializeField] private Color color = Color.white;
         [SerializeField] private float scale = 1f;
 
         [SerializeField] private float indicatorRadius = 384;
 
+        [Header("Onscreen Outline")]
         [SerializeField] private Sprite outlineTexture;
         [SerializeField] private Color outlineColor = Color.white;
+
+        [SerializeField] private bool adjustToBounds = true;
+        [SerializeField] private float outlineBoundsSize = 64;
 
         public Color Color => color;
         public Sprite IndicatorTexture => indicatorTexture;
@@ -22,5 +27,8 @@ namespace Beakstorm.UI.Indicators
         
         public Color OutlineColor => outlineColor;
         public Sprite OutlineTexture => outlineTexture;
+
+        public bool AdjustToBounds => adjustToBounds;
+        public float OutlineBoundsSize => outlineBoundsSize;
     }
 }

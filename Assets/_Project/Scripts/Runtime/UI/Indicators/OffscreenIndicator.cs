@@ -82,7 +82,10 @@ namespace Beakstorm.UI.Indicators
                 boundsIndicator.gameObject.SetActive(!value);
                 if (!value)
                 {
-                    boundsIndicator.SetTransform(_target.GetBounds(), _camera);
+                    if (_settings.AdjustToBounds)
+                        boundsIndicator.SetTransform(_target.GetBounds(), _camera);
+                    else
+                        boundsIndicator.ResetTransform(_settings.OutlineBoundsSize);
                 }
             }
             
