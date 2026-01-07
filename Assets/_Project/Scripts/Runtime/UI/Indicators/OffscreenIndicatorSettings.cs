@@ -1,3 +1,4 @@
+using PrimeTween;
 using UnityEngine;
 
 namespace Beakstorm.UI.Indicators
@@ -19,6 +20,8 @@ namespace Beakstorm.UI.Indicators
         [SerializeField] private bool adjustToBounds = true;
         [SerializeField] private float outlineBoundsSize = 64;
 
+        [SerializeField] private TweenSettings<float> selectSizeTween = new(1f, 0.5f);
+
         public Color Color => color;
         public Sprite IndicatorTexture => indicatorTexture;
         public float Scale => scale;
@@ -30,5 +33,7 @@ namespace Beakstorm.UI.Indicators
 
         public bool AdjustToBounds => adjustToBounds;
         public float OutlineBoundsSize => outlineBoundsSize;
+        
+        public TweenSettings<float> SelectSizeTween => selectSizeTween;
     }
 }

@@ -41,6 +41,9 @@ namespace Beakstorm.UI.Indicators
 
             outlineImage.sprite = _settings.OutlineTexture;
             outlineImage.color = _settings.OutlineColor;
+
+            if (boundsIndicator)
+                boundsIndicator.Initialize(_settings);
         }
         
         public void Deactivate()
