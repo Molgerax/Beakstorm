@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a81aea3ff0e444ca4dde0cc25db5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: 9c3db9fbb5321f140a7079d595366f08, type: 2}
+  settings: {fileID: 11400000, guid: 7df6bf939c1e726408a890dec96486fd, type: 2}
   useRenderers: 1
   customSize: {x: 1, y: 1, z: 1}
 --- !u!1 &1891932543838660625
