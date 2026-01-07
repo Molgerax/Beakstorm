@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Beakstorm.Gameplay.Enemies;
 using Beakstorm.Gameplay.Movement;
@@ -50,15 +51,43 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             if (_waveData) 
                 _waveData.AddSpawnPoint(this);
         }
-        
+
+        private void Awake()
+        {
+            ReturnChildPrefabToPool();
+        }
+
+
+
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
             AddToWaveData();
 
             auxiliaryData = new SpawnAuxiliaryData(_waypoint, _skipEmerge);
             
+            //DeleteChildPrefab();
+        }
+
+        private void DeleteChildPrefab()
+        {
+            EnemyController e = GetComponentInChildren<EnemyController>();
+            
+            if (e)
+                CoreUtils.Destroy(e.gameObject);
+            return;
+            
             if (gameObject.transform.GetChild(0))
                 CoreUtils.Destroy(gameObject.transform.GetChild(0).gameObject);
+        }
+        
+        
+        private void ReturnChildPrefabToPool()
+        {
+            EnemyController e = GetComponentInChildren<EnemyController>();
+            
+            if (!e)
+                return;
+            e.Despawn();
         }
 
         [System.Serializable]

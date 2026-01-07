@@ -43,7 +43,11 @@ namespace Beakstorm.Gameplay.Enemies
 
         private void Start()
         {
-            GetPoolIfNoneSet();
+            if (GetPoolIfNoneSet())
+            {
+                Debug.Log("Enemy had to get own pool, despawn now.");
+                Despawn();
+            }
         }
 
         public void Spawn(Transform spawnPoint, bool useParent = false) => Spawn(spawnPoint.position, spawnPoint.rotation, useParent ? spawnPoint : null);
@@ -76,21 +80,20 @@ namespace Beakstorm.Gameplay.Enemies
 
         public void Despawn()
         {
+            GetPoolIfNoneSet();
             _pool.ReturnToPool(this);
         }
 
-        private void GetPoolIfNoneSet()
+        private bool GetPoolIfNoneSet()
         {
             if (_pool != null)
-                return;
+                return false;
             
             if (!EnemyPoolManager.Instance)
-                return;
+                return false;
 
-            Debug.Log("Enemy had to get own pool, despawn now.");
-            
             _pool = EnemyPoolManager.Instance.GetEnemyPool(enemySo);
-            Despawn();
+            return true;
         }
         
 
