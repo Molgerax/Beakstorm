@@ -27,6 +27,7 @@ namespace Beakstorm.Inputs
         public InputAction shootAction;
         public InputAction emitAction;
         public InputAction switchCameraAction;
+        public InputAction lockOnAction;
         
         public InputAction freeLookAction;
 
@@ -122,6 +123,7 @@ namespace Beakstorm.Inputs
             shootAction = _inputs.Player.Shoot;
             emitAction = _inputs.Player.Emit;
             switchCameraAction = _inputs.Player.SwitchCameraHandling;
+            lockOnAction = _inputs.Player.LockOn;
 
             freeLookAction = _inputs.Player.FreeLook;
 

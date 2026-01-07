@@ -68,9 +68,9 @@ namespace Beakstorm.Gameplay.Player
 
             if (targetingManager)
             {
-                if (targetingManager.ActiveTargets.Count > 0)
+                if (targetingManager.CurrentTarget)
                 {
-                    Target t = targetingManager.ActiveTargets[0];
+                    Target t = targetingManager.CurrentTarget;
                     ray.direction = t.transform.position - targetingManager.ViewAnchor.position;
                     ray.origin = targetingManager.ViewAnchor.position;
                 }
@@ -94,9 +94,9 @@ namespace Beakstorm.Gameplay.Player
             
             if (targetingManager)
             {
-                if (targetingManager.ActiveTargets.Count > 0)
+                if (targetingManager.CurrentTarget)
                 {
-                    Target t = targetingManager.ActiveTargets[0];
+                    Target t = targetingManager.CurrentTarget;
                     ray.direction = t.transform.position - targetingManager.ViewAnchor.position;
                     ray.origin = targetingManager.ViewAnchor.position;
                 }
