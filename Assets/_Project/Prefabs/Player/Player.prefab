@@ -1263,7 +1263,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strategy: {fileID: 11400000, guid: 15a1b7e241f65354e8319853317051d9, type: 2}
   viewAnchor: {fileID: 0}
-  ActiveTargets: []
+  onSelectSound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 0612bf2c504056742840e27470effaaf, type: 2}
+  onDeselectSound:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: f5779cbab7a33dc43a12fcbf8292c00a, type: 2}
 --- !u!1 &3131578977007706030
 GameObject:
   m_ObjectHideFlags: 0
@@ -1589,6 +1596,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faction: {fileID: 11400000, guid: 19f68c76f4e1aae46b7671abf8ec71ec, type: 2}
+  onSetCurrentTarget:
+    _PersistentCalls: []
+  onSetActiveTarget:
+    _PersistentCalls: []
+  onSelectAsCurrent:
+    _PersistentCalls: []
+  onDeselectAsCurrent:
+    _PersistentCalls: []
 --- !u!1 &4675909254041505790
 GameObject:
   m_ObjectHideFlags: 0
