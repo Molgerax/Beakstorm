@@ -60,6 +60,9 @@ namespace Beakstorm.Gameplay.Targeting
             foreach (Target target in _previouslyActiveTargets)
             {
                 target.SetActiveTarget(false);
+
+                if (CurrentTarget == target)
+                    CurrentTarget = null;
             }
         }
 
