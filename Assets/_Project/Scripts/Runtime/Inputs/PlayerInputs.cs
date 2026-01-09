@@ -54,7 +54,7 @@ namespace Beakstorm.Inputs
         
         public Action PauseAction;
 
-        public bool UseButtonsInMenu { get; private set; } = true;
+        public bool UseButtonsInMenu => _lastActiveDevice is not Mouse;
 
         #endregion
 
@@ -65,6 +65,9 @@ namespace Beakstorm.Inputs
         private static InputDevice _lastActiveDevice;
 
         private bool _cursorVisible;
+        private bool _queueMousePointDisable;
+        
+        private static InputControlScheme _currentControlScheme;
         
         #endregion
 
@@ -105,6 +108,7 @@ namespace Beakstorm.Inputs
 
         public static InputDevice LastActiveDevice => _lastActiveDevice;
 
+        public static InputControlScheme CurrentControlScheme => _currentControlScheme;
         public static event Action ActiveDeviceChangeEvent;
 
         #endregion
@@ -144,9 +148,6 @@ namespace Beakstorm.Inputs
             Inputs.Player.Pause.AddListener(OnPauseButton);
             Inputs.UI.Pause.AddListener(OnPauseButton);
             
-            Inputs.UI.Navigate.AddListener(OnMoveUI);
-            Inputs.UI.Point.AddListener(OnPointUI);
-            
             InputSystem.onActionChange += OnActionChange;
             
             SetEventSystemInputAsset();
@@ -170,14 +171,22 @@ namespace Beakstorm.Inputs
 
                 var newDevice = activeControl.device;
 
+
+                if (_lastActiveDevice is Mouse)
+                    _queueMousePointDisable = false;
+                else if (newDevice is not Mouse)
+                    _queueMousePointDisable = false;
+
                 // we detected a change
-                if (_lastActiveDevice != newDevice)
+                if (_lastActiveDevice != newDevice && !_queueMousePointDisable)
                 {
                     _lastActiveDevice = newDevice;
                     // fire an event to anyone listening
                     ActiveDeviceChangeEvent?.Invoke();
+                    Debug.Log($"Change to device {newDevice.name} for action {inputAction.name}");
                     EnableCursorForMouseOnly();
                 }
+                _queueMousePointDisable = false;
             }
         }
 
@@ -186,13 +195,22 @@ namespace Beakstorm.Inputs
             if (!_cursorVisible)
             {
                 Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
             else
             {
+                Debug.Log($"Enabling Cursor for device: {_lastActiveDevice}");
+                
                 if (_lastActiveDevice is Mouse)
+                {
                     Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+                }
                 else
+                {
                     Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
             }
         }
 
@@ -287,12 +305,15 @@ namespace Beakstorm.Inputs
         
         public void EnablePlayerInputs()
         {
-            InputActions.Player.Enable();
             InputActions.UI.Disable();
+            InputActions.Player.Enable();
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             _cursorVisible = false;
+            
+            Debug.Log("Enabled Player Inputs");
+            
         }
         
         public void EnableUiInputs()
@@ -300,10 +321,11 @@ namespace Beakstorm.Inputs
             InputActions.Player.Disable();
             InputActions.UI.Enable();
 
-            Cursor.lockState = CursorLockMode.None;
-            //Cursor.visible = true;
-
             _cursorVisible = true;
+            
+            Debug.Log("Enabled UI Inputs");
+
+            _queueMousePointDisable = true;
             
             EnableCursorForMouseOnly();
         }
@@ -327,16 +349,6 @@ namespace Beakstorm.Inputs
             if (!context.performed) return;
             
             PauseAction?.Invoke();
-        }
-
-        public void OnMoveUI(InputAction.CallbackContext context)
-        {
-            UseButtonsInMenu = true;
-        }
-        
-        public void OnPointUI(InputAction.CallbackContext context)
-        {
-            UseButtonsInMenu = false;
         }
 
         #endregion

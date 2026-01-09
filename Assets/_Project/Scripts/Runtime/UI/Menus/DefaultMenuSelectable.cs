@@ -15,7 +15,21 @@ namespace Beakstorm.UI.Menus
         private void OnEnable()
         {
             SelectDefault();
+            
+            PlayerInputs.ActiveDeviceChangeEvent += OnActiveDeviceChanged;
         }
+
+        private void OnDisable()
+        {
+            PlayerInputs.ActiveDeviceChangeEvent -= OnActiveDeviceChanged;
+        }
+
+
+        private void OnActiveDeviceChanged()
+        {
+            UsesController(PlayerInputs.Instance.UseButtonsInMenu);
+        }
+
 
         private void Reset()
         {
@@ -23,32 +37,21 @@ namespace Beakstorm.UI.Menus
                 selectable = GetComponent<Selectable>();
         }
 
-        private void Update()
-        {
-            if (EventSystem.current)
-            {
-                if (EventSystem.current.currentSelectedGameObject)
-                {
-                    if (EventSystem.current.currentSelectedGameObject.TryGetComponent(out TMP_InputField field))
-                        return;
-                    
-                }
-            }
-            
-            UsesController(CheckForPointer());
-        }
-
-        private bool CheckForPointer()
-        {
-            return PlayerInputs.Instance.UseButtonsInMenu;
-        }
-        
         private void UsesController(bool value)
         {
             if (_usesController == value)
                 return;
 
             _usesController = value;
+            
+            if (EventSystem.current)
+            {
+                if (EventSystem.current.currentSelectedGameObject)
+                {
+                    if (EventSystem.current.currentSelectedGameObject.TryGetComponent(out TMP_InputField field))
+                        return;
+                }
+            }
             
             if (_usesController)
             {

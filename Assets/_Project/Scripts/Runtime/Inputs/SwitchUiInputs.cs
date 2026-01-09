@@ -4,13 +4,29 @@ namespace Beakstorm.Inputs
 {
     public class SwitchUiInputs : MonoBehaviour
     {
-        private void OnEnable() => PlayerInputs.Instance.EnableUiInputs();
+        private static int _currentInstances = 0;
 
-        private void OnDisable() => PlayerInputs.Instance.EnablePlayerInputs();
 
-        private void Update()
+        private int CurrentInstances
         {
-            PlayerInputs.Instance.EnableUiInputs();
+            get => _currentInstances;
+            set
+            {
+                if (_currentInstances == 0 && value > 0)
+                {
+                    PlayerInputs.Instance.EnableUiInputs();
+                }
+                else if (_currentInstances > 0 && value == 0)
+                {
+                    PlayerInputs.Instance.EnablePlayerInputs();
+                }
+                
+                _currentInstances = value;
+            }
         }
+
+        private void OnEnable() => CurrentInstances++;
+
+        private void OnDisable() => CurrentInstances--;
     }
 }
