@@ -20,24 +20,21 @@ namespace Beakstorm.Gameplay.Player
 
         private void OnEnable()
         {
-            _inputs.emitAction.performed += OnEmitActionPerformed;
-            _inputs.emitAction.canceled += OnEmitActionCancelled;
+            _inputs.Emit += OnEmitAction;
         }
 
         private void OnDisable()
         {
-            _inputs.emitAction.performed -= OnEmitActionPerformed;
-            _inputs.emitAction.canceled -= OnEmitActionCancelled;
+            _inputs.Emit -= OnEmitAction;
         }
 
-        private void OnEmitActionPerformed(InputAction.CallbackContext callback)
+        private void OnEmitAction(bool performed)
         {
-            onEmitStart?.Invoke();
-        }
-
-        private void OnEmitActionCancelled(InputAction.CallbackContext callback)
-        {
-            onEmitStop?.Invoke();
+            if (performed)
+                onEmitStart?.Invoke();
+            else
+                onEmitStop?.Invoke();
+                
         }
     }
 }

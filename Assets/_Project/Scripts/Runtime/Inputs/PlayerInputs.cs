@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using Beakstorm.Settings;
 using Beakstorm.Utility;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
+using static PlayerInputActions;
 
 namespace Beakstorm.Inputs
 {
     [DefaultExecutionOrder(-100)]
-    public class PlayerInputs : MonoBehaviour
+    public class PlayerInputs : MonoBehaviour, IPlayerActions, IUIActions
     {
         public static PlayerInputs Instance;
         
@@ -18,14 +21,23 @@ namespace Beakstorm.Inputs
 
         #endregion
 
+        #region Events
+
+        public event Action<bool> Shoot = delegate {  };
+        public event Action<bool> Emit = delegate {  };
+        public event Action<bool> SwitchCamera = delegate {  };
+        public event Action<bool> LockOn = delegate {  };
+        public event Action<bool> FreeLook = delegate {  };
+
+        
+        public event Action<bool> Cancel = delegate {  };
+        
+        
+        #endregion
+        
         #region Public Fields
 
-        public InputAction moveAction;
-        public InputAction lookAction;
-        public InputAction confirmAction;
         public InputAction cancelAction;
-        public InputAction shootAction;
-        public InputAction emitAction;
         public InputAction switchCameraAction;
         public InputAction lockOnAction;
         
@@ -48,14 +60,12 @@ namespace Beakstorm.Inputs
 
         #region Private Fields
 
-        private PlayerInputActions _inputs;
-
-        private InputBuffered _confirmBuffered;
-        private InputBuffered _cancelBuffered;
-        private InputBuffered _shootBuffered;
+        public PlayerInputActions Inputs;
 
         private static InputDevice _lastActiveDevice;
 
+        private bool _cursorVisible;
+        
         #endregion
 
         #region Properties
@@ -64,7 +74,7 @@ namespace Beakstorm.Inputs
         {
             get
             {
-                Vector2 value = moveAction.ReadValue<Vector2>();
+                Vector2 value = Inputs.Player.Move.ReadValue<Vector2>();
 
                 if (_lastActiveDevice is Mouse && !freeLookAction.IsPressed() )
                     value += LookInputRaw * GameplaySettings.Instance.MouseSensitivity;
@@ -79,7 +89,7 @@ namespace Beakstorm.Inputs
         {
             get
             {
-                Vector2 value = lookAction.ReadValue<Vector2>();
+                Vector2 value = Inputs.Player.Look.ReadValue<Vector2>();
 
                 if (_lastActiveDevice is Mouse && !freeLookAction.IsPressed())
                     value *= 0;
@@ -89,13 +99,9 @@ namespace Beakstorm.Inputs
             }
         }
 
-        public Vector2 LookInputRaw => lookAction.ReadValue<Vector2>();
+        public Vector2 LookInputRaw => Inputs.Player.Look.ReadValue<Vector2>();
 
-        public bool ConfirmBuffered => _confirmBuffered;
-        public bool CancelBuffered => _cancelBuffered;
-        public bool ShootBuffered => _shootBuffered;
-
-        public PlayerInputActions InputActions => _inputs;
+        public PlayerInputActions InputActions => Inputs;
 
         public static InputDevice LastActiveDevice => _lastActiveDevice;
 
@@ -110,49 +116,40 @@ namespace Beakstorm.Inputs
         {
             Instance = this;
             
-            _inputs = new PlayerInputActions();
-            _inputs.Enable();
+            Inputs = new PlayerInputActions();
+            Inputs.Player.SetCallbacks(this);
+            Inputs.UI.SetCallbacks(this);
+            Inputs.Enable();
 
             //if (InputSystem.GetDevice(typeof(Gamepad)) != null)
             //    _inputs.bindingMask = InputBinding.MaskByGroup(_inputs.ControllerScheme.bindingGroup);
             
-            moveAction = _inputs.Player.Move;
-            lookAction = _inputs.Player.Look;
-            confirmAction = _inputs.UI.Click;
-            cancelAction = _inputs.UI.Cancel;
-            shootAction = _inputs.Player.Shoot;
-            emitAction = _inputs.Player.Emit;
-            switchCameraAction = _inputs.Player.SwitchCameraHandling;
-            lockOnAction = _inputs.Player.LockOn;
+            cancelAction = Inputs.UI.Cancel;
+            switchCameraAction = Inputs.Player.SwitchCameraHandling;
+            lockOnAction = Inputs.Player.LockOn;
 
-            freeLookAction = _inputs.Player.FreeLook;
+            freeLookAction = Inputs.Player.FreeLook;
 
-            cycleTabsAction = _inputs.UI.CycleTabs;
+            cycleTabsAction = Inputs.UI.CycleTabs;
             
-            accelerateAction = _inputs.Player.Accelerate;
-            brakeAction = _inputs.Player.Brake;
-            whistleAction = _inputs.Player.Whistle;
+            accelerateAction = Inputs.Player.Accelerate;
+            brakeAction = Inputs.Player.Brake;
+            whistleAction = Inputs.Player.Whistle;
 
-            selectPheromoneAction = _inputs.Player.SwitchPheromone;
-            
-            _confirmBuffered = new InputBuffered(inputGrace);
-            _cancelBuffered = new InputBuffered(inputGrace);
-            _shootBuffered = new InputBuffered(inputGrace);
+            selectPheromoneAction = Inputs.Player.SwitchPheromone;
         }
 
         private void OnEnable()
         {
-            confirmAction.AddListener(OnConfirmButton);
-            cancelAction.AddListener(OnCancelButton);
-            shootAction.AddListener(OnShootButton);
+            Inputs.Player.Pause.AddListener(OnPauseButton);
+            Inputs.UI.Pause.AddListener(OnPauseButton);
             
-            _inputs.Player.Pause.AddListener(OnPauseButton);
-            _inputs.UI.Pause.AddListener(OnPauseButton);
-            
-            _inputs.UI.Navigate.AddListener(OnMoveUI);
-            _inputs.UI.Point.AddListener(OnPointUI);
+            Inputs.UI.Navigate.AddListener(OnMoveUI);
+            Inputs.UI.Point.AddListener(OnPointUI);
             
             InputSystem.onActionChange += OnActionChange;
+            
+            SetEventSystemInputAsset();
         }
 
         private void OnDisable()
@@ -179,13 +176,53 @@ namespace Beakstorm.Inputs
                     _lastActiveDevice = newDevice;
                     // fire an event to anyone listening
                     ActiveDeviceChangeEvent?.Invoke();
+                    EnableCursorForMouseOnly();
                 }
             }
         }
 
+        private void EnableCursorForMouseOnly()
+        {
+            if (!_cursorVisible)
+            {
+                Cursor.visible = false;
+            }
+            else
+            {
+                if (_lastActiveDevice is Mouse)
+                    Cursor.visible = true;
+                else
+                    Cursor.visible = false;
+            }
+        }
+
+
+        private void SetEventSystemInputAsset()
+        {
+            var eventSystem = EventSystem.current;
+            if (eventSystem == null)
+            {
+                Debug.LogWarning("No EventSystem found in scene.");
+                return;
+            }
+
+            var uiModule = eventSystem.GetComponent<InputSystemUIInputModule>();
+            if (uiModule == null)
+            {
+                Debug.LogWarning("No InputSystemUIInputModule found in scene.");
+                return;
+            }
+
+            if (uiModule.actionsAsset != Inputs.asset)
+            {
+                uiModule.actionsAsset = Inputs.asset;
+                Debug.Log("Successfully assigned Inputs.asset to InputSystemUIInputModule.");
+            }
+        }
+        
         public InputAction GetAction(string actionName)
         {
-            return _inputs.FindAction(actionName);
+            return Inputs.FindAction(actionName);
         }
 
         public InputBinding GetBinding(string actionName)
@@ -194,9 +231,9 @@ namespace Beakstorm.Inputs
 
             int id = 0;
             InputControlScheme? currentScheme = null;
-            for (int i = 0; i < _inputs.controlSchemes.Count; i++)
+            for (int i = 0; i < Inputs.controlSchemes.Count; i++)
             {
-                var scheme = _inputs.controlSchemes[i];
+                var scheme = Inputs.controlSchemes[i];
                 if (scheme.SupportsDevice(_lastActiveDevice))
                 {
                     currentScheme = scheme;
@@ -223,9 +260,9 @@ namespace Beakstorm.Inputs
 
             int id = 0;
             InputControlScheme? currentScheme = null;
-            for (int i = 0; i < _inputs.controlSchemes.Count; i++)
+            for (int i = 0; i < Inputs.controlSchemes.Count; i++)
             {
-                var scheme = _inputs.controlSchemes[i];
+                var scheme = Inputs.controlSchemes[i];
                 if (scheme.SupportsDevice(_lastActiveDevice))
                 {
                     currentScheme = scheme;
@@ -255,6 +292,7 @@ namespace Beakstorm.Inputs
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            _cursorVisible = false;
         }
         
         public void EnableUiInputs()
@@ -263,38 +301,27 @@ namespace Beakstorm.Inputs
             InputActions.UI.Enable();
 
             Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            //Cursor.visible = true;
+
+            _cursorVisible = true;
+            
+            EnableCursorForMouseOnly();
         }
 
 
         public void EnableNavigation()
         {
-            _inputs.UI.Navigate.Enable();
+            Inputs.UI.Navigate.Enable();
         }
         
         
         public void DisableNavigation()
         {
-            _inputs.UI.Navigate.Disable();
+            Inputs.UI.Navigate.Disable();
         }
 
         #region Input Callbacks
 
-        public void OnConfirmButton(InputAction.CallbackContext context)
-        {
-            if (!context.performed) return;
-        }
-
-        public void OnCancelButton(InputAction.CallbackContext context)
-        {
-            if (!context.performed) return;
-        }
-
-        public void OnShootButton(InputAction.CallbackContext context)
-        {
-            if (!context.performed) return;
-        }
-        
         public void OnPauseButton(InputAction.CallbackContext context)
         {
             if (!context.performed) return;
@@ -313,70 +340,128 @@ namespace Beakstorm.Inputs
         }
 
         #endregion
-    }
 
-    public class InputBuffered
-    {
-        private readonly float _inputGrace;
-        public double timeAtLastInput;
-        public bool bufferActive;
-        public bool checkedThisFrame;
+        #region Player Callbacks
 
-        public InputBuffered(float inputGrace)
+        
+        void IPlayerActions.OnMove(InputAction.CallbackContext context)
         {
-            _inputGrace = inputGrace;
-            bufferActive = false;
-            checkedThisFrame = false;
+            
         }
 
-        /// <summary>
-        /// Activates the input and saves the time of this input
-        /// </summary>
-        public void TriggerInput()
+        void IPlayerActions.OnLook(InputAction.CallbackContext context)
         {
-            timeAtLastInput = Time.unscaledTimeAsDouble;
-            bufferActive = true;
-            checkedThisFrame = false;
+            
         }
 
-        /// <summary>
-        /// Cancels the input.
-        /// </summary>
-        public void CancelInput()
+        void IPlayerActions.OnShoot(InputAction.CallbackContext context)
         {
-            bufferActive = false;
+            if (context.performed)
+                Shoot.Invoke(true);
+            if (context.canceled)
+                Shoot.Invoke(false);
         }
 
-        /// <summary>
-        /// Checks the input buffer. If the time since input falls within the input grace, returns true.
-        /// If it has already been checked, returns false.
-        /// </summary>
-        /// <returns></returns>
-        public bool CheckOnce()
+        void IPlayerActions.OnEmit(InputAction.CallbackContext context)
         {
-            if (!bufferActive) return false;
-            if (checkedThisFrame) return false;
-
-            checkedThisFrame = true;
-            return Time.unscaledTimeAsDouble - timeAtLastInput < _inputGrace;
+            if (context.performed)
+                Emit.Invoke(true);
+            if (context.canceled)
+                Emit.Invoke(false);
         }
 
-        /// <summary>
-        /// Checks the input buffer. If the time since input falls within the input grace, returns true.
-        /// Can be called without resetting the buffer.
-        /// </summary>
-        /// <returns></returns>
-        public bool Check()
+        void IPlayerActions.OnSwitchPheromone(InputAction.CallbackContext context)
         {
-            //if (!bufferActive) return false;
-
-            return Time.unscaledTimeAsDouble - timeAtLastInput < _inputGrace;
         }
 
-
-        public static implicit operator bool(InputBuffered inputBuffered)
+        void IPlayerActions.OnSwitchCameraHandling(InputAction.CallbackContext context)
         {
-            return inputBuffered.CheckOnce();
         }
+
+        void IPlayerActions.OnAccelerate(InputAction.CallbackContext context)
+        {
+        }
+
+        void IPlayerActions.OnBrake(InputAction.CallbackContext context)
+        {
+        }
+
+        void IPlayerActions.OnConfirm(InputAction.CallbackContext context)
+        {
+        }
+
+        void IPlayerActions.OnCancel(InputAction.CallbackContext context)
+        {
+        }
+
+        void IPlayerActions.OnWhistle(InputAction.CallbackContext context)
+        {
+        }
+
+        void IPlayerActions.OnPause(InputAction.CallbackContext context)
+        {
+        }
+
+        void IPlayerActions.OnFreeLook(InputAction.CallbackContext context)
+        {
+        }
+
+        void IPlayerActions.OnLockOn(InputAction.CallbackContext context)
+        {
+        }
+        
+        #endregion
+
+        #region UI Callbacks
+
+        void IUIActions.OnNavigate(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnSubmit(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnCancel(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnPause(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnPoint(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnClick(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnRightClick(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnMiddleClick(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnScrollWheel(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnTrackedDevicePosition(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnTrackedDeviceOrientation(InputAction.CallbackContext context)
+        {
+        }
+
+        void IUIActions.OnCycleTabs(InputAction.CallbackContext context)
+        {
+        }
+
+        #endregion
     }
 }

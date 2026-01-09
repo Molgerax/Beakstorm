@@ -30,18 +30,21 @@ namespace Beakstorm.Gameplay.Player
 
         private void OnEnable()
         {
-            _inputs.shootAction.performed += OnShootActionPerformed;
+            _inputs.Shoot += OnShootActionPerformed;
         }
 
         private void OnDisable()
         {
             
-            _inputs.shootAction.performed -= OnShootActionPerformed;
+            _inputs.Shoot -= OnShootActionPerformed;
         }
 
         
-        private void OnShootActionPerformed(InputAction.CallbackContext callback)
+        private void OnShootActionPerformed(bool performed)
         {
+            if (!performed)
+                return;
+            
             if (!weaponInventory || weaponInventory.SelectedWeapon == null)
                 return;
 
