@@ -43,6 +43,11 @@ namespace Beakstorm.Gameplay.Cameras
 
                 if (_currentIndex == index)
                 {
+                    if (cam.TryGetComponent(out CameraLayerMaskSetter setter))
+                        setter.SetLayerMask();
+                    
+                    if (cam.TryGetComponent(out CameraCullUI cullUI))
+                        cullUI.Activate();
                 }
             }
         }
