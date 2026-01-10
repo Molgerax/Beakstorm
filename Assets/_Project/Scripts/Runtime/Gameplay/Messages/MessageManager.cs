@@ -4,8 +4,8 @@ using Beakstorm.Inputs;
 using Beakstorm.UI.Icons;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using PrimeTween;
 
 namespace Beakstorm.Gameplay.Messages
 {
@@ -22,9 +22,53 @@ namespace Beakstorm.Gameplay.Messages
         private static Message CurrentMessage => _messageQueue.Count > 0 ? _messageQueue.Peek() : null;
 
         private Message _cachedMessage;
+
+        private RectTransform _rect;
         
         private string _cachedText;
         private bool _disabled;
+
+        private bool Disabled
+        {
+            get => _disabled;
+            set
+            {
+                if (_disabled == value)
+                    return;
+
+                if (value)
+                    DeactivateMessageWindow();
+                else
+                    ActivateMessageWindow();
+                _disabled = value;
+            }
+        }
+
+        private void ActivateMessageWindow()
+        {
+            if (!_rect)
+                return;
+
+            _tween.Complete();
+            SetParent(true);
+            _tween = Tween.UIAnchoredPosition(_rect, Vector2.up * 224, Vector2.zero, 0.2f,
+                Easing.Standard(Ease.InOutQuad));
+        }
+        
+        private void DeactivateMessageWindow()
+        {
+            if (!_rect)
+                return;
+
+            _tween.Complete();
+            _tween = Tween.UIAnchoredPosition(_rect, Vector2.zero, Vector2.up * 224, 0.2f,
+                Easing.Standard(Ease.InOutQuad)).OnComplete(this, (x) =>
+            {
+                x.SetParent(false);
+            });
+        }
+        
+        private Tween _tween;
         
         public static void AddMessage(Message message)
         {
@@ -34,15 +78,19 @@ namespace Beakstorm.Gameplay.Messages
 
         private void OnEnable()
         {
-            PlayerInputs.Instance.whistleAction.performed += OnSkipMessage;
+            PlayerInputs.Instance.Whistle += OnSkipMessage;
             PlayerInputs.ActiveDeviceChangeEvent += OnDeviceChanged;
             OnDeviceChanged();
             SetMessageUI(null);
+            SetParent(false);
+
+            if (parent)
+                _rect = (RectTransform) parent.transform;
         }
         
         private void OnDisable()
         {
-            PlayerInputs.Instance.whistleAction.performed -= OnSkipMessage;
+            PlayerInputs.Instance.Whistle -= OnSkipMessage;
             PlayerInputs.ActiveDeviceChangeEvent -= OnDeviceChanged;
             
             _messageQueue.Clear();
@@ -59,9 +107,8 @@ namespace Beakstorm.Gameplay.Messages
             {
                 SetTimer(0);
                 SetText(String.Empty);
-                SetParent(false);
                 SetSkip(false);
-                _disabled = false;
+                Disabled = true;
             }
             else
             {
@@ -69,7 +116,7 @@ namespace Beakstorm.Gameplay.Messages
                 SetTimer(message.Timer01);
                 SetParent(true);
                 SetSkip(message.IsSkippable);
-                _disabled = true;
+                Disabled = false;
             }
         }
 
@@ -77,7 +124,7 @@ namespace Beakstorm.Gameplay.Messages
         {
             if (CurrentMessage == null)
             { 
-                if (!_disabled)
+                if (!Disabled)
                     SetMessageUI(null);
                 return;
             }
@@ -137,8 +184,10 @@ namespace Beakstorm.Gameplay.Messages
             SetMessageUI(CurrentMessage);
         }
         
-        private void OnSkipMessage(InputAction.CallbackContext context)
+        private void OnSkipMessage(bool performed)
         {
+            if (!performed)
+                return;
             if (CurrentMessage is {IsSkippable: true})
                 Dequeue();
         }
