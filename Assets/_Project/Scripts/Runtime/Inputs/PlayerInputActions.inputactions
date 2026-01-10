@@ -40,7 +40,7 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "SwitchPheromone",
@@ -129,7 +129,16 @@
                     "id": "4d37820e-b4e2-42c9-b4c9-835204ac7b11",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LookAtTarget",
+                    "type": "Button",
+                    "id": "a8ed7290-7ea5-4e66-9789-6dea1885e765",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 }
             ],
@@ -505,6 +514,28 @@
                     "processors": "",
                     "groups": ";KeyboardMouse",
                     "action": "LockOn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6c9c45a7-554d-4a9d-8004-374c8d788b6e",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "LookAtTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "acc91778-bc8b-4e32-81cd-9854dfadd94f",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "LookAtTarget",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -408,6 +408,11 @@ namespace Beakstorm.Inputs
         {
             ButtonInputHandle(context, LockOn);
         }
+
+        void IPlayerActions.OnLookAtTarget(InputAction.CallbackContext context)
+        {
+            ButtonInputHandle(context, LookAtTarget);
+        }
         
         #endregion
 
