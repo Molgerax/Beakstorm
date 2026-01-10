@@ -641,7 +641,7 @@ MonoBehaviour:
     Enabled: 1
     DefaultMode: 2
   DefaultBlend:
-    Style: 1
+    Style: 0
     Time: 2
     CustomCurve:
       serializedVersion: 2
@@ -852,105 +852,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputGrace: 0.2
-  moveAction:
-    m_Name: Move
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: c75e8514-711c-47ce-8a75-b784a0955fba
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  lookAction:
-    m_Name: Look
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 15e07b98-ce27-4ec4-9764-9595ae008f23
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  confirmAction:
-    m_Name: Confirm
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 5f63c515-bb3d-4461-9fcd-a4e2ae0922af
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  cancelAction:
-    m_Name: Cancel
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 40491cab-a899-4d02-961c-ff35cb1db84d
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  shootAction:
-    m_Name: Shoot
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 42441171-0f7d-4dab-98c3-f19f715e335f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  emitAction:
-    m_Name: Emit
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: f06e221b-73f8-4dd4-860a-967c513b7fae
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  switchCameraAction:
-    m_Name: Switch Camera
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: f0f8e417-4795-412b-8036-a841bc681ac4
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  freeLookAction:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 92aed7b8-0413-4b94-9e18-f1a46974e2bb
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  accelerateAction:
-    m_Name: Accelerate
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 3d5c3892-cdaf-4b71-8f23-0030a3231dbb
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  brakeAction:
-    m_Name: Brake
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: e753ca16-5f7c-4797-988b-3ca755b06ec0
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  whistleAction:
-    m_Name: Whistle
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 19134ec9-c2a1-459a-98b0-b78b7ffbc562
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
   selectPheromoneAction:
     m_Name: Select Pheromone
     m_Type: 0
