@@ -68,19 +68,20 @@ namespace Beakstorm.Gameplay.Targeting
 
         private void OnEnable()
         {
-            PlayerInputs.Instance.lockOnAction.performed += OnLockOnAction;
+            PlayerInputs.Instance.LockOn += OnLockOnAction;
         }
 
 
         private void OnDisable()
         {
-            PlayerInputs.Instance.lockOnAction.performed -= OnLockOnAction;
+            PlayerInputs.Instance.LockOn -= OnLockOnAction;
         }
         
         
-        private void OnLockOnAction(InputAction.CallbackContext context)
+        private void OnLockOnAction(bool performed)
         {
-            SelectTarget();
+            if (performed)
+                SelectTarget();
         }
 
 

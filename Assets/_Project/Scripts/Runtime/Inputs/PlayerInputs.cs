@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Beakstorm.Settings;
-using Beakstorm.Utility;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -25,10 +24,14 @@ namespace Beakstorm.Inputs
 
         public event Action<bool> Shoot = delegate {  };
         public event Action<bool> Emit = delegate {  };
+        public event Action<bool> Accelerate = delegate {  };
+        public event Action<bool> Brake = delegate {  };
         public event Action<bool> SwitchCamera = delegate {  };
         public event Action<bool> LockOn = delegate {  };
         public event Action<bool> FreeLook = delegate {  };
-
+        public event Action<bool> Whistle = delegate {  };
+        public event Action<bool> LookAtTarget = delegate {  };
+        
         
         public event Action<bool> Cancel = delegate {  };
         
@@ -37,19 +40,7 @@ namespace Beakstorm.Inputs
         
         #region Public Fields
 
-        public InputAction cancelAction;
-        public InputAction switchCameraAction;
-        public InputAction lockOnAction;
-        
-        public InputAction freeLookAction;
-
-        
-        public InputAction accelerateAction;
-        public InputAction brakeAction;
-        public InputAction whistleAction;
-        
         public InputAction selectPheromoneAction;
-        
         public InputAction cycleTabsAction;
         
         public Action PauseAction;
@@ -79,7 +70,7 @@ namespace Beakstorm.Inputs
             {
                 Vector2 value = Inputs.Player.Move.ReadValue<Vector2>();
 
-                if (_lastActiveDevice is Mouse && !freeLookAction.IsPressed() )
+                if (_lastActiveDevice is Mouse && !Inputs.Player.FreeLook.IsPressed() )
                     value += LookInputRaw * GameplaySettings.Instance.MouseSensitivity;
 
                 value = Vector2.ClampMagnitude(value, 1f);
@@ -94,7 +85,7 @@ namespace Beakstorm.Inputs
             {
                 Vector2 value = Inputs.Player.Look.ReadValue<Vector2>();
 
-                if (_lastActiveDevice is Mouse && !freeLookAction.IsPressed())
+                if (_lastActiveDevice is Mouse && !Inputs.Player.FreeLook.IsPressed())
                     value *= 0;
 
                 
@@ -127,27 +118,14 @@ namespace Beakstorm.Inputs
 
             //if (InputSystem.GetDevice(typeof(Gamepad)) != null)
             //    _inputs.bindingMask = InputBinding.MaskByGroup(_inputs.ControllerScheme.bindingGroup);
-            
-            cancelAction = Inputs.UI.Cancel;
-            switchCameraAction = Inputs.Player.SwitchCameraHandling;
-            lockOnAction = Inputs.Player.LockOn;
-
-            freeLookAction = Inputs.Player.FreeLook;
 
             cycleTabsAction = Inputs.UI.CycleTabs;
             
-            accelerateAction = Inputs.Player.Accelerate;
-            brakeAction = Inputs.Player.Brake;
-            whistleAction = Inputs.Player.Whistle;
-
             selectPheromoneAction = Inputs.Player.SwitchPheromone;
         }
 
         private void OnEnable()
         {
-            Inputs.Player.Pause.AddListener(OnPauseButton);
-            Inputs.UI.Pause.AddListener(OnPauseButton);
-            
             InputSystem.onActionChange += OnActionChange;
             
             SetEventSystemInputAsset();
@@ -353,6 +331,14 @@ namespace Beakstorm.Inputs
 
         #endregion
 
+        private void ButtonInputHandle(InputAction.CallbackContext context, Action<bool> action)
+        {
+            if (context.performed)
+                action.Invoke(true);
+            if (context.canceled)
+                action.Invoke(false);
+        }
+        
         #region Player Callbacks
 
         
@@ -368,18 +354,12 @@ namespace Beakstorm.Inputs
 
         void IPlayerActions.OnShoot(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                Shoot.Invoke(true);
-            if (context.canceled)
-                Shoot.Invoke(false);
+            ButtonInputHandle(context, Shoot);
         }
 
         void IPlayerActions.OnEmit(InputAction.CallbackContext context)
         {
-            if (context.performed)
-                Emit.Invoke(true);
-            if (context.canceled)
-                Emit.Invoke(false);
+            ButtonInputHandle(context, Emit);
         }
 
         void IPlayerActions.OnSwitchPheromone(InputAction.CallbackContext context)
@@ -388,14 +368,17 @@ namespace Beakstorm.Inputs
 
         void IPlayerActions.OnSwitchCameraHandling(InputAction.CallbackContext context)
         {
+            ButtonInputHandle(context, SwitchCamera);
         }
 
         void IPlayerActions.OnAccelerate(InputAction.CallbackContext context)
         {
+            ButtonInputHandle(context, Accelerate);
         }
 
         void IPlayerActions.OnBrake(InputAction.CallbackContext context)
         {
+            ButtonInputHandle(context, Brake);
         }
 
         void IPlayerActions.OnConfirm(InputAction.CallbackContext context)
@@ -408,18 +391,22 @@ namespace Beakstorm.Inputs
 
         void IPlayerActions.OnWhistle(InputAction.CallbackContext context)
         {
+            ButtonInputHandle(context, Whistle);
         }
 
         void IPlayerActions.OnPause(InputAction.CallbackContext context)
         {
+            OnPauseButton(context);
         }
 
         void IPlayerActions.OnFreeLook(InputAction.CallbackContext context)
         {
+            ButtonInputHandle(context, FreeLook);
         }
 
         void IPlayerActions.OnLockOn(InputAction.CallbackContext context)
         {
+            ButtonInputHandle(context, LockOn);
         }
         
         #endregion
@@ -436,10 +423,12 @@ namespace Beakstorm.Inputs
 
         void IUIActions.OnCancel(InputAction.CallbackContext context)
         {
+            ButtonInputHandle(context, Cancel);
         }
 
         void IUIActions.OnPause(InputAction.CallbackContext context)
         {
+            OnPauseButton(context);
         }
 
         void IUIActions.OnPoint(InputAction.CallbackContext context)

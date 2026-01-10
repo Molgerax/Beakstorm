@@ -16,11 +16,14 @@ namespace Beakstorm.UI.Menus
                 button = GetComponentInChildren<Button>();
         }
 
-        private void OnEnable() => PlayerInputs.Instance.cancelAction.performed += OnCancel;
-        private void OnDisable() => PlayerInputs.Instance.cancelAction.performed -= OnCancel;
+        private void OnEnable() => PlayerInputs.Instance.Cancel += OnCancel;
+        private void OnDisable() => PlayerInputs.Instance.Cancel -= OnCancel;
 
-        private void OnCancel(InputAction.CallbackContext obj)
+        private void OnCancel(bool performed)
         {
+            if (!performed)
+                return;
+            
             if (button)
                 button.OnPointerClick(new PointerEventData(EventSystem.current));
         }

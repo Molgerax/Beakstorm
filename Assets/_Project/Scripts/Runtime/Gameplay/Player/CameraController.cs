@@ -1,4 +1,4 @@
-﻿using Beakstorm.Inputs;
+using Beakstorm.Inputs;
 using Beakstorm.Pausing;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -63,6 +63,10 @@ namespace Beakstorm.Gameplay.Player
         private Vector3 _lookAheadSmooth;
         private Vector3 _lookAheadSmoothSpeed;
 
+        private bool _switchCamera;
+        private bool _freeLook;
+        private bool _lookAtTarget;
+
         [SerializeField] private Vector3 _headOffset;
         
         public static bool UseManualCamera { get; private set; }
@@ -84,12 +88,18 @@ namespace Beakstorm.Gameplay.Player
 
         private void OnEnable()
         {
-            _inputs.switchCameraAction.performed += OnSwitchCameraInput;
+            _inputs.SwitchCamera += OnSwitchCameraInput;
+            _inputs.FreeLook += OnFreeLookInput;
+            _inputs.LookAtTarget += OnLookAtTargetInput;
         }
+
+
 
         private void OnDisable()
         {
-            _inputs.switchCameraAction.performed -= OnSwitchCameraInput;
+            _inputs.SwitchCamera -= OnSwitchCameraInput;
+            _inputs.FreeLook -= OnFreeLookInput;
+            _inputs.LookAtTarget -= OnLookAtTargetInput;
         }
 
         private void Update()
@@ -119,7 +129,7 @@ namespace Beakstorm.Gameplay.Player
             
             _timeSinceCenter = Mathf.Max(0, _timeSinceCenter - Time.deltaTime);
 
-            if (_inputs.LookInput.magnitude == 0 && _useManualCamera) 
+            if (_inputs.LookInput.magnitude == 0 && _useManualCamera && !_freeLook) 
             {
                 _timeSinceNoLook += Time.deltaTime;
 
@@ -141,6 +151,22 @@ namespace Beakstorm.Gameplay.Player
                 _timeReturnView = 0;
                 _cachedNormalRotation = _normalRotation * Quaternion.Inverse(_fixedRotation);
             }
+        }
+        
+        
+        private void OnFreeLookInput(bool performed)
+        {
+            _freeLook = performed;
+        }
+        
+        private void OnSwitchCameraInput(bool performed)
+        {
+            _switchCamera = performed;
+        }
+        
+        private void OnLookAtTargetInput(bool performed)
+        {
+            _lookAtTarget = performed;
         }
         
         private void OnLookInput()
@@ -170,20 +196,11 @@ namespace Beakstorm.Gameplay.Player
 
             Quaternion final = _outputRotation;
 
-            if (_inputs.switchCameraAction.IsPressed())
+            if (_switchCamera)
                 final = Quaternion.LookRotation(-(_outputRotation * Vector3.forward), _outputRotation * Vector3.up);
 
             if (!disableRotation)
                 cameraHead.localRotation = final;
-        }
-
-        private void OnSwitchCameraInput(InputAction.CallbackContext callbackContext)
-        {
-            return;
-            
-            _useManualCamera = false;
-            _timeSinceCenter = centerCooldown;                
-            _timeSinceNoLook = 0;
         }
 
         private float SlerpT(float t) => 1f - Mathf.Exp(-t * Time.deltaTime);

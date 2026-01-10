@@ -33,6 +33,9 @@ namespace Beakstorm.Gameplay.Player.Flying
         private Vector3 _velocity;
         private Vector3 _oldVelocity;
 
+        private bool _acceleratePressed;
+        private bool _brakePressed;
+        
         public RangeVariable ThrustVariable => thrustVariable;
         public RangeVariable SpeedVariable => speedVariable;
         public RangeVariable OverChargeVariable => overChargeVariable;
@@ -59,8 +62,8 @@ namespace Beakstorm.Gameplay.Player.Flying
         [NonSerialized] public float Thrust01;
         
         public Vector2 MoveInput => _inputs.MoveInput;
-        public bool BreakInput => _inputs.brakeAction.IsPressed();
-        public bool ThrustInput => _inputs.accelerateAction.IsPressed();
+        public bool BreakInput => _brakePressed;
+        public bool ThrustInput => _acceleratePressed;
 
         private bool _initialized;
 
@@ -153,6 +156,21 @@ namespace Beakstorm.Gameplay.Player.Flying
             if (controlStrategy)
                 controlStrategy.Apply();
         }
+
+        private void OnEnable()
+        {
+            PlayerInputs.Instance.Accelerate += OnAccelerate;
+            PlayerInputs.Instance.Brake += OnBrake;
+        }
+        
+        private void OnDisable()
+        {
+            PlayerInputs.Instance.Accelerate -= OnAccelerate;
+            PlayerInputs.Instance.Brake -= OnBrake;
+        }
+
+        private void OnAccelerate(bool performed) => _acceleratePressed = performed;
+        private void OnBrake(bool performed) => _brakePressed = performed;
 
         #endregion
 
