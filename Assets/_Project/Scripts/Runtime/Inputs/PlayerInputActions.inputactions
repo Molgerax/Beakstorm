@@ -140,6 +140,15 @@
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CameraViewPoint",
+                    "type": "Button",
+                    "id": "41d2853f-05bc-4283-8509-03000cf49397",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -536,6 +545,28 @@
                     "processors": "",
                     "groups": ";KeyboardMouse",
                     "action": "LookAtTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "75512e71-0d78-4e30-a3e3-1b67dacde9eb",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "CameraViewPoint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "367a8e08-62cd-4b03-bb33-57829e05f594",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KeyboardMouse",
+                    "action": "CameraViewPoint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

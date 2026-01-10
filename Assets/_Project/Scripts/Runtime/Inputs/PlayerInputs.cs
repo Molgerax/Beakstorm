@@ -31,6 +31,7 @@ namespace Beakstorm.Inputs
         public event Action<bool> FreeLook = delegate {  };
         public event Action<bool> Whistle = delegate {  };
         public event Action<bool> LookAtTarget = delegate {  };
+        public event Action<bool> CameraViewPoint = delegate {  };
         
         
         public event Action<bool> Cancel = delegate {  };
@@ -412,6 +413,11 @@ namespace Beakstorm.Inputs
         void IPlayerActions.OnLookAtTarget(InputAction.CallbackContext context)
         {
             ButtonInputHandle(context, LookAtTarget);
+        }
+        
+        void IPlayerActions.OnCameraViewPoint(InputAction.CallbackContext context)
+        {
+            ButtonInputHandle(context, CameraViewPoint);
         }
         
         #endregion
