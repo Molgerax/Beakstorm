@@ -18,6 +18,8 @@ namespace Beakstorm.Gameplay.Targeting
         
         public Faction Faction => faction;
 
+        public Vector3 Position => transform.position;
+
         private void OnEnable()
         {
             onSetCurrentTarget?.Invoke(false);

@@ -53,11 +53,11 @@ namespace Beakstorm.Gameplay.Player
 
             Vector3 dir = transform.forward;
 
-            Vector3 targetPos = GetTargetPos(out var targetNormal, out var coll);
+            Vector3 targetPos = GetTargetPos(out var targetNormal, out var coll, out var target);
             
             pos += dir * shootOffset;
 
-            FireInfo fireInfo = new FireInfo(pos, dir, lookDir, targetPos, targetNormal, 0, coll);
+            FireInfo fireInfo = new FireInfo(pos, dir, lookDir, targetPos, targetNormal, 0, coll, target);
             
             if (weaponInventory.SelectedWeapon.TryFire(fireInfo))
                 onShoot?.Invoke();
@@ -76,6 +76,8 @@ namespace Beakstorm.Gameplay.Player
                     Target t = targetingManager.CurrentTarget;
                     ray.direction = t.transform.position - targetingManager.ViewAnchor.position;
                     ray.origin = targetingManager.ViewAnchor.position;
+
+                    return (t.Position - shootPosition).normalized;
                 }
             }
             
@@ -87,10 +89,11 @@ namespace Beakstorm.Gameplay.Player
             return _camera.transform.forward;
         }
         
-        private Vector3 GetTargetPos(out Vector3 targetNormal, out Collider collider)
+        private Vector3 GetTargetPos(out Vector3 targetNormal, out Collider collider, out Target target)
         {
             targetNormal = -transform.forward;
             collider = null;
+            target = null;
             if (!_camera) return transform.position + transform.forward * 500;
 
             Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
@@ -102,6 +105,8 @@ namespace Beakstorm.Gameplay.Player
                     Target t = targetingManager.CurrentTarget;
                     ray.direction = t.transform.position - targetingManager.ViewAnchor.position;
                     ray.origin = targetingManager.ViewAnchor.position;
+                    target = t;
+                    return t.Position;
                 }
             }
 
@@ -130,11 +135,23 @@ namespace Beakstorm.Gameplay.Player
         public Collider Collider;
         public Vector3 HitPoint;
         public Vector3 HitNormal;
+        public Target Target;
 
-        public Vector3 TargetPosition => (Collider && Collider.gameObject.activeInHierarchy) ? Collider.transform.TransformPoint(HitPoint) : _targetPosition;
+        public Vector3 TargetPosition
+        {
+            get
+            {
+                if (Target) return Target.Position;
+                
+                return (Collider && Collider.gameObject.activeInHierarchy)
+                    ? Collider.transform.TransformPoint(HitPoint)
+                    : _targetPosition;
+            }
+        }
+
         public Vector3 TargetNormal => Collider && Collider.gameObject.activeInHierarchy ? Collider.transform.TransformDirection(HitNormal) : _targetNormal;
         
-        public FireInfo(Vector3 position, Vector3 direction, Vector3 lookDirection, Vector3 targetPosition, Vector3 targetNormal, float speed, Collider collider = null)
+        public FireInfo(Vector3 position, Vector3 direction, Vector3 lookDirection, Vector3 targetPosition, Vector3 targetNormal, float speed, Collider collider = null, Target target = null)
         {
             InitialPosition = position;
             InitialDirection = direction;
@@ -145,6 +162,7 @@ namespace Beakstorm.Gameplay.Player
             Collider = collider;
             HitPoint = targetPosition;
             HitNormal = targetNormal;
+            Target = target;
 
             if (Collider)
             {
