@@ -4,7 +4,6 @@ using Beakstorm.Gameplay.Targeting;
 using Beakstorm.Inputs;
 using UltEvents;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Beakstorm.Gameplay.Player
 {
