@@ -21,7 +21,7 @@ MonoBehaviour:
   adjustToBounds: 1
   outlineBoundsSize: 64
   selectSizeTween:
-    startFromCurrent: 1
+    startFromCurrent: 0
     startValue: 1
     endValue: 1
     settings:
