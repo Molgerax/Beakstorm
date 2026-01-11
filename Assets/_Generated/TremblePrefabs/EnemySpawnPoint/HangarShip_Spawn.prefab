@@ -50,6 +50,7 @@ MonoBehaviour:
   spawnParent: {fileID: 0}
   auxiliaryData:
     waypoint: {fileID: 0}
+    SkipEmerge: 0
 --- !u!1001 &5508829477054966190
 PrefabInstance:
   m_ObjectHideFlags: 0

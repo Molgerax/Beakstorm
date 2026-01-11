@@ -358,6 +358,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faction: {fileID: 11400000, guid: be1980ba416d34f41b5a9e8bbc5eff2c, type: 2}
+  onSetCurrentTarget:
+    _PersistentCalls: []
+  onSetActiveTarget:
+    _PersistentCalls: []
 --- !u!114 &5468110059834511781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,6 +391,7 @@ MonoBehaviour:
   emissionRate: 0
   lifeTime: 1
   velocityFactor: 0
+  emitOverDistance: 0
 --- !u!1 &509663086941206242
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,7 +818,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 400
-  currentHealth: 0
   onInitialize:
     _PersistentCalls:
     - _Target: {fileID: 437454237274325189}
@@ -875,10 +879,13 @@ MonoBehaviour:
     - _Target: {fileID: 747270659314704673}
       _MemberName: PostEvent
       _PersistentArguments: []
+  triggerTargets: []
   autoInitialize: 1
   offset: {x: 0, y: 0, z: 0}
   radius: 14
   meshRenderer: {fileID: 2352432761497601266}
+  weakPointData: {fileID: 0}
+  soundSource: {fileID: 0}
 --- !u!114 &9037211588581216975
 MonoBehaviour:
   m_ObjectHideFlags: 0
