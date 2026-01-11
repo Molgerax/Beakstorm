@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3127477836441075179
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2568346622076291034}
+    - target: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Open
+      objectReference: {fileID: 0}
+    - target: {fileID: 157677384354377457, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Beakstorm.UI.Menus.OpenURL, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 213222849029601710, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_Name
+      value: WishlistButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4048953338964751772, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_text
+      value: Wishlist Now
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 170
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421638203047016911, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 213222849029601710, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2568346622076291034}
+  m_SourcePrefab: {fileID: 100100000, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+--- !u!1 &2995612319651578949 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 213222849029601710, guid: 7114fa41e2bffe946a25982155fa1561, type: 3}
+  m_PrefabInstance: {fileID: 3127477836441075179}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2568346622076291034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2995612319651578949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb3b176d31de4fa1b4b28ed40771886f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.UI.Menus.OpenURL
+  url: https://store.steampowered.com/app/3877610/Beakstorm/
