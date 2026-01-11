@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3828862834290944668}
   - component: {fileID: 157677384354377457}
   - component: {fileID: 4673797003751449745}
+  - component: {fileID: 376917084781965978}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -99,9 +100,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+    m_NormalColor: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+    m_PressedColor: {r: 0.67058825, g: 0.67058825, b: 0.67058825, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -147,6 +148,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profile: {fileID: 11400000, guid: cd6e823beb2414641af44db16645da17, type: 2}
+--- !u!114 &376917084781965978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213222849029601710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9243aafbfef141e7bef4a7a1d0b6c68b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.UI.Menus.SelectableTransitions
+  profile: {fileID: 11400000, guid: bdb2fef06052b4f47a549cde16612448, type: 2}
 --- !u!1 &3721497134286905550
 GameObject:
   m_ObjectHideFlags: 0
