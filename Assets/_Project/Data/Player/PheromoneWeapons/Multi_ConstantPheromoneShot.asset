@@ -14,6 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displaySprite: {fileID: 21300000, guid: 7ca8aa00593c15b41ab023e023354e28, type: 3}
   displayName: Multi Shot
+  crosshair: {fileID: 21300000, guid: 8b26a137a2df7b94bb99dcacef958d86, type: 3}
+  crosshairCount: 2
+  crosshairSettings:
+    Sprite: {fileID: 21300000, guid: 8b26a137a2df7b94bb99dcacef958d86, type: 3}
+    Count: 1
+    Scale: 5
+    Distance: 25
   fireDelay: 3
   ammoCost: 1
   pickupCount: 3

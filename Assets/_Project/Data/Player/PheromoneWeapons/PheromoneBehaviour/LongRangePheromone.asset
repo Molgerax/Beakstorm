@@ -64,4 +64,3 @@ MonoBehaviour:
     m_RotationOrder: 4
   velocityFactor: 1
   projectileLifeTime: 4
-  gravity: 0.1

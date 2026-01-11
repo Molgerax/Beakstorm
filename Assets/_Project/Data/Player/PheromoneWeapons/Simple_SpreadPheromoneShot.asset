@@ -14,8 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displaySprite: {fileID: 21300000, guid: 7507e764a4fd5d8479118df6720d4866, type: 3}
   displayName: Decreasing
+  crosshair: {fileID: 21300000, guid: 98a528cd7610d74459d55bd87ac0ec06, type: 3}
+  crosshairCount: 2
+  crosshairSettings:
+    Sprite: {fileID: 21300000, guid: 98a528cd7610d74459d55bd87ac0ec06, type: 3}
+    Count: 2
+    Scale: 2
+    Distance: 50
   fireDelay: 0.5
   ammoCost: 1
+  pickupCount: 5
+  reloadTime: 1
+  maxReloadCount: 5
   initialVelocity: 50
   projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
   behaviourData: {fileID: 11400000, guid: 33a83646f9fabf347b953f479d7bf422, type: 2}

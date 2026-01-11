@@ -14,12 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displaySprite: {fileID: 21300000, guid: 7ba8a0e6dc50d234a8af640126856da2, type: 3}
   displayName: Long Range
+  crosshair: {fileID: 21300000, guid: ed59799d32748ba489179fc58f1441df, type: 3}
+  crosshairCount: 2
+  crosshairSettings:
+    Sprite: {fileID: 21300000, guid: ed59799d32748ba489179fc58f1441df, type: 3}
+    Count: 2
+    Scale: 2
+    Distance: 50
   fireDelay: 0.5
   ammoCost: 1
   pickupCount: 6
   reloadTime: 4
   maxReloadCount: 6
-  initialVelocity: 120
+  initialVelocity: 160
   projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
   behaviourData: {fileID: 11400000, guid: d1cc5b3cedb407f47840eb2d65e17859, type: 2}
   moveData: {fileID: 11400000, guid: 30f7db1b1b8d04b4c845573752d69726, type: 2}
