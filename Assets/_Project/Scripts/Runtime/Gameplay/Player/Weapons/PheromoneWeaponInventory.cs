@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,11 +14,22 @@ namespace Beakstorm.Gameplay.Player.Weapons
         public IReadOnlyList<PheromoneWeaponInstance> WeaponInstances => _weaponInstances;
 
         private int _selectedIndex;
+
+        public event Action<PheromoneWeapon> OnSelectWeapon; 
         
         public int SelectedIndex
         {
             get => _selectedIndex;
-            set => _selectedIndex = (_weaponInstances.Count == 0) ? 0 : (value % _weaponInstances.Count + _weaponInstances.Count) % _weaponInstances.Count;
+            set
+            {
+                int previous = _selectedIndex;
+                _selectedIndex = (_weaponInstances.Count == 0)
+                    ? 0
+                    : (value % _weaponInstances.Count + _weaponInstances.Count) % _weaponInstances.Count;
+                
+                if (_selectedIndex != previous)
+                    OnSelectWeapon?.Invoke(_weaponInstances[_selectedIndex].Weapon);
+            }
         }
 
         public PheromoneWeaponInstance SelectedWeapon

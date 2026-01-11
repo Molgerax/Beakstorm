@@ -7,7 +7,10 @@ namespace Beakstorm.Gameplay.Player.Weapons
         [Header("Display")]
         [SerializeField] protected Sprite displaySprite;
         [SerializeField] protected string displayName;
-        
+
+        [Header("Crosshair")] 
+        [SerializeField] protected CrosshairSettings crosshairSettings = new(null);
+
         [Header("Data")]
         [SerializeField] protected float fireDelay = 0.5f;
         [SerializeField] protected int ammoCost = 1;
@@ -23,6 +26,25 @@ namespace Beakstorm.Gameplay.Player.Weapons
         public float ReloadTime => reloadTime;
         public int MaxReloadCount => maxReloadCount;
 
+        public CrosshairSettings CrosshairSettings => crosshairSettings;
+
         public abstract void FireProjectile(FireInfo fireInfo);
+    }
+
+    [System.Serializable]
+    public struct CrosshairSettings
+    {
+        public Sprite Sprite;
+        [Range(1, 3)] public int Count;
+        public float Scale;
+        public float Distance;
+
+        public CrosshairSettings(Sprite sprite, int count = 1, float scale = 1f, float distance = 50)
+        {
+            Sprite = sprite;
+            Count = count;
+            Scale = scale;
+            Distance = distance;
+        }
     }
 }
