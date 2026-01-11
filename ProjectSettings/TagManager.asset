@@ -36,7 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - RenderShapes2D
   m_SortingLayers:
   - name: Default
     uniqueID: 0
