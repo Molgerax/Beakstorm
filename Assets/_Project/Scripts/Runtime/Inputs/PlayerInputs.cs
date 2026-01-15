@@ -412,7 +412,8 @@ namespace Beakstorm.Inputs
 
         void IPlayerActions.OnLookAtTarget(InputAction.CallbackContext context)
         {
-            ButtonInputHandle(context, LookAtTarget);
+            if (Inputs.Player.LookAtTarget.WasCompletedThisFrame() || Inputs.Player.LookAtTarget.WasPerformedThisFrame())
+                ButtonInputHandle(context, LookAtTarget);
         }
         
         void IPlayerActions.OnCameraViewPoint(InputAction.CallbackContext context)
