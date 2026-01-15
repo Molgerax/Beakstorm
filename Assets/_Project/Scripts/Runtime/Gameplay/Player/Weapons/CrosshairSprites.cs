@@ -22,7 +22,10 @@ namespace Beakstorm.Gameplay.Player.Weapons
 
         public void SetFromWeapon(PheromoneWeapon weapon)
         {
-            SetCrosshairs(weapon.CrosshairSettings);
+            if (weapon)
+                SetCrosshairs(weapon.CrosshairSettings);
+            else 
+                SetCrosshairs(default);
         }
 
         private void SetCrosshairs(CrosshairSettings settings)

@@ -34,17 +34,22 @@ namespace Beakstorm.Gameplay.Player.Weapons
     [System.Serializable]
     public struct CrosshairSettings
     {
-        public Sprite Sprite;
-        [Range(1, 3)] public int Count;
-        public float Scale;
-        public float Distance;
+        public Sprite sprite;
+        [Range(1, 3)] public int count;
+        public float scale;
+        public float distance;
 
+        public Sprite Sprite => sprite;
+        public int Count => sprite ? count : 0;
+        public float Scale => sprite ? scale : 1;
+        public float Distance => sprite ? distance : 50;
+        
         public CrosshairSettings(Sprite sprite, int count = 1, float scale = 1f, float distance = 50)
         {
-            Sprite = sprite;
-            Count = count;
-            Scale = scale;
-            Distance = distance;
+            this.sprite = sprite;
+            this.count = count;
+            this.scale = scale;
+            this.distance = distance;
         }
     }
 }
