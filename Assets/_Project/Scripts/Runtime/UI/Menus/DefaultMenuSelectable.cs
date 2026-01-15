@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using Beakstorm.Inputs;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,26 +13,68 @@ namespace Beakstorm.UI.Menus
     {
         [SerializeField] private Selectable selectable;
 
+        private static List<DefaultMenuSelectable> _activeSelectables = new();
+        private bool _isCurrentDefault;
+        
+        private static event Action _activateNewSelectable; 
+        
         private bool _usesController = false;
+
+        private Selectable _lastSelected;
         
         private void OnEnable()
         {
-            SelectDefault();
-            
             PlayerInputs.ActiveDeviceChangeEvent += OnActiveDeviceChanged;
+            _activateNewSelectable += OnDefaultSelectablesChanged;
+
+            _activeSelectables.Insert(0, this);
+            _activateNewSelectable?.Invoke();
         }
 
         private void OnDisable()
         {
+            _activateNewSelectable -= OnDefaultSelectablesChanged;
             PlayerInputs.ActiveDeviceChangeEvent -= OnActiveDeviceChanged;
+            _activeSelectables.Remove(this);
+            _activateNewSelectable?.Invoke();
         }
-
 
         private void OnActiveDeviceChanged()
         {
-            UsesController(PlayerInputs.Instance.UseButtonsInMenu);
+            SelectIfControllerChanged(PlayerInputs.Instance.UseButtonsInMenu);
         }
 
+        private void OnDefaultSelectablesChanged()
+        {
+            if (_activeSelectables[0] == this)
+            {
+                _isCurrentDefault = true;
+                SelectWithDelay(PlayerInputs.Instance.UseButtonsInMenu);
+            }
+            else if (_isCurrentDefault)
+            {
+                _isCurrentDefault = false;
+            }
+        }
+
+        private async void SelectWithDelay(bool useButtonsInMenu)
+        {
+            await UniTask.WaitForEndOfFrame();
+            Select(useButtonsInMenu);
+        }
+
+        private void Update()
+        {
+            if (_isCurrentDefault)
+            {
+                GameObject go = EventSystem.current.currentSelectedGameObject;
+                if (go)
+                {
+                    if (go.TryGetComponent(out Selectable select))
+                        _lastSelected = select;
+                }
+            }
+        }
 
         private void Reset()
         {
@@ -37,13 +82,18 @@ namespace Beakstorm.UI.Menus
                 selectable = GetComponent<Selectable>();
         }
 
-        private void UsesController(bool value)
+        private void SelectIfControllerChanged(bool value)
         {
             if (_usesController == value)
                 return;
 
             _usesController = value;
             
+            Select(_usesController);
+        }
+
+        private void Select(bool value)
+        {
             if (EventSystem.current)
             {
                 if (EventSystem.current.currentSelectedGameObject)
@@ -53,7 +103,7 @@ namespace Beakstorm.UI.Menus
                 }
             }
             
-            if (_usesController)
+            if (value)
             {
                 SelectDefault();
             }
@@ -66,6 +116,18 @@ namespace Beakstorm.UI.Menus
 
         private void SelectDefault()
         {
+            if (_lastSelected)
+            {
+                Debug.Log($"Last Selected: {_lastSelected.gameObject.name}, {_lastSelected.isActiveAndEnabled}");
+                if (_lastSelected.isActiveAndEnabled)
+                {
+                    _lastSelected.Select();
+                    _lastSelected = null;
+                    return;
+                }
+                _lastSelected = null;
+            }
+            
             if (selectable)
                 selectable.Select();
         }

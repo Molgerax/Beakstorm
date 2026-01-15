@@ -1,7 +1,6 @@
 ﻿using Beakstorm.Inputs;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Beakstorm.UI.Menus
@@ -23,9 +22,11 @@ namespace Beakstorm.UI.Menus
         {
             if (!performed)
                 return;
-            
+
             if (button)
+            {
                 button.OnPointerClick(new PointerEventData(EventSystem.current));
+            }
         }
     }
 }
