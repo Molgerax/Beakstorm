@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Beakstorm.Gameplay.Player.Weapons
 {
@@ -34,10 +35,10 @@ namespace Beakstorm.Gameplay.Player.Weapons
     [System.Serializable]
     public struct CrosshairSettings
     {
-        public Sprite sprite;
-        [Range(1, 3)] public int count;
-        public float scale;
-        public float distance;
+        [FormerlySerializedAs("Sprite")] public Sprite sprite;
+        [FormerlySerializedAs("Count")] [Range(1, 3)] public int count;
+        [FormerlySerializedAs("Scale")] public float scale;
+        [FormerlySerializedAs("Distance")] public float distance;
 
         public Sprite Sprite => sprite;
         public int Count => sprite ? count : 0;

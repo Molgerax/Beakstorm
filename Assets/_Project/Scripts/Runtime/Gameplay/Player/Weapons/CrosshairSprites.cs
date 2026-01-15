@@ -22,10 +22,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
 
         public void SetFromWeapon(PheromoneWeapon weapon)
         {
-            if (weapon)
-                SetCrosshairs(weapon.CrosshairSettings);
-            else 
-                SetCrosshairs(default);
+            SetCrosshairs(weapon != null ? weapon.CrosshairSettings : default);
         }
 
         private void SetCrosshairs(CrosshairSettings settings)
@@ -36,7 +33,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
                 spriteRenderer.sprite = settings.Sprite;
 
                 var t = spriteRenderer.transform;
-                t.localScale = Vector3.one * settings.Scale;
+                t.localScale = Vector3.one * settings.Scale * 2;
                 t.localPosition = Vector3.forward * ((index + 1) * settings.Distance);
 
                 spriteRenderer.enabled = index < settings.Count;

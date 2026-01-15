@@ -100,6 +100,6 @@ namespace Beakstorm.Gameplay.Player.Weapons
             return _weapon.GetHashCode();
         }
 
-        public static implicit operator PheromoneWeapon(PheromoneWeaponInstance w) => w.Weapon;
+        public static implicit operator PheromoneWeapon(PheromoneWeaponInstance w) => w?.Weapon;
     }
 }

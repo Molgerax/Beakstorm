@@ -10,7 +10,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
 
         public static PheromoneWeaponInventory Instance;
         
-        private List<PheromoneWeaponInstance> _weaponInstances;
+        private List<PheromoneWeaponInstance> _weaponInstances = new();
         public IReadOnlyList<PheromoneWeaponInstance> WeaponInstances => _weaponInstances;
 
         private int _selectedIndex;
@@ -28,7 +28,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
                     : (value % _weaponInstances.Count + _weaponInstances.Count) % _weaponInstances.Count;
                 
                 if (_selectedIndex != previous)
-                    OnSelectWeapon?.Invoke(_weaponInstances[_selectedIndex].Weapon);
+                    OnSelectWeapon?.Invoke(_weaponInstances.Count == 0 ? null : _weaponInstances[_selectedIndex]);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
                 PheromoneWeapon weapon = initWeapons[index];
                 _weaponInstances.Add(new PheromoneWeaponInstance(weapon, index == 0));
             }
-            OnSelectWeapon?.Invoke(_weaponInstances[0]);
+            OnSelectWeapon?.Invoke(_weaponInstances.Count == 0 ? null : _weaponInstances[0]);
         }
 
         private void Awake()
