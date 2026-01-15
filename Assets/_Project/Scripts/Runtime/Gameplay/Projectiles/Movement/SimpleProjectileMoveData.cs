@@ -9,10 +9,14 @@ namespace Beakstorm.Gameplay.Projectiles.Movement
         [SerializeField] private float gravity = 9.81f;
         [SerializeField] private float drag = 0.01f;
 
+        [SerializeField] private bool towardsLookDirection = true;
 
         public override void Initialize(ProjectileMovementHandler movementHandler, FireInfo fireInfo)
         {
-            movementHandler.SetVelocity(fireInfo.LookDirection * fireInfo.Speed);
+            if (towardsLookDirection)
+                movementHandler.SetVelocity(fireInfo.LookDirection * fireInfo.Speed);
+            else
+                movementHandler.SetVelocity(fireInfo.InitialDirection * fireInfo.Speed);
         }
 
         public override void Tick(ProjectileMovementHandler movementHandler, float deltaTime)
