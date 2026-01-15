@@ -47,14 +47,13 @@ namespace Beakstorm.Gameplay.Player
         private Quaternion _freeLookRotation;
         private Quaternion _targetRotation;
 
-        private Quaternion _cachedFreeLookRotation;
         private Quaternion _outputRotation;
+        private Quaternion _outputFinalRotation;
         
         private float _pitch;
 
         private float _timeReturnView;
 
-        private bool _useManualCamera;
         private float _moveInputSum;
 
         private float _roll;
@@ -149,9 +148,6 @@ namespace Beakstorm.Gameplay.Player
 
         private void InputTimeHandling()
         {
-            //_useManualCamera = false;
-            //return;
-            
             _timeSinceCenter = Mathf.Max(0, _timeSinceCenter - Time.deltaTime);
 
             if (_inputs.LookInput.magnitude == 0 && _mode == CameraMode.FreeLook && !_freeLook) 
@@ -174,7 +170,6 @@ namespace Beakstorm.Gameplay.Player
             if (_mode == CameraMode.FreeLook)
             {
                 _timeReturnView = 0;
-                _cachedFreeLookRotation = _freeLookRotation * Quaternion.Inverse(_fixedRotation);
             }
         }
         
@@ -240,7 +235,9 @@ namespace Beakstorm.Gameplay.Player
             if (_mode == CameraMode.FreeLook)
             {
                 _outputRotation = _freeLookRotation;
-                cameraHead.localRotation = _outputRotation;
+                _outputFinalRotation = _outputRotation;
+                
+                cameraHead.localRotation = _outputFinalRotation;
             }
             else
             {
@@ -254,22 +251,20 @@ namespace Beakstorm.Gameplay.Player
                 //if (_timeReturnView < 1f)
                 //    _outputRotation = Quaternion.Slerp(_cachedFreeLookRotation * GetRotation(_mode), GetRotation(_mode), _timeReturnView);
                 //else
-                    _outputRotation = GetRotation(_mode);
+                _outputRotation = GetRotation(_mode);
                 
-                    
-                cameraHead.localRotation =
-                        Quaternion.Slerp(_cachedRotation * _outputRotation, _outputRotation, _timeReturnView);
+
+                _outputFinalRotation = Quaternion.Slerp(_cachedRotation * _outputRotation, _outputRotation, _timeReturnView);
+
+                //if (_switchCamera)
+                //    final = Quaternion.LookRotation(-(_fixedRotation * Vector3.forward), _fixedRotation * Vector3.up);
+             
+                if (!disableRotation)
+                    cameraHead.localRotation = _outputFinalRotation;
             }
-
-            return;
-
-            Quaternion final = _outputRotation;
             
             if (_switchCamera)
-                final = Quaternion.LookRotation(-(_outputRotation * Vector3.forward), _outputRotation * Vector3.up);
-
-            if (!disableRotation)
-                cameraHead.localRotation = final;
+                cameraHead.localRotation = Quaternion.LookRotation(-(_fixedRotation * Vector3.forward), _fixedRotation * Vector3.up);
         }
 
         private float SlerpT(float t) => 1f - Mathf.Exp(-t * Time.deltaTime);
@@ -301,7 +296,7 @@ namespace Beakstorm.Gameplay.Player
         {
             Vector2 inputVector = _inputs.LookInput * Time.deltaTime;
             
-            var localEulerAngles = cameraHead.localEulerAngles;
+            var localEulerAngles = _outputFinalRotation.eulerAngles;
 
             float pitch = localEulerAngles.x;
 
