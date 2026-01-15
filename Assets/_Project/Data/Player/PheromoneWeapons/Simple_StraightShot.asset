@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8a480dfefa5e3f4a92e7ea3822b3c61, type: 3}
-  m_Name: Simple_ReversePheromoneShot
+  m_Name: Simple_StraightShot
   m_EditorClassIdentifier: 
-  displaySprite: {fileID: 21300000, guid: 2e50e7cd60ce5d143a87bd8caf710824, type: 3}
-  displayName: Reverse
+  displaySprite: {fileID: 21300000, guid: 7ba8a0e6dc50d234a8af640126856da2, type: 3}
+  displayName: Straight
   crosshairSettings:
-    Sprite: {fileID: 21300000, guid: 98a528cd7610d74459d55bd87ac0ec06, type: 3}
-    Count: 3
+    Sprite: {fileID: 21300000, guid: 6d123a8c14488bb4ebc3d9055bd6b2ee, type: 3}
+    Count: 2
     Scale: 2
     Distance: 50
   fireDelay: 0.5
   ammoCost: 1
-  pickupCount: 10
-  reloadTime: 2
-  maxReloadCount: 10
-  initialVelocity: 250
+  pickupCount: 6
+  reloadTime: 4
+  maxReloadCount: 6
+  initialVelocity: 160
   projectilePrefab: {fileID: 5012512307083224738, guid: 6142e62530cc7754e882e88bcc05ba2c, type: 3}
-  behaviourData: {fileID: 11400000, guid: 33a83646f9fabf347b953f479d7bf422, type: 2}
-  moveData: {fileID: 11400000, guid: a34c18ab3f3bc9e4fbe78bec390d2146, type: 2}
+  behaviourData: {fileID: 11400000, guid: cd3f28005de0d9f44a6a4a832f857a00, type: 2}
+  moveData: {fileID: 11400000, guid: 1ba6dcb8466ea7e46b9b2e84ecc7926a, type: 2}
