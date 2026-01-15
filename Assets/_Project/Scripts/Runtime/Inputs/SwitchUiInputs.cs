@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Beakstorm.Inputs
@@ -7,24 +8,40 @@ namespace Beakstorm.Inputs
         private static int _currentInstances = 0;
 
 
-        private int CurrentInstances
+        private static int CurrentInstances
         {
             get => _currentInstances;
             set
             {
-                if (_currentInstances == 0 && value > 0)
+                if (!_asyncIsRunning)
                 {
-                    PlayerInputs.Instance.EnableUiInputs();
+                    _asyncIsRunning = true;
+                    _waitForEndOfFrame = EvaluateInputsAfterDelay(_currentInstances);
                 }
-                else if (_currentInstances > 0 && value == 0)
-                {
-                    PlayerInputs.Instance.EnablePlayerInputs();
-                }
-                
                 _currentInstances = value;
             }
         }
 
+        private static bool _asyncIsRunning;
+
+        private static UniTask _waitForEndOfFrame;
+
+        private static async UniTask EvaluateInputsAfterDelay(int previousCount)
+        {
+            await UniTask.WaitForEndOfFrame();
+            
+            if (_currentInstances == 0 && previousCount > 0)
+            {
+                PlayerInputs.Instance.EnablePlayerInputs();
+            }
+            else if (_currentInstances > 0 && previousCount == 0)
+            {
+                PlayerInputs.Instance.EnableUiInputs();
+            }
+
+            _asyncIsRunning = false;
+        }
+        
         private void OnEnable() => CurrentInstances++;
 
         private void OnDisable() => CurrentInstances--;
