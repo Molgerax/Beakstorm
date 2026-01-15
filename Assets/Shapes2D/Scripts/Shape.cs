@@ -429,7 +429,7 @@
             /// <summary>
             /// If shapeType is Path, this is the thickness of the path in world units.
             /// </summary>
-            public float pathThickness { get { return _pathThickness; } set { _pathThickness = value < 0.01f ? 0.01f : value; dirty = true; } }
+            public float pathThickness { get { return _pathThickness; } set { _pathThickness = value < 0.0001f ? 0.0001f : value; dirty = true; } }
 
             [SerializeField]
             private PolygonPreset _polygonPreset = PolygonPreset.Pentagon;
