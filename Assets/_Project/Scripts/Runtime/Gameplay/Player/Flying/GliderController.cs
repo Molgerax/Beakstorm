@@ -22,6 +22,8 @@ namespace Beakstorm.Gameplay.Player.Flying
         [SerializeField] private RangeVariable speedVariable;
         [SerializeField] private RangeVariable thrustVariable;
         [SerializeField] private RangeVariable overChargeVariable;
+
+        [SerializeField] private float inputResponseTime = 0.2f;
         
         private LayerMask _layerMask;
 
@@ -61,7 +63,7 @@ namespace Beakstorm.Gameplay.Player.Flying
 
         [NonSerialized] public float Thrust01;
         
-        public Vector2 MoveInput => _inputs.MoveInput;
+        public Vector2 MoveInput => _moveInputCached;
         public bool BreakInput => _brakePressed;
         public bool ThrustInput => _acceleratePressed;
 
@@ -72,6 +74,10 @@ namespace Beakstorm.Gameplay.Player.Flying
         private List<WindDraft> _drafts = new();
 
 
+        private Vector2 _moveInputCached;
+        private Vector2 _moveInputVel;
+        private float _moveInputMagnitude;
+        
         public FlightControlStrategy ControlStrategy
         {
             get => controlStrategy;
@@ -126,6 +132,8 @@ namespace Beakstorm.Gameplay.Player.Flying
             float dt = Time.deltaTime;
             if (dt <= 0)
                 return;
+
+            HandleMoveInput();
             
             ApplyWind();
             controlStrategy.UpdateFlight(this, dt);
@@ -139,6 +147,21 @@ namespace Beakstorm.Gameplay.Player.Flying
             }
             
             speedVariable.Set(Speed);
+        }
+
+        private void HandleMoveInput()
+        {
+            Vector2 moveInput = _inputs.MoveInput;
+
+            if (moveInput.magnitude == 0)
+            {
+                _moveInputCached = Vector2.zero;
+                _moveInputMagnitude = 0;
+                return;
+            }
+            
+            _moveInputMagnitude = Mathf.MoveTowards(_moveInputMagnitude, 1f, Time.deltaTime / inputResponseTime);
+            _moveInputCached = Vector2.MoveTowards(_moveInputCached, moveInput, _moveInputMagnitude * _moveInputMagnitude);
         }
 
         private void FixedUpdate()
