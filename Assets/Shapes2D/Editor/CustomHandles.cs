@@ -1,3 +1,5 @@
+using Unity.Mathematics;
+
 namespace Shapes2D {
 
     using UnityEngine;
@@ -105,6 +107,8 @@ namespace Shapes2D {
                     Vector3 worldPos = HandleUtility.GUIPointToWorldRay(s_DragHandleMouseCurrent).origin;
                     position = Handles.matrix.inverse.MultiplyPoint(worldPos);
 
+                    position = SnapToGrid(position);
+
                     if (Camera.current.transform.forward == Vector3.forward || Camera.current.transform.forward == -Vector3.forward)
                         position.z = s_DragHandleWorldStart.z;
                     if (Camera.current.transform.forward == Vector3.up || Camera.current.transform.forward == -Vector3.up)
@@ -148,6 +152,15 @@ namespace Shapes2D {
             }
 
             return position;
+        }
+
+        private static Vector3 SnapToGrid(Vector3 position)
+        {
+            if (!EditorSnapSettings.snapEnabled)
+                return position;
+
+            Vector3 snapped =((Vector3)Vector3Int.RoundToInt((float3)position / EditorSnapSettings.move) * (float3)EditorSnapSettings.move);
+            return snapped;
         }
     }
 

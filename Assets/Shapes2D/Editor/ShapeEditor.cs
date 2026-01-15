@@ -1,4 +1,6 @@
-﻿namespace Shapes2D {
+﻿using UnityEditor.SceneManagement;
+
+namespace Shapes2D {
 
     using UnityEngine;
     using UnityEditor;
@@ -32,6 +34,9 @@
         void OnEnable () {
             Shape shape = (Shape) serializedObject.targetObject;
 
+            if (!shape)
+                return;
+            
             if (!shape.GetComponent<SpriteRenderer>() 
                     && !shape.GetComponent<Image>()) {
                 if (shape.GetComponentInParent<Canvas>() == null) {
@@ -652,8 +657,11 @@
                 HandleUtility.AddDefaultControl(GUIUtility.GetControlID(GetHashCode(), FocusType.Passive));
         }
 
-        private Shapes2DPrefs GetPreferences() { 
-            string path = AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(this));
+        private static Shapes2DPrefs GetPreferences()
+        {
+            ShapeEditor editor = CreateInstance<ShapeEditor>();
+            string path = AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(editor));
+            DestroyImmediate(editor);
             int index = path.IndexOf("Shapes2D");
             if (index == -1)
                 return null;
@@ -709,17 +717,19 @@
             }
         }
 
-        private void ConvertToSprite(Shape shape) {
+        private static void ConvertToSprite(Shape shape, bool skipDialog = false) {
             string dname = "Assets/Resources/Shapes2D Sprites";
             string fname = dname + "/" + shape.name + ".png"; 
             string rname = "Shapes2D Sprites/" + shape.name;
             if (!System.IO.Directory.Exists(dname))
                 System.IO.Directory.CreateDirectory(dname);
-            if (System.IO.File.Exists(fname) 
-                    && !EditorUtility.DisplayDialog("Overwrite File?", 
-                        "A file with the name " + fname + " already exists.  "
-                        + "Are you sure you want to overwrite it?", "Yes", "Cancel"))
-                return;
+            if (System.IO.File.Exists(fname) && !skipDialog)
+            {
+                if (!EditorUtility.DisplayDialog("Overwrite File?", 
+                    "A file with the name " + fname + " already exists.  "
+                    + "Are you sure you want to overwrite it?", "Yes", "Cancel"))
+                    return;
+            }
             
             float pixelsPerUnit = 100;
             Shapes2DPrefs prefs = GetPreferences();
@@ -764,7 +774,8 @@
             
             // exit the gui routine because otherwise we get annoying errors because
             // we deleted a material and unity still wants to draw it
-            EditorGUIUtility.ExitGUI();
+            if (!skipDialog)
+                EditorGUIUtility.ExitGUI();
         }
 
         public override void OnInspectorGUI() {
@@ -883,6 +894,9 @@
             EditorGUI.BeginDisabledGroup(Selection.objects.Length != 1);
             if (GUILayout.Button("Convert to Sprite"))
                 ConvertToSprite(shape);
+
+            if (GUILayout.Button("Convert to Sprite all in Scene"))
+                ConvertAllInScene();
             EditorGUI.EndDisabledGroup();
             
             EditorGUI.EndDisabledGroup();
@@ -901,6 +915,38 @@
                 // combine with the re-enable action
                 Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
             }
+        }
+
+        private void ConvertAllInScene()
+        {
+            var allShapes = Object.FindObjectsByType<Shape>(FindObjectsSortMode.None);
+            var rootShapes = new List<Shape>();
+
+            foreach (Shape shape in allShapes)
+            {
+                if (shape.transform.parent == null)
+                {
+                    rootShapes.Add(shape);
+                }
+                else
+                {
+                    Shape parentShape = shape.transform.parent.GetComponentInParent<Shape>();
+                    if (!parentShape)
+                        rootShapes.Add(shape);
+                }
+            }
+
+            Undo.IncrementCurrentGroup();
+            Undo.SetCurrentGroupName("Multi-Convert sprites");
+            int group = Undo.GetCurrentGroup();
+
+            
+            foreach (Shape shape in rootShapes)
+            {
+                ConvertToSprite(shape, true);
+            }
+            Undo.CollapseUndoOperations(group);
+            EditorGUIUtility.ExitGUI();
         }
     }
 
