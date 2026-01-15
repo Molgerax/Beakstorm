@@ -57,6 +57,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b1756efa3e7df364698cb967b5c1e9d3
+    m_Address: Simple_StraightShot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b96d0a59e46c4cf49919838ac0a61d73
     m_Address: Multi_ConstantPheromoneShot
     m_ReadOnly: 0

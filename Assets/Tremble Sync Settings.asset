@@ -582,6 +582,11 @@ MonoBehaviour:
     FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
     AddressableName: Simple_SpreadPheromoneShot
     SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Simple_StraightShot
+    Path: Assets/_Project/Data/Player/PheromoneWeapons/Simple_StraightShot.asset
+    FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
+    AddressableName: Simple_StraightShot
+    SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: WeakPoint_Balloon
     Path: Assets/_Project/Data/WeakPoints/WeakPoint_Balloon.asset
     FullTypeName: Beakstorm.Simulation.Collisions.WeakPointData
