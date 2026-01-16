@@ -16,28 +16,33 @@ namespace Beakstorm.SceneManagement.Editor
         private static List<string> _openScenes;
         private static int _activeSceneIndex;
 
-        private const string MENU_TOGGLE_PLAY_FROM_BOOTH = "Play/Play from Boot Scene";
+        
+        private const string EDITOR_PREF_PLAY_FROM_BOOT = "OpenedSceneActiveIndex";
+        private const string MENU_TOGGLE_PLAY_FROM_BOOT = "Play/Play from Boot Scene";
         private static bool _playFromBoot = true;
 
 
         static PlayFromBootScene()
         {
-            Menu.SetChecked(MENU_TOGGLE_PLAY_FROM_BOOTH, _playFromBoot);
+            if (EditorPrefs.HasKey(EDITOR_PREF_PLAY_FROM_BOOT))
+                _playFromBoot = EditorPrefs.GetBool(EDITOR_PREF_PLAY_FROM_BOOT);
+            Menu.SetChecked(MENU_TOGGLE_PLAY_FROM_BOOT, _playFromBoot);
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
 
 
-        [MenuItem(MENU_TOGGLE_PLAY_FROM_BOOTH, true)]
+        [MenuItem(MENU_TOGGLE_PLAY_FROM_BOOT, true)]
         public static bool TogglePlayFromBootValidate()
         {
             return !EditorApplication.isPlaying;
         }
         
-        [MenuItem(MENU_TOGGLE_PLAY_FROM_BOOTH)]
+        [MenuItem(MENU_TOGGLE_PLAY_FROM_BOOT)]
         public static void TogglePlayFromBoot()
         {
             _playFromBoot = !_playFromBoot;
-            Menu.SetChecked(MENU_TOGGLE_PLAY_FROM_BOOTH, _playFromBoot);
+            EditorPrefs.SetBool(EDITOR_PREF_PLAY_FROM_BOOT, _playFromBoot);
+            Menu.SetChecked(MENU_TOGGLE_PLAY_FROM_BOOT, _playFromBoot);
         }
         
         public static void Play()
