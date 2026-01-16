@@ -60,6 +60,29 @@ int3 GetGridCellId(float3 pos, float cellSize, float3 boundsCenter, float3 bound
     return floor( pos / cellSize);
 }
 
+int3 GlobalGridCellToLocal(int3 globalCellId, float cellSize, float3 boundsCenter, float3 boundsSize)
+{
+    float3 pos = (globalCellId + 0.5) * cellSize;
+    return GetGridCellId(pos, cellSize, boundsCenter, boundsSize);
+}
+
+int3 GetGlobalGridCellId(float3 pos, float cellSize)
+{
+    return floor(pos / cellSize);
+}
+
+
+bool IsGlobalCellInsideBounds(int3 globalCellId, float cellSize, float3 boundsCenter, float3 boundsSize)
+{
+    int3 local = GlobalGridCellToLocal(globalCellId, cellSize, boundsCenter, boundsSize);
+    bool isAboveZero = all(step(0, local));
+
+    int3 ceiling = ceil(boundsSize / cellSize) - 1;
+    bool isBelowMax = all(step(local, ceiling));
+    return isAboveZero && isBelowMax;
+}
+
+
 int3 GetGridCellIdFromBounds(int3 minimumId, int3 maximumId, uint index)
 {
     int3 sideLengths = (maximumId - minimumId) + 1;

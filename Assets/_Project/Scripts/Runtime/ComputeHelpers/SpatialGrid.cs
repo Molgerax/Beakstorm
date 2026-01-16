@@ -290,6 +290,34 @@ namespace Beakstorm.ComputeHelpers
             return (int3)math.floor( pos / _cellSize);
         }
 
+        public bool IsGlobalCellInsideBounds(int3 globalCellId)
+        {
+            int3 local = GlobalGridCellToLocal(globalCellId);
+            bool isAboveZero = math.all(math.step(0, local));
+
+            int3 ceil = (int3)((float3)(Vector3)_cellDimensions)-1;
+            bool isBelowMax = math.all(math.step(local, ceil));
+
+            return isAboveZero && isBelowMax;
+        }
+
+        public int3 GlobalGridCellToLocal(int3 globalCellId)
+        {
+            float3 pos = ((float3) globalCellId + 0.5f) * _cellSize;
+            int3 localCellId = GetGridCellId(pos);
+            return localCellId;
+        }
+        
+        public Vector3Int GetGlobalGridCellId(Vector3 pos)
+        {
+            var v = (int3)math.floor(pos / _cellSize);
+            return new(v.x, v.y, v.z);
+        }
+
+        public Vector3 SnapToGlobalGrid(Vector3 pos)
+        {
+            return (Vector3)GetGlobalGridCellId(pos) * _cellSize;
+        }
 
         private static class PropertyIDs
         {

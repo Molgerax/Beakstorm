@@ -1,0 +1,140 @@
+#pragma kernel CollectValues
+
+#include "../SpatialGrid/SpatialGridSampling.hlsl"
+
+struct ParticleCell
+{
+    float3 position;
+    uint count;
+    float3 velocity;
+    uint padding;
+    float4 data;
+};
+
+struct Boid
+{
+    float3 pos;
+    float exposure;
+    float3 oldPos;
+    float data;
+    float4 rotation;
+};
+
+struct CellRequest
+{
+    int3 globalCellId;
+    int isAlive;
+};
+
+RWStructuredBuffer<ParticleCell> _CellBuffer;
+StructuredBuffer<CellRequest> _CellRequestBuffer;
+
+float _Time;
+float _DeltaTime;
+
+uint _CaptureCellCount;
+uint _CaptureCellSize;
+uint3 _CaptureDimensions;
+float3 _CaptureCenter;
+
+StructuredBuffer<Boid> _ParticleBuffer;
+StructuredBuffer<uint> _GridOffsetBuffer;
+
+uint3 id1Dto3D(uint id, uint3 resolution)
+{
+    uint3 o;
+    o.z = id / (resolution.x * resolution.y);
+    o.y = id / resolution.x - o.z * resolution.y;
+    o.x = id - o.y * resolution.x - o.z * resolution.x * resolution.y;
+
+    return o;
+}
+
+uint id3Dto1D(uint3 id, uint3 resolution)
+{
+    return clamp(id.x, 0, resolution.x - 1) + clamp(id.y, 0, resolution.y - 1) * resolution.x + clamp(id.z, 0, resolution.z - 1) * resolution.x * resolution.y;
+}
+
+int3 GetIntegerOffsets3DWithout(uint sideLength, uint index)
+{
+    index %= sideLength * sideLength * sideLength;
+    int3 offset = Index1Dto3D(index, sideLength);
+    return offset;// - floor(sideLength / 2.0);
+}
+
+
+float3 GetCenterPosition(uint index)
+{
+    int3 cellId = id1Dto3D(index, _CaptureDimensions);
+    
+    float3 pos = ((cellId + 0.5 - _CaptureDimensions * 0.5)) * _HashCellSize * _CaptureCellSize + _CaptureCenter; 
+
+    return pos;
+}
+
+[numthreads(16,1,1)]
+void CollectValues(uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.x;
+
+    if (index >= _CaptureCellCount)
+        return;
+
+    ParticleCell cell = (ParticleCell)0;
+   
+    CellRequest request = _CellRequestBuffer[index];
+    int3 globalCellId = request.globalCellId;
+
+    float3 pos = (globalCellId + 0.5) * _HashCellSize * _CaptureCellSize;
+    globalCellId = GetGlobalGridCellId(pos, _HashCellSize);
+
+    if (request.isAlive == 0)
+    {
+        _CellBuffer[index] = cell;
+        return;
+    }
+    
+
+    if (!IsGlobalCellInsideBounds(globalCellId, _HashCellSize, _SimulationCenter, _SimulationSize))
+    {
+        _CellBuffer[index] = cell;
+        return;
+    }
+
+    // Neighborhood Search using Spatial Grids
+
+    int3 originCell = GlobalGridCellToLocal(globalCellId, _HashCellSize, _SimulationCenter, _SimulationSize);
+    uint3 cellDimensions = _CellDimensions;
+
+    for(uint iterator = 0; iterator < _CaptureCellSize * _CaptureCellSize * _CaptureCellSize; iterator++)
+    {
+        int3 offset3D = GetIntegerOffsets3D(_CaptureCellSize, iterator);
+    
+        uint key = KeyFromCellId(originCell + offset3D, cellDimensions);
+        uint currIndex = _GridOffsetBuffer[key-1];
+        uint nextIndex = _GridOffsetBuffer[key+0];
+
+        while (currIndex < nextIndex)
+        {
+            Boid boid = _ParticleBuffer[currIndex];
+            currIndex++;
+
+            float3 velocity = (boid.pos - boid.oldPos) / max(_DeltaTime, 0.01);
+    
+            cell.position += boid.pos;
+            cell.velocity += velocity;
+            cell.data += float4(boid.exposure, boid.data, 0, 0);
+    
+            cell.count++;
+        }
+    }
+    
+    if (cell.count > 0)
+    {
+        cell.position /= cell.count;
+        cell.velocity /= cell.count;
+        cell.data /= cell.count;
+    }
+    
+    _CellBuffer[index] = cell;
+}

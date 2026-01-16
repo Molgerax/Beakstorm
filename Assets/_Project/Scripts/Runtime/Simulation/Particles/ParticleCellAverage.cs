@@ -254,15 +254,6 @@ namespace Beakstorm.Simulation.Particles
                 Gizmos.DrawLine(pos, pos + vel);
             }
         }
-        
-        public struct ParticleCell
-        {
-            public Vector3 Position;
-            public uint Count;
-            public Vector3 Velocity;
-            public uint Padding;
-            public Vector4 Data;
-        };
 
         private static class PropertyIDs
         {

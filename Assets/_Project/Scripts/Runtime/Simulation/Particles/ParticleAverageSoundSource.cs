@@ -72,7 +72,7 @@ namespace Beakstorm.Simulation.Particles
                 if (count >= _emitterCount)
                     break;
                 
-                if (ParticleCellAverage.Instance.GetCellData(i, out ParticleCellAverage.ParticleCell cellData))
+                if (ParticleCellAverage.Instance.GetCellData(i, out ParticleCell cellData))
                 {
                     if (cellData.Count <= 0 || cellData.Velocity.magnitude == 0)
                         continue;

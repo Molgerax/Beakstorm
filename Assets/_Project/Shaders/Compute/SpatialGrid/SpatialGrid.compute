@@ -5,8 +5,8 @@
 #pragma kernel AddSums
 #pragma kernel ReorderBoids
 
-#pragma multi_compile _ ALIVE_COUNT
-#pragma multi_compile _ STRIDE_16
+#pragma multi_compile_local _ ALIVE_COUNT
+#pragma multi_compile_local _ STRIDE_16 
 
 #include "SpatialGridSampling.hlsl"
 
