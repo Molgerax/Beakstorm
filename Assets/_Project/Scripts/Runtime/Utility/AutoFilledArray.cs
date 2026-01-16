@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace Beakstorm.Utility
 {
+    /// <summary>
+    /// An array that maintains the location of its elements. Removed items free up space that can be filled by new ones.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class AutoFilledArray<T> where T : class
     {
         private T[] _array;
@@ -15,8 +19,13 @@ namespace Beakstorm.Utility
         private int _count;
         private int _size;
 
+        private readonly bool _limitToSize;
+        
+
         public int Count => _count;
         public int Size => _size;
+
+        public int IterateCount => Mathf.Min(_count, _size);
 
         public bool NeedsResize => _count >= _size;
 
@@ -24,7 +33,7 @@ namespace Beakstorm.Utility
 
         public T this[int index] => _array[index];
 
-        public AutoFilledArray(int size)
+        public AutoFilledArray(int size, bool limitToSize = false)
         {
             _size = size;
             _array = new T[size];
@@ -33,6 +42,8 @@ namespace Beakstorm.Utility
 
             _freeIndices = new(size);
             _fullIndices = new(size);
+
+            _limitToSize = limitToSize;
         }
 
         public bool AddElement(T value)
@@ -40,6 +51,9 @@ namespace Beakstorm.Utility
             if (_hashSet.Contains(value))
                 return false;
 
+            if (_limitToSize && _count >= _size)
+                return false;
+            
             FreeNull();
             
             
@@ -65,6 +79,33 @@ namespace Beakstorm.Utility
             _fullIndices.Add(index);
             _hashSet.Add(value);
             return true;
+        }
+
+        private void MoveUnusedElementToFreeSpot()
+        {
+            if (_freeIndices.Count == 0)
+                return;
+
+            if (_count <= _size)
+                return;
+
+            int index = _count - 1;
+            if (_dictionary.TryGetValue(index, out T value))
+            {
+                if(_freeIndices.TryDequeue(out int freeIndex))
+                {
+                    if (_dictionary.TryGetValue(freeIndex, out T _))
+                        _dictionary[freeIndex] = value;
+                    
+                    else
+                        _dictionary.Add(freeIndex, value);
+
+                    _dictionary.Remove(index);
+                    _fullIndices.Remove(index);
+                    _fullIndices.Add(freeIndex);
+                    _count--;
+                }
+            }
         }
 
         public void UpdateArray()
@@ -95,16 +136,14 @@ namespace Beakstorm.Utility
             for (int i = _fullIndices.Count - 1; i >= 0; i--)
             {
                 int fullIndex = _fullIndices[i];
-                if (_dictionary[fullIndex] == value)
+                T element = _dictionary[fullIndex];
+                if (element == value || element == null)
                 {
                     _dictionary[fullIndex] = null;
                     _freeIndices.Enqueue(fullIndex);
                     _fullIndices.RemoveAt(i);
-                }
-                else if (_dictionary[fullIndex] == null)
-                {
-                    _freeIndices.Enqueue(fullIndex);
-                    _fullIndices.RemoveAt(i);
+
+                    MoveUnusedElementToFreeSpot();
                 }
             }
             
@@ -135,6 +174,12 @@ namespace Beakstorm.Utility
             int lastIndex = _count - 1;
             T element = _dictionary[lastIndex];
             if (element == null)
+            {
+                _dictionary.Remove(lastIndex);
+                _fullIndices.Remove(lastIndex);
+                _count--;
+            }
+            else if (!_hashSet.Contains(element))
             {
                 _dictionary.Remove(lastIndex);
                 _fullIndices.Remove(lastIndex);
