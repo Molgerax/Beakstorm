@@ -1943,6 +1943,7 @@ GameObject:
   - component: {fileID: 5452414440813012770}
   - component: {fileID: 4843896435130636426}
   - component: {fileID: 7995167141444928948}
+  - component: {fileID: 2253024680134399291}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -2146,6 +2147,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf71b682f5bb4cefa40489ece030b023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Simulation.Settings.ParticleSimulationCenter
+--- !u!114 &2253024680134399291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4675909254041505790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 509df5f4dfcefa24db2fc91c55716144, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Simulation.Particles.ParticleReadbackMarker
+  radius: 16
 --- !u!1 &4774894184057189830
 GameObject:
   m_ObjectHideFlags: 0
