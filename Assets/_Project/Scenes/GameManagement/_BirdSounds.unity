@@ -198,7 +198,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventName: play_birdStatic
+  eventReference:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: 625df3a015f7de243b71e7325062606e, type: 2}
+  target: {fileID: 0}
+  autoStartStop: 0
 --- !u!114 &578622525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,7 +322,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a2295bd623f04c4ca400bf318c23e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventName: play_birdFollow
+  eventReference:
+    idInternal: 0
+    valueGuidInternal: 
+    WwiseObjectReference: {fileID: 11400000, guid: b5043b0b80013b2408f7cc355b7a09bc, type: 2}
+  target: {fileID: 0}
+  autoStartStop: 0
 --- !u!114 &704911462
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,6 +20,8 @@ namespace Beakstorm.Simulation.Particles
         private AkPositionArray _emitterArray;
         private ushort _emitterCount = 64;
 
+        private float[] _amplitudes;
+        
         private void OnEnable()
         {
             _emitterArray = new AkPositionArray(_emitterCount);
@@ -55,7 +57,7 @@ namespace Beakstorm.Simulation.Particles
         
         private void SetPositions()
         {
-            if (!ParticleCellAverage.Instance)
+            if (!ParticleCellReadback.Instance || !ParticleCellReadback.Instance.Initialized)
                 return;
             
             _emitterArray.Reset();
@@ -66,13 +68,15 @@ namespace Beakstorm.Simulation.Particles
             Vector3 position = Vector3.zero;
             uint boidCount = 0;
 
-            
-            for (int i = 0; i < ParticleCellAverage.Instance.CellCount; i++)
+
+            _amplitudes ??= new float[ParticleCellReadback.Instance.CellArray.Length];
+
+            for (int i = 0; i < ParticleCellReadback.Instance.CellCount; i++)
             {
                 if (count >= _emitterCount)
                     break;
                 
-                if (ParticleCellAverage.Instance.GetCellData(i, out ParticleCell cellData))
+                if (ParticleCellReadback.Instance.TryGetCellData(i, out ParticleCell cellData))
                 {
                     if (cellData.Count <= 0 || cellData.Velocity.magnitude == 0)
                         continue;
@@ -106,7 +110,7 @@ namespace Beakstorm.Simulation.Particles
                     float customAttenuation = Mathf.Lerp(diffLength, Mathf.Max(120, diffLength), quietness);
 
                     customAttenuation = diffLength * Mathf.Lerp(1, 16, quietness);
-                    
+
                     Vector3 customPosition = cellData.Position;
                     customPosition = listenerPos + diff.normalized * customAttenuation;
                     

@@ -33,6 +33,23 @@ namespace Beakstorm.Utility
 
         public T this[int index] => _array[index];
 
+        public bool TryGetIndex(T value, out int index)
+        {
+            index = 0;
+
+            if (!_hashSet.Contains(value))
+                return false;
+            for (int i = 0; i < IterateCount; i++)
+            {
+                if (_array[i] == value)
+                {
+                    index = i;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public AutoFilledArray(int size, bool limitToSize = false)
         {
             _size = size;

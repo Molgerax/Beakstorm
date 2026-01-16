@@ -12,6 +12,8 @@ namespace Beakstorm.Simulation.Particles
 {
     public class ParticleCellReadback : MonoBehaviour
     {
+        public static ParticleCellReadback Instance;
+        
         [SerializeField] private ComputeShader compute;
         [SerializeField] private int maxCellCount = 16;
 
@@ -36,7 +38,11 @@ namespace Beakstorm.Simulation.Particles
         private CellRequestStruct[] _cellRequestArray;
         
         private bool _initialized;
+        public bool Initialized => _initialized;
 
+        public int CellCount => _cellRequests?.IterateCount ?? _cellCount;
+        
+        
         #region Adding And Removing Requests
 
         private bool TryAddCellRequest(Vector3Int globalId)
@@ -88,6 +94,34 @@ namespace Beakstorm.Simulation.Particles
         private Vector3Int PositionToGlobalCellId(Vector3 position)
         {
             return _sim.Hash.GetGlobalGridCellId(position / cellsPerCapture);
+        }
+
+        public bool TryGetCellData(int i, out ParticleCell cell)
+        {
+            cell = default;
+            
+            if (i < 0 || i > _cellRequests.Count)
+                return false;
+            
+            cell = CellArray[i];
+            return true;
+        }
+
+        public bool TryGetCellData(Vector3 position, out ParticleCell cell)
+        {
+            cell = default;
+            
+            var id = PositionToGlobalCellId(position);
+            if (_cellRequestLookup.TryGetValue(id, out var request))
+            {
+                if (_cellRequests.TryGetIndex(request, out int index) && request.Status == CellRequestStatus.Finished)
+                {
+                    cell = CellArray[index];
+                    return true;
+                }
+            }
+
+            return false;
         }
         
         #endregion
@@ -145,7 +179,7 @@ namespace Beakstorm.Simulation.Particles
                 if (cellRequest == null)
                     continue;
                 
-                if (cellRequest.Status == CellRequestStatus.Finished && cellRequest.LifeSteps <= 0)
+                if (cellRequest.Status == CellRequestStatus.Finished && (cellRequest.LifeSteps <= 0 || _cellRequests.NeedsResize))
                 {
                     RemoveCellRequest(cellRequest.GlobalCellId);
                 }
@@ -155,11 +189,13 @@ namespace Beakstorm.Simulation.Particles
         
         private void Awake()
         {
+            Instance = this;
             Initialize();
         }
 
         private void OnDestroy()
         {
+            Instance = null;
             Release();
         }
 
@@ -171,7 +207,6 @@ namespace Beakstorm.Simulation.Particles
                 return;
             
             IterateOnAllRequests();
-            TryAddCellRequest(transform.position);
             _cellRequests.UpdateArray();
             UpdatePositionBuffer();
             
@@ -322,7 +357,7 @@ namespace Beakstorm.Simulation.Particles
             public CellRequestStatus Status;
             public int LifeSteps = 0;
 
-            public CellRequest(Vector3Int globalCellId, int lifeSteps = 3)
+            public CellRequest(Vector3Int globalCellId, int lifeSteps = 20)
             {
                 GlobalCellId = globalCellId;
                 Status = CellRequestStatus.Inactive;
