@@ -17,7 +17,7 @@ namespace Beakstorm.SceneManagement.Editor
         private static int _activeSceneIndex;
 
         
-        private const string EDITOR_PREF_PLAY_FROM_BOOT = "OpenedSceneActiveIndex";
+        private const string EDITOR_PREF_PLAY_FROM_BOOT = "PlayFromBootOption";
         private const string MENU_TOGGLE_PLAY_FROM_BOOT = "Play/Play from Boot Scene";
         private static bool _playFromBoot = true;
 
