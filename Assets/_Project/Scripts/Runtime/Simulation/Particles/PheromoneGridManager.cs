@@ -467,7 +467,11 @@ namespace Beakstorm.Simulation.Particles
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(Vector3.zero, simulationSpace);
+            
+            if (Hash == null)
+                Gizmos.DrawWireCube(Vector3.zero, simulationSpace);
+            else 
+                Gizmos.DrawWireCube(Hash.Center, Hash.Size);
         }
 
         private struct EmissionRequest
