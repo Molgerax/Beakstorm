@@ -157,7 +157,10 @@ MonoBehaviour:
   muteAbove: 1
   minimumThreshold: 1
   attenuationMax: 256
-  useMultipleSources: 0
+  useMultipleSources: 1
+  maximumAttenuationDistance: 300
+  interpolationTime: 3
+  _emitterCount: 32
 --- !u!114 &578622523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,7 +284,10 @@ MonoBehaviour:
   muteAbove: 0
   minimumThreshold: 1
   attenuationMax: 256
-  useMultipleSources: 0
+  useMultipleSources: 1
+  maximumAttenuationDistance: 300
+  interpolationTime: 3
+  _emitterCount: 32
 --- !u!114 &704911460
 MonoBehaviour:
   m_ObjectHideFlags: 0

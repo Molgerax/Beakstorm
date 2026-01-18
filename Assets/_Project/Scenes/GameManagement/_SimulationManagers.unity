@@ -920,10 +920,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Simulation.Particles.ParticleCellReadback
   compute: {fileID: 7200000, guid: 4ce273a2a8f24299bf8d2f6c32c56511, type: 3}
-  maxCellCount: 64
+  maxCellCount: 32
   cellsPerCapture: 3
   sim:
     underlyingValue: {fileID: 1807399486}
+  lifeCount: 5
 --- !u!1 &1868320383
 GameObject:
   m_ObjectHideFlags: 0

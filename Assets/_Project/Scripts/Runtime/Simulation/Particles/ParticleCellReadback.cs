@@ -19,6 +19,9 @@ namespace Beakstorm.Simulation.Particles
 
         [SerializeField, Range(1, 4)] private int cellsPerCapture = 1;
         [SerializeField] private InterfaceReference<IGridParticleSimulation> sim;
+
+        [SerializeField] private int lifeCount = 20;
+        
         private IGridParticleSimulation _sim => sim?.Value;
 
         private GraphicsBuffer _cellBuffer;
@@ -52,13 +55,13 @@ namespace Beakstorm.Simulation.Particles
                 if (_cellRequests.NeedsResize)
                     return false;
                 
-                var cellRequest = new CellRequest(globalId);
+                var cellRequest = new CellRequest(globalId, lifeCount);
                 _cellRequestLookup.Add(globalId, cellRequest);
                 _cellRequests.AddElement(cellRequest);
                 return true;
             }
 
-            request.LifeSteps = 3;
+            request.LifeSteps = lifeCount;
             
             return false;
         }
@@ -100,7 +103,7 @@ namespace Beakstorm.Simulation.Particles
         {
             cell = default;
             
-            if (i < 0 || i > _cellRequests.Count)
+            if (i < 0 || i > Mathf.Min(_cellRequests.Count, CellArray.Length))
                 return false;
             
             cell = CellArray[i];
@@ -173,15 +176,17 @@ namespace Beakstorm.Simulation.Particles
 
         private void IterateOnAllRequests()
         {
+            bool freed = false;
             for (int i = 0; i < _cellRequests.IterateCount; i++)
             {
                 var cellRequest = _cellRequests[i];
                 if (cellRequest == null)
                     continue;
                 
-                if (cellRequest.Status == CellRequestStatus.Finished && (cellRequest.LifeSteps <= 0 || _cellRequests.NeedsResize))
+                if (cellRequest.Status == CellRequestStatus.Finished && (cellRequest.LifeSteps <= 0 || (!freed && _cellRequests.NeedsResize)))
                 {
                     RemoveCellRequest(cellRequest.GlobalCellId);
+                    freed = true;
                 }
             }
         }
@@ -280,7 +285,7 @@ namespace Beakstorm.Simulation.Particles
 
         #region Gizmos
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (_sim?.Hash == null)
                 return;
@@ -413,5 +418,21 @@ namespace Beakstorm.Simulation.Particles
         public Vector3 Velocity;
         public uint Padding;
         public Vector4 Data;
+    };
+    
+    public struct ParticleCellInterpolated
+    {
+        public Vector3 Position;
+        public float Count;
+        public Vector3 Velocity;
+        public Vector4 Data;
+
+        public ParticleCellInterpolated(ParticleCell cell)
+        {
+            Position = cell.Position;
+            Count = cell.Count;
+            Velocity = cell.Velocity;
+            Data = cell.Data;
+        }
     };
 }
