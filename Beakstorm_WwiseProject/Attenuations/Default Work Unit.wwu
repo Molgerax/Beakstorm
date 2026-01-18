@@ -142,6 +142,9 @@
 					</CurveUsageInfoList>
 				</Attenuation>
 				<Attenuation Name="Volume_Birds" ID="{56A31C2D-FE63-4F3C-BF13-1A13139459E1}" ShortID="118386969">
+					<PropertyList>
+						<Property Name="RadiusMax" Type="Real64" Value="300"/>
+					</PropertyList>
 					<CurveUsageInfoList>
 						<VolumeDryUsage>
 							<CurveUsageInfo Platform="Linked" CurveToUse="Custom">
@@ -156,17 +159,17 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>60.03977</XPos>
-											<YPos>-4.06525</YPos>
+											<XPos>155.97729</XPos>
+											<YPos>-6.33323</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>94.91124</XPos>
-											<YPos>-13.33147</YPos>
+											<XPos>264.49704</XPos>
+											<YPos>-18.31607</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>100</XPos>
+											<XPos>300</XPos>
 											<YPos>-200</YPos>
 											<Flags>37</Flags>
 										</Point>
@@ -193,12 +196,12 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>60.26895</XPos>
+											<XPos>180.80685</XPos>
 											<YPos>40</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>100</XPos>
+											<XPos>300</XPos>
 											<YPos>50</YPos>
 											<Flags>37</Flags>
 										</Point>
@@ -219,12 +222,12 @@
 											<Flags>5</Flags>
 										</Point>
 										<Point>
-											<XPos>60.13917</XPos>
+											<XPos>180.41751</XPos>
 											<YPos>40</YPos>
 											<Flags>0</Flags>
 										</Point>
 										<Point>
-											<XPos>100</XPos>
+											<XPos>300</XPos>
 											<YPos>50</YPos>
 											<Flags>37</Flags>
 										</Point>

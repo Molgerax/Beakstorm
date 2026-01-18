@@ -323,6 +323,83 @@
 								</ObjectList>
 							</ObjectLists>
 						</Bus>
+						<Bus Name="3D SF_Birds" ID="{8CDE9F6F-0EBA-4C07-82AC-860F165B7D4A}">
+							<PropertyList>
+								<Property Name="BusChannelConfig" Type="int32">
+									<ValueList>
+										<Value>528</Value>
+									</ValueList>
+								</Property>
+								<Property Name="SpeakerPanning" Type="int16" Value="2"/>
+							</PropertyList>
+							<ChildrenList>
+								<Bus Name="SFX Ambi_Birds" ID="{A027B641-E658-4870-A5F9-BA70BC9FE74C}">
+									<PropertyList>
+										<Property Name="BusChannelConfig" Type="int32">
+											<ValueList>
+												<Value>528</Value>
+											</ValueList>
+										</Property>
+										<Property Name="BusVolume" Type="Real64">
+											<ValueList>
+												<Value>-27</Value>
+											</ValueList>
+										</Property>
+										<Property Name="SpeakerPanning" Type="int16" Value="1"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-3</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
+									<PositioningInfo>
+										<Panner Name="" ID="{69C39A62-871B-4EA4-A4C5-A7B4DCBED5AE}"/>
+									</PositioningInfo>
+								</Bus>
+							</ChildrenList>
+							<PositioningInfo>
+								<Panner Name="" ID="{DA898333-E3E0-403C-BCC9-101D642CCAF7}"/>
+							</PositioningInfo>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<Reference>
+										<Local>
+											<RTPC Name="" ID="{68947138-CCD8-45AA-B432-F2F4D1D1AD88}" ShortID="169805271">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="BusVolume"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="volume_birds" ID="{780EE002-527E-485D-9ED7-8A2DCA158F5C}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{885BF237-1C19-498A-BE5E-6607B95A08BE}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="3"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>-200</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>1</XPos>
+																		<YPos>0</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
+						</Bus>
 					</ChildrenList>
 					<ObjectLists>
 						<ObjectList Name="Effects">

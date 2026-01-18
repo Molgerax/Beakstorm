@@ -36,6 +36,12 @@
 								<Property Name="Max" Type="Real64" Value="1"/>
 							</PropertyList>
 						</GameParameter>
+						<GameParameter Name="volume_birds" ID="{780EE002-527E-485D-9ED7-8A2DCA158F5C}">
+							<PropertyList>
+								<Property Name="InitialValue" Type="Real64" Value="1"/>
+								<Property Name="Max" Type="Real64" Value="1"/>
+							</PropertyList>
+						</GameParameter>
 					</ChildrenList>
 				</Folder>
 				<GameParameter Name="player_Thrust" ID="{751E6486-672C-4A53-A4BD-EB7003E08178}"/>

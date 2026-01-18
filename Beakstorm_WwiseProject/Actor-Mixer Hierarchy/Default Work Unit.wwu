@@ -3611,6 +3611,11 @@
 										<Value>12</Value>
 									</ValueList>
 								</Property>
+								<Property Name="MaxSoundPerInstance" Type="int16">
+									<ValueList>
+										<Value>20</Value>
+									</ValueList>
+								</Property>
 								<Property Name="Pitch" Type="int32">
 									<ModifierList>
 										<ModifierInfo>
@@ -3618,7 +3623,17 @@
 										</ModifierInfo>
 									</ModifierList>
 								</Property>
+								<Property Name="Priority" Type="int16">
+									<ValueList>
+										<Value>30</Value>
+									</ValueList>
+								</Property>
 								<Property Name="SpeakerPanning" Type="int16" Value="2"/>
+								<Property Name="UseMaxSoundPerInstance" Type="bool">
+									<ValueList>
+										<Value>True</Value>
+									</ValueList>
+								</Property>
 								<Property Name="UserAuxSendVolume0" Type="Real64">
 									<ValueList>
 										<Value>-36</Value>
@@ -3638,7 +3653,7 @@
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 								</Reference>
 								<Reference Name="OutputBus">
-									<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+									<ObjectRef Name="SFX Ambi_Birds" ID="{A027B641-E658-4870-A5F9-BA70BC9FE74C}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 								</Reference>
 								<Reference Name="UserAuxSend0">
 									<ObjectRef Name="Reverb" ID="{FECC9F39-F687-4E4A-B887-A72E64B9C945}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
@@ -3878,6 +3893,45 @@
 							<PositioningInfo>
 								<Panner Name="" ID="{1E24D136-34F7-4A3B-8C60-1B1210949855}"/>
 							</PositioningInfo>
+							<ObjectLists>
+								<ObjectList Name="RTPC">
+									<Reference>
+										<Local>
+											<RTPC Name="" ID="{64E3B773-2F37-48A9-BDC4-F757F3882E89}" ShortID="555414940">
+												<PropertyList>
+													<Property Name="PropertyName" Type="string" Value="Pitch"/>
+												</PropertyList>
+												<ReferenceList>
+													<Reference Name="ControlInput">
+														<ObjectRef Name="dopplerPitch" ID="{72E92ADE-BE1F-4B70-8891-60E3CDC00CF9}" WorkUnitID="{997C4F1B-CC6E-4EE5-A8FC-44908847725B}"/>
+													</Reference>
+													<Reference Name="Curve">
+														<Custom>
+															<Curve Name="" ID="{667FBFDE-E34B-42E8-B76A-06E1650A9B89}">
+																<PropertyList>
+																	<Property Name="Flags" Type="int32" Value="65537"/>
+																</PropertyList>
+																<PointList>
+																	<Point>
+																		<XPos>0</XPos>
+																		<YPos>-600</YPos>
+																		<Flags>5</Flags>
+																	</Point>
+																	<Point>
+																		<XPos>2</XPos>
+																		<YPos>600</YPos>
+																		<Flags>37</Flags>
+																	</Point>
+																</PointList>
+															</Curve>
+														</Custom>
+													</Reference>
+												</ReferenceList>
+											</RTPC>
+										</Local>
+									</Reference>
+								</ObjectList>
+							</ObjectLists>
 						</BlendContainer>
 					</ChildrenList>
 				</Folder>
@@ -5344,7 +5398,22 @@
 										<Value>8</Value>
 									</ValueList>
 								</Property>
+								<Property Name="MaxSoundPerInstance" Type="int16">
+									<ValueList>
+										<Value>20</Value>
+									</ValueList>
+								</Property>
+								<Property Name="Priority" Type="int16">
+									<ValueList>
+										<Value>10</Value>
+									</ValueList>
+								</Property>
 								<Property Name="SpeakerPanning" Type="int16" Value="2"/>
+								<Property Name="UseMaxSoundPerInstance" Type="bool">
+									<ValueList>
+										<Value>True</Value>
+									</ValueList>
+								</Property>
 								<Property Name="UserAuxSendVolume0" Type="Real64">
 									<ValueList>
 										<Value>-34</Value>
@@ -5364,7 +5433,7 @@
 									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{C89D2621-EE71-40EF-B09A-68C836DDF707}"/>
 								</Reference>
 								<Reference Name="OutputBus">
-									<ObjectRef Name="SFX Ambi" ID="{8A995618-57A4-4456-80DD-C5EA286A3623}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
+									<ObjectRef Name="SFX Ambi_Birds" ID="{A027B641-E658-4870-A5F9-BA70BC9FE74C}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>
 								</Reference>
 								<Reference Name="UserAuxSend0">
 									<ObjectRef Name="Reverb" ID="{FECC9F39-F687-4E4A-B887-A72E64B9C945}" WorkUnitID="{928C3538-4027-43A0-8D02-FFABC4E3D140}"/>

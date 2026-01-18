@@ -83,6 +83,7 @@ namespace AK
         static const AkUniqueID PLAYER_HEALTH = 215992295U;
         static const AkUniqueID PLAYER_SPEED = 1062779386U;
         static const AkUniqueID PLAYER_THRUST = 2560771683U;
+        static const AkUniqueID VOLUME_BIRDS = 1845579566U;
         static const AkUniqueID VOLUME_MASTER = 3695994288U;
         static const AkUniqueID VOLUME_MUSIC = 3891337659U;
         static const AkUniqueID VOLUME_SFX = 3673881719U;
@@ -105,9 +106,11 @@ namespace AK
         static const AkUniqueID _2D_SFX = 1191978290U;
         static const AkUniqueID _3D_MUSIC = 2352922065U;
         static const AkUniqueID _3D_SF = 2123328431U;
+        static const AkUniqueID _3D_SF_BIRDS = 4076533690U;
         static const AkUniqueID MASTER = 4056684167U;
         static const AkUniqueID MUSIC_AMBI = 2660909127U;
         static const AkUniqueID SFX_AMBI = 644840319U;
+        static const AkUniqueID SFX_AMBI_BIRDS = 3904829738U;
     } // namespace BUSSES
 
     namespace AUX_BUSSES
