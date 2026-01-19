@@ -21,9 +21,7 @@ namespace Beakstorm.Mapping.Triggers
                 return;
 
             _triggered = true;
-            
-            Debug.Log("Triggered", this);
-            
+
             target.TryTrigger();
         }
     }

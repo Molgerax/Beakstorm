@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Beakstorm.Inputs;
+using Beakstorm.Mapping;
 using Beakstorm.UI.Icons;
+using Beakstorm.Utility.Extensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -177,6 +179,8 @@ namespace Beakstorm.Gameplay.Messages
 
         private void Dequeue()
         {
+            CurrentMessage?.Finish();
+            
             if (_messageQueue.Count == 0)
                 return;
 
@@ -201,18 +205,21 @@ namespace Beakstorm.Gameplay.Messages
         public readonly bool IsSkippable;
 
         private readonly float _maxTime;
+
+        private readonly List<TriggerBehaviour> _targets;
         
         public float Timer01 => _maxTime > 0 && !IsSkippable ? Timer / _maxTime : 0;
 
         public bool Skip => !IsSkippable && Timer01 == 0;
         
 
-        public Message(string text, bool isSkippable = true, float time = 10)
+        public Message(string text, bool isSkippable = true, float time = 10, List<TriggerBehaviour> targets = null)
         {
             Text = text;
             Timer = time;
             _maxTime = time;
             IsSkippable = isSkippable;
+            _targets = targets;
         }
 
         public void Tick(float dt)
@@ -221,6 +228,11 @@ namespace Beakstorm.Gameplay.Messages
                 return;
             
             Timer = Mathf.MoveTowards(Timer, 0, dt);
+        }
+
+        public void Finish()
+        {
+            _targets.TryTrigger();
         }
     }
 }

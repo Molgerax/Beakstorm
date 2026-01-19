@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Beakstorm.Mapping;
 using UnityEngine;
 
@@ -30,6 +31,17 @@ namespace Beakstorm.Utility.Extensions
         }
 
         public static void TryTrigger(this TriggerBehaviour[] components)
+        {
+            if (components == null)
+                return;
+            foreach (var component in components)
+            {
+                if (component)
+                    component.Trigger();
+            }
+        }
+        
+        public static void TryTrigger(this List<TriggerBehaviour> components)
         {
             if (components == null)
                 return;
