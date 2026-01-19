@@ -683,7 +683,7 @@ MonoBehaviour:
   - MapName: Mapping/Metal_Rusted
     Path: Assets/_Project/Materials/Mapping/Environment/Metal_Rusted.mat
     FullTypeName: UnityEngine.Material
-    AddressableName: Metal_Rusted
+    AddressableName: Mapping/Metal_Rusted
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Clouds/Clouds_Dark_Tess
     Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_Dark_Tess.mat
@@ -759,9 +759,4 @@ MonoBehaviour:
     Path: Assets/_Project/Art/Materials/m_Default.mat
     FullTypeName: UnityEngine.Material
     AddressableName: m_Default
-    SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: Mapping/Metal_Rusted
-    Path: Assets/_Project/Materials/Mapping/Environment/Metal_Rusted.mat
-    FullTypeName: UnityEngine.Material
-    AddressableName: Mapping/Metal_Rusted
     SpawnOffset: {x: 0, y: 0, z: 0}

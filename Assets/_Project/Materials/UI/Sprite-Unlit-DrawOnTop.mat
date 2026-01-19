@@ -67,9 +67,11 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
+    - _AA_Scale: 1
     - _EnableExternalAlpha: 0
     - _INVERTCOLOR: 0
     - _InvertThreshold: 0
+    - _MipBias: -0.75
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
