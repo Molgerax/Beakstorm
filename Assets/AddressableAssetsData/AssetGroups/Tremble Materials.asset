@@ -21,6 +21,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b146ff1351c5144d806260045d9d369
+    m_Address: Mapping/Rock
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4b471ae6d3a024e48a88e3ebc3fe395c
     m_Address: Mapping/Mapping_Base_Blue
     m_ReadOnly: 0
@@ -39,8 +45,26 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7fe87d46ea8e654419fabf57ac8b902c
+    m_Address: Mapping/Metal
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84119703c41ac5d4995146ee6ccc9173
+    m_Address: Mapping/Metal_Rusted
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 860e82aa07fe1b14db004cbe8141f0d0
     m_Address: Mapping/Mapping_Base_Red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 904b8eb06b3c0dd41b018ed0d68557d2
+    m_Address: Mapping/Tiles
     m_ReadOnly: 0
     m_SerializedLabels:
     - Tremble
