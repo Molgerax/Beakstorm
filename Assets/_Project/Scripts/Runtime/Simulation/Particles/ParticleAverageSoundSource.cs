@@ -2,6 +2,7 @@ using Beakstorm.Audio;
 using Beakstorm.Gameplay.Player;
 using Beakstorm.Utility;
 using UnityEngine;
+using AudioSettings = Beakstorm.Settings.AudioSettings;
 
 namespace Beakstorm.Simulation.Particles
 {
@@ -150,6 +151,9 @@ namespace Beakstorm.Simulation.Particles
         
         private void AdjustSoundCells()
         {
+            if (AudioSettings.Instance.BirdsVolume == 0)
+                return;
+            
             if (!ParticleCellReadback.Instance || !ParticleCellReadback.Instance.Initialized)
                 return;
             

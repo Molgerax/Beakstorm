@@ -7,6 +7,7 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
+using AudioSettings = Beakstorm.Settings.AudioSettings;
 
 namespace Beakstorm.Simulation.Particles
 {
@@ -70,6 +71,10 @@ namespace Beakstorm.Simulation.Particles
         {
             if (_sim?.Hash == null)
                 return false;
+
+            if (AudioSettings.Instance.BirdsVolume == 0)
+                return false;
+            
             
             Vector3Int globalId = PositionToGlobalCellId(position);
             return TryAddCellRequest(globalId);
@@ -209,6 +214,9 @@ namespace Beakstorm.Simulation.Particles
             if (!_initialized)
                 Initialize();
             if (!_initialized)
+                return;
+            
+            if (AudioSettings.Instance.BirdsVolume == 0)
                 return;
             
             IterateOnAllRequests();
