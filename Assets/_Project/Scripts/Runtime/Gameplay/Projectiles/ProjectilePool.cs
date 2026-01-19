@@ -58,12 +58,12 @@ namespace Beakstorm.Gameplay.Projectiles
         {
             projectile.ReParentToPoolTransform();
             projectile.Released = false;
-            projectile.gameObject.SetActive(true);
+            projectile.OnGetFromPool();
         }
 
         private void OnReleaseToPool(Projectile projectile)
         {
-            projectile.gameObject.SetActive(false);
+            projectile.OnReleaseToPool();
             projectile.ReParentToPoolTransform();
             projectile.Released = true;
         }

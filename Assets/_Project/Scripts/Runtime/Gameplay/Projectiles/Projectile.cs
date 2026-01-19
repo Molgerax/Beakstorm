@@ -28,6 +28,16 @@ namespace Beakstorm.Gameplay.Projectiles
         {
             onSpawn?.Invoke();
         }
+
+        public virtual void OnGetFromPool()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public virtual void OnReleaseToPool()
+        {
+            gameObject.SetActive(false);
+        }
         
         public void Deactivate()
         {

@@ -1,3 +1,4 @@
+using Beakstorm.Utility.Extensions;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Projectiles
@@ -5,6 +6,8 @@ namespace Beakstorm.Gameplay.Projectiles
     public class TrailSpawner : MonoBehaviour
     {
         [SerializeField] private Projectile projectilePrefab;
+        [SerializeField] private bool updatePositionInsteadOfParent;
+        [SerializeField] private bool autoDespawnOnDisable;
 
         private ProjectilePool _pool;
 
@@ -15,6 +18,18 @@ namespace Beakstorm.Gameplay.Projectiles
         private void Awake()
         {
             _pool = ProjectileManager.Instance.GetPool(projectilePrefab);
+        }
+
+        private void Update()
+        {
+            if (updatePositionInsteadOfParent && _spawnedProjectile)
+                _spawnedProjectile.transform.CopyPositionAndRotation(transform);
+        }
+
+        private void OnDisable()
+        {
+            if (autoDespawnOnDisable && updatePositionInsteadOfParent)
+                Despawn();
         }
 
         private void ReturnIfSpawned()
@@ -32,8 +47,17 @@ namespace Beakstorm.Gameplay.Projectiles
 
             var t = transform;
             var projectileTransform = _spawnedProjectile.transform;
-            projectileTransform.SetParent(t, true);
-            projectileTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+            if (updatePositionInsteadOfParent)
+            {
+                projectileTransform.CopyPositionAndRotation(t);
+            }
+            else
+            {
+                projectileTransform.SetParent(t, true);
+                projectileTransform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            }
+            
             //projectileTransform.position = t.position;
             //projectileTransform.rotation = t.rotation;
 
