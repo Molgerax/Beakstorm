@@ -221,22 +221,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
       propertyPath: onHealthZero._PersistentCalls.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
       propertyPath: onHealthZero._PersistentCalls.Array.data[5]._Target
       value: 
       objectReference: {fileID: 3790902515459306472}
     - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[6]._Target
+      value: 
+      objectReference: {fileID: 905960070410348599}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
       propertyPath: onHealthZero._PersistentCalls.Array.data[5]._MemberName
       value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[6]._MemberName
+      value: Spawn
       objectReference: {fileID: 0}
     - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
       propertyPath: onHealthZero._PersistentCalls.Array.data[5]._PersistentArguments.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[6]._PersistentArguments.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
       propertyPath: onHealthZero._PersistentCalls.Array.data[5]._PersistentArguments.Array.data[0]._Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8579736343862981193, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[6]._PersistentArguments.Array.data[0]._Type
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -247,6 +263,17 @@ PrefabInstance:
       addedObject: {fileID: 7397403829655637481}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+--- !u!114 &905960070410348599 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6365312695283675944, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}
+  m_PrefabInstance: {fileID: 6108217867714812703}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3daa6d24e74704d87897518dbdd473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Projectiles.TrailSpawner
 --- !u!4 &5665573799751483008 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1901810504002151839, guid: 4c4c45416a2b73a439c43a5c7a06d573, type: 3}

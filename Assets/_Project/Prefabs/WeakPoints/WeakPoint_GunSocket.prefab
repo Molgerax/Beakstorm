@@ -105,6 +105,74 @@ MonoBehaviour:
   radiusBase: 4.49
   radiusTip: 0.4
   height: 4.89
+--- !u!1 &8380540868207707226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7957788834261681186}
+  - component: {fileID: 5666732127308190594}
+  - component: {fileID: 1041992995166596899}
+  m_Layer: 0
+  m_Name: VFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7957788834261681186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380540868207707226}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5928403842306589971}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5666732127308190594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380540868207707226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3daa6d24e74704d87897518dbdd473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Projectiles.TrailSpawner
+  projectilePrefab: {fileID: 198617598016738859, guid: 28294c203c93dd541b1ca70090f4f3b3, type: 3}
+  updatePositionInsteadOfParent: 1
+  autoDespawnOnDisable: 1
+--- !u!114 &1041992995166596899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380540868207707226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd3b0a907c5d89d4d861f66bb01a1108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Projectiles.TimedEvent
+  duration: 3
+  resetOnDisable: 1
+  onTimerElapsed:
+    _PersistentCalls:
+    - _Target: {fileID: 5666732127308190594}
+      _MemberName: Despawn
+      _PersistentArguments: []
+  autoStart: 0
 --- !u!1001 &7529156812254015416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -160,6 +228,34 @@ PrefabInstance:
     - target: {fileID: 1424759133269100437, guid: 726560654fc258a41a4e700629f046ce, type: 3}
       propertyPath: offset.y
       value: 8.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424759133269100437, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424759133269100437, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[1]._Target
+      value: 
+      objectReference: {fileID: 5666732127308190594}
+    - target: {fileID: 1424759133269100437, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[2]._Target
+      value: 
+      objectReference: {fileID: 1041992995166596899}
+    - target: {fileID: 1424759133269100437, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[1]._MemberName
+      value: Spawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424759133269100437, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[2]._MemberName
+      value: StartTimer
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424759133269100437, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[1]._PersistentArguments.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424759133269100437, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      propertyPath: onHealthZero._PersistentCalls.Array.data[1]._PersistentArguments.Array.data[0]._Type
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2143519642290741636, guid: 726560654fc258a41a4e700629f046ce, type: 3}
       propertyPath: limitAngle
@@ -235,6 +331,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4195415145438128811, guid: 726560654fc258a41a4e700629f046ce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6605135489060255933}
+    - targetCorrespondingSourceObject: {fileID: 4195415145438128811, guid: 726560654fc258a41a4e700629f046ce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7957788834261681186}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 726560654fc258a41a4e700629f046ce, type: 3}
 --- !u!4 &5928403842306589971 stripped

@@ -286,6 +286,53 @@ MonoBehaviour:
     x: 0
     y: 0
     z: 0
+--- !u!1 &1841791584874659841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5203470137011186748}
+  - component: {fileID: 6365312695283675944}
+  m_Layer: 0
+  m_Name: VFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5203470137011186748
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841791584874659841}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.04, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7441738662445378794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6365312695283675944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841791584874659841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3daa6d24e74704d87897518dbdd473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Projectiles.TrailSpawner
+  projectilePrefab: {fileID: 7835612951117938238, guid: 7d386b5c926ad9c42aa527b15d07f582, type: 3}
+  updatePositionInsteadOfParent: 1
+  autoDespawnOnDisable: 1
 --- !u!1 &2105662751215743793
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +454,7 @@ Transform:
   - {fileID: 2399529835977523245}
   - {fileID: 1901810504002151839}
   - {fileID: 8604371997636337720}
+  - {fileID: 5203470137011186748}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8579736343862981193
@@ -510,6 +558,9 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+    - _Target: {fileID: 6365312695283675944}
+      _MemberName: Spawn
+      _PersistentArguments: []
   bounds:
     m_Center: {x: 0, y: 7.0047092, z: 0}
     m_Extent: {x: 5.0789433, y: 8.004709, z: 4.837579}
@@ -526,7 +577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3b0a907c5d89d4d861f66bb01a1108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 10
+  duration: 8
   resetOnDisable: 1
   onTimerElapsed:
     _PersistentCalls:

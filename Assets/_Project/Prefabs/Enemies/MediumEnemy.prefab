@@ -53,6 +53,53 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 17, z: 8}
   m_Center: {x: 0, y: -0.7, z: -20.65}
+--- !u!1 &1026065226796078326
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2426303151128589936}
+  - component: {fileID: 301962000094450818}
+  m_Layer: 0
+  m_Name: Smoke_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2426303151128589936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026065226796078326}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.6440895, y: 0.17184635, z: -0.15166295, w: 0.7298054}
+  m_LocalPosition: {x: 3.69, y: 10.58, z: 33.66}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1804031263770921347}
+  m_LocalEulerAnglesHint: {x: 82.86, y: 26.5, z: 0}
+--- !u!114 &301962000094450818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026065226796078326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3daa6d24e74704d87897518dbdd473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Projectiles.TrailSpawner
+  projectilePrefab: {fileID: 7835612951117938238, guid: 7d386b5c926ad9c42aa527b15d07f582, type: 3}
+  updatePositionInsteadOfParent: 1
+  autoDespawnOnDisable: 1
 --- !u!1 &1354059952900907674
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,6 +306,53 @@ Transform:
   - {fileID: 2921532131020474467}
   m_Father: {fileID: 4735186242802268362}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3004145739769884754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4181796710352066036}
+  - component: {fileID: 2054777181596800279}
+  m_Layer: 0
+  m_Name: Smoke_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4181796710352066036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004145739769884754}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.6498841, y: -0.32844457, z: 0.36993602, w: 0.5769941}
+  m_LocalPosition: {x: -13.81, y: -0.39, z: 7.88}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1804031263770921347}
+  m_LocalEulerAnglesHint: {x: 96.8, y: -59.3, z: 0}
+--- !u!114 &2054777181596800279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004145739769884754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3daa6d24e74704d87897518dbdd473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Projectiles.TrailSpawner
+  projectilePrefab: {fileID: 7835612951117938238, guid: 7d386b5c926ad9c42aa527b15d07f582, type: 3}
+  updatePositionInsteadOfParent: 1
+  autoDespawnOnDisable: 1
 --- !u!1 &3039209658084790869
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,6 +470,64 @@ Transform:
   - {fileID: 7919977815889673791}
   m_Father: {fileID: 4735186242802268362}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4362199871110302820
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1804031263770921347}
+  - component: {fileID: 3498807026011703657}
+  m_Layer: 0
+  m_Name: VFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1804031263770921347
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4362199871110302820}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5311546047989019747}
+  - {fileID: 2426303151128589936}
+  - {fileID: 4181796710352066036}
+  m_Father: {fileID: 8203474729422093015}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3498807026011703657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4362199871110302820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 289ff940279d54e4e92f632d7d3823dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Kybernetik.UltEvents::UltEvents.UltEventHolder
+  _Event:
+    _PersistentCalls:
+    - _Target: {fileID: 4337012236214775537}
+      _MemberName: Spawn
+      _PersistentArguments: []
+    - _Target: {fileID: 301962000094450818}
+      _MemberName: Spawn
+      _PersistentArguments: []
+    - _Target: {fileID: 2054777181596800279}
+      _MemberName: Spawn
+      _PersistentArguments: []
 --- !u!1 &4434402300762048910
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,6 +631,53 @@ MonoBehaviour:
     WwiseObjectReference: {fileID: 11400000, guid: 0e92cba4c942da64bbacbbd2715d3916, type: 2}
   target: {fileID: 5423898818209621223}
   autoStartStop: 0
+--- !u!1 &5218080309268521017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5311546047989019747}
+  - component: {fileID: 4337012236214775537}
+  m_Layer: 0
+  m_Name: Smoke_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5311546047989019747
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5218080309268521017}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 15.938, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1804031263770921347}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4337012236214775537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5218080309268521017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3daa6d24e74704d87897518dbdd473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Gameplay.Projectiles.TrailSpawner
+  projectilePrefab: {fileID: 7835612951117938238, guid: 7d386b5c926ad9c42aa527b15d07f582, type: 3}
+  updatePositionInsteadOfParent: 1
+  autoDespawnOnDisable: 1
 --- !u!1 &5423898818209621223
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,6 +768,7 @@ Transform:
   - {fileID: 1458522272172048496}
   - {fileID: 4735186242802268362}
   - {fileID: 5622099730004729149}
+  - {fileID: 1804031263770921347}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6341619872662283019
@@ -689,6 +889,9 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+    - _Target: {fileID: 3498807026011703657}
+      _MemberName: Invoke
+      _PersistentArguments: []
   bounds:
     m_Center: {x: 0.0000038146973, y: 17.361889, z: 1.90308}
     m_Extent: {x: 61.113586, y: 33.477657, z: 42.012104}
