@@ -17,7 +17,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
         [SerializeField] private GameObject parent;
         
         [SerializeField]
-        [PowerOfTwo(4, 64)] private int resolution = 32;
+        [PowerOfTwo(4, 128)] private int resolution = 32;
 
         [SerializeField] private bool allMeshChildren;
         
@@ -299,7 +299,7 @@ namespace Beakstorm.Simulation.Collisions.SDF.Shapes
             MeshToSdfStatic.InputArgs args = new MeshToSdfStatic.InputArgs();
             args.Offset = 0;
             args.Quality = MeshToSdfStatic.FloodFillQuality.Ultra;
-            args.FillIterations = 64;
+            args.FillIterations = 128;
             args.FloodMode = MeshToSdfStatic.FloodMode.Linear;
             args.Resolution = Resolution;
             args.DistanceMode = MeshToSdfStatic.DistanceMode.Signed;

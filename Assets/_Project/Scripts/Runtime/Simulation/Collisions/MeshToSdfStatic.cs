@@ -100,7 +100,7 @@ If you need signed distance or just need a limited shell around your surface, us
             "Normal - flood in orthogonal directions only, faster. \nUltra - flood in orthogonal and diagonal directions, slower.")]
         FloodFillQuality m_FloodFillQuality;
 
-        [Range(0, 64), SerializeField] int m_FloodFillIterations = 0;
+        [Range(0, 128), SerializeField] int m_FloodFillIterations = 0;
         [Header("Distance")] [SerializeField] DistanceMode m_DistanceMode = DistanceMode.Signed;
 
         [SerializeField]
@@ -123,7 +123,7 @@ If you need signed distance or just need a limited shell around your surface, us
         public int floodFillIterations
         {
             get { return m_FloodFillIterations; }
-            set { m_FloodFillIterations = Mathf.Clamp(value, 0, 64); }
+            set { m_FloodFillIterations = Mathf.Clamp(value, 0, 128); }
         }
 
         public DistanceMode distanceMode

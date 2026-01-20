@@ -86,7 +86,7 @@ namespace Beakstorm.Mapping.Tremble
                 SdfTextureField sdf = layer.GetOrAddComponent<SdfTextureField>();
                 
                 var tex = sdf.InitializeFromScript(_sdfCompute, _sdfCombineCompute, worldSpawn.SdfMaterialType, 
-                    worldSpawn.SdfResolution, layer, true, false, colliders.ToArray(), unionSmoothing,
+                    worldSpawn.SdfResolution * 2, layer, true, false, colliders.ToArray(), unionSmoothing,
                     noiseStrength);
                 
                 if (!tex || !tex.isReadable)
@@ -98,7 +98,7 @@ namespace Beakstorm.Mapping.Tremble
 
                 List<Vector3> vertices = new();
                 List<int> indices = new();
-                List<Vector3> normals = new();
+                List<Vector3> normals = null;
 
                 MeshFilter meshFilter = layer.GetOrAddComponent<MeshFilter>();
                 MeshRenderer meshRenderer = layer.GetOrAddComponent<MeshRenderer>();
@@ -116,6 +116,7 @@ namespace Beakstorm.Mapping.Tremble
                     mesh.name = layer.name + "_cloudMesh";
                     saveToAsset = true;
                 }
+                mesh.indexFormat = IndexFormat.UInt32;
 
                 marching.Generate(tex, vertices, indices, normals);
 
@@ -141,8 +142,12 @@ namespace Beakstorm.Mapping.Tremble
                     mesh.SetNormals(normals);
                 else
                     mesh.RecalculateNormals();
+
+                //CalculateUVs(mesh, min, max);
                 
-                mesh.RecalculateTangents();
+                CalculateTangents(mesh);
+                //mesh.RecalculateTangents();
+                
                 mesh.RecalculateBounds();
 
                 meshFilter.sharedMesh = mesh;
@@ -188,6 +193,82 @@ namespace Beakstorm.Mapping.Tremble
             o.y = Remap(vector3.y, minA.y, maxA.y, minB.y, maxB.y);
             o.z = Remap(vector3.z, minA.z, maxA.z, minB.z, maxB.z);
             return o;
+        }
+
+        private void CalculateUVs(Mesh mesh, Vector3 min, Vector3 max)
+        {
+            List<Vector3> vertices = new List<Vector3>();
+            List<Vector3> normals = new List<Vector3>();
+            mesh.GetVertices(vertices);
+            mesh.GetNormals(normals);
+            
+            List<Vector2> uvs = new List<Vector2>();
+
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Vector3 vertex = vertices[i];
+                Vector3 normal = normals[i];
+
+                vertex = Remap(vertex, min, max, Vector3.zero, Vector3.one);
+                
+                normal = new(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
+                //normal /= Vector3.Dot(normal, Vector3.one);
+                
+                Vector2 zy = new(vertex.z, vertex.y);
+                Vector2 xz = new(vertex.x, vertex.z);
+                Vector2 xy = new(vertex.x, vertex.y);
+
+                zy *= 0.5f;
+                xz *= 0.5f;
+                xy *= 0.5f;
+
+                xz.x += 0.5f;
+                xy.y += 0.5f;
+                
+                Vector2 uv = 
+                    zy * normal.x + 
+                    xz * normal.y +
+                    xy * normal.z;
+
+                uv = xz;
+                if (normal.x > normal.y)
+                {
+                    uv = zy;
+                    if (normal.z > normal.x)
+                        uv = xy;
+                }
+
+                uvs.Add(uv);
+            }
+            
+            mesh.SetUVs(0, uvs);
+        }
+        
+        private void CalculateTangents(Mesh mesh)
+        {
+            List<Vector3> vertices = new List<Vector3>();
+            List<Vector3> normals = new List<Vector3>();
+            mesh.GetVertices(vertices);
+            mesh.GetNormals(normals);
+            
+            List<Vector4> tangents = new();
+
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Vector3 vertex = vertices[i];
+                Vector3 normal = normals[i];
+
+                Vector3 tangent = Vector3.Cross(normal, Vector3.up);
+                if (tangent.magnitude == 0)
+                    tangent = Vector3.Cross(normal, Vector3.right);
+                
+                tangent.Normalize();
+
+                Vector4 t = new(tangent.x, tangent.y, tangent.z, 1);
+                tangents.Add(t);
+            }
+            
+            mesh.SetTangents(tangents);
         }
         
 #if UNITY_EDITOR

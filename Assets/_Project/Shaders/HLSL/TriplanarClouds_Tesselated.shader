@@ -274,7 +274,7 @@ Shader "Beakstorm/TriplanarClouds_Tesselated"
         float rim = 1 - saturate(dot(viewDir, noise * worldNormal));
         float3 rimColor = _RimColor.rgb * pow(rim, _RimPower);
 
-        LightingLambertShaded_float(worldPos, 0, worldNormal, viewDir, 0, color);
+        LightingLambertShaded_float(worldPos, 0, worldNormal, viewDir, 0, 1, color);
 
         noise = saturate(noise * 0.5 + 0.5);
         //color *= noise;

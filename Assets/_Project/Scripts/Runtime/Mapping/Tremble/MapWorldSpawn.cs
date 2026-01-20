@@ -9,7 +9,7 @@ namespace Beakstorm.Mapping.Tremble
     public class MapWorldSpawn : Worldspawn
     {
         [SerializeField]
-        [PowerOfTwo(4, 64)] private int sdfResolution = 32;
+        [PowerOfTwo(4, 128)] private int sdfResolution = 32;
         [SerializeField] private SdfMaterialType sdfMaterialType = SdfMaterialType.None;
         [SerializeField] private float mapLowerBound = -256;
         
