@@ -61,7 +61,7 @@ Material:
     - _SHADOWS_SOFT: 1
     - _VertexOffset: 0.05
     m_Colors:
-    - _CloudColor: {r: 1.6051236, g: 1.224187, b: 0.9464172, a: 1}
+    - _CloudColor: {r: 0.9496281, g: 1.1559771, b: 1.6051236, a: 1}
     - _CloudSpeed: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

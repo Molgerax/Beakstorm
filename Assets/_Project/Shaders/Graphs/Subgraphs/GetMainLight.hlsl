@@ -46,11 +46,11 @@ float3 CalculateCelShading(Light l, Surface s, float step)
     return (diffuse + specular) * l.color * dimming;
 }
 
-float3 CalculateLambertShading(Light l, Surface s)
+float3 CalculateLambertShading(Light l, Surface s, float ao)
 {
     float shadowAtten = saturate(linearstep(0, 0.1, l.shadowAttenuation));// + 0.25);
     float distanceAtten = linearstep(0, 0.1, l.distanceAttenuation);
-    float attenuation = shadowAtten * distanceAtten;
+    float attenuation = shadowAtten * distanceAtten * ao;
     float diffuse = saturate(dot(s.normal, l.direction));
     //diffuse = smoothstep(0, 0.1, diffuse);
     diffuse *= attenuation;
@@ -183,7 +183,7 @@ void GlobalIllumination_float(float3 Position, float3 Normal, float3 View, float
 
 
 
-void LightingLambertShaded_float(float3 Position, float2 ScreenPosition, float3 Normal, float3 View, float Smoothness, out float3 Color)
+void LightingLambertShaded_float(float3 Position, float2 ScreenPosition, float3 Normal, float3 View, float Smoothness, float AmbientOcclusion, out float3 Color)
 {
     #ifndef SHADERGRAPH_PREVIEW
     Surface s = (Surface)0;
@@ -207,7 +207,7 @@ void LightingLambertShaded_float(float3 Position, float2 ScreenPosition, float3 
     Light light = GetMainLight(shadowCoord);
     MixRealtimeAndBakedGI(light, s.normal, s.bakedGI);
     Color = CalculateGlobalIllumination(s);
-    Color += CalculateLambertShading(light, s);
+    Color += CalculateLambertShading(light, s, AmbientOcclusion);
 
     int pixelLightCount = GetAdditionalLightsCount();
     
@@ -221,7 +221,7 @@ void LightingLambertShaded_float(float3 Position, float2 ScreenPosition, float3 
     UNITY_LOOP for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
     {
         Light additionalLight = GetAdditionalLight(lightIndex, inputData.positionWS, half4(1,1,1,1));
-        Color += CalculateLambertShading(additionalLight, s);
+        Color += CalculateLambertShading(additionalLight, s, AmbientOcclusion);
     }
     #endif
     
@@ -230,7 +230,7 @@ void LightingLambertShaded_float(float3 Position, float2 ScreenPosition, float3 
             lightIndex = GetPerObjectLightIndex(lightIndex);
     #endif
     light = GetAdditionalLight(lightIndex, Position, 1);
-    Color += saturate(CalculateLambertShading(light, s));
+    Color += saturate(CalculateLambertShading(light, s, AmbientOcclusion));
     LIGHT_LOOP_END
     
     
@@ -265,7 +265,7 @@ void LightingLambert_NoShadow_float(float3 Position, float2 ScreenPosition, floa
     light.shadowAttenuation = 1;
     MixRealtimeAndBakedGI(light, s.normal, s.bakedGI);
     Color = CalculateGlobalIllumination(s);
-    Color += CalculateLambertShading(light, s);
+    Color += CalculateLambertShading(light, s, 1);
 
     int pixelLightCount = GetAdditionalLightsCount();
     
@@ -279,7 +279,7 @@ void LightingLambert_NoShadow_float(float3 Position, float2 ScreenPosition, floa
     UNITY_LOOP for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
     {
         Light additionalLight = GetAdditionalLight(lightIndex, inputData.positionWS, half4(1,1,1,1));
-        Color += CalculateLambertShading(additionalLight, s);
+        Color += CalculateLambertShading(additionalLight, s, 1);
     }
     #endif
     
@@ -288,7 +288,7 @@ void LightingLambert_NoShadow_float(float3 Position, float2 ScreenPosition, floa
             lightIndex = GetPerObjectLightIndex(lightIndex);
     #endif
     light = GetAdditionalLight(lightIndex, Position, 1);
-    Color += saturate(CalculateLambertShading(light, s));
+    Color += saturate(CalculateLambertShading(light, s, 1));
     LIGHT_LOOP_END
     
     
