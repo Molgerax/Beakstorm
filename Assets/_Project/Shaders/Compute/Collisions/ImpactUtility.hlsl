@@ -18,10 +18,13 @@ uint _ImpactCount;
 
 uint _MaxFrames;
 
-uint CalculateDamage(float3 velocity)
+uint CalculateDamage(float3 velocity, float exposure)
 {
     float sqrSpeed = dot(velocity, velocity);
     int damage = floor((sqrt(sqrSpeed) - 10) / 10);
+    
+    damage *= saturate(exposure * 10);
+    
     return clamp(damage, 0, 10);
 }
 

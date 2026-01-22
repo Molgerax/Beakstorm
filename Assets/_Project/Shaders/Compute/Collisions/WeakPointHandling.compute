@@ -141,7 +141,7 @@ void CollideBoids(uint3 id : SV_DispatchThreadID)
             
             if (oldInfo.dist > 0)
             {
-                uint damage = CalculateDamage(velocity);
+                uint damage = CalculateDamage(velocity, boid.exposure);
                 _DamageBuffer[index] += damage;
                 
                 float dist = length(offset);

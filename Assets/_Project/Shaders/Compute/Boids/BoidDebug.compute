@@ -99,7 +99,7 @@ void collideBounds(inout float3 pos, inout float3 oldPos)
     pos += normal * dist;
 }
 
-void collideSdf(inout float3 pos, inout float3 oldPos, SdfQueryInfo sdf, float bounce)
+void collideSdf(inout float3 pos, inout float3 oldPos, SdfQueryInfo sdf, float bounce, float exposure)
 {
     float dist = sdf.dist;
     float3 normal = sdf.normal;
@@ -116,7 +116,7 @@ void collideSdf(inout float3 pos, inout float3 oldPos, SdfQueryInfo sdf, float b
     oldPos = pos - newVel;
 
     float3 velocity = vel / _DeltaTime;
-    uint damage = CalculateDamage(velocity);
+    uint damage = CalculateDamage(velocity, exposure);
     AddImpact(CreateImpact(impactPos, normal, sdf.matIndex, damage));
 }
 
@@ -491,7 +491,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     //collideBounds(currentPosition, oldPosition);
     
     //sdfInfo = GetClosestDistance(currentPosition, 0);
-    collideSdf(currentPosition, oldPosition, sdfInfo, 0.1);
+    collideSdf(currentPosition, oldPosition, sdfInfo, 0.1, boid.exposure);
     
     //currentPosition.y = _WorldPos.y;
 

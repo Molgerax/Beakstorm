@@ -3,6 +3,8 @@
 #pragma kernel Subtract
 #pragma kernel Noise
 
+#pragma kernel CombineMismatched
+
 #define THREAD_GROUP_SIZE 4
 
 
@@ -122,3 +124,27 @@ void Noise (uint3 id : SV_DispatchThreadID)
     
     _TextureWrite[voxel] = write + noise;
 }
+
+
+float3 _BoundsMinRead;
+float3 _BoundsMaxRead;
+float3 _BoundsMinWrite;
+float3 _BoundsMaxWrite;
+
+
+[numthreads(THREAD_GROUP_SIZE,THREAD_GROUP_SIZE,THREAD_GROUP_SIZE)]
+void CombineMismatched (uint3 id : SV_DispatchThreadID)
+{
+    const uint3 voxel = id;
+    
+    if (id.x >= _Resolution || id.y >= _Resolution || id.z >= _Resolution)
+        return;
+
+    
+    
+    float read = _TextureRead[id];
+    float write = _TextureWrite[id];
+    
+    _TextureWrite[voxel] = SmoothUnion(read, write);
+}
+
