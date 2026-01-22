@@ -625,6 +625,46 @@ MonoBehaviour:
     FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
     AddressableName: Simple_StraightShot
     SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Debug_Pheromone
+    Path: Assets/_Project/Data/SceneCollections/Debug_Pheromone.asset
+    FullTypeName: Beakstorm.SceneManagement.SceneLoadCollection
+    AddressableName: Debug_Pheromone
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Game_Attractor
+    Path: Assets/_Project/Data/SceneCollections/Game_Attractor.asset
+    FullTypeName: Beakstorm.SceneManagement.SceneLoadCollection
+    AddressableName: Game_Attractor
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Game_Canyon
+    Path: Assets/_Project/Data/SceneCollections/Game_Canyon.asset
+    FullTypeName: Beakstorm.SceneManagement.SceneLoadCollection
+    AddressableName: Game_Canyon
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Game_Pheromone
+    Path: Assets/_Project/Data/SceneCollections/Game_Pheromone.asset
+    FullTypeName: Beakstorm.SceneManagement.SceneLoadCollection
+    AddressableName: Game_Pheromone
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Game_Pheromone_BirdSounds
+    Path: Assets/_Project/Data/SceneCollections/Game_Pheromone_BirdSounds.asset
+    FullTypeName: Beakstorm.SceneManagement.SceneLoadCollection
+    AddressableName: Game_Pheromone_BirdSounds
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Game_Pheromone_Low
+    Path: Assets/_Project/Data/SceneCollections/Game_Pheromone_Low.asset
+    FullTypeName: Beakstorm.SceneManagement.SceneLoadCollection
+    AddressableName: Game_Pheromone_Low
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: MainMenu
+    Path: Assets/_Project/Data/SceneCollections/MainMenu.asset
+    FullTypeName: Beakstorm.SceneManagement.SceneLoadCollection
+    AddressableName: MainMenu
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Tutorial
+    Path: Assets/_Project/Data/SceneCollections/Tutorial.asset
+    FullTypeName: Beakstorm.SceneManagement.SceneLoadCollection
+    AddressableName: Tutorial
+    SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: WeakPoint_Balloon
     Path: Assets/_Project/Data/WeakPoints/WeakPoint_Balloon.asset
     FullTypeName: Beakstorm.Simulation.Collisions.WeakPointData

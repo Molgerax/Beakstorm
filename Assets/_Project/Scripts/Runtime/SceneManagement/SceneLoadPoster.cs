@@ -27,6 +27,14 @@ namespace Beakstorm.SceneManagement
         
         #region Public Methods
 
+        public void SetCollection(SceneLoadCollection sceneLoadCollection) => collection = sceneLoadCollection;
+
+        public void SetChannel()
+        {
+            if (!sceneLoadChannel)
+                sceneLoadChannel = Object.FindAnyObjectByType<SceneLoadEventSO>();
+        }
+        
         public void LoadScene()
         {
             if (collection)

@@ -39,8 +39,32 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a3d3d926cdf662449fbafa8c73034d1
+    m_Address: Game_Pheromone_Low
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 61f704debad8fa3438a38a4f08c72070
     m_Address: WeakPoint_Breakable
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 678e7f72d88badd44ad06a9082368b27
+    m_Address: MainMenu
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70ff9947b7efeea4a919cff46c243b79
+    m_Address: Game_Pheromone_BirdSounds
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 835847d82e9e32d4eb028709049fdf32
+    m_Address: Tutorial
     m_ReadOnly: 0
     m_SerializedLabels:
     - Tremble
@@ -69,14 +93,38 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdad2dcf0f84a7c4d8443f4ae867e985
+    m_Address: Game_Canyon
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c4fa46089df425d48a5802f0d23581d2
     m_Address: Multi_ReversePheromoneShot
     m_ReadOnly: 0
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d14ce468637e3cc48b35fcd1c5bd8099
+    m_Address: Debug_Pheromone
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd91a15e0dbbe7241b0df39c173b6131
+    m_Address: Game_Pheromone
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f08fd6abe09c4f04e92d93fbd6f863d0
     m_Address: TrembleSyncSettings
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f77110b8e3723ab4a84a6851b1e56619
+    m_Address: Game_Attractor
     m_ReadOnly: 0
     m_SerializedLabels:
     - Tremble
