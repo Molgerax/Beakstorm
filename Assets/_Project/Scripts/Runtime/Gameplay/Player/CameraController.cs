@@ -77,6 +77,7 @@ namespace Beakstorm.Gameplay.Player
         
         private Vector3 _cachedTargetPosition;
         private Vector3 _previousTargetPosition;
+        private Vector3 _targetPos;
         private float _targetPositionTime;
 
         private Vector3 _headOffset;
@@ -302,7 +303,7 @@ namespace Beakstorm.Gameplay.Player
             if (targetingManager.HasTargetChanged)
             {
                 _targetPositionTime = 0;
-                _previousTargetPosition = _cachedTargetPosition;
+                _previousTargetPosition = _targetPos;
                 targetingManager.HasTargetChanged = false;
             }
             
@@ -314,7 +315,7 @@ namespace Beakstorm.Gameplay.Player
                 {
                     _targetLock = false;
                     if (_mode == CameraMode.Target)
-                        SetMode(CameraMode.Fixed);
+                        SetMode(CameraMode.FreeLook);
                 }
             }
             
@@ -324,9 +325,9 @@ namespace Beakstorm.Gameplay.Player
                 _targetPositionTime = 1f;
             
             float t = _targetPositionTime;
-            Vector3 targetPos = Vector3.Lerp(_previousTargetPosition, _cachedTargetPosition, t);
+            _targetPos = Vector3.Lerp(_previousTargetPosition, _cachedTargetPosition, t);
             
-            _targetRotation = Quaternion.LookRotation(targetPos - pos);
+            _targetRotation = Quaternion.LookRotation(_targetPos - pos);
         }
 
         private void HandleFixedCamera()
