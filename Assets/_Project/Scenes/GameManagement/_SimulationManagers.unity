@@ -887,7 +887,7 @@ MonoBehaviour:
   noiseStrength: 1
   noiseScale: 1
   simulationSpace: {x: 2048, y: 1024, z: 2048}
-  avoidDistance: 10
+  avoidDistance: 20
   impact: {fileID: 1908763086}
   hashCellSize: 16
   hashCellRatio: 1
