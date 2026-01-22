@@ -15,6 +15,7 @@ namespace Beakstorm.Mapping.BrushEntities
         [SerializeField, Tremble("health")] private int health = 100;
         [SerializeField, Tremble("type")] private WeakPointData data;
         [SerializeField, Tremble("kill")] private bool kill = true;
+        [SerializeField, Tremble("collision")] private bool collision = true;
 
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
@@ -30,6 +31,9 @@ namespace Beakstorm.Mapping.BrushEntities
                 list.Add(gameObject.AddComponent<TrembleKill>());
                 targets = list.ToArray();
             }
+            
+            if (!collision)
+                CoreUtils.Destroy(gameObject.GetComponent<MeshCollider>());
 
             var weakPoint = gameObject.AddComponent<WeakPoint>();
             weakPoint.SetFromTremble(targets, health, data);
