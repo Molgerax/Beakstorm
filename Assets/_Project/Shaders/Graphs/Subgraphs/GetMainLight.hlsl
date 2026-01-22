@@ -50,8 +50,9 @@ float3 CalculateLambertShading(Light l, Surface s, float ao)
 {
     float shadowAtten = saturate(linearstep(0, 0.1, l.shadowAttenuation));// + 0.25);
     float distanceAtten = linearstep(0, 0.1, l.distanceAttenuation);
+    shadowAtten = shadowAtten * 0.5 + 0.5;
     float attenuation = shadowAtten * distanceAtten * ao;
-    float diffuse = saturate(dot(s.normal, l.direction));
+    float diffuse = saturate(dot(s.normal, l.direction) * 0.5 + 0.5);
     //diffuse = smoothstep(0, 0.1, diffuse);
     diffuse *= attenuation;
     
