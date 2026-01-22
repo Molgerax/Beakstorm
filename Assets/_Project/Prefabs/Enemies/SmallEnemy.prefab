@@ -132,7 +132,6 @@ GameObject:
   - component: {fileID: 2399529835977523245}
   - component: {fileID: 1701648403015845467}
   - component: {fileID: 3884528451818014131}
-  - component: {fileID: 5089725154574613662}
   - component: {fileID: 3685063843645492864}
   - component: {fileID: 5469095381354400363}
   m_Layer: 0
@@ -217,33 +216,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!54 &5089725154574613662
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1402069516350044822}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!65 &3685063843645492864
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -509,6 +481,17 @@ MonoBehaviour:
     - _Target: {fileID: 3098449989192870046}
       _MemberName: Initialize
       _PersistentArguments: []
+    - _Target: {fileID: 6932584481282226778}
+      _MemberName: set_detectCollisions
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onHealthZero:
     _PersistentCalls:
     - _Target: {fileID: 507460526144245535}
@@ -530,6 +513,17 @@ MonoBehaviour:
       _PersistentArguments:
       - _Type: 1
         _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 6932584481282226778}
+      _MemberName: set_detectCollisions
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
         _String: 
         _X: 0
         _Y: 0
@@ -577,7 +571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3b0a907c5d89d4d861f66bb01a1108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 8
+  duration: 18
   resetOnDisable: 1
   onTimerElapsed:
     _PersistentCalls:
@@ -612,7 +606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04767e1e2759064c880604247c25e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emergeTime: 4
+  emergeTime: 12
 --- !u!114 &2718871839094492432
 MonoBehaviour:
   m_ObjectHideFlags: 0

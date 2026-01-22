@@ -812,6 +812,17 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+    - _Target: {fileID: 7491312894083225664}
+      _MemberName: set_detectCollisions
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
     - _Target: {fileID: 6241846310079000482}
       _MemberName: Initialize
       _PersistentArguments: []
@@ -847,6 +858,17 @@ MonoBehaviour:
       _PersistentArguments:
       - _Type: 1
         _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 7491312894083225664}
+      _MemberName: set_detectCollisions
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
         _String: 
         _X: 0
         _Y: 0
@@ -908,7 +930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3b0a907c5d89d4d861f66bb01a1108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 10
+  duration: 25
   resetOnDisable: 1
   onTimerElapsed:
     _PersistentCalls:
@@ -943,7 +965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04767e1e2759064c880604247c25e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emergeTime: 10
+  emergeTime: 20
 --- !u!114 &8900443706591581442
 MonoBehaviour:
   m_ObjectHideFlags: 0
