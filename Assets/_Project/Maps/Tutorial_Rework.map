@@ -8,12 +8,12 @@
 "sdf_resolution" "64"
 "sdf_material_type" "Wood"
 "map_lower_bound" "-512"
-"cloud_noise_strength" "20"
+"cloud_noise_strength" "0"
 }
 // entity 1
 {
 "classname" "ent_player_spawn"
-"origin" "-2752 0 -928"
+"origin" "-3216 0 -928"
 "angles" "0 -90 0"
 }
 // entity 2
@@ -447,6 +447,8 @@
 "_tb_name" "Borders"
 "_tb_id" "8"
 "_tb_layer_sort_index" "4"
+"_tb_layer_locked" "1"
+"_tb_layer_hidden" "1"
 // brush 0
 {
 ( -4352 -2304 -2048 ) ( -4352 -2303 -2048 ) ( -4352 -2304 -2047 ) Mapping/Mapping_CollisionWalls [ 0 -1 0 0 ] [ 0 0 -1 0 ] 270 1 1
@@ -508,12 +510,12 @@
 "_tb_layer" "8"
 // brush 0
 {
-( 128 -4096 -2048 ) ( 128 -512 -2048 ) ( 128 -4096 2048 ) Mapping/Mapping_CollisionWalls [ 0 -1 0 -256 ] [ 0 0 -1 0 ] 0 1 1
-( 128 -4096 2048 ) ( 384 -4096 2048 ) ( 128 -4096 -2048 ) Mapping/Mapping_CollisionWalls [ 1 0 0 -128 ] [ 0 0 -1 0 ] 270 1 1
-( 384 -4096 -2048 ) ( 384 -512 -2048 ) ( 128 -4096 -2048 ) Mapping/Mapping_CollisionWalls [ -1 0 0 256 ] [ 0 -1 0 0 ] 270 1 1
-( 128 -4096 2048 ) ( 128 -512 2048 ) ( 384 -4096 2048 ) Mapping/Mapping_CollisionWalls [ 1 0 0 -128 ] [ 0 -1 0 -256 ] 270 1 1
-( 128 -512 2048 ) ( 128 -512 -2048 ) ( 384 -512 2048 ) Mapping/Mapping_CollisionWalls [ 1 0 0 -256 ] [ 0 0 -1 0 ] 270 1 1
-( 384 -4096 2048 ) ( 384 -512 2048 ) ( 384 -4096 -2048 ) Mapping/Mapping_CollisionWalls [ 0 1 0 256 ] [ 0 0 -1 0 ] 0 1 1
+( 128 4096 2048 ) ( 128 512 2048 ) ( 128 4096 -2048 ) Mapping/Mapping_CollisionWalls [ 0 -1 0 -256 ] [ 0 0 -1 0 ] 0 1 1
+( 384 512 -2048 ) ( 128 512 -2048 ) ( 384 512 2048 ) Mapping/Mapping_CollisionWalls [ -1 0 0 256 ] [ 0 0 -1 0 ] 270 1 1
+( 128 4096 -2048 ) ( 128 512 -2048 ) ( 384 4096 -2048 ) Mapping/Mapping_CollisionWalls [ -1 0 0 256 ] [ 0 -1 0 0 ] 270 1 1
+( 384 4096 2048 ) ( 384 512 2048 ) ( 128 4096 2048 ) Mapping/Mapping_CollisionWalls [ 1 0 0 -128 ] [ 0 -1 0 -256 ] 270 1 1
+( 128 4096 -2048 ) ( 384 4096 -2048 ) ( 128 4096 2048 ) Mapping/Mapping_CollisionWalls [ -1 0 0 128 ] [ 0 0 -1 0 ] 0 1 1
+( 384 4096 -2048 ) ( 384 512 -2048 ) ( 384 4096 2048 ) Mapping/Mapping_CollisionWalls [ 0 1 0 256 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
 // entity 42
@@ -536,12 +538,12 @@
 "_tb_layer" "8"
 // brush 0
 {
-( 128 4096 2048 ) ( 128 512 2048 ) ( 128 4096 -2048 ) Mapping/Mapping_CollisionWalls [ 0 -1 0 -256 ] [ 0 0 -1 0 ] 0 1 1
-( 384 512 -2048 ) ( 128 512 -2048 ) ( 384 512 2048 ) Mapping/Mapping_CollisionWalls [ -1 0 0 256 ] [ 0 0 -1 0 ] 270 1 1
-( 128 4096 -2048 ) ( 128 512 -2048 ) ( 384 4096 -2048 ) Mapping/Mapping_CollisionWalls [ -1 0 0 256 ] [ 0 -1 0 0 ] 270 1 1
-( 384 4096 2048 ) ( 384 512 2048 ) ( 128 4096 2048 ) Mapping/Mapping_CollisionWalls [ 1 0 0 -128 ] [ 0 -1 0 -256 ] 270 1 1
-( 128 4096 -2048 ) ( 384 4096 -2048 ) ( 128 4096 2048 ) Mapping/Mapping_CollisionWalls [ -1 0 0 128 ] [ 0 0 -1 0 ] 0 1 1
-( 384 4096 -2048 ) ( 384 512 -2048 ) ( 384 4096 2048 ) Mapping/Mapping_CollisionWalls [ 0 1 0 256 ] [ 0 0 -1 0 ] 0 1 1
+( 128 -4096 -2048 ) ( 128 -512 -2048 ) ( 128 -4096 2048 ) Mapping/Mapping_CollisionWalls [ 0 -1 0 -256 ] [ 0 0 -1 0 ] 0 1 1
+( 128 -4096 2048 ) ( 384 -4096 2048 ) ( 128 -4096 -2048 ) Mapping/Mapping_CollisionWalls [ 1 0 0 -128 ] [ 0 0 -1 0 ] 270 1 1
+( 384 -4096 -2048 ) ( 384 -512 -2048 ) ( 128 -4096 -2048 ) Mapping/Mapping_CollisionWalls [ -1 0 0 256 ] [ 0 -1 0 0 ] 270 1 1
+( 128 -4096 2048 ) ( 128 -512 2048 ) ( 384 -4096 2048 ) Mapping/Mapping_CollisionWalls [ 1 0 0 -128 ] [ 0 -1 0 -256 ] 270 1 1
+( 128 -512 2048 ) ( 128 -512 -2048 ) ( 384 -512 2048 ) Mapping/Mapping_CollisionWalls [ 1 0 0 -256 ] [ 0 0 -1 0 ] 270 1 1
+( 384 -4096 2048 ) ( 384 -512 2048 ) ( 384 -4096 -2048 ) Mapping/Mapping_CollisionWalls [ 0 1 0 256 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
 // entity 44
@@ -551,7 +553,6 @@
 "_tb_name" "Clouds"
 "_tb_id" "9"
 "_tb_layer_sort_index" "3"
-"_tb_layer_locked" "1"
 }
 // entity 45
 {

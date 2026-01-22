@@ -9,7 +9,7 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: ab79840212e84ded961df5ef93736275, type: 3}
   processors: []
-  splitMesh: 1
+  splitMesh: 0
   maxMeshSurfaceArea: 3000
   smoothingAngle: 45
   extraCommandLineArgs: 
