@@ -1,4 +1,5 @@
-﻿using Beakstorm.Simulation.Collisions.SDF.Shapes;
+﻿using System.Collections.Generic;
+using Beakstorm.Simulation.Collisions.SDF.Shapes;
 using TinyGoose.Tremble;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -29,9 +30,22 @@ namespace Beakstorm.Mapping.Tremble
             if (!sdf)
                 sdf = root.AddComponent<SdfTextureField>();
 
+            MeshCollider worldSpawnCollider = worldSpawn.GetComponentInChildren<MeshCollider>();
+            List<MeshCollider> meshColliders = new List<MeshCollider>();
+            meshColliders.Add(worldSpawnCollider);
+
+            SeparateMesh[] separateMeshes = root.GetComponentsInChildren<SeparateMesh>();
+            
+            foreach (var separateMesh in separateMeshes)
+            {
+                if (separateMesh.TryGetComponent(out MeshCollider meshCollider))
+                    meshColliders.Add(meshCollider);
+            }
+            
             if (sdf)
             {
-                var tex = sdf.InitializeFromScript(_sdfCompute, _sdfCombineCompute, worldSpawn.SdfMaterialType, worldSpawn.SdfResolution, worldSpawn.gameObject, true);
+                var tex = sdf.InitializeFromScript(_sdfCompute, _sdfCombineCompute, worldSpawn.SdfMaterialType, 
+                    worldSpawn.SdfResolution, worldSpawn.gameObject, true, true, meshColliders.ToArray());
                 if (tex)
                     TrembleMapImportSettings.Current.SaveObjectInMap("sdf_texture", tex);
             }

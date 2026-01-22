@@ -86,7 +86,7 @@ namespace Beakstorm.Mapping.Tremble
                 SdfTextureField sdf = layer.GetOrAddComponent<SdfTextureField>();
                 
                 var tex = sdf.InitializeFromScript(_sdfCompute, _sdfCombineCompute, worldSpawn.SdfMaterialType, 
-                    worldSpawn.SdfResolution * 2, layer, true, false, colliders.ToArray(), unionSmoothing,
+                    worldSpawn.SdfResolution, layer, true, false, colliders.ToArray(), unionSmoothing,
                     noiseStrength);
                 
                 if (!tex || !tex.isReadable)
