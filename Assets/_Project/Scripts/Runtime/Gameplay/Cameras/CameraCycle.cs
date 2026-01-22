@@ -1,3 +1,4 @@
+using System;
 using Beakstorm.Inputs;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -13,6 +14,9 @@ namespace Beakstorm.Gameplay.Cameras
         private void OnEnable()
         {
             PlayerInputs.Instance.CameraViewPoint += OnCameraViewPointInput;
+
+            if (Camera.main)
+                Camera.main.cullingMask = Int32.MaxValue;
 
             _currentIndex = 0;
             Cycle(0);

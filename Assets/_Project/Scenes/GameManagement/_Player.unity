@@ -3141,6 +3141,7 @@ MonoBehaviour:
   maxAngles: {x: -80, y: 80}
   centerSpeed: 5
   centerCooldown: 1
+  lookCenterTime: 0.5
   movementAlpha: 7
   lookThreshold: 0.2
   disableRotation: 1
@@ -3978,8 +3979,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 059561851192e9a4fb31b9490d64b03d, type: 2}
+  m_sharedMaterial: {fileID: -4402061100641301111, guid: 059561851192e9a4fb31b9490d64b03d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4835,7 +4836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6094908347123523411, guid: cd3cee1a9919b0642b8bb7b32fded276, type: 3}
       propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Value
-      value: 0.42777756
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6094908347123523411, guid: cd3cee1a9919b0642b8bb7b32fded276, type: 3}
       propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.data[0].m_Value.x

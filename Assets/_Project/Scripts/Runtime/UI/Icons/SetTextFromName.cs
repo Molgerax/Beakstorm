@@ -21,7 +21,7 @@ namespace Beakstorm.UI.Icons
         private void SetText()
         {
             if (text)
-                text.text = @$"{{{prefix}{gameObject.name}}}";
+                text.text = @$"[{{{prefix}{gameObject.name}}}]";
         }
     }
 }
