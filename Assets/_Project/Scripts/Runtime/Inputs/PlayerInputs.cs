@@ -168,7 +168,7 @@ namespace Beakstorm.Inputs
                     _lastActiveDevice = newDevice;
                     // fire an event to anyone listening
                     ActiveDeviceChangeEvent?.Invoke();
-                    Debug.Log($"Change to device {newDevice.name} for action {inputAction.name}");
+                    //Debug.Log($"Change to device {newDevice.name} for action {inputAction.name}");
                     EnableCursorForMouseOnly();
                 }
                 _queueMousePointDisable = false;
@@ -184,7 +184,7 @@ namespace Beakstorm.Inputs
             }
             else
             {
-                Debug.Log($"Enabling Cursor for device: {_lastActiveDevice}");
+                //Debug.Log($"Enabling Cursor for device: {_lastActiveDevice}");
                 
                 if (_lastActiveDevice is Mouse)
                 {

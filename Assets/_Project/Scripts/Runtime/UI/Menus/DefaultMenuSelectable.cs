@@ -118,7 +118,7 @@ namespace Beakstorm.UI.Menus
         {
             if (_lastSelected)
             {
-                Debug.Log($"Last Selected: {_lastSelected.gameObject.name}, {_lastSelected.isActiveAndEnabled}");
+                //Debug.Log($"Last Selected: {_lastSelected.gameObject.name}, {_lastSelected.isActiveAndEnabled}");
                 if (_lastSelected.isActiveAndEnabled)
                 {
                     _lastSelected.Select();
