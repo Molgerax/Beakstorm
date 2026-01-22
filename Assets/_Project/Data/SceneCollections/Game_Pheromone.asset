@@ -27,5 +27,7 @@ MonoBehaviour:
     guid: cf0611d3f3f63354794049e75ffe8d73
   - asset: {fileID: 102900000, guid: 4747b48565139b949818ef16b3ff465e, type: 3}
     guid: 4747b48565139b949818ef16b3ff465e
+  - asset: {fileID: 102900000, guid: 76ad298df845265419962704bacc223a, type: 3}
+    guid: 76ad298df845265419962704bacc223a
   loadAdditively: 0
   setFirstSceneActive: 1

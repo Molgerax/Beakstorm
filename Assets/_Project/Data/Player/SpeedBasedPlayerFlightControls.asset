@@ -96,7 +96,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   gravity: 3
   rollSpeed: 3
-  steerSpeed: 90
+  steerSpeed: 50
   steerThrustCurve:
     serializedVersion: 2
     m_Curve:
