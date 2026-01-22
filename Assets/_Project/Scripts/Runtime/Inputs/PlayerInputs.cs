@@ -31,6 +31,7 @@ namespace Beakstorm.Inputs
         public event Action<bool> FreeLook = delegate {  };
         public event Action<bool> Whistle = delegate {  };
         public event Action<bool> LookAtTarget = delegate {  };
+        public event Action<bool> ToggleLookAtTarget = delegate {  };
         public event Action<bool> CameraViewPoint = delegate {  };
         
         
@@ -71,9 +72,12 @@ namespace Beakstorm.Inputs
             {
                 Vector2 value = Inputs.Player.Move.ReadValue<Vector2>();
 
-                if (_lastActiveDevice is Mouse && !Inputs.Player.FreeLook.IsPressed() )
-                    value += LookInputRaw * GameplaySettings.Instance.MouseSensitivity;
-
+                if (GameplaySettings.Instance.UseMouseAsMoveInput)
+                {
+                    if (_lastActiveDevice is Mouse && !Inputs.Player.FreeLook.IsPressed() )
+                        value += LookInputRaw * GameplaySettings.Instance.MouseSensitivity;
+                }
+                
                 value = Vector2.ClampMagnitude(value, 1f);
                 
                 return value * GameplaySettings.Instance.FlightAxisInversion;
@@ -86,10 +90,12 @@ namespace Beakstorm.Inputs
             {
                 Vector2 value = Inputs.Player.Look.ReadValue<Vector2>();
 
-                if (_lastActiveDevice is Mouse && !Inputs.Player.FreeLook.IsPressed())
-                    value *= 0;
+                if (GameplaySettings.Instance.UseMouseAsMoveInput)
+                {
+                    if (_lastActiveDevice is Mouse && !Inputs.Player.FreeLook.IsPressed())
+                       value *= 0;
+                }
 
-                
                 return value * GameplaySettings.Instance.LookAxisInversion * (GameplaySettings.Instance.MouseSensitivity * 60);
             }
         }
@@ -414,6 +420,11 @@ namespace Beakstorm.Inputs
         {
             if (Inputs.Player.LookAtTarget.WasCompletedThisFrame() || Inputs.Player.LookAtTarget.WasPerformedThisFrame())
                 ButtonInputHandle(context, LookAtTarget);
+        }
+        
+        void IPlayerActions.OnToggleLookAtTarget(InputAction.CallbackContext context)
+        {
+            ButtonInputHandle(context, ToggleLookAtTarget);
         }
         
         void IPlayerActions.OnCameraViewPoint(InputAction.CallbackContext context)

@@ -235,6 +235,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleLookAtTarget"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7a04981-1364-4d6c-ae90-d27cd9cefd0a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -350,11 +359,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ef99a9f2-4cff-41e7-8a79-001b4cc3f919"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""id"": ""9af27bb3-d9aa-417b-9cd0-a56b219fe081"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": "";Controller"",
                     ""action"": ""Brake"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -394,11 +403,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7106bd8f-a6f0-4ad6-bba9-48c36efe8b07"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""id"": ""56aac17f-3ea9-4d27-ae31-41f8b16001f0"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Controller"",
+                    ""groups"": "";Controller"",
                     ""action"": ""Accelerate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -417,7 +426,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""85b1870e-9703-4a45-b07f-aa52120c4305"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
@@ -432,17 +441,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""969f7206-53c5-43f0-9c03-7b18b2edf2b1"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";KeyboardMouse"",
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -471,17 +469,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""af6083a9-c0f8-4720-8a3f-45ed35e7a6c8"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Controller"",
-                    ""action"": ""SwitchCameraHandling"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f38a5295-0f08-4350-bdfe-76f362edbca2"",
                     ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
@@ -505,7 +492,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a95f16a0-8de5-4101-9ba8-c16aa28d5a61"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
@@ -526,19 +513,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""24190145-dda1-48a3-bcc4-a9a2f2300823"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";KeyboardMouse"",
-                    ""action"": ""Emit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""8bca8963-b3f1-4bda-ac41-8bac7958b13f"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Controller"",
@@ -593,7 +569,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""30398ac1-d7ac-4bff-a24b-878eac9222dd"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Controller"",
@@ -604,7 +580,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""39ac3bcf-072c-4905-a7fc-3f86bf9d789d"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";KeyboardMouse"",
@@ -615,7 +591,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6c9c45a7-554d-4a9d-8004-374c8d788b6e"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Controller"",
@@ -626,7 +602,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""acc91778-bc8b-4e32-81cd-9854dfadd94f"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";KeyboardMouse"",
@@ -653,6 +629,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";KeyboardMouse"",
                     ""action"": ""CameraViewPoint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e54d33c-553c-4332-8620-5eadf834cbb5"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Controller"",
+                    ""action"": ""ToggleLookAtTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""babb0146-0791-4d86-8aa6-ae6f93f8b4e2"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KeyboardMouse"",
+                    ""action"": ""ToggleLookAtTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1263,6 +1261,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_LockOn = m_Player.FindAction("LockOn", throwIfNotFound: true);
         m_Player_LookAtTarget = m_Player.FindAction("LookAtTarget", throwIfNotFound: true);
         m_Player_CameraViewPoint = m_Player.FindAction("CameraViewPoint", throwIfNotFound: true);
+        m_Player_ToggleLookAtTarget = m_Player.FindAction("ToggleLookAtTarget", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1374,6 +1373,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LockOn;
     private readonly InputAction m_Player_LookAtTarget;
     private readonly InputAction m_Player_CameraViewPoint;
+    private readonly InputAction m_Player_ToggleLookAtTarget;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1450,6 +1450,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @CameraViewPoint => m_Wrapper.m_Player_CameraViewPoint;
         /// <summary>
+        /// Provides access to the underlying input action "Player/ToggleLookAtTarget".
+        /// </summary>
+        public InputAction @ToggleLookAtTarget => m_Wrapper.m_Player_ToggleLookAtTarget;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1523,6 +1527,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CameraViewPoint.started += instance.OnCameraViewPoint;
             @CameraViewPoint.performed += instance.OnCameraViewPoint;
             @CameraViewPoint.canceled += instance.OnCameraViewPoint;
+            @ToggleLookAtTarget.started += instance.OnToggleLookAtTarget;
+            @ToggleLookAtTarget.performed += instance.OnToggleLookAtTarget;
+            @ToggleLookAtTarget.canceled += instance.OnToggleLookAtTarget;
         }
 
         /// <summary>
@@ -1582,6 +1589,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CameraViewPoint.started -= instance.OnCameraViewPoint;
             @CameraViewPoint.performed -= instance.OnCameraViewPoint;
             @CameraViewPoint.canceled -= instance.OnCameraViewPoint;
+            @ToggleLookAtTarget.started -= instance.OnToggleLookAtTarget;
+            @ToggleLookAtTarget.performed -= instance.OnToggleLookAtTarget;
+            @ToggleLookAtTarget.canceled -= instance.OnToggleLookAtTarget;
         }
 
         /// <summary>
@@ -1977,6 +1987,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCameraViewPoint(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleLookAtTarget" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleLookAtTarget(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
