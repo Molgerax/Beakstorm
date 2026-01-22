@@ -25,6 +25,9 @@ namespace Beakstorm.Gameplay.Player
         [SerializeField]
         [Range(0f, 2f)] private float centerCooldown = 1f;
 
+        [SerializeField] 
+        [Range(0.1f, 1f)] private float lookCenterTime = 0.5f;
+        
         [SerializeField]
         [Range(1f, 25f)] private float movementAlpha = 10;
         
@@ -69,9 +72,12 @@ namespace Beakstorm.Gameplay.Player
 
         private bool _switchCamera;
         private bool _freeLook;
-        private bool _lookAtTarget;
-
+        private bool _targetLock;
+        private bool _wasTargetLock;
+        
         private Vector3 _cachedTargetPosition;
+        private Vector3 _previousTargetPosition;
+        private float _targetPositionTime;
 
         private Vector3 _headOffset;
 
@@ -101,6 +107,8 @@ namespace Beakstorm.Gameplay.Player
             _headOffset = cameraHead.localPosition;
 
             Instance = this;
+
+            _targetPositionTime = 1;
         }
 
         private void OnDestroy()
@@ -114,8 +122,8 @@ namespace Beakstorm.Gameplay.Player
             _inputs.SwitchCamera += OnSwitchCameraInput;
             _inputs.FreeLook += OnFreeLookInput;
             _inputs.LookAtTarget += OnLookAtTargetInput;
+            _inputs.ToggleLookAtTarget += OnToggleLookAtTargetInput;
         }
-
 
 
         private void OnDisable()
@@ -123,6 +131,7 @@ namespace Beakstorm.Gameplay.Player
             _inputs.SwitchCamera -= OnSwitchCameraInput;
             _inputs.FreeLook -= OnFreeLookInput;
             _inputs.LookAtTarget -= OnLookAtTargetInput;
+            _inputs.ToggleLookAtTarget -= OnToggleLookAtTargetInput;
         }
 
         private void Update()
@@ -154,10 +163,13 @@ namespace Beakstorm.Gameplay.Player
             {
                 _timeSinceNoLook += Time.deltaTime;
 
-                if (_timeSinceNoLook > 0.15f)
+                if (_timeSinceNoLook > lookCenterTime)
                 {
                     _timeSinceNoLook = 0;
-                    SetMode(CameraMode.Fixed);
+                    if (_targetLock)
+                        SetMode(CameraMode.Target);
+                    else
+                        SetMode(CameraMode.Fixed);
                 }
             }
             
@@ -186,18 +198,34 @@ namespace Beakstorm.Gameplay.Player
         
         private void OnLookAtTargetInput(bool performed)
         {
-            _lookAtTarget = performed;
-            
+            _targetLock = performed;
+
             if (performed)
                 SetMode(CameraMode.Target);
-            else 
+            else
                 SetMode(CameraMode.Fixed);
+        }
+        
+        private void OnToggleLookAtTargetInput(bool performed)
+        {
+            if (!performed)
+                return;
+
+            _targetLock = !_targetLock;
+            
+            if (_mode == CameraMode.Target)
+                SetMode(CameraMode.Fixed);
+            else
+                SetMode(CameraMode.Target);
         }
 
         private void SetMode(CameraMode mode)
         {
             if (_mode != mode)
             {
+                if (mode == CameraMode.Target && !targetingManager.CurrentTarget)
+                    return;
+                
                 _timeReturnView = 0f;
                 _cachedRotation = GetRotation(_mode) * Quaternion.Inverse(GetRotation(mode));
             }
@@ -227,10 +255,7 @@ namespace Beakstorm.Gameplay.Player
             HandleFixedCamera();
             HandleDefaultCamera();
             
-            if (targetingManager.CurrentTarget)
-                _cachedTargetPosition = targetingManager.CurrentTarget.Position;
-            
-            _targetRotation = Quaternion.LookRotation(_cachedTargetPosition - transform.position);
+            HandleTargetLookAt();
 
             if (_mode == CameraMode.FreeLook)
             {
@@ -268,6 +293,41 @@ namespace Beakstorm.Gameplay.Player
         }
 
         private float SlerpT(float t) => 1f - Mathf.Exp(-t * Time.deltaTime);
+
+
+        private void HandleTargetLookAt()
+        {
+            Vector3 pos = transform.position;
+
+            if (targetingManager.HasTargetChanged)
+            {
+                _targetPositionTime = 0;
+                _previousTargetPosition = _cachedTargetPosition;
+                targetingManager.HasTargetChanged = false;
+            }
+            
+            if (targetingManager.CurrentTarget)
+                _cachedTargetPosition = targetingManager.CurrentTarget.Position;
+            else
+            {
+                if (_targetLock)
+                {
+                    _targetLock = false;
+                    if (_mode == CameraMode.Target)
+                        SetMode(CameraMode.Fixed);
+                }
+            }
+            
+            if (Mathf.Abs(_targetPositionTime - 1f) > 0.01f)
+                _targetPositionTime = Mathf.Lerp(_targetPositionTime, 1f, SlerpT(centerSpeed));
+            else
+                _targetPositionTime = 1f;
+            
+            float t = _targetPositionTime;
+            Vector3 targetPos = Vector3.Lerp(_previousTargetPosition, _cachedTargetPosition, t);
+            
+            _targetRotation = Quaternion.LookRotation(targetPos - pos);
+        }
 
         private void HandleFixedCamera()
         {

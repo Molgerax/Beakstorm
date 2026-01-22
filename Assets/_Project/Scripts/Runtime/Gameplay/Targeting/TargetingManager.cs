@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Beakstorm.Inputs;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Beakstorm.Gameplay.Targeting
 {
@@ -26,6 +25,8 @@ namespace Beakstorm.Gameplay.Targeting
 
         private Target _previousTarget;
 
+        public bool HasTargetChanged;
+        
         public Target CurrentTarget
         {
             get => _currentTarget;
@@ -33,6 +34,8 @@ namespace Beakstorm.Gameplay.Targeting
             {
                 if (value == _currentTarget)
                     return;
+                
+                HasTargetChanged = true;
                 
                 OnDeselectTarget(_currentTarget);
                 _currentTarget = value;
