@@ -59,6 +59,9 @@ Shader "BeakStorm/Particles/Boids Instanced URP"
     float3 _EmissiveColor;
 	float _VertexColorToEmissive;
 
+    float3 _SimulationCenter;
+    float3 _SimulationSize;
+
     struct Boid
 	{
 	    float3 pos;

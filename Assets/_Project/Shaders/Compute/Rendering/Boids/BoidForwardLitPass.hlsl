@@ -148,6 +148,11 @@ float4 Fragment(Interpolators input) : SV_TARGET{
 
 	float distanceToCamBorder = length(cameraDiff);
 	distanceToCamBorder = 1 - saturate((distanceToCamBorder-960) / 64);
+	float3 q = abs(input.positionWS - _SimulationCenter) - _SimulationSize * 0.5;
+
+	float distanceToCamBorderWalls = min(0, max(q.x, max(q.y, q.z)));
+	distanceToCamBorderWalls = saturate(-distanceToCamBorderWalls / 64);
+	distanceToCamBorder = max(distanceToCamBorder, distanceToCamBorderWalls);
 	
 	float distanceDither = Dither(distanceToCamBorder, screenUv);
 	clip(distanceDither);
