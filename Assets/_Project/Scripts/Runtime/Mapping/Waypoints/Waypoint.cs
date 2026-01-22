@@ -11,8 +11,12 @@ namespace Beakstorm.Mapping.Waypoints
 
         [SerializeField] private WaypointSmoothing smoothing = WaypointSmoothing.Linear;
 
+        [SerializeField, Tremble("stop")] private bool stopPoint = false;
+
         [SerializeField, NoTremble] private Waypoint previousWaypoint;
 
+        public bool IsStop => stopPoint;
+        
         public Vector3 GetTangent(Waypoint waypoint)
         {
             if (!waypoint)

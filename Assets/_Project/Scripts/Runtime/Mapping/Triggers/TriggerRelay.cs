@@ -1,4 +1,3 @@
-using System;
 using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
@@ -12,17 +11,22 @@ namespace Beakstorm.Mapping.Triggers
         [SerializeField] private float delay = 0f;
 
         private float _timer;
+        private bool _isRunning;
         private bool _triggered;
         
         public override void Trigger()
         {
+            if (_triggered)
+                return;
+
             _triggered = true;
+            _isRunning = true;
             _timer = 0f;
         }
 
         private void Update()
         {
-            if (!_triggered)
+            if (!_isRunning)
                 return;
 
             _timer += Time.deltaTime;
@@ -33,7 +37,7 @@ namespace Beakstorm.Mapping.Triggers
 
         public void OnTimerOver()
         {
-            _triggered = false;
+            _isRunning = false;
             
             target.TryTrigger();
         }

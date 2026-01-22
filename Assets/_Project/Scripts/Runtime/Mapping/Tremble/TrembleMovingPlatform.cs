@@ -41,25 +41,29 @@ namespace Beakstorm.Mapping.Tremble
         {
             Idle = 0,
             Triggered = 1,
-            Finished = 2
+            Finished = 2,
+            Stopped = 3,
         }
 
         public override void Trigger()
         {
-            if (_state != DoorState.Idle)
-                return;
-
-            _nextWaypoint = waypoint;
-            
-            if (!_nextWaypoint)
+            if (_state == DoorState.Idle)
             {
-                _state = DoorState.Finished;
-                return;
+                _nextWaypoint = waypoint;
+                if (!_nextWaypoint)
+                {
+                    _state = DoorState.Finished;
+                    return;
+                }
+
+                _offset = _nextWaypoint.transform.position - transform.position;
+                _state = DoorState.Triggered;
             }
 
-            _offset = _nextWaypoint.transform.position - transform.position;
-            
-            _state = DoorState.Triggered;
+            if (_state == DoorState.Stopped)
+            {
+                _state = DoorState.Triggered;
+            }
         }
 
         private void Update()
@@ -86,6 +90,10 @@ namespace Beakstorm.Mapping.Tremble
         private void OnReachWaypoint(Waypoint wp)
         {
             Waypoint newWp = wp.GetNextWaypoint();
+
+            if (_nextWaypoint && _nextWaypoint.IsStop)
+                _state = DoorState.Stopped;
+            
             _nextWaypoint = newWp;
             if (!_nextWaypoint)
                 _state = DoorState.Finished;
