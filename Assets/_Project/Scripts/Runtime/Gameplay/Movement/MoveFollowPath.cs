@@ -1,4 +1,5 @@
 ﻿using Beakstorm.Mapping.Waypoints;
+using Beakstorm.Utility.Extensions;
 using UnityEngine;
 
 namespace Beakstorm.Gameplay.Movement
@@ -77,6 +78,7 @@ namespace Beakstorm.Gameplay.Movement
             }
             t.position = posA;
 
+            _moveTargetForward = _moveTargetForward.With(y: 0);
 
             if (_moveTargetForward.magnitude == 0)
                 return;
