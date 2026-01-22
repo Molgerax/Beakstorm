@@ -40,10 +40,9 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 84119703c41ac5d4995146ee6ccc9173, type: 2}
   - Name: Clouds
     Materials:
-    - {fileID: 2100000, guid: 12a9629dd7214f548b5f27bbd5c74689, type: 2}
     - {fileID: 2100000, guid: 7be91e60b1afb5f4ab8ee77f8679e0df, type: 2}
-    - {fileID: 2100000, guid: 6e6c7a1fd1647474096043aef288997b, type: 2}
     - {fileID: 2100000, guid: a897239472d9d3946aab85ca93cc34fa, type: 2}
+    - {fileID: 2100000, guid: 02d7b31fac219014f814ea7df43fc065, type: 2}
   m_MaterialRenderData:
   - m_Material: {fileID: 2100000, guid: d9d8676ef392ea641b99c4c1eb1ebe9f, type: 2}
     m_ExportMode: 0
@@ -477,6 +476,12 @@ MonoBehaviour:
     m_ResolutionX: 4
     m_ResolutionY: 4
     m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: 02d7b31fac219014f814ea7df43fc065, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
   m_PipelineSplitMesh: 0
   m_PipelineSmoothMeshNormals: 1
   m_PipelineSimplifyCollisionMeshes: 1
@@ -685,25 +690,20 @@ MonoBehaviour:
     FullTypeName: UnityEngine.Material
     AddressableName: Mapping/Metal_Rusted
     SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: Clouds/Clouds_Dark_Tess
-    Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_Dark_Tess.mat
-    FullTypeName: UnityEngine.Material
-    AddressableName: Clouds/Clouds_Dark_Tess
-    SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Clouds/Clouds_White
     Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_White.mat
     FullTypeName: UnityEngine.Material
     AddressableName: Mapping/TriplanarClouds
     SpawnOffset: {x: 0, y: 0, z: 0}
-  - MapName: Clouds/Clouds_White_Tess
-    Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_White_Tess.mat
-    FullTypeName: UnityEngine.Material
-    AddressableName: Mapping/TriplanarClouds_Tesselated
-    SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Clouds/Clouds_Dark
     Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_Dark.mat
     FullTypeName: UnityEngine.Material
     AddressableName: Clouds/Clouds_Dark
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Clouds/Clouds_White_Transparent
+    Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_White_Transparent.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Clouds/Clouds_White_Transparent
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Lit
     Path: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
@@ -759,4 +759,14 @@ MonoBehaviour:
     Path: Assets/_Project/Art/Materials/m_Default.mat
     FullTypeName: UnityEngine.Material
     AddressableName: m_Default
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Clouds/Clouds_Dark_Tess
+    Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_Dark_Tess.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Clouds/Clouds_Dark_Tess
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: Mapping/TriplanarClouds_Tesselated
+    Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_White_Tess.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: Mapping/TriplanarClouds_Tesselated
     SpawnOffset: {x: 0, y: 0, z: 0}

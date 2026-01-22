@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Tremble Materials
   m_GUID: 5964aa713180e0442a16c7d157a880cb
   m_SerializeEntries:
+  - m_GUID: 02d7b31fac219014f814ea7df43fc065
+    m_Address: Clouds/Clouds_White_Transparent
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 12a9629dd7214f548b5f27bbd5c74689
     m_Address: Clouds/Clouds_Dark_Tess
     m_ReadOnly: 0
