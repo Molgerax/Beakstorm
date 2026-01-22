@@ -580,6 +580,11 @@ MonoBehaviour:
     FullTypeName: UnityEngine.GameObject
     AddressableName: MessageRing
     SpawnOffset: {x: -0, y: -0, z: -0}
+  - MapName: prefab_TargetIndicator
+    Path: Assets/_Project/Prefabs/Tutorial/TargetIndicator.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: TargetIndicator
+    SpawnOffset: {x: -0, y: -0, z: -0}
   - MapName: Impact_PheromoneShot
     Path: Assets/_Project/Data/Player/PheromoneWeapons/Impact_PheromoneShot.asset
     FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon

@@ -51,6 +51,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7564da37d7b54684cb1b222af5cd4eac
+    m_Address: TargetIndicator
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7a2222cf2c999c64a9c5795a7548b5df
     m_Address: HangarShip_Spawn
     m_ReadOnly: 0
