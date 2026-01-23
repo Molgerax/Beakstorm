@@ -344,7 +344,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 52
     m_Scale: 1
-    m_Name: Keyboard_middleButton
+    m_Name: Keyboard_scroll
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 53
