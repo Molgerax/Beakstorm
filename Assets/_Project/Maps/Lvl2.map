@@ -32,6 +32,19 @@
 }
 // entity 3
 {
+"classname" "trigger_scene_loader"
+"origin" "-96 -96 1056"
+"targetname" "load_end"
+}
+// entity 4
+{
+"classname" "misc_peace_music"
+"origin" "-224 112 1056"
+"targetname" "win"
+"intensity" "5"
+}
+// entity 5
+{
 "classname" "func_group"
 "_tb_type" "_tb_layer"
 "_tb_name" "Hidden"
@@ -91,7 +104,7 @@
 ( 4096 -4096 -1984 ) ( 4096 -4096 -1983.75 ) ( 4096 -4095.75 -1984 ) Mapping/Mapping_Base [ 1.224647e-15 4 0 0 ] [ 0 0 -4 0 ] 0 1 1
 }
 }
-// entity 4
+// entity 6
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -137,7 +150,7 @@
 ( 0 1024 -1792 ) ( 0 1024 -1791.75 ) ( 0 1024.25 -1792 ) Mapping/Mapping_Base [ 0 4 0 0 ] [ 0 0 -4 0 ] 270 1 1
 }
 }
-// entity 5
+// entity 7
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -145,7 +158,7 @@
 "_tb_id" "3"
 "_tb_layer_sort_index" "1"
 }
-// entity 6
+// entity 8
 {
 "classname" "enemy_SnakeEnemy_Spawn"
 "origin" "1.5 -0.5 777"
@@ -153,7 +166,7 @@
 "waypoint" "snake0_wp1"
 "_tb_layer" "3"
 }
-// entity 7
+// entity 9
 {
 "classname" "ent_waypoint"
 "origin" "128 960 768"
@@ -162,7 +175,7 @@
 "smoothing" "Cubic"
 "_tb_layer" "3"
 }
-// entity 8
+// entity 10
 {
 "classname" "ent_waypoint"
 "origin" "0 640 768"
@@ -171,14 +184,14 @@
 "smoothing" "Cubic"
 "_tb_layer" "3"
 }
-// entity 9
+// entity 11
 {
 "classname" "ent_waypoint"
 "origin" "224 544 704"
 "targetname" "door0_w1"
 "_tb_layer" "3"
 }
-// entity 10
+// entity 12
 {
 "classname" "ent_waypoint"
 "origin" "224 544 992"
@@ -186,7 +199,7 @@
 "target" "door0_w1"
 "_tb_layer" "3"
 }
-// entity 11
+// entity 13
 {
 "classname" "trigger_relay"
 "origin" "0 544 1056"
@@ -195,7 +208,7 @@
 "target1" "wave_door0"
 "_tb_layer" "3"
 }
-// entity 12
+// entity 14
 {
 "classname" "ent_wave"
 "origin" "-128 544 1056"
@@ -204,7 +217,7 @@
 "intensity" "5"
 "_tb_layer" "3"
 }
-// entity 13
+// entity 15
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -213,7 +226,7 @@
 "_tb_linked_group_id" "{8c8f5306-5cf5-4c79-8628-80a4ae19797d}"
 "_tb_layer" "3"
 }
-// entity 14
+// entity 16
 {
 "classname" "ent_waypoint"
 "origin" "448 1024 768"
@@ -222,7 +235,7 @@
 "smoothing" "Cubic"
 "_tb_group" "10"
 }
-// entity 15
+// entity 17
 {
 "classname" "ent_waypoint"
 "origin" "1024 448 768"
@@ -231,7 +244,7 @@
 "smoothing" "Cubic"
 "_tb_group" "10"
 }
-// entity 16
+// entity 18
 {
 "classname" "ent_waypoint"
 "origin" "1024 -448 768"
@@ -240,7 +253,7 @@
 "smoothing" "Cubic"
 "_tb_group" "10"
 }
-// entity 17
+// entity 19
 {
 "classname" "ent_waypoint"
 "origin" "-448 1024 768"
@@ -249,7 +262,7 @@
 "smoothing" "Cubic"
 "_tb_group" "10"
 }
-// entity 18
+// entity 20
 {
 "classname" "ent_waypoint"
 "origin" "-1024 448 768"
@@ -258,7 +271,7 @@
 "smoothing" "Cubic"
 "_tb_group" "10"
 }
-// entity 19
+// entity 21
 {
 "classname" "ent_waypoint"
 "origin" "-1024 -448 768"
@@ -267,7 +280,7 @@
 "smoothing" "Cubic"
 "_tb_group" "10"
 }
-// entity 20
+// entity 22
 {
 "classname" "ent_waypoint"
 "origin" "-448 -1024 768"
@@ -276,7 +289,7 @@
 "smoothing" "Cubic"
 "_tb_group" "10"
 }
-// entity 21
+// entity 23
 {
 "classname" "ent_waypoint"
 "origin" "448 -1024 768"
@@ -285,7 +298,7 @@
 "smoothing" "Cubic"
 "_tb_group" "10"
 }
-// entity 22
+// entity 24
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -295,7 +308,7 @@
 "_tb_transformation" "2 0 0 0 0 2 0 0 0 0 1 -416 0 0 0 1"
 "_tb_layer" "3"
 }
-// entity 23
+// entity 25
 {
 "classname" "ent_waypoint"
 "origin" "896 2048 352"
@@ -305,7 +318,7 @@
 "angles" "0 0 0"
 "_tb_group" "11"
 }
-// entity 24
+// entity 26
 {
 "classname" "ent_waypoint"
 "origin" "2048 896 352"
@@ -315,7 +328,7 @@
 "angles" "0 0 0"
 "_tb_group" "11"
 }
-// entity 25
+// entity 27
 {
 "classname" "ent_waypoint"
 "origin" "2048 -896 352"
@@ -325,7 +338,7 @@
 "angles" "0 0 0"
 "_tb_group" "11"
 }
-// entity 26
+// entity 28
 {
 "classname" "ent_waypoint"
 "origin" "-896 2048 352"
@@ -335,7 +348,7 @@
 "angles" "0 0 0"
 "_tb_group" "11"
 }
-// entity 27
+// entity 29
 {
 "classname" "ent_waypoint"
 "origin" "-2048 896 352"
@@ -345,7 +358,7 @@
 "angles" "0 0 0"
 "_tb_group" "11"
 }
-// entity 28
+// entity 30
 {
 "classname" "ent_waypoint"
 "origin" "-2048 -896 352"
@@ -355,7 +368,7 @@
 "angles" "0 0 0"
 "_tb_group" "11"
 }
-// entity 29
+// entity 31
 {
 "classname" "ent_waypoint"
 "origin" "-896 -2048 352"
@@ -365,7 +378,7 @@
 "angles" "0 0 0"
 "_tb_group" "11"
 }
-// entity 30
+// entity 32
 {
 "classname" "ent_waypoint"
 "origin" "896 -2048 352"
@@ -375,7 +388,7 @@
 "angles" "0 0 0"
 "_tb_group" "11"
 }
-// entity 31
+// entity 33
 {
 "classname" "enemy_MediumEnemy_Spawn"
 "origin" "483.5 2375 304.5"
@@ -385,7 +398,7 @@
 "targetname" ""
 "_tb_layer" "3"
 }
-// entity 32
+// entity 34
 {
 "classname" "ent_wave"
 "origin" "2016 -480 32"
@@ -394,7 +407,7 @@
 "intensity" "3"
 "_tb_layer" "3"
 }
-// entity 33
+// entity 35
 {
 "classname" "ent_waypoint"
 "origin" "1312 -1376 352"
@@ -402,14 +415,14 @@
 "target" "wp_defense0_1"
 "_tb_layer" "3"
 }
-// entity 34
+// entity 36
 {
 "classname" "ent_waypoint"
 "origin" "1312 -1376 256"
 "targetname" "wp_defense0_1"
 "_tb_layer" "3"
 }
-// entity 35
+// entity 37
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -432,7 +445,7 @@
 ( 64 2010.51 64 ) ( 64 1957.49 0 ) ( 64 1957.49 64 ) Mapping/Rock [ 0 1 0 -64 ] [ 0 0 -1 0 ] 270 1 1
 }
 }
-// entity 36
+// entity 38
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "0 1984 333.5"
@@ -440,7 +453,7 @@
 "targetname" ""
 "_tb_group" "17"
 }
-// entity 37
+// entity 39
 {
 "classname" "func_platform"
 "target" "wp_defense0_0"
@@ -493,7 +506,7 @@
 ( 60 2008.8528137423887 331.1134833706874 ) ( 60 2008.8528137423898 320 ) ( 60 1959.1471862576075 331.1134833706964 ) Mapping/Metal [ 0 1.0666666666666664 0 -132.2666 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 38
+// entity 40
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -516,7 +529,7 @@
 ( 1472 1434.51 64 ) ( 1472 1381.49 0 ) ( 1472 1381.49 64 ) Mapping/Rock [ 0 1 0 0 ] [ 0 0 -1 0 ] 270 1 1
 }
 }
-// entity 39
+// entity 41
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "1408 1408 333.5"
@@ -524,7 +537,7 @@
 "targetname" ""
 "_tb_group" "18"
 }
-// entity 40
+// entity 42
 {
 "classname" "func_platform"
 "target" "wp_defense0_0"
@@ -577,7 +590,7 @@
 ( 1468 1432.8528137423887 331.1134833706874 ) ( 1468 1432.8528137423898 320 ) ( 1468 1383.1471862576075 331.1134833706964 ) Mapping/Metal [ 0 1.0666666666666664 0 -29.8667 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 41
+// entity 43
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -600,7 +613,7 @@
 ( -1344 1434.51 64 ) ( -1344 1381.49 0 ) ( -1344 1381.49 64 ) Mapping/Rock [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 42
+// entity 44
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "-1408 1408 333.5"
@@ -608,7 +621,7 @@
 "targetname" ""
 "_tb_group" "19"
 }
-// entity 43
+// entity 45
 {
 "classname" "func_platform"
 "target" "wp_defense0_0"
@@ -661,7 +674,7 @@
 ( -1348 1432.8528137423887 331.1134833706874 ) ( -1348 1432.8528137423898 320 ) ( -1348 1383.1471862576075 331.1134833706964 ) Mapping/Metal [ 0 1.0666666666666664 0 -29.8667 ] [ 0 0 -1 0 ] 90 1 1
 }
 }
-// entity 44
+// entity 46
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -684,7 +697,7 @@
 ( -1344 -1381.49 64 ) ( -1344 -1434.51 0 ) ( -1344 -1434.51 64 ) Mapping/Rock [ 0 1 0 0 ] [ 0 0 -1 0 ] 270 1 1
 }
 }
-// entity 45
+// entity 47
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "-1408 -1408 333.5"
@@ -692,7 +705,7 @@
 "targetname" ""
 "_tb_group" "20"
 }
-// entity 46
+// entity 48
 {
 "classname" "func_platform"
 "target" "wp_defense0_0"
@@ -745,7 +758,7 @@
 ( -1348 -1383.1471862576113 331.1134833706874 ) ( -1348 -1383.1471862576102 320 ) ( -1348 -1432.8528137423925 331.1134833706964 ) Mapping/Metal [ 0 1.0666666666666664 0 157.8667 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 47
+// entity 49
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -767,7 +780,7 @@
 ( 1472 -1381.49 64 ) ( 1472 -1434.51 0 ) ( 1472 -1434.51 64 ) Mapping/Rock [ 0 1 0 0 ] [ 0 0 -1 0 ] 270 1 1
 }
 }
-// entity 48
+// entity 50
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "1408 -1408 333.5"
@@ -775,7 +788,7 @@
 "targetname" ""
 "_tb_group" "21"
 }
-// entity 49
+// entity 51
 {
 "classname" "func_platform"
 "target" "wp_defense0_0"
@@ -828,7 +841,7 @@
 ( 1468 -1383.1471862576113 331.1134833706874 ) ( 1468 -1383.1471862576102 320 ) ( 1468 -1432.8528137423925 331.1134833706964 ) Mapping/Metal [ 0 1.0666666666666664 0 157.8667 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 50
+// entity 52
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -851,7 +864,7 @@
 ( -1952 26.50999999999999 64 ) ( -1952 -26.50999999999999 0 ) ( -1952 -26.50999999999999 64 ) Mapping/Rock [ 0 1 0 128 ] [ 0 0 -1 0 ] 270 1 1
 }
 }
-// entity 51
+// entity 53
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "-2016 0 333.5"
@@ -859,7 +872,7 @@
 "targetname" ""
 "_tb_group" "22"
 }
-// entity 52
+// entity 54
 {
 "classname" "func_platform"
 "target" "wp_defense0_0"
@@ -912,7 +925,7 @@
 ( -1956 24.852813742388662 331.1134833706874 ) ( -1956 24.8528137423898 320 ) ( -1956 -24.852813742392527 331.1134833706964 ) Mapping/Metal [ 0 1.0666666666666664 0 192 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 53
+// entity 55
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -935,7 +948,7 @@
 ( 64 -1957.49 64 ) ( 64 -2010.51 0 ) ( 64 -2010.51 64 ) Mapping/Rock [ 0 1 0 64 ] [ 0 0 -1 0 ] 270 1 1
 }
 }
-// entity 54
+// entity 56
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "0 -1984 333.5"
@@ -943,7 +956,7 @@
 "targetname" ""
 "_tb_group" "23"
 }
-// entity 55
+// entity 57
 {
 "classname" "func_platform"
 "target" "wp_defense0_0"
@@ -996,7 +1009,7 @@
 ( 60 -1959.1471862576113 331.1134833706874 ) ( 60 -1959.1471862576102 320 ) ( 60 -2008.8528137423925 331.1134833706964 ) Mapping/Metal [ 0 1.0666666666666664 0 4.2666016 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 56
+// entity 58
 {
 "classname" "func_group"
 "_tb_type" "_tb_group"
@@ -1019,7 +1032,7 @@
 ( 2080 26.50999999999999 64 ) ( 2080 -26.50999999999999 0 ) ( 2080 -26.50999999999999 64 ) Mapping/Rock [ 0 1 0 128 ] [ 0 0 -1 0 ] 270 1 1
 }
 }
-// entity 57
+// entity 59
 {
 "classname" "enemy_SimpleTurret_Spawn"
 "origin" "2016 0 333.5"
@@ -1027,7 +1040,7 @@
 "targetname" ""
 "_tb_group" "24"
 }
-// entity 58
+// entity 60
 {
 "classname" "func_platform"
 "target" "wp_defense0_0"
@@ -1080,7 +1093,7 @@
 ( 2076 24.852813742388662 331.1134833706874 ) ( 2076 24.8528137423898 320 ) ( 2076 -24.852813742392527 331.1134833706964 ) Mapping/Metal [ 0 1.0666666666666664 0 192 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 59
+// entity 61
 {
 "classname" "ent_wave"
 "origin" "-544 -32 1056"
@@ -1089,7 +1102,7 @@
 "intensity" "4"
 "_tb_layer" "3"
 }
-// entity 60
+// entity 62
 {
 "classname" "enemy_MediumEnemy_Spawn"
 "origin" "-476.5 -2297 304.5"
@@ -1099,7 +1112,7 @@
 "targetname" ""
 "_tb_layer" "3"
 }
-// entity 61
+// entity 63
 {
 "classname" "func_platform"
 "sdfMaterial" "Wood"
@@ -1119,16 +1132,17 @@
 ( 192 543.93 960 ) ( 192 543.93 896 ) ( 192 -448 960 ) Mapping/Metal_Rusted [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 62
+// entity 64
 {
 "classname" "misc_message"
 "origin" "-96 32 1056"
 "message" "You have successfully conquered the sky fortress!"
 "time" "20"
 "targetname" "win"
+"target" "load_end"
 "_tb_layer" "3"
 }
-// entity 63
+// entity 65
 {
 "classname" "enemy_SmallEnemy_Gun_Spawn"
 "origin" "2334.5 -477 63"
@@ -1136,7 +1150,7 @@
 "waypoint" "snake1_wp4"
 "_tb_layer" "3"
 }
-// entity 64
+// entity 66
 {
 "classname" "enemy_SmallEnemy_Gun_Spawn"
 "origin" "-2273.5 611 63"
@@ -1144,14 +1158,14 @@
 "waypoint" "snake1_wp8"
 "_tb_layer" "3"
 }
-// entity 65
+// entity 67
 {
 "classname" "trigger_on_load"
 "origin" "-4320 -1824 -1888"
 "target" "relay"
 "_tb_layer" "3"
 }
-// entity 66
+// entity 68
 {
 "classname" "trigger_relay"
 "origin" "-4064 -1824 -1888"
@@ -1160,7 +1174,7 @@
 "delay" "8"
 "_tb_layer" "3"
 }
-// entity 67
+// entity 69
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -1447,7 +1461,7 @@
 ( 192 543.93 1024 ) ( 192 543.93 960 ) ( 192 -448 1024 ) Mapping/Rock [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 68
+// entity 70
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -1456,7 +1470,7 @@
 "_tb_layer_sort_index" "3"
 "_tb_layer_locked" "1"
 }
-// entity 69
+// entity 71
 {
 "classname" "misc_cloud"
 "smoothing" "0"
@@ -1530,7 +1544,7 @@
 ( 2820 -2129 -1328 ) ( 2820 -1511 -1328 ) ( 2820 -1511 -1540 ) Clouds/Clouds_White [ 0 0.7962466 0 -938.8311 ] [ 0 0 -0.3963816 -117.4112 ] 180 1 1
 }
 }
-// entity 70
+// entity 72
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -1627,7 +1641,7 @@
 ( 4012 3419 -1562 ) ( 4012 4303 -1562 ) ( 4012 4303 -1774 ) Clouds/Clouds_White [ 0 0.556701 0 -441.42285 ] [ 0 0 -0.3958509 -209.2793 ] 0 1 1
 }
 }
-// entity 71
+// entity 73
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -1741,7 +1755,7 @@
 ( 479 6008 -1165.7561576354683 ) ( 479 6008 -1495.2438423645324 ) ( 822 4729 -1495.2438423645324 ) Clouds/Clouds_White [ -0.1207392 0.4506049 0 -996.4413 ] [ 0 0 -0.2546996282091918 112.12213 ] 90 1 1
 }
 }
-// entity 72
+// entity 74
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -1851,7 +1865,7 @@
 ( -698 4261 -1774 ) ( -698 4261 -1562 ) ( -1197 5271 -1562 ) Clouds/Clouds_White [ -0.1426645 0.4827837 0 -54.69287 ] [ 0 0 -0.3958509 -209.2793 ] 180 1 1
 }
 }
-// entity 73
+// entity 75
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -1963,7 +1977,7 @@
 ( -10383 3416 -1982 ) ( -10383 3416 -1495 ) ( -10456 4540 -1495 ) Clouds/Clouds_White [ -0.1178408 0.4894352 0 -859.67114 ] [ 0 0 -0.1718473 152.25928 ] 270 1 1
 }
 }
-// entity 74
+// entity 76
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2060,7 +2074,7 @@
 ( 4812 -3906 -2236 ) ( 4812 -2612 -2236 ) ( 4812 -2612 -2665 ) Clouds/Clouds_White [ 0 0.3800384 0 898.545 ] [ 0 0 -0.1952353 -27.4061 ] 180 1 1
 }
 }
-// entity 75
+// entity 77
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2157,7 +2171,7 @@
 ( 6044 -3810 -2796 ) ( 6044 -2516 -2796 ) ( 6044 -2516 -3225 ) Clouds/Clouds_White [ 0 0.3800384 0 862.0613 ] [ 0 0 -0.1952353 -136.7379 ] 90 1 1
 }
 }
-// entity 76
+// entity 78
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2255,7 +2269,7 @@
 ( 6092 -1170 -1897 ) ( 6092 124 -1897 ) ( 6092 124 -2459 ) Clouds/Clouds_White [ 0 0.3800384 0 -141.2401 ] [ 0 0 -0.1489118 126.6095 ] 180 1 1
 }
 }
-// entity 77
+// entity 79
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2372,7 +2386,7 @@
 ( 6591 1517 -2249 ) ( 6591 1517 -1692 ) ( 6338 3289 -1692 ) Clouds/Clouds_White [ 0.1426373 0.3354217 0 -437.01428 ] [ 0 0 -0.1503987 154.65341 ] 180 1 1
 }
 }
-// entity 78
+// entity 80
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2446,7 +2460,7 @@
 ( -10704 -4303 -1817 ) ( -10704 -2897 -1817 ) ( -10704 -2897 -2407 ) Clouds/Clouds_White [ 0 0.6698113 0 267.3208 ] [ 0 0 -0.6698113 -502.64148 ] 270 1 1
 }
 }
-// entity 79
+// entity 81
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2520,7 +2534,7 @@
 ( 176 -5199 -2841 ) ( 176 -3793 -2841 ) ( 176 -3793 -3431 ) Clouds/Clouds_White [ 0 0.6698113 0 355.47168 ] [ 0 0 -0.6698113 -164.52832 ] 270 1 1
 }
 }
-// entity 80
+// entity 82
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2594,7 +2608,7 @@
 ( 2608 -5071 -2585 ) ( 2608 -3665 -2585 ) ( 2608 -3665 -3175 ) Clouds/Clouds_White [ 0 0.6698113 0 269.7358 ] [ 0 0 -0.6698113 6.943359 ] 270 1 1
 }
 }
-// entity 81
+// entity 83
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2668,7 +2682,7 @@
 ( 4144 -4303 -2073 ) ( 4144 -2897 -2073 ) ( 4144 -2897 -2663 ) Clouds/Clouds_White [ 0 0.6698113 0 779.3208 ] [ 0 0 -0.6698113 349.8868 ] 90 1 1
 }
 }
-// entity 82
+// entity 84
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2743,7 +2757,7 @@
 ( -11472 -2626 -2048 ) ( -11472 -1022 -2048 ) ( -11472 -1022 -2720 ) Clouds/Clouds_White [ 0 0.5867769 0 462.28094 ] [ 0 0 -0.5867769 -486.87598 ] 270 1 1
 }
 }
-// entity 83
+// entity 85
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2819,7 +2833,7 @@
 ( -12496 -322 -1792 ) ( -12496 1282 -1792 ) ( -12496 1282 -2464 ) Clouds/Clouds_White [ 0 0.5867769 0 -889.65295 ] [ 0 0 -0.5867769 687.339 ] 0 1 1
 }
 }
-// entity 84
+// entity 86
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2895,7 +2909,7 @@
 ( -10960 1726 -2560 ) ( -10960 3330 -2560 ) ( -10960 3330 -3232 ) Clouds/Clouds_White [ 0 0.5867769 0 -43.371826 ] [ 0 0 -0.5867769 -787.3058 ] 0 1 1
 }
 }
-// entity 85
+// entity 87
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -2970,7 +2984,7 @@
 ( 3888 4542 -1378.9090909090892 ) ( 3888 6146 -1378.9090909090892 ) ( 3888 6146 -2173.090909090907 ) Clouds/Clouds_White [ 0 0.5867769 0 -671.7356 ] [ 0 0 -0.4965035307692308 30.20996 ] 0 1 1
 }
 }
-// entity 86
+// entity 88
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3044,7 +3058,7 @@
 ( -736 6029 -1792 ) ( -736 7203 -1792 ) ( -736 7203 -2464 ) Clouds/Clouds_White [ 0 0.8022599 0 -795.7515 ] [ 0 0 -0.5867769 687.3389 ] 270 1 1
 }
 }
-// entity 87
+// entity 89
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3118,7 +3132,7 @@
 ( -2784 5005 -768 ) ( -2784 6179 -768 ) ( -2784 6179 -1440 ) Clouds/Clouds_White [ 0 0.8022599 0 25.7627 ] [ 0 0 -0.5867769 264.1983 ] 0 1 1
 }
 }
-// entity 88
+// entity 90
 {
 "classname" "misc_cloud"
 "smoothing" " "
@@ -3134,7 +3148,7 @@
 ( 4096 -4096 -1920 ) ( 4096 4096 -1920 ) ( 4096 4096 -2048 ) Clouds/Clouds_White [ 0 0.09375 0 128 ] [ 0 0 -2 0 ] 180 1 1
 }
 }
-// entity 89
+// entity 91
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3210,7 +3224,7 @@
 ( -7632 3774 -2560 ) ( -7632 5378 -2560 ) ( -7632 5378 -3232 ) Clouds/Clouds_White [ 0 0.5867769 0 -221.09106 ] [ 0 0 -0.5867769 -787.3058 ] 0 1 1
 }
 }
-// entity 90
+// entity 92
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3286,7 +3300,7 @@
 ( -5328 3390 -2048 ) ( -5328 4994 -2048 ) ( -5328 4994 -2720 ) Clouds/Clouds_White [ 0 0.5867769 0 4.231201 ] [ 0 0 -0.5867769 -486.87598 ] 270 1 1
 }
 }
-// entity 91
+// entity 93
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3362,7 +3376,7 @@
 ( -2768 4030 -2304 ) ( -2768 5634 -2304 ) ( -2768 5634 -2976 ) Clouds/Clouds_White [ 0 0.5867769 0 -371.3059 ] [ 0 0 -0.5867769 -637.09094 ] 180 1 1
 }
 }
-// entity 92
+// entity 94
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3436,7 +3450,7 @@
 ( -7888 -5071 -1817 ) ( -7888 -3665 -1817 ) ( -7888 -3665 -2407 ) Clouds/Clouds_White [ 0 0.6698113 0 -242.26416 ] [ 0 0 -0.6698113 -502.64148 ] 180 1 1
 }
 }
-// entity 93
+// entity 95
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3510,7 +3524,7 @@
 ( -2816 -5583 -1817 ) ( -2816 -4177 -1817 ) ( -2816 -4177 -2407 ) Clouds/Clouds_White [ 0 0.6698113 0 100.6792 ] [ 0 0 -0.6698113 -502.64148 ] 270 1 1
 }
 }
-// entity 94
+// entity 96
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3584,7 +3598,7 @@
 ( -5376 -6607 -1305 ) ( -5376 -5201 -1305 ) ( -5376 -5201 -1895 ) Clouds/Clouds_White [ 0 0.6698113 0 786.5659 ] [ 0 0 -0.6698113 -159.69812 ] 90 1 1
 }
 }
-// entity 95
+// entity 97
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3658,7 +3672,7 @@
 ( 1024 -7375 -1561 ) ( 1024 -5969 -1561 ) ( 1024 -5969 -2151 ) Clouds/Clouds_White [ 0 0.6698113 0 276.98096 ] [ 0 0 -0.6698113 -331.1698 ] 90 1 1
 }
 }
-// entity 96
+// entity 98
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3732,7 +3746,7 @@
 ( -5120 5937 -1305 ) ( -5120 7343 -1305 ) ( -5120 7343 -1895 ) Clouds/Clouds_White [ 0 0.6698113 0 -447.54688 ] [ 0 0 -0.6698113 -159.69812 ] 270 1 1
 }
 }
-// entity 97
+// entity 99
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3806,7 +3820,7 @@
 ( 4422.807637230777 -6533.354830901598 -665 ) ( 5358.22753705698 -4846.672265321011 -665 ) ( 5358.22753705698 -4846.672265321011 -1255 ) Clouds/Clouds_White [ 0.0095227231098729 0.5523965688124455 0 811.4226 ] [ 0 0 -0.6698113 268.98114 ] 180 1 1
 }
 }
-// entity 98
+// entity 100
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3880,7 +3894,7 @@
 ( 6390.672265321011 2642.916056482468 -504.292452830187 ) ( 6423.916151656318 4571.335956308673 -504.292452830187 ) ( 6423.916151656318 4571.335956308673 -1255.7075471698106 ) Clouds/Clouds_White [ 0.26795136427986754 0.4831508231098731 0 -540.4734 ] [ 0 0 -0.5259259096296296 449.18527 ] 180 1 1
 }
 }
-// entity 99
+// entity 101
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -3954,7 +3968,7 @@
 ( 7088 -3738.5613207547185 -278.8962264150924 ) ( 7088 -1397.4386792452806 -278.8962264150924 ) ( 7088 -1397.4386792452806 -1097.1037735849045 ) Clouds/Clouds_White [ 2.220446049250313e-16 0.4022662764872521 0 -902.9801 ] [ 0 0 -0.48299318231292504 579.70074 ] 180 1 1
 }
 }
-// entity 100
+// entity 102
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -4028,7 +4042,7 @@
 ( 7951.916151656318 1174.8076372307753 -1302.8962264150923 ) ( 7918.672265321012 3103.2275370569787 -1302.8962264150923 ) ( 7918.672265321012 3103.2275370569787 -2121.1037735849045 ) Clouds/Clouds_White [ -0.2679513642798671 0.48315082310987323 0 -168.34534 ] [ 0 0 -0.48299318231292504 85.11572 ] 180 1 1
 }
 }
-// entity 101
+// entity 103
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -4104,7 +4118,7 @@
 ( -2896 1342 -2304 ) ( -2896 2946 -2304 ) ( -2896 2946 -2976 ) Clouds/Clouds_White [ 0 0.5867769 0 181.95032 ] [ 0 0 -0.5867769 -637.09094 ] 180 1 1
 }
 }
-// entity 102
+// entity 104
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -4180,7 +4194,7 @@
 ( -3152 2902.818181818183 -983.2727272727282 ) ( -3152 5017.18181818182 -983.2727272727282 ) ( -3152 5017.18181818182 -1288.7272727272737 ) Clouds/Clouds_White [ 0 0.445141096551724 0 -322.7588 ] [ 0 0 -1.2909091800000014 -554.4727 ] 180 1 1
 }
 }
-// entity 103
+// entity 105
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -4256,7 +4270,7 @@
 ( -4816 -3389.3586776859665 -1655.8016528925627 ) ( -4816 -2389.8413223140906 -1655.8016528925627 ) ( -4816 -2389.8413223140906 -1800.1983471074386 ) Clouds/Clouds_White [ 0 0.9416446273209774 0 64.97681 ] [ 0 0 -2.730769419230772 -734.7693 ] 180 1 1
 }
 }
-// entity 104
+// entity 106
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -4332,7 +4346,7 @@
 ( -7138.339854754926 -4247.500761341874 -1911.8016528925627 ) ( -7023.814229591319 -3485.244783481413 -1911.8016528925627 ) ( -7023.814229591319 -3485.244783481413 -2056.1983471074386 ) Clouds/Clouds_White [ 1.3036851371844387 1.038653047975766 0 -301.83594 ] [ 0 0 -2.730769419230772 -409.84668 ] 180 1 1
 }
 }
-// entity 105
+// entity 107
 {
 "classname" "misc_cloud"
 "smoothing" "20"
@@ -4408,7 +4422,7 @@
 ( -7414.056691264068 33.13983950769125 -2167.8016528925627 ) ( -7196.2935465558085 410.3166701583723 -2167.8016528925627 ) ( -7196.2935465558085 410.3166701583723 -2312.1983471074386 ) Clouds/Clouds_White [ 1.080520273796346 1.8715160128235084 0 -89.578125 ] [ 0 0 -2.730769419230772 -84.92334 ] 270 1 1
 }
 }
-// entity 106
+// entity 108
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -4419,7 +4433,7 @@
 "_tb_layer_hidden" "1"
 "_tb_layer_omit_from_export" "1"
 }
-// entity 107
+// entity 109
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -4492,7 +4506,7 @@
 ( 15575.04 -8861.5 -1390.83 ) ( 15575.04 -11618.5 -2851.46 ) ( 15575.04 -11618.5 -1390.83 ) Clouds/Clouds_Dark [ 0 0.5384616 0 137.84619 ] [ 0 0 -0.426087 888.2087 ] 0 1 1
 }
 }
-// entity 108
+// entity 110
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -4565,7 +4579,7 @@
 ( 16384 12960.62 -1617.3951038659748 ) ( 16384 9567.38 -3642.0347387899606 ) ( 16384 9567.38 -1617.3951038659748 ) Clouds/Clouds_Dark [ 0 0.4375 0 -64 ] [ 0 0 -0.3073907536140278 983.6503 ] 90 1 1
 }
 }
-// entity 109
+// entity 111
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -4638,7 +4652,7 @@
 ( -16414.72 5399.52 -759.0994651087759 ) ( -16414.72 2536.48 -2873.3605348911988 ) ( -16414.72 2536.48 -759.0994651087759 ) Clouds/Clouds_Dark [ 0 0.5185185 0 758.51855 ] [ 0 0 -0.2943607408303868 233.37457 ] 180 1 1
 }
 }
-// entity 110
+// entity 112
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -4711,7 +4725,7 @@
 ( -11589.63 -8861.5 -1895.51 ) ( -11589.63 -11618.5 -3356.14 ) ( -11589.63 -11618.5 -1895.51 ) Clouds/Clouds_Dark [ 0 0.5384616 0 137.84619 ] [ 0 0 -0.426087 673.1687 ] 180 1 1
 }
 }
-// entity 111
+// entity 113
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -4784,7 +4798,7 @@
 ( 2560 16919.52 -1895.51 ) ( 2560 14056.48 -3356.14 ) ( 2560 14056.48 -1895.51 ) Clouds/Clouds_Dark [ 0 0.5185185 0 929.1851 ] [ 0 0 -0.426087 673.1687 ] 0 1 1
 }
 }
-// entity 112
+// entity 114
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -4856,7 +4870,7 @@
 ( 18688 1815.52 -2231.97 ) ( 18688 -1047.52 -3692.6 ) ( 18688 -1047.52 -2231.97 ) Clouds/Clouds_Dark [ 0 0.5185185 0 568.88885 ] [ 0 0 -0.426087 529.8087 ] 180 1 1
 }
 }
-// entity 113
+// entity 115
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -4929,7 +4943,7 @@
 ( 5236.740000000002 -12990.86484049479 -607.4915307979724 ) ( 5236.740000000002 -16628.08828450521 -2728.738469202024 ) ( 5236.740000000002 -16628.08828450521 -607.4915307979724 ) Clouds/Clouds_Dark [ 0 0.4081517754111747 0 668.51416 ] [ 0 0 -0.2933913273096989 278.5904 ] 270 1 1
 }
 }
-// entity 114
+// entity 116
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5002,7 +5016,7 @@
 ( -11069.439999999999 13922.5 459.69 ) ( -11069.439999999999 11165.5 -1000.94 ) ( -11069.439999999999 11165.5 459.69 ) Clouds/Clouds_Dark [ 0 0.5384616 0 157.53809 ] [ 0 0 -0.426087 652.6887 ] 0 1 1
 }
 }
-// entity 115
+// entity 117
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5075,7 +5089,7 @@
 ( -16414.72 -3560.48 -3043.86 ) ( -16414.72 -6423.52 -4504.49 ) ( -16414.72 -6423.52 -3043.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 284.44458 ] [ 0 0 -0.426087 -840.1254 ] 180 1 1
 }
 }
-// entity 116
+// entity 118
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5148,7 +5162,7 @@
 ( -6174.72 -12776.48 -3043.86 ) ( -6174.72 -15639.52 -4504.49 ) ( -6174.72 -15639.52 -3043.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 967.11084 ] [ 0 0 -0.426087 -840.1254 ] 0 1 1
 }
 }
-// entity 117
+// entity 119
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5221,7 +5235,7 @@
 ( -1566.7199999999998 -12520.48 -2531.86 ) ( -1566.7199999999998 -15383.52 -3992.49 ) ( -1566.7199999999998 -15383.52 -2531.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 -189.6294 ] [ 0 0 -0.426087 -621.9689 ] 90 1 1
 }
 }
-// entity 118
+// entity 120
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5294,7 +5308,7 @@
 ( 9953.28 -10216.48 -2531.86 ) ( 9953.28 -13079.52 -3992.49 ) ( 9953.28 -13079.52 -2531.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 663.7036 ] [ 0 0 -0.426087 -621.9689 ] 90 1 1
 }
 }
-// entity 119
+// entity 121
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5367,7 +5381,7 @@
 ( 16865.28 -3048.48 -2531.86 ) ( 16865.28 -5911.52 -3992.49 ) ( 16865.28 -5911.52 -2531.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 -1005.037 ] [ 0 0 -0.426087 -621.9689 ] 90 1 1
 }
 }
-// entity 120
+// entity 122
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5440,7 +5454,7 @@
 ( 17889.28 6679.52 -2531.86 ) ( 17889.28 3816.48 -3992.49 ) ( 17889.28 3816.48 -2531.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 -929.1853 ] [ 0 0 -0.426087 -621.9689 ] 90 1 1
 }
 }
-// entity 121
+// entity 123
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5513,7 +5527,7 @@
 ( 8929.28 15895.52 -2275.86 ) ( 8929.28 13032.48 -3736.49 ) ( 8929.28 13032.48 -2275.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 -587.8521 ] [ 0 0 -0.426087 -512.8905 ] 270 1 1
 }
 }
-// entity 122
+// entity 124
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5586,7 +5600,7 @@
 ( -3584 15895.52 -2919.51 ) ( -3584 13032.48 -4380.14 ) ( -3584 13032.48 -2919.51 ) Clouds/Clouds_Dark [ 0 0.5185185 0 436.14795 ] [ 0 0 -0.426087 236.85571 ] 270 1 1
 }
 }
-// entity 123
+// entity 125
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5659,7 +5673,7 @@
 ( -14141.44 10338.5 -564.31 ) ( -14141.44 7581.5 -2024.94 ) ( -14141.44 7581.5 -564.31 ) Clouds/Clouds_Dark [ 0 0.5384616 0 -984.61523 ] [ 0 0 -0.426087 216.37561 ] 180 1 1
 }
 }
-// entity 124
+// entity 126
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5732,7 +5746,7 @@
 ( -15646.720000000001 -7144.48 -5859.86 ) ( -15646.720000000001 -10007.52 -7320.49 ) ( -15646.720000000001 -10007.52 -5859.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 94.81445 ] [ 0 0 -0.426087 -1015.9861 ] 180 1 1
 }
 }
-// entity 125
+// entity 127
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5805,7 +5819,7 @@
 ( -9246.72 -12776.48 -7395.86 ) ( -9246.72 -15639.52 -8856.49 ) ( -9246.72 -15639.52 -7395.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 -56.88867 ] [ 0 0 -0.426087 377.54443 ] 0 1 1
 }
 }
-// entity 126
+// entity 128
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5878,7 +5892,7 @@
 ( -17694.72 1303.52 -3043.86 ) ( -17694.72 -1559.52 -4504.49 ) ( -17694.72 -1559.52 -3043.86 ) Clouds/Clouds_Dark [ 0 0.5185185 0 -189.62964 ] [ 0 0 -0.426087 -840.1254 ] 270 1 1
 }
 }
-// entity 127
+// entity 129
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -5951,7 +5965,7 @@
 ( -8765.439999999999 17506.5 -1076.31 ) ( -8765.439999999999 14749.5 -2536.94 ) ( -8765.439999999999 14749.5 -1076.31 ) Clouds/Clouds_Dark [ 0 0.5384616 0 -748.3081 ] [ 0 0 -0.426087 -1.7808838 ] 270 1 1
 }
 }
-// entity 128
+// entity 130
 {
 "classname" "misc_cloud"
 "angles" "0 0 0"
@@ -6024,7 +6038,7 @@
 ( -1597.4399999999987 19298.5 -1076.31 ) ( -1597.4399999999987 16541.5 -2536.94 ) ( -1597.4399999999987 16541.5 -1076.31 ) Clouds/Clouds_Dark [ 0 0.5384616 0 334.76953 ] [ 0 0 -0.426087 -1.7808838 ] 90 1 1
 }
 }
-// entity 129
+// entity 131
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -6033,7 +6047,7 @@
 "_tb_layer_sort_index" "7"
 "_tb_layer_locked" "1"
 }
-// entity 130
+// entity 132
 {
 "classname" "func_collision_box"
 "_tb_layer" "15"
@@ -6047,7 +6061,7 @@
 ( 4096 4352 -1792 ) ( 4096 4352 -1791 ) ( 4096 4353 -1792 ) Mapping/Mapping_CollisionWalls [ 0 1 0 -256 ] [ 0 0 -1 0 ] 270 1 1
 }
 }
-// entity 131
+// entity 133
 {
 "classname" "func_collision_box"
 "angles" "0 0 0"
@@ -6062,7 +6076,7 @@
 ( 4096 -4096 -1792 ) ( 4096 -4096 -1791 ) ( 4096 -4095 -1792 ) Mapping/Mapping_CollisionWalls [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 132
+// entity 134
 {
 "classname" "func_collision_box"
 "angles" "0 90 0"
@@ -6077,7 +6091,7 @@
 ( 4352 -4096 -2048 ) ( 4352 -4096 -2047 ) ( 4352 -4095 -2048 ) Mapping/Mapping_CollisionWalls [ 6.123233995736766e-17 1 0 0 ] [ 0 0 -1 0 ] 90 1 1
 }
 }
-// entity 133
+// entity 135
 {
 "classname" "func_collision_box"
 "angles" "0 90 0"
@@ -6092,25 +6106,25 @@
 ( -12288 -4096 -2048 ) ( -12288 -4096 -2047 ) ( -12288 -4095 -2048 ) Mapping/Mapping_CollisionWalls [ 6.123233995736766e-17 1 0 0 ] [ 0 0 -1 0 ] 90 1 1
 }
 }
-// entity 134
+// entity 136
 {
 "classname" "func_simulation_border"
 "origin" "-12320 4128 -2016"
 "_tb_layer" "15"
 }
-// entity 135
+// entity 137
 {
 "classname" "func_simulation_border"
 "origin" "4128 4128 -2016"
 "_tb_layer" "15"
 }
-// entity 136
+// entity 138
 {
 "classname" "func_simulation_border"
 "origin" "4128 -4128 2016"
 "_tb_layer" "15"
 }
-// entity 137
+// entity 139
 {
 "classname" "func_group"
 "_tb_type" "_tb_layer"
@@ -6119,7 +6133,7 @@
 "_tb_layer_sort_index" "2"
 "_tb_layer_locked" "1"
 }
-// entity 138
+// entity 140
 {
 "classname" "ent_wave"
 "origin" "-4768 -992 -1888"
@@ -6128,14 +6142,14 @@
 "intensity" "2"
 "_tb_layer" "16"
 }
-// entity 139
+// entity 141
 {
 "classname" "enemy_SmallEnemy_Gun_Spawn"
 "origin" "-3102.5 -1379 -321"
 "target" "wave_a0"
 "_tb_layer" "16"
 }
-// entity 140
+// entity 142
 {
 "classname" "trigger_once"
 "target" "wave_a0"
@@ -6150,21 +6164,21 @@
 ( -5120 3712 -1792 ) ( -5120 3712 -1791 ) ( -5120 3713 -1792 ) special/clip [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
 }
 }
-// entity 141
+// entity 143
 {
 "classname" "enemy_SmallEnemy_Gun_Spawn"
 "origin" "-3742.5 29 -321"
 "target" "wave_a0"
 "_tb_layer" "16"
 }
-// entity 142
+// entity 144
 {
 "classname" "enemy_SmallEnemy_Gun_Spawn"
 "origin" "-4254.5 -1507 -321"
 "target" "wave_a0"
 "_tb_layer" "16"
 }
-// entity 143
+// entity 145
 {
 "classname" "ent_wave"
 "origin" "-4384 -736 -1888"
@@ -6172,7 +6186,7 @@
 "target" "wave_a0"
 "_tb_layer" "16"
 }
-// entity 144
+// entity 146
 {
 "classname" "enemy_SmallEnemy_Spawn"
 "origin" "-3947.5 -876.5 -224"
