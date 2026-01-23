@@ -13,14 +13,12 @@ MonoBehaviour:
   m_Name: Simple_LongRangeShot
   m_EditorClassIdentifier: 
   displaySprite: {fileID: 21300000, guid: 7ba8a0e6dc50d234a8af640126856da2, type: 3}
-  displayName: Long Range
-  crosshair: {fileID: 21300000, guid: ed59799d32748ba489179fc58f1441df, type: 3}
-  crosshairCount: 2
+  displayName: Guided Shot
   crosshairSettings:
-    Sprite: {fileID: 21300000, guid: ed59799d32748ba489179fc58f1441df, type: 3}
-    Count: 2
-    Scale: 2
-    Distance: 50
+    sprite: {fileID: 21300000, guid: ed59799d32748ba489179fc58f1441df, type: 3}
+    count: 2
+    scale: 2
+    distance: 50
   fireDelay: 0.5
   ammoCost: 1
   pickupCount: 6

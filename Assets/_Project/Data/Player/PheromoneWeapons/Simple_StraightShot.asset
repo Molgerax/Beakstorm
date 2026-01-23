@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Simple_StraightShot
   m_EditorClassIdentifier: 
   displaySprite: {fileID: 21300000, guid: 7ba8a0e6dc50d234a8af640126856da2, type: 3}
-  displayName: Straight
+  displayName: Straight Shot
   crosshairSettings:
-    Sprite: {fileID: 21300000, guid: 6d123a8c14488bb4ebc3d9055bd6b2ee, type: 3}
-    Count: 2
-    Scale: 2
-    Distance: 50
+    sprite: {fileID: 21300000, guid: 6d123a8c14488bb4ebc3d9055bd6b2ee, type: 3}
+    count: 2
+    scale: 2
+    distance: 50
   fireDelay: 0.5
   ammoCost: 1
   pickupCount: 6
