@@ -4,7 +4,7 @@ using TinyGoose.Tremble;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.Tremble.MapProcessors
 {
     public class SdfTextureMapProcessor : MapProcessorBase
     {

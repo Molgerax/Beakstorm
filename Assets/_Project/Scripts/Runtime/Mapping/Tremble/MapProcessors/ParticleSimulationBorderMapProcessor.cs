@@ -4,7 +4,7 @@ using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.Tremble.MapProcessors
 {
     public class ParticleSimulationBorderMapProcessor : MapProcessorBase
     {

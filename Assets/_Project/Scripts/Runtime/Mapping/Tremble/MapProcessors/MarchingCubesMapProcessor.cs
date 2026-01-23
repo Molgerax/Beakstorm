@@ -5,10 +5,9 @@ using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.Tremble.MapProcessors
 {
     public class MarchingCubesMapProcessor : MapProcessorBase
     {

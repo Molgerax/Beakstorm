@@ -3,7 +3,7 @@ using Beakstorm.Gameplay.Encounters.Procedural;
 using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.Tremble.MapProcessors
 {
     public class EnemySpawnMapProcessor : MapProcessorBase
     {
