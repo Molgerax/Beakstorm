@@ -3139,7 +3139,7 @@ MonoBehaviour:
   cameraHead: {fileID: 1060014458}
   lookAheadTransform: {fileID: 1581221586}
   maxAngles: {x: -80, y: 80}
-  centerSpeed: 5
+  centerSpeed: 4
   centerCooldown: 1
   lookCenterTime: 0.5
   movementAlpha: 7

@@ -1642,6 +1642,7 @@ MonoBehaviour:
     idInternal: 0
     valueGuidInternal: 
     WwiseObjectReference: {fileID: 11400000, guid: f5779cbab7a33dc43a12fcbf8292c00a, type: 2}
+  HasTargetChanged: 0
 --- !u!1 &3131578977007706030
 GameObject:
   m_ObjectHideFlags: 0
@@ -2266,10 +2267,6 @@ MonoBehaviour:
   initWeapons:
   - {fileID: 11400000, guid: b1756efa3e7df364698cb967b5c1e9d3, type: 2}
   - {fileID: 11400000, guid: 2b763d6de748faf4294d1c981112eba6, type: 2}
-  - {fileID: 11400000, guid: b96d0a59e46c4cf49919838ac0a61d73, type: 2}
-  - {fileID: 11400000, guid: fade88fdeec5e594d821d2ad086adb8d, type: 2}
-  - {fileID: 11400000, guid: 35d420423548a2349b6d7155b26e7135, type: 2}
-  - {fileID: 11400000, guid: 848899affe973bf47b013bbab7f99edc, type: 2}
 --- !u!114 &8405665729557999531
 MonoBehaviour:
   m_ObjectHideFlags: 0
