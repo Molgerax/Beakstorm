@@ -1,16 +1,18 @@
-﻿using TinyGoose.Tremble;
+﻿using Beakstorm.Mapping.Tremble.Properties;
+using TinyGoose.Tremble;
 using UnityEngine;
 
 namespace Beakstorm.Mapping.BrushEntities
 {
-    [PointEntity("door", category:"func", size: 16f, colour:"0 0.5 1.0")]
-    public class TrembleDoor : TriggerBehaviour, IOnImportFromMapEntity
+    [BrushEntity("door", category:"func")]
+    public class TrembleDoor : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         [SerializeField, NoTremble] private float speed = 5f;
         [SerializeField, NoTremble] private float distance = 16;
-
+        
         [Tremble("distance")] private float _trembleDistance = 64;
         [Tremble("speed")] private float _trembleSpeed = 64;
+        [Tremble("angle")] private QuakeAngle _angle;
 
         private float _timer;
         private float Duration => speed > 0 ? distance / speed : 0;
@@ -36,7 +38,7 @@ namespace Beakstorm.Mapping.BrushEntities
             Finished = 2
         }
 
-        public override void Trigger()
+        public void Trigger()
         {
             if (_state != DoorState.Idle)
                 return;
@@ -66,6 +68,8 @@ namespace Beakstorm.Mapping.BrushEntities
         {
             distance = (_trembleDistance * TrembleSyncSettings.Get().ImportScale);
             speed = (_trembleSpeed * TrembleSyncSettings.Get().ImportScale);
+
+            transform.right = _angle;
         }
     }
 }

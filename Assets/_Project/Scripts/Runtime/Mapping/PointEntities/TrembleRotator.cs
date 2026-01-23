@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("rotator", category:"func", size: 16f, colour:"0 0.5 1.0")]
-    public class TrembleRotator : TriggerBehaviour
+    public class TrembleRotator : MonoBehaviour, ITriggerTarget
     {
         [SerializeField, Tremble] private float amount = 180;
         [SerializeField, Tremble] private float speed = 90f;
@@ -33,7 +33,7 @@ namespace Beakstorm.Mapping.PointEntities
             Finished = 2
         }
 
-        public override void Trigger()
+        public void Trigger()
         {
             if (_state != DoorState.Idle)
                 return;

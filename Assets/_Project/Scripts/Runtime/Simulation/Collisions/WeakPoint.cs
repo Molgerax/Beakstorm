@@ -8,13 +8,12 @@ using UnityEngine;
 
 namespace Beakstorm.Simulation.Collisions
 {
-    public class WeakPoint : MonoBehaviour
+    public class WeakPoint : TriggerSender
     {
         [SerializeField] private int maxHealth = 100;
         [SerializeField, NoTremble] private UltEvent onInitialize;
         [SerializeField, NoTremble] public UltEvent onHealthZero;
         [SerializeField, NoTremble] private UltEvent onDamageTaken;
-        [SerializeField] private TriggerBehaviour[] triggerTargets;
 
         [SerializeField] private bool autoInitialize = false;
         
@@ -153,7 +152,7 @@ namespace Beakstorm.Simulation.Collisions
             
             _currentHealth = 0;
             onHealthZero?.Invoke();
-            triggerTargets.TryTrigger();
+            SendTrigger();
             
             if (weakPointData)
                 weakPointData.OnDefeat(this);
@@ -161,10 +160,10 @@ namespace Beakstorm.Simulation.Collisions
             Unsubscribe();
         }
 
-        public void SetFromTremble(TriggerBehaviour[] target, int health, WeakPointData data = null)
+        public void SetFromTremble(Component[] target, int health, WeakPointData data = null)
         {
             maxHealth = health;
-            triggerTargets = target;
+            targets = target;
             weakPointData = data;
             autoInitialize = true;
         }

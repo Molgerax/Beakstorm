@@ -206,14 +206,14 @@ namespace Beakstorm.Gameplay.Messages
 
         private readonly float _maxTime;
 
-        private readonly List<TriggerBehaviour> _targets;
+        private readonly List<Component> _targets;
         
         public float Timer01 => _maxTime > 0 && !IsSkippable ? Timer / _maxTime : 0;
 
         public bool Skip => !IsSkippable && Timer01 == 0;
         
 
-        public Message(string text, bool isSkippable = true, float time = 10, List<TriggerBehaviour> targets = null)
+        public Message(string text, bool isSkippable = true, float time = 10, List<Component> targets = null)
         {
             Text = text;
             Timer = time;

@@ -10,9 +10,8 @@ using UnityEngine.Rendering;
 namespace Beakstorm.Mapping.BrushEntities
 {
     [BrushEntity("weak_point", "func", BrushType.Solid)]
-    public class TrembleWeakPoint : MonoBehaviour, IOnImportFromMapEntity
+    public class TrembleWeakPoint : TriggerSender, IOnImportFromMapEntity
     {
-        [SerializeField, Tremble("target")] private TriggerBehaviour[] targets;
         [SerializeField, Tremble("health")] private int health = 100;
         [SerializeField, Tremble("type")] private WeakPointData data;
         [SerializeField, Tremble("kill")] private bool kill = true;
@@ -27,7 +26,7 @@ namespace Beakstorm.Mapping.BrushEntities
 
             if (kill)
             {
-                targets ??= new TriggerBehaviour[0];
+                targets ??= new Component[0];
                 var list = targets.ToList();
                 list.Add(gameObject.AddComponent<TrembleKill>());
                 targets = list.ToArray();

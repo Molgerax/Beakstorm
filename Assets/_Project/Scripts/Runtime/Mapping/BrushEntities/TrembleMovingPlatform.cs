@@ -9,7 +9,7 @@ namespace Beakstorm.Mapping.BrushEntities
 {
     //[PointEntity("platform", category:"func", colour:"0 0.5 1.0", size: 16)]
     [BrushEntity("platform", category:"func", type: BrushType.Solid, colour:"0 0.5 1.0")]
-    public class TrembleMovingPlatform : TriggerBehaviour, IOnImportFromMapEntity
+    public class TrembleMovingPlatform : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         [SerializeField, NoTremble] private float speed = 5f;
 
@@ -45,7 +45,7 @@ namespace Beakstorm.Mapping.BrushEntities
             Stopped = 3,
         }
 
-        public override void Trigger()
+        public void Trigger()
         {
             if (_state == DoorState.Idle)
             {

@@ -7,24 +7,23 @@ using UnityEngine;
 namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("message", "misc", colour:"0.0 0.5 0.0", size:16)]
-    public class MessageSender : TriggerBehaviour, IOnImportFromMapEntity
+    public class MessageSender : TriggerSender, ITriggerTarget, IOnImportFromMapEntity
     {
         [SerializeField, Tremble] private string message = "A secret has been discovered";
         [SerializeField, Tremble] private float time = -1;
 
-        [Tremble("target")] private TriggerBehaviour[] _targets;
-
-        [SerializeField, NoTremble] private List<TriggerBehaviour> targets;
+        [SerializeField, NoTremble] private List<Component> targetList;
         
-        public override void Trigger()
+        public void Trigger()
         {
-            Message m = new Message(message, time <= 0, time, targets);
+            Message m = new Message(message, time <= 0, time, targetList);
             MessageManager.AddMessage(m);
         }
 
-        public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
+        public override void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
-            targets = _targets?.ToList();
+            base.OnImportFromMapEntity(mapBsp, entity);
+            targetList = targets?.ToList();
         }
     }
 }

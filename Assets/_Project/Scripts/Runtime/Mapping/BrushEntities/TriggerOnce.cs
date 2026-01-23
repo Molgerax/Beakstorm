@@ -5,9 +5,8 @@ using UnityEngine;
 namespace Beakstorm.Mapping.BrushEntities
 {
     [BrushEntity("once", "trigger", BrushType.Trigger)]
-    public class TriggerOnce : MonoBehaviour
+    public class TriggerOnce : TriggerSender
     {
-        [SerializeField, Tremble("target")] private TriggerBehaviour[] target;
         [SerializeField] private LayerMask layerMask = 64;
 
         [SerializeField, NoTremble] private bool _triggered = false;
@@ -22,7 +21,7 @@ namespace Beakstorm.Mapping.BrushEntities
 
             _triggered = true;
 
-            target.TryTrigger();
+            SendTrigger();
         }
     }
 }

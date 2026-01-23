@@ -5,16 +5,15 @@ using UnityEngine;
 namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("relay", "trigger", colour:"1.0 0.5 0.0", size:16)]
-    public class TriggerRelay : TriggerBehaviour
+    public class TriggerRelay : TriggerSender, ITriggerTarget
     {
-        [SerializeField, Tremble("target")] private TriggerBehaviour[] target;
         [SerializeField] private float delay = 0f;
 
         private float _timer;
         private bool _isRunning;
         private bool _triggered;
         
-        public override void Trigger()
+        public void Trigger()
         {
             if (_triggered)
                 return;
@@ -39,7 +38,7 @@ namespace Beakstorm.Mapping.PointEntities
         {
             _isRunning = false;
             
-            target.TryTrigger();
+            SendTrigger();
         }
     }
 }

@@ -6,10 +6,8 @@ using UnityEngine;
 namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("on_load", "trigger", colour:"0.5 1.0 0.0", size:16)]
-    public class TriggerOnSceneLoaded : MonoBehaviour, IOnSceneLoad
+    public class TriggerOnSceneLoaded : TriggerSender, IOnSceneLoad
     {
-        [SerializeField, Tremble("target")] private TriggerBehaviour[] target;
-
         public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.AfterAll;
         
         private void Awake()
@@ -19,7 +17,7 @@ namespace Beakstorm.Mapping.PointEntities
 
         public void OnSceneLoaded()
         {
-            target.TryTrigger();
+            SendTrigger();
         }
 
     }

@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 namespace Beakstorm.Mapping.BrushEntities
 {
     [BrushEntity("collision_box", category:"func", type: BrushType.Solid)]
-    public class TrembleBoxCollider : TriggerBehaviour, IOnImportFromMapEntity
+    public class TrembleBoxCollider : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         [Tremble("parent")] private Transform _parent;
 
@@ -37,7 +37,7 @@ namespace Beakstorm.Mapping.BrushEntities
             sdfBox.SetMaterialType(_sdfMaterialType);
         }
 
-        public override void Trigger()
+        public void Trigger()
         {
             if (_rigidbody)
             {

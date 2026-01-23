@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Beakstorm.Mapping.BrushEntities
 {
     [BrushEntity("wind_draft", category:"trigger", type: BrushType.Liquid)]
-    public class WindDraft : TriggerBehaviour, IOnImportFromMapEntity
+    public class WindDraft : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         [SerializeField] private float strength = 10;
         [SerializeField] private bool startsActive = true;
@@ -23,7 +23,7 @@ namespace Beakstorm.Mapping.BrushEntities
             SetProperty();
         }
 
-        public override void Trigger()
+        public void Trigger()
         {
             _isActive = !_isActive;
         }

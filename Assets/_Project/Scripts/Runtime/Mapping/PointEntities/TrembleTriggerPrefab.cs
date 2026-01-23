@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Beakstorm.Mapping.PointEntities
 {
     [PrefabEntity]
-    public class TrembleTriggerPrefab : TriggerBehaviour
+    public class TrembleTriggerPrefab : MonoBehaviour, ITriggerTarget
     {
         [SerializeField, NoTremble] private UltEvent onTrigger;
         [SerializeField, NoTremble] private UltEvent onTriggerAgain;
@@ -14,7 +14,7 @@ namespace Beakstorm.Mapping.PointEntities
         
         private int _triggerCount;
         
-        public override void Trigger()
+        public void Trigger()
         {
             if (_triggerCount > 0 && onlyOnce)
                 return;

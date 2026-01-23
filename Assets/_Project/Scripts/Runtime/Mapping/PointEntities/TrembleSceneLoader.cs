@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("scene_loader", "trigger", colour:"1.0 1.0 0.5", size:16)]
-    public class TrembleSceneLoader : TriggerBehaviour, IOnImportFromMapEntity
+    public class TrembleSceneLoader : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         [SerializeField, Tremble("scene")] private SceneLoadCollection scene;
 
@@ -14,7 +14,7 @@ namespace Beakstorm.Mapping.PointEntities
 
         private bool _triggered;
         
-        public override void Trigger()
+        public void Trigger()
         {
             if (_triggered)
                 return;

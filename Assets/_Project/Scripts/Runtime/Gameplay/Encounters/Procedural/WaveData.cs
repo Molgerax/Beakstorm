@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Beakstorm.Gameplay.Encounters.Procedural
 {
     [PointEntity("wave", colour:"1.0 0.5 0", size:16)]
-    public class WaveData : TriggerBehaviour, IWaveData, IOnSceneLoad
+    public class WaveData : TriggerSender, ITriggerTarget, IWaveData, IOnSceneLoad
     {
         [SerializeField] private List<EnemySpawnPoint> spawnPoints = new(4);
         [SerializeField, Range(1, 5)] private int intensity = 1;
@@ -20,7 +20,6 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         
         [Header("Events")]
         [SerializeField] private UltEvent onFinish;
-        [SerializeField, Tremble("target")] private TriggerBehaviour[] target;
 
         private UniTask _task;
         private CancellationTokenSource _tokenSource;
@@ -104,7 +103,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         }
         
 
-        public override void Trigger()
+        public void Trigger()
         {
             StartEncounter();
         }
@@ -139,7 +138,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         private void FinishEncounter()
         {
             onFinish?.Invoke();
-            target.TryTrigger();
+            SendTrigger();
         }
 
         public void OnSceneLoaded()
