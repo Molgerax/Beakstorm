@@ -15,32 +15,20 @@ MonoBehaviour:
   m_GroupName: Maps
   m_GUID: 3042926f16650a74e9657ded87d3e788
   m_SerializeEntries:
-  - m_GUID: 40eb9188e7decb945b1d297ccc378e0f
-    m_Address: Assets/_Project/Maps/Mountains.map
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Map
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 54654050a16758b49b04c643ab18a408
-    m_Address: Assets/_Project/Maps/FlightPlayground.map
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Map
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7bd4d68082d880b42b240cb65a4f7df6
-    m_Address: Assets/_Project/Maps/City.map
+  - m_GUID: 671550a7cb7631a4881edb29fc8f71b0
+    m_Address: Level 1 - Cloud Sea
     m_ReadOnly: 0
     m_SerializedLabels:
     - Map
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b56eadc55c24b7e46950e82d772e39d8
-    m_Address: Assets/_Project/Maps/ActionBlock1.map
+    m_Address: Level 2 - Outpost
     m_ReadOnly: 0
     m_SerializedLabels:
     - Map
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b5d2a0fd2574281498a196d0d3275ed2
-    m_Address: Assets/_Project/Maps/Castle0.map
+    m_Address: Level 3 - Castle
     m_ReadOnly: 0
     m_SerializedLabels:
     - Map
