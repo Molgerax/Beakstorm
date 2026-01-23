@@ -18,8 +18,6 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
             Instance = this;
         }
 
-        private int _dangerRating = 0;
-
         private void OnDestroy()
         {
             if (Instance == this)
@@ -30,6 +28,8 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
                 handler?.Dispose();
             }
         }
+
+        private void SetDefaultPeace() => MusicStateManager.Instance.SetPeace();
 
         public void SetPeace(int intensity)
         {
@@ -70,20 +70,19 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
 
         private void EvaluateDanger()
         {
-            _dangerRating = 0;
+            int dangerRating = 0;
+
             foreach (var handler in _waveHandlers)
             {
                 if (handler != null)
                 {
                     if (!handler.Defeated)
-                        _dangerRating = Mathf.Max(_dangerRating, handler.WaveData.DangerRating());
+                        dangerRating = Mathf.Max(dangerRating, handler.WaveData.DangerRating());
                 }
             }
             
-            if (_dangerRating == 0)
-                SetPeace(1);
-            else
-                SetWar(_dangerRating);
+            if (dangerRating > 0)
+                SetWar(dangerRating);
         }
         
         public void FinishEncounter()
