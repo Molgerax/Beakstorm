@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Beakstorm.Mapping.BrushEntities;
 using Beakstorm.Rendering.MarchingCubes;
 using Beakstorm.Simulation.Collisions.SDF.Shapes;
 using Beakstorm.Utility.Extensions;

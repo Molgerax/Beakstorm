@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
 using Beakstorm.Audio;
-using Beakstorm.Gameplay.Messages;
 using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Triggers
+namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("peace_music", "misc", colour:"0.5 0.5 0.0", size:16)]
     public class PeaceMusicSetter : TriggerBehaviour

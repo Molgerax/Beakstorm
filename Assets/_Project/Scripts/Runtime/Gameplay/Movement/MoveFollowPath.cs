@@ -1,4 +1,4 @@
-﻿using Beakstorm.Mapping.Waypoints;
+﻿using Beakstorm.Mapping.PointEntities;
 using Beakstorm.Utility.Extensions;
 using UnityEngine;
 

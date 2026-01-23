@@ -4,7 +4,7 @@ using Beakstorm.Gameplay.Messages;
 using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Triggers
+namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("message", "misc", colour:"0.0 0.5 0.0", size:16)]
     public class MessageSender : TriggerBehaviour, IOnImportFromMapEntity

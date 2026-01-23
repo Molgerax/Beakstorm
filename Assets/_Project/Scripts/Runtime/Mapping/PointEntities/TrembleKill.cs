@@ -1,7 +1,7 @@
 ﻿using TinyGoose.Tremble;
 using UnityEngine.Rendering;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("kill", category:"func", size: 16f, colour:"0 0.5 1.0")]
     public class TrembleKill : TriggerBehaviour, IOnImportFromMapEntity

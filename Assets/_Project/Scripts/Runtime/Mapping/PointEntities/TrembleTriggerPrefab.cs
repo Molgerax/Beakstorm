@@ -2,7 +2,7 @@
 using UltEvents;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.PointEntities
 {
     [PrefabEntity]
     public class TrembleTriggerPrefab : TriggerBehaviour

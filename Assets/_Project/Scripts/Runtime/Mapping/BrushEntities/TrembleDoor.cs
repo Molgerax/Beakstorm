@@ -1,7 +1,7 @@
 ﻿using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.BrushEntities
 {
     [PointEntity("door", category:"func", size: 16f, colour:"0 0.5 1.0")]
     public class TrembleDoor : TriggerBehaviour, IOnImportFromMapEntity

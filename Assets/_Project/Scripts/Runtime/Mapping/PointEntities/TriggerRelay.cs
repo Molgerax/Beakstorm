@@ -2,7 +2,7 @@ using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Triggers
+namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("relay", "trigger", colour:"1.0 0.5 0.0", size:16)]
     public class TriggerRelay : TriggerBehaviour

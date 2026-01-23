@@ -1,7 +1,7 @@
 using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.BrushEntities
 {
     [BrushEntity("cloud", "misc", BrushType.Solid)]
     public class TrembleMarchingCubes : MonoBehaviour

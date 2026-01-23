@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using Beakstorm.Gameplay.Enemies;
 using Beakstorm.Gameplay.Movement;
-using Beakstorm.Mapping.Waypoints;
+using Beakstorm.Mapping.PointEntities;
 using Cysharp.Threading.Tasks;
 using TinyGoose.Tremble;
 using UnityEngine;

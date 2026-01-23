@@ -1,11 +1,11 @@
-﻿using Beakstorm.Mapping.Waypoints;
+﻿using Beakstorm.Mapping.PointEntities;
 using Beakstorm.Simulation.Collisions.SDF;
 using Beakstorm.Simulation.Collisions.SDF.Shapes;
 using TinyGoose.Tremble;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.BrushEntities
 {
     //[PointEntity("platform", category:"func", colour:"0 0.5 1.0", size: 16)]
     [BrushEntity("platform", category:"func", type: BrushType.Solid, colour:"0 0.5 1.0")]

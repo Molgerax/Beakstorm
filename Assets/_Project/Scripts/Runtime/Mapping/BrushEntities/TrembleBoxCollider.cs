@@ -4,7 +4,7 @@ using TinyGoose.Tremble;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Beakstorm.Mapping.Tremble
+namespace Beakstorm.Mapping.BrushEntities
 {
     [BrushEntity("collision_box", category:"func", type: BrushType.Solid)]
     public class TrembleBoxCollider : TriggerBehaviour, IOnImportFromMapEntity

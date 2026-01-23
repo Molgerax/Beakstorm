@@ -2,7 +2,7 @@ using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Triggers
+namespace Beakstorm.Mapping.BrushEntities
 {
     [BrushEntity("once", "trigger", BrushType.Trigger)]
     public class TriggerOnce : MonoBehaviour

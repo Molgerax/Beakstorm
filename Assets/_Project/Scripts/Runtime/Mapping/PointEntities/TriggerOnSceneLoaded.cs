@@ -3,7 +3,7 @@ using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Triggers
+namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("on_load", "trigger", colour:"0.5 1.0 0.0", size:16)]
     public class TriggerOnSceneLoaded : MonoBehaviour, IOnSceneLoad

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Beakstorm.Mapping.PointEntities;
 using Beakstorm.Simulation.Settings;
 using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;

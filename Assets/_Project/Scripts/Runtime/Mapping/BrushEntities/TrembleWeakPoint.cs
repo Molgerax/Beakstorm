@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Beakstorm.Mapping.PointEntities;
 using Beakstorm.Mapping.Tremble;
 using Beakstorm.Simulation.Collisions;
 using Beakstorm.Simulation.Collisions.SDF.Shapes;

@@ -2,7 +2,7 @@ using Beakstorm.Utility;
 using TinyGoose.Tremble;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Waypoints
+namespace Beakstorm.Mapping.PointEntities
 {
     [PointEntity("waypoint", colour:"0.2 0.8 0.8", size:16)]
     public class Waypoint : MonoBehaviour, IOnImportFromMapEntity
