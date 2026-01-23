@@ -150,9 +150,9 @@ RectTransform:
   m_Children:
   - {fileID: 1717420909}
   - {fileID: 2099834879}
+  - {fileID: 318840315}
   - {fileID: 855837374}
   - {fileID: 1322344608}
-  - {fileID: 318840315}
   m_Father: {fileID: 470332319}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.15}
@@ -448,11 +448,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1356051889124072109, guid: dd9453c45c734044c89fa4c4f3ccf207, type: 3}
       propertyPath: m_Name
-      value: SwitchCameraHandling
+      value: SwitchPheromone
       objectReference: {fileID: 0}
     - target: {fileID: 2483260630499567179, guid: dd9453c45c734044c89fa4c4f3ccf207, type: 3}
       propertyPath: m_text
-      value: Look Behind
+      value: Switch Projectile
       objectReference: {fileID: 0}
     - target: {fileID: 6575803609015733969, guid: dd9453c45c734044c89fa4c4f3ccf207, type: 3}
       propertyPath: m_text
@@ -1088,7 +1088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1356051889124072109, guid: dd9453c45c734044c89fa4c4f3ccf207, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2483260630499567179, guid: dd9453c45c734044c89fa4c4f3ccf207, type: 3}
       propertyPath: m_text
