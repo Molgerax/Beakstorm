@@ -53,7 +53,7 @@ namespace Beakstorm.Gameplay.Player.Weapons
             for (var index = 0; index < initWeapons.Length; index++)
             {
                 PheromoneWeapon weapon = initWeapons[index];
-                _weaponInstances.Add(new PheromoneWeaponInstance(weapon, index == 0));
+                _weaponInstances.Add(new PheromoneWeaponInstance(weapon, true));
             }
             OnSelectWeapon?.Invoke(_weaponInstances.Count == 0 ? null : _weaponInstances[0]);
         }
