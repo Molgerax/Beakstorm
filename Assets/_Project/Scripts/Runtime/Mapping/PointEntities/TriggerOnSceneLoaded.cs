@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("on_load", "trigger", colour:"0.5 1.0 0.0", size:16)]
+    [PointEntity("on_load", "trigger", TrembleColors.TriggerOnSceneLoaded, size:16)]
     public class TriggerOnSceneLoaded : TriggerSender, IOnSceneLoad
     {
         public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.AfterAll;

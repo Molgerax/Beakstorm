@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("waypoint", colour:"0.2 0.8 0.8", size:16)]
+    [PointEntity("waypoint", colour: TrembleColors.Waypoint, size:16)]
     public class Waypoint : MonoBehaviour, IOnImportFromMapEntity
     {
         [SerializeField, Tremble("target")] private Waypoint[] waypoints;

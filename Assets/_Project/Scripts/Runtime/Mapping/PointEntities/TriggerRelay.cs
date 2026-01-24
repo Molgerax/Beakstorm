@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("relay", "trigger", colour:"1.0 0.5 0.0", size:16)]
+    [PointEntity("relay", "trigger", TrembleColors.TriggerRelay, size:16)]
     public class TriggerRelay : TriggerSender, ITriggerTarget
     {
         [SerializeField] private float delay = 0f;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("counter", "trigger", colour:"1.0 0.5 0.0", size:16)]
+    [PointEntity("counter", "trigger", TrembleColors.TriggerCounter, size:16)]
     public class TriggerCounter : TriggerSender, ITriggerTarget
     {
         [SerializeField] private int count = 1;

@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("message", "misc", colour:"0.0 0.5 0.0", size:16)]
-    public class MessageSender : TriggerSender, ITriggerTarget, IOnImportFromMapEntity
+    [PointEntity("message", "misc", TrembleColors.MessageSender, size:16)]
+    public class MessageSender : TriggerSender, ITriggerTarget
     {
         [SerializeField, Tremble] private string message = "A secret has been discovered";
         [SerializeField, Tremble] private float time = -1;

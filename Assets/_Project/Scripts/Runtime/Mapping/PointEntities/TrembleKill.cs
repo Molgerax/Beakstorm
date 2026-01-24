@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("kill", category:"func", size: 16f, colour:"0 0.5 1.0")]
+    [PointEntity("kill", category:"func", TrembleColors.TrembleKill, size: 16f)]
     public class TrembleKill : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         public void Trigger()
