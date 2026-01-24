@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Beakstorm.Core.Interfaces;
 using UnityEngine;
 
 namespace Beakstorm.Mapping
@@ -12,7 +13,7 @@ namespace Beakstorm.Mapping
         [Serializable]
         public class DataPair
         {
-            public Type Type;
+            public SerializableType Type;
             public Color Color;
 
             public DataPair(Type type, Color color)

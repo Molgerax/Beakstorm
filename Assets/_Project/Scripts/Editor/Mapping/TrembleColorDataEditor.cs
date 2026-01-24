@@ -18,8 +18,29 @@ namespace Beakstorm.Mapping.Editor
         public override void OnInspectorGUI()
         {
             TrembleColorData colorData = (TrembleColorData) target;
-            base.OnInspectorGUI();
+            //base.OnInspectorGUI();
 
+            EditorGUI.BeginChangeCheck();
+
+            foreach (var pair in colorData.pairs)
+            {
+                if (pair == null)
+                    continue;
+                
+                if (pair.Type == null || pair.Type.Type == null)
+                    continue;
+
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(pair.Type.Type.Name);
+                
+                Color newCol = EditorGUILayout.ColorField(pair.Color);
+                pair.Color = newCol;
+                
+                EditorGUILayout.EndHorizontal();
+            }
+            
+            if (EditorGUI.EndChangeCheck())
+                SaveChanges();
 
             if (GUILayout.Button("Generate"))
             {
@@ -43,29 +64,33 @@ namespace Beakstorm.Mapping.Editor
                 {
                     if (type.GetCustomAttributes(typeof(PointEntityAttribute)).FirstOrDefault() is PointEntityAttribute pointEntityAttribute)
                         entityTypes.Add(type);
-                    
-                    else if (type.GetCustomAttributes(typeof(PrefabEntityAttribute)).FirstOrDefault() is PrefabEntityAttribute prefabEntityAttribute)
-                        entityTypes.Add(type);
                 }
             }
 
+            // Check if any data pairs are no longer in scripts
             for (var index = data.pairs.Count - 1; index >= 0; index--)
             {
                 TrembleColorData.DataPair dataPair = data.pairs[index];
+                
+                if (dataPair?.Type?.Type == null)
+                {
+                    data.pairs.RemoveAt(index);
+                    continue;
+                }
+                
                 if (!entityTypes.Contains(dataPair.Type))
                     data.pairs.RemoveAt(index);
+                
             }
 
+            // make a new entry for each new type
             foreach (Type type in entityTypes)
             {
                 bool exists = false;
                 foreach (var dataPair in data.pairs)
                 {
                     if (dataPair.Type == type)
-                    {
                         exists = true;
-                        break;
-                    }
                 }
                 if (!exists)
                     data.pairs.Add(new TrembleColorData.DataPair(type, Color.gray));
@@ -100,11 +125,13 @@ namespace Beakstorm.Mapping.Editor
                     writer.WriteLine(text);
                 }
             }
+            
+            AssetDatabase.ImportAsset(PATH);
         }
 
         private void WriteLine(StringBuilder builder, TrembleColorData.DataPair dataPair)
         {
-            builder.AppendLine($"public const string {dataPair.Type.Name} = \"{dataPair.Color.ToStringInvariant(2)}\"");
+            builder.AppendLine($"public const string {dataPair.Type.Type.Name} = \"{dataPair.Color.ToStringInvariant(2)}\";");
         }
         
         static string GetPath(string folderPath)
