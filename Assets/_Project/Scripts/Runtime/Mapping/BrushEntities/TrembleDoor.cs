@@ -9,10 +9,14 @@ namespace Beakstorm.Mapping.BrushEntities
     {
         [SerializeField, NoTremble] private float speed = 5f;
         [SerializeField, NoTremble] private float distance = 16;
+        [SerializeField, NoTremble] private bool toggle;
         
-        [Tremble("distance")] private float _trembleDistance = 64;
+        
+        [Tremble("lip")] private float _trembleLip = 0;
         [Tremble("speed")] private float _trembleSpeed = 64;
         [Tremble("angle")] private QuakeAngle _angle;
+
+        [Tremble("toggle"), SpawnFlags()] private bool _toggle;
 
         private float _timer;
         private float Duration => speed > 0 ? distance / speed : 0;
@@ -66,10 +70,14 @@ namespace Beakstorm.Mapping.BrushEntities
 
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
-            distance = (_trembleDistance * TrembleSyncSettings.Get().ImportScale);
-            speed = (_trembleSpeed * TrembleSyncSettings.Get().ImportScale);
+            Vector3 direction = _angle;
+            
+            Bounds bounds = GetComponent<MeshCollider>().bounds;
+            distance = Vector3.Dot(direction, bounds.size) - _trembleLip * entity.ImportScale;
 
-            transform.right = _angle;
+            speed = (_trembleSpeed * entity.ImportScale);
+
+            transform.right = direction;
         }
     }
 }
