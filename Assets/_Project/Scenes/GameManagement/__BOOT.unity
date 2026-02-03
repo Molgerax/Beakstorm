@@ -310,10 +310,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52d66bb435be7440bc4f72a52570649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collection: {fileID: 0}
-  scenesToLoad:
-  - asset: {fileID: 102900000, guid: 6ae18e4567669184386d6c7b22563c14, type: 3}
-    guid: 6ae18e4567669184386d6c7b22563c14
+  collection: {fileID: 11400000, guid: 678e7f72d88badd44ad06a9082368b27, type: 2}
+  scenesToLoad: []
   loadAdditively: 0
   setFirstSceneActive: 1
   sceneLoadChannel: {fileID: 11400000, guid: 29689ca4195341d43b509ad0c2bcbe82, type: 2}
@@ -862,7 +860,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   cycleTabsAction:
-    m_Name: 
+    m_Name: Cycle Tabs
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 04d4291e-2b33-4f22-b674-2f25b7b3192a
