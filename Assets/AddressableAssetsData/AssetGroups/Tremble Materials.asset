@@ -105,6 +105,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6ff2e2e99a13244f80fa19b76ebd38f
+    m_Address: special/Trigger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e84523692239319499d73bad6951c76d
     m_Address: Mapping/Mapping_Base
     m_ReadOnly: 0

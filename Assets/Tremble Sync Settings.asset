@@ -43,6 +43,10 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 7be91e60b1afb5f4ab8ee77f8679e0df, type: 2}
     - {fileID: 2100000, guid: a897239472d9d3946aab85ca93cc34fa, type: 2}
     - {fileID: 2100000, guid: 02d7b31fac219014f814ea7df43fc065, type: 2}
+  - Name: special
+    Materials:
+    - {fileID: 2100000, guid: b3410dcdf531a984589c4dbb7ad37d45, type: 2}
+    - {fileID: 2100000, guid: e6ff2e2e99a13244f80fa19b76ebd38f, type: 2}
   m_MaterialRenderData:
   - m_Material: {fileID: 2100000, guid: d9d8676ef392ea641b99c4c1eb1ebe9f, type: 2}
     m_ExportMode: 0
@@ -482,12 +486,36 @@ MonoBehaviour:
     m_ResolutionX: 2
     m_ResolutionY: 2
     m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: b3410dcdf531a984589c4dbb7ad37d45, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
+  - m_Material: {fileID: 2100000, guid: e6ff2e2e99a13244f80fa19b76ebd38f, type: 2}
+    m_ExportMode: 0
+    m_IsResolutionOverridden: 0
+    m_ResolutionX: 2
+    m_ResolutionY: 2
+    m_Dirty: 0
   m_PipelineSplitMesh: 0
   m_PipelineSmoothMeshNormals: 1
   m_PipelineSimplifyCollisionMeshes: 1
   m_PipelineUnwrapUV2: 0
   m_PipelineRunMapProcessors: 1
-  m_MapProcessors: []
+  m_MapProcessors:
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.MapProcessors.MarchingCubesMapProcessor
+    Enabled: 1
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.MapProcessors.EnemySpawnMapProcessor
+    Enabled: 1
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.MapProcessors.ParticleSimulationBorderMapProcessor
+    Enabled: 1
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.MapProcessors.SdfTextureMapProcessor
+    Enabled: 1
   m_LogOnImportAndSync: 0
   m_UseLiveUpdate: 1
   m_AutomaticallyReimportWhenDependencyChanges: 1
@@ -742,6 +770,11 @@ MonoBehaviour:
     Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_White_Transparent.mat
     FullTypeName: UnityEngine.Material
     AddressableName: Clouds/Clouds_White_Transparent
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: special/trigger
+    Path: Assets/_Project/Materials/Mapping/Special/trigger.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: special/Trigger
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Lit
     Path: Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
