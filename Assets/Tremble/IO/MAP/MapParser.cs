@@ -90,14 +90,14 @@ namespace TinyGoose.Tremble.Editor
 							sw.Write(" [ ");
 							foreach (float f in face.TexU)
 							{
-								sw.Write(f);
+								sw.Write(f.ToStringInvariant());
 								sw.Write(" ");
 							}
 
 							sw.Write("] [ ");
 							foreach (float f in face.TexV)
 							{
-								sw.Write(f);
+								sw.Write(f.ToStringInvariant());
 								sw.Write(" ");
 							}
 
