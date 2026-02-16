@@ -1,24 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using TinyGoose.Tremble;
 using UnityEditor;
 using UnityEngine;
 
-namespace Beakstorm.Mapping.Editor
+namespace TinyGoose.Tremble.Editor
 {
     [CustomEditor(typeof(TrembleColorData))]
     public class TrembleColorDataEditor : UnityEditor.Editor
     {
-        private const string PATH = "Assets/_Generated/Code/" + nameof(TrembleColorData) + ".cs";
-        
         public override void OnInspectorGUI()
         {
             TrembleColorData colorData = (TrembleColorData) target;
-            //base.OnInspectorGUI();
 
             EditorGUI.BeginChangeCheck();
 
@@ -45,7 +39,7 @@ namespace Beakstorm.Mapping.Editor
             if (GUILayout.Button("Generate"))
             {
                 Generate(colorData);
-                GenerateCode(colorData);
+                SaveChanges();
             }
         }
 
@@ -93,52 +87,8 @@ namespace Beakstorm.Mapping.Editor
                         exists = true;
                 }
                 if (!exists)
-                    data.pairs.Add(new TrembleColorData.DataPair(type, Color.gray));
+                    data.pairs.Add(new TrembleColorData.DataPair(type, Color.white));
             }
-        }
-
-        private void GenerateCode(TrembleColorData colorData)
-        {
-            string path = GetPath(PATH);
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            stringBuilder.Append("namespace Beakstorm.Mapping\n{\npublic static class TrembleColors\n{\n");
-
-            foreach (var pair in colorData.pairs)
-            {
-                WriteLine(stringBuilder, pair);
-            }
-            
-            stringBuilder.Append("\n}\n}");
-            
-            string text = stringBuilder.ToString();
-            
-            if (!File.Exists(path))
-            {
-                File.WriteAllText(path, text, Encoding.UTF8);
-            }
-            else
-            {
-                using (var writer = new StreamWriter(path, false))
-                {
-                    writer.WriteLine(text);
-                }
-            }
-            
-            AssetDatabase.ImportAsset(PATH);
-        }
-
-        private void WriteLine(StringBuilder builder, TrembleColorData.DataPair dataPair)
-        {
-            builder.AppendLine($"public const string {dataPair.Type.Type.Name} = \"{dataPair.Color.ToStringInvariant(2)}\";");
-        }
-        
-        static string GetPath(string folderPath)
-        {
-            string fullPath = Application.dataPath + "/" + Path.GetRelativePath("Assets", folderPath);
-
-            return fullPath;
         }
     }
 }

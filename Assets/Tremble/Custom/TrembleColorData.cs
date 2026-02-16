@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Beakstorm.Core.Interfaces;
 using UnityEngine;
 
-namespace Beakstorm.Mapping
+namespace TinyGoose.Tremble
 {
-    [CreateAssetMenu(fileName = "TrembleColorData", menuName = "Beakstorm/Tremble/ColorData", order = 0)]
+    [CreateAssetMenu(fileName = "TrembleColorData", menuName = "Tremble/ColorData", order = 10)]
     public class TrembleColorData : ScriptableObject
     {
         [SerializeField] public List<DataPair> pairs = new();
