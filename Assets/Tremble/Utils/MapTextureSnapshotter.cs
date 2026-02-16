@@ -82,6 +82,14 @@ namespace TinyGoose.Tremble
 					resolutions.Add(res);
 			}
 
+			for (int i = 0; i < 10; i++)
+			{
+				int power = 1 << i;
+				Vector2Int r = Vector2Int.one * power; 
+				if (!resolutions.Contains(r))
+					resolutions.Add(r);
+			}
+
 			foreach (Vector2Int res in resolutions)
 			{
 				RenderTexture rt = new(res.x, res.y, 8, GraphicsFormat.R8G8B8A8_UNorm);
@@ -319,28 +327,28 @@ namespace TinyGoose.Tremble
 
 			// Iterate over all properties of the material
 			Shader shader = from.shader;
-			int propertyCount = ShaderUtil.GetPropertyCount(shader);
+			int propertyCount = shader.GetPropertyCount();
 
 			for (int i = 0; i < propertyCount; i++)
 			{
 				// Get the property type and name
-				ShaderUtil.ShaderPropertyType propertyType = ShaderUtil.GetPropertyType(shader, i);
-				string propertyName = ShaderUtil.GetPropertyName(shader, i);
+				UnityEngine.Rendering.ShaderPropertyType propertyType = shader.GetPropertyType(i);
+				string propertyName = shader.GetPropertyName(i);
 
 				// Copy the property value based on its type
 				switch (propertyType)
 				{
-					case ShaderUtil.ShaderPropertyType.Color:
+					case UnityEngine.Rendering.ShaderPropertyType.Color:
 						to.SetColor(propertyName, from.GetColor(propertyName));
 						break;
-					case ShaderUtil.ShaderPropertyType.Vector:
+					case UnityEngine.Rendering.ShaderPropertyType.Vector:
 						to.SetVector(propertyName, from.GetVector(propertyName));
 						break;
-					case ShaderUtil.ShaderPropertyType.Float:
-					case ShaderUtil.ShaderPropertyType.Range:
+					case UnityEngine.Rendering.ShaderPropertyType.Float:
+					case UnityEngine.Rendering.ShaderPropertyType.Range:
 						to.SetFloat(propertyName, from.GetFloat(propertyName));
 						break;
-					case ShaderUtil.ShaderPropertyType.TexEnv:
+					case UnityEngine.Rendering.ShaderPropertyType.Texture:
 						to.SetTexture(propertyName, from.GetTexture(propertyName));
 						to.SetTextureOffset(propertyName, from.GetTextureOffset(propertyName));
 						to.SetTextureScale(propertyName, from.GetTextureScale(propertyName));
