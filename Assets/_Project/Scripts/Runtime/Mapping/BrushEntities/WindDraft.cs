@@ -23,7 +23,7 @@ namespace Beakstorm.Mapping.BrushEntities
             SetProperty();
         }
 
-        public void Trigger()
+        public void Trigger(TriggerData data)
         {
             _isActive = !_isActive;
         }

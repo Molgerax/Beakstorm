@@ -23,5 +23,11 @@ namespace Beakstorm.Mapping.BrushEntities
 
             SendTrigger();
         }
+
+        public override void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
+        {
+            base.OnImportFromMapEntity(mapBsp, entity);
+            layerMask = LayerMask.GetMask("Player");
+        }
     }
 }

@@ -103,7 +103,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         }
         
 
-        public void Trigger()
+        public void Trigger(TriggerData data)
         {
             StartEncounter();
         }
@@ -144,7 +144,7 @@ namespace Beakstorm.Gameplay.Encounters.Procedural
         public void OnSceneLoaded()
         {
             if (autoStartOnLoad)
-                Trigger();
+                Trigger(default);
         }
     }
 }

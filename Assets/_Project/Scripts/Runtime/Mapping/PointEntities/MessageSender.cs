@@ -14,7 +14,7 @@ namespace Beakstorm.Mapping.PointEntities
 
         [SerializeField, NoTremble] private List<Component> targetList;
         
-        public void Trigger()
+        public void Trigger(TriggerData data)
         {
             Message m = new Message(message, time <= 0, time, targetList);
             MessageManager.AddMessage(m);

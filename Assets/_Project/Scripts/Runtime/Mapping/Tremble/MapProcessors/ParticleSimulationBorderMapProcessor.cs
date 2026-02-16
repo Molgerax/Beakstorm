@@ -9,13 +9,13 @@ namespace Beakstorm.Mapping.Tremble.MapProcessors
 {
     public class ParticleSimulationBorderMapProcessor : MapProcessorBase
     {
-        private List<TrembleParticleBorderPoint> _borderPoints;
+        private List<InfoParticleBorderPoint> _borderPoints;
 
         public override void ProcessPointEntity(MapBsp mapBsp, BspEntity entity, GameObject point)
         {
             _borderPoints ??= new();
         
-            if (!point.TryGetComponent(out TrembleParticleBorderPoint spawn))
+            if (!point.TryGetComponent(out InfoParticleBorderPoint spawn))
                 return;
 
             _borderPoints.Add(spawn);

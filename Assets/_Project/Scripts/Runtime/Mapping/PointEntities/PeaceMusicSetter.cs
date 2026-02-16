@@ -9,7 +9,7 @@ namespace Beakstorm.Mapping.PointEntities
     {
         [SerializeField, Range(1, 5), Tremble] private int intensity = 1;
         
-        public void Trigger()
+        public void Trigger(TriggerData data)
         {
             MusicStateManager.Instance.SetPeace(intensity - 1);
         }

@@ -8,29 +8,29 @@ namespace Beakstorm.Utility.Extensions
     {
         #region ITriggerTarget
 
-        public static void TryTrigger(this ITriggerTarget target)
+        public static void TryTrigger(this ITriggerTarget target, TriggerData data = default)
         {
             if (target != null)
-                target.Trigger();
+                target.Trigger(data);
         }
         
-        public static void TryTrigger(this ITriggerTarget[] targets)
+        public static void TryTrigger(this ITriggerTarget[] targets, TriggerData data = default)
         {
             if (targets == null)
                 return;
             foreach (var target in targets)
             {
-                target.TryTrigger();
+                target.TryTrigger(data);
             }
         }
         
-        public static void TryTrigger(this List<ITriggerTarget> targets)
+        public static void TryTrigger(this List<ITriggerTarget> targets, TriggerData data = default)
         {
             if (targets == null)
                 return;
             foreach (var target in targets)
             {
-                target.TryTrigger();
+                target.TryTrigger(data);
             }
         }
         
@@ -38,29 +38,29 @@ namespace Beakstorm.Utility.Extensions
 
         #region Component
 
-        public static void TryTrigger(this Component component)
+        public static void TryTrigger(this Component component, TriggerData data = default)
         {
             if (component && component is ITriggerTarget target)
-                target.Trigger();
+                target.Trigger(data);
         }
 
-        public static void TryTrigger(this Component[] components)
+        public static void TryTrigger(this Component[] components, TriggerData data = default)
         {
             if (components == null)
                 return;
             foreach (var component in components)
             {
-                component.TryTrigger();
+                component.TryTrigger(data);
             }
         }
 
-        public static void TryTrigger(this List<Component> components)
+        public static void TryTrigger(this List<Component> components, TriggerData data = default)
         {
             if (components == null)
                 return;
             foreach (var component in components)
             {
-                component.TryTrigger();
+                component.TryTrigger(data);
             }
         }
 

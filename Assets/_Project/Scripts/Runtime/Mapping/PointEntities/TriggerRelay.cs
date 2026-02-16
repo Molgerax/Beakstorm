@@ -12,7 +12,7 @@ namespace Beakstorm.Mapping.PointEntities
         private bool _isRunning;
         private bool _triggered;
         
-        public void Trigger()
+        public void Trigger(TriggerData data)
         {
             if (_triggered)
                 return;
