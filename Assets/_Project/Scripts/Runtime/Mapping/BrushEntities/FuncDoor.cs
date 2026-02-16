@@ -20,6 +20,8 @@ namespace Beakstorm.Mapping.BrushEntities
         [Tremble("speed")] private float _trembleSpeed = 64;
         [Tremble("angle")] private QuakeAngle _angle;
         [Tremble("wait")] private float _wait = 3;
+
+        [SerializeField, Tremble("start_open"), SpawnFlags(0)] private bool startOpen;
         
         [Tremble("sdfMaterial")] private SdfMaterialType _sdfMaterialType = SdfMaterialType.None;
 
@@ -41,6 +43,12 @@ namespace Beakstorm.Mapping.BrushEntities
             _state = DoorState.Idle;
             _initPos = transform.position;
             _targetPos = _initPos + moveDirection * distance;
+
+            if (startOpen)
+            {
+                (_initPos, _targetPos) = (_targetPos, _initPos);
+                transform.position = _initPos;
+            }
         }
 
         private enum DoorState

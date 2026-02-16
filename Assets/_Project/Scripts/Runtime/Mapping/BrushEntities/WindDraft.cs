@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.BrushEntities
 {
-    [BrushEntity("wind_draft", category:"trigger", type: BrushType.Liquid)]
+    [BrushEntity("wind_draft", category:"func", type: BrushType.Liquid)]
     public class WindDraft : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         [SerializeField] private float strength = 10;
