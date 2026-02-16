@@ -34,16 +34,25 @@ namespace TinyGoose.Tremble
 
 		protected override bool TryGetValuesFromMap(BspEntity entity, string key, GameObject gameObject, MemberInfo target, out Component[] values)
 		{
-			if (entity.TryGetString(key, out string id) && TrembleMapImportSettings.Current.TryGetGameObjectsForID(id, out List<GameObject> objs))
+			if (entity.TryGetString(key, out string allIds))
 			{
-				values = new Component[objs.Count];
-				for (int objIdx = 0; objIdx < objs.Count; objIdx++)
+				List<Component> components = new();
+				string[] ids = allIds.Split(',');
+
+				foreach (string id in ids)
 				{
-					Component component = objs[objIdx].GetComponent(target.GetFieldOrPropertyTypeOrElementType());
+					if (TryGetValuesFromId(id, gameObject, target, out List<Component> comps))
+					{
+						components.AddRange(comps);
+					}
+				}
+				
+				values = new Component[components.Count];
+				for (int objIdx = 0; objIdx < components.Count; objIdx++)
+				{
+					Component component = components[objIdx];
 					if (!component)
 					{
-						Debug.LogWarning($"Entity '{objs[objIdx].name}' reference '{id}' is of unexpected type. (expected: {target.GetFieldOrPropertyTypeOrElementType().Name}). Check the targeted entity in the map is of the correct type.");
-
 						continue;
 					}
 
@@ -57,6 +66,32 @@ namespace TinyGoose.Tremble
 			return false;
 		}
 
+		private bool TryGetValuesFromId(string id, GameObject gameObject, MemberInfo target,
+			out List<Component> values)
+		{
+			if (TrembleMapImportSettings.Current.TryGetGameObjectsForID(id, out List<GameObject> objs))
+			{
+				values = new();
+				for (int objIdx = 0; objIdx < objs.Count; objIdx++)
+				{
+					Component component = objs[objIdx].GetComponent(target.GetFieldOrPropertyTypeOrElementType());
+					if (!component)
+					{
+						Debug.LogWarning($"Entity '{objs[objIdx].name}' reference '{id}' is of unexpected type. (expected: {target.GetFieldOrPropertyTypeOrElementType().Name}). Check the targeted entity in the map is of the correct type.");
+
+						continue;
+					}
+
+					values.Add(component);
+				}
+				
+				return true;
+			}
+
+			values = default;
+			return false;
+		}
+		
 		protected override void AddFieldToFgd(FgdClass entityClass, string fieldName, Component defaultValue, MemberInfo target)
 		{
 			target.GetCustomAttributes(

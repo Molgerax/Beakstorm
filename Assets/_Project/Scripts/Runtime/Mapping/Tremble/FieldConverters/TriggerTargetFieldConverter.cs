@@ -32,20 +32,56 @@ namespace Beakstorm.Mapping.Tremble.FieldConverters
 
 		protected override bool TryGetValuesFromMap(BspEntity entity, string key, GameObject gameObject, MemberInfo target, out ITriggerTarget[] values)
 		{
-			if (entity.TryGetString(key, out string id) && TrembleMapImportSettings.Current.TryGetGameObjectsForID(id, out List<GameObject> objs))
+			if (entity.TryGetString(key, out string allIds))
 			{
-				values = new ITriggerTarget[objs.Count];
-				for (int objIdx = 0; objIdx < objs.Count; objIdx++)
+				List<ITriggerTarget> targets = new();
+				string[] ids = allIds.Split(',');
+
+				foreach (string id in ids)
 				{
-					if (!objs[objIdx].TryGetComponent(out ITriggerTarget t))
+					if (TryGetValuesFromId(id, gameObject, target, out List<ITriggerTarget> ts))
 					{
-						Debug.LogWarning($"Entity '{objs[objIdx].name}' reference '{id}' is of unexpected type. (expected: {typeof(ITriggerTarget)}). Check the targeted entity in the map is of the correct type.");
+						targets.AddRange(ts);
+					}
+				}
+				
+				values = new ITriggerTarget[targets.Count];
+				for (int objIdx = 0; objIdx < targets.Count; objIdx++)
+				{
+					ITriggerTarget t = targets[objIdx];
+					if (t == null)
+					{
 						continue;
 					}
 
 					values[objIdx] = t;
 				}
 
+				return true;
+			}
+
+			values = default;
+			return false;
+		}
+
+		private bool TryGetValuesFromId(string id, GameObject gameObject, MemberInfo target,
+			out List<ITriggerTarget> values)
+		{
+			if (TrembleMapImportSettings.Current.TryGetGameObjectsForID(id, out List<GameObject> objs))
+			{
+				values = new();
+				for (int objIdx = 0; objIdx < objs.Count; objIdx++)
+				{
+					if (!objs[objIdx].TryGetComponent(out ITriggerTarget t))
+					{
+						Debug.LogWarning($"Entity '{objs[objIdx].name}' reference '{id}' is of unexpected type. (expected: {target.GetFieldOrPropertyTypeOrElementType().Name}). Check the targeted entity in the map is of the correct type.");
+
+						continue;
+					}
+
+					values.Add(t);
+				}
+				
 				return true;
 			}
 
