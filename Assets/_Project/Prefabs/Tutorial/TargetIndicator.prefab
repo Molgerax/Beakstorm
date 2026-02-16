@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ea16d9863324c00a2b5932e639b4438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Mapping.Tremble.TrembleTriggerPrefab
-  onTrigger:
+  onTriggerActivate:
     _PersistentCalls:
     - _Target: {fileID: 4460113640059282543}
       _MemberName: SetActive
@@ -105,7 +105,7 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-  onTriggerAgain:
+  onTriggerDeactivate:
     _PersistentCalls:
     - _Target: {fileID: 4460113640059282543}
       _MemberName: SetActive

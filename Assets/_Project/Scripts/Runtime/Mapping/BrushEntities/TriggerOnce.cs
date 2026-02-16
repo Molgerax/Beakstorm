@@ -9,7 +9,7 @@ namespace Beakstorm.Mapping.BrushEntities
     {
         [SerializeField] private LayerMask layerMask = 64;
 
-        [SerializeField, NoTremble] private bool _triggered = false;
+        private bool _triggered = false;
         
         private void OnTriggerEnter(Collider other)
         {

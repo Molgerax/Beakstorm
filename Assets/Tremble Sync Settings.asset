@@ -487,26 +487,14 @@ MonoBehaviour:
   m_PipelineSimplifyCollisionMeshes: 1
   m_PipelineUnwrapUV2: 0
   m_PipelineRunMapProcessors: 1
-  m_MapProcessors:
-  - Class:
-      m_MapClassName: Beakstorm.Mapping.Tremble.EnemySpawnMapProcessor
-    Enabled: 1
-  - Class:
-      m_MapClassName: Beakstorm.Mapping.Tremble.SdfTextureMapProcessor
-    Enabled: 1
-  - Class:
-      m_MapClassName: Beakstorm.Mapping.Tremble.MarchingCubesMapProcessor
-    Enabled: 1
-  - Class:
-      m_MapClassName: Beakstorm.Mapping.Tremble.ParticleSimulationBorderMapProcessor
-    Enabled: 1
+  m_MapProcessors: []
   m_LogOnImportAndSync: 0
   m_UseLiveUpdate: 1
   m_AutomaticallyReimportWhenDependencyChanges: 1
   m_EntityIconStyle: 1
   m_PrefabOverrideHandling: 2
   m_UseClassicQuakeCulling: 0
-  m_Q3Map2ResultDisplayType: 1
+  m_Q3Map2ResultDisplayType: 0
   m_EmbedTrembleSettingsInProjectSettings: 1
   m_FgdFormattingStyle: 1
   m_SubdivideAllLeafs: 0

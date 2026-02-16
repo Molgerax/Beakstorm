@@ -1,6 +1,9 @@
 ﻿using Beakstorm.Mapping.Tremble.Properties;
+using Beakstorm.Simulation.Collisions.SDF;
+using Beakstorm.Simulation.Collisions.SDF.Shapes;
 using TinyGoose.Tremble;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Beakstorm.Mapping.BrushEntities
 {
@@ -9,7 +12,6 @@ namespace Beakstorm.Mapping.BrushEntities
     {
         [SerializeField, NoTremble] private float speed = 5f;
         [SerializeField, NoTremble] private float distance = 16;
-        [SerializeField, NoTremble] private bool toggle;
         [SerializeField, NoTremble] private float wait;
         
         [SerializeField, NoTremble] private Vector3 moveDirection;
@@ -18,8 +20,8 @@ namespace Beakstorm.Mapping.BrushEntities
         [Tremble("speed")] private float _trembleSpeed = 64;
         [Tremble("angle")] private QuakeAngle _angle;
         [Tremble("wait")] private float _wait = 3;
-
-        [Tremble("toggle"), SpawnFlags()] private bool _toggle;
+        
+        [Tremble("sdfMaterial")] private SdfMaterialType _sdfMaterialType = SdfMaterialType.None;
 
         private float _timer;
         private float _waitTimer;
@@ -52,10 +54,20 @@ namespace Beakstorm.Mapping.BrushEntities
 
         public void Trigger(TriggerData data)
         {
-            if (_state == DoorState.Idle)
+            if (data.Activate)
             {
-                _timer = 0;
-                _state = DoorState.Triggered;
+                if (_state == DoorState.Idle)
+                {
+                    _timer = 0;
+                    _state = DoorState.Triggered;
+                }    
+            }
+            else
+            {
+                if (_state is DoorState.Finished or DoorState.Triggered or DoorState.Waiting)
+                {
+                    _state = DoorState.Retract;
+                }
             }
         }
 
@@ -73,9 +85,8 @@ namespace Beakstorm.Mapping.BrushEntities
         {
             _timer += deltaTime;
 
-            if (_timer >= Duration)
+            if (MoveTime01 >= 1)
             {
-                _timer = 0;
                 _state = wait < 0 ? DoorState.Finished : DoorState.Waiting;
             }
             MoveDoor();
@@ -86,9 +97,8 @@ namespace Beakstorm.Mapping.BrushEntities
         {
             _timer -= deltaTime;
             
-            if (_timer <= Duration)
+            if (MoveTime01 <= 0)
             {
-                _timer = 0;
                 _state = DoorState.Idle;
             }
             MoveDoor();
@@ -127,6 +137,15 @@ namespace Beakstorm.Mapping.BrushEntities
 
             moveDirection = _angle;
             wait = _wait;
+            
+            
+            BoxCollider boxCollider = gameObject.AddComponent<BoxCollider>();
+
+            SdfBox sdfBox = gameObject.AddComponent<SdfBox>();
+            sdfBox.SetDimensions(boxCollider.center, boxCollider.size);
+            sdfBox.SetMaterialType(_sdfMaterialType);
+            
+            CoreUtils.Destroy(boxCollider);
         }
     }
 }

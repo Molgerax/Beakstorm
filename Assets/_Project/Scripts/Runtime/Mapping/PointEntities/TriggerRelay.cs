@@ -11,11 +11,15 @@ namespace Beakstorm.Mapping.PointEntities
         private float _timer;
         private bool _isRunning;
         private bool _triggered;
+
+        private TriggerData _cachedData;
         
         public void Trigger(TriggerData data)
         {
             if (_triggered)
                 return;
+
+            _cachedData = data;
 
             _triggered = true;
             _isRunning = true;
@@ -37,7 +41,7 @@ namespace Beakstorm.Mapping.PointEntities
         {
             _isRunning = false;
             
-            SendTrigger();
+            SendTrigger(_cachedData);
         }
     }
 }

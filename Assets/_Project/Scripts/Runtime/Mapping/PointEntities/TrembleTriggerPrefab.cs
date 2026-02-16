@@ -7,24 +7,35 @@ namespace Beakstorm.Mapping.PointEntities
     [PrefabEntity]
     public class TrembleTriggerPrefab : MonoBehaviour, ITriggerTarget
     {
-        [SerializeField, NoTremble] private UltEvent onTrigger;
-        [SerializeField, NoTremble] private UltEvent onTriggerAgain;
+        [SerializeField, NoTremble] private UltEvent onTriggerActivate;
+        [SerializeField, NoTremble] private UltEvent onTriggerDeactivate;
         
         [SerializeField, Tremble] private bool onlyOnce = true; 
         
-        private int _triggerCount;
-        
+        private bool _triggered;
+
         public void Trigger(TriggerData data)
         {
-            if (_triggerCount > 0 && onlyOnce)
-                return;
-
-            if (_triggerCount == 0)
-                onTrigger?.Invoke();
+            if (onlyOnce)
+            {
+                if (data.Activate && !_triggered)
+                {
+                    onTriggerActivate?.Invoke();
+                    _triggered = true;
+                }
+                if (!data.Activate && _triggered)
+                {
+                    onTriggerDeactivate?.Invoke();
+                    _triggered = false;
+                }
+            }
             else
-                onTriggerAgain?.Invoke();
-
-            _triggerCount++;
+            {
+                if (data.Activate)
+                    onTriggerActivate?.Invoke();
+                else
+                    onTriggerDeactivate?.Invoke();
+            }
         }
     }
 }

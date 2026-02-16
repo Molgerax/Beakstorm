@@ -1,4 +1,3 @@
-using System;
 using TinyGoose.Tremble;
 using UnityEngine;
 
@@ -25,7 +24,7 @@ namespace Beakstorm.Mapping.BrushEntities
 
         public void Trigger(TriggerData data)
         {
-            _isActive = !_isActive;
+            _isActive = data.Activate;
         }
         
         public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)

@@ -10,15 +10,16 @@ using UnityEngine.Rendering;
 namespace Beakstorm.Mapping.BrushEntities
 {
     [BrushEntity("weak_point", "func", BrushType.Solid)]
-    public class FuncWeakPoint : TriggerSender, IOnImportFromMapEntity
+    public class FuncWeakPoint : TriggerSender
     {
         [SerializeField, Tremble("health")] private int health = 100;
         [SerializeField, Tremble("type")] private WeakPointData data;
         [SerializeField, Tremble("kill")] private bool kill = true;
         [SerializeField, Tremble("collision")] private bool collision = true;
 
-        public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
+        public override void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
+            base.OnImportFromMapEntity(mapBsp, entity);
             BoxCollider boxCollider = gameObject.AddComponent<BoxCollider>();
             SdfBox sdfBox = gameObject.AddComponent<SdfBox>();
             sdfBox.SetDimensions(boxCollider.center, boxCollider.size);
