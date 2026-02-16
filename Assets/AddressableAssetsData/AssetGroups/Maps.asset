@@ -33,6 +33,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Map
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ba186f2b81892094bb2238de7cab5d6c
+    m_Address: Assets/_Project/Maps/Gym.map
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Map
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d8aeb4f9e09ee8343902018e14c13f32, type: 2}
   m_SchemaSet:

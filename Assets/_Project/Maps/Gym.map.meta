@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ba186f2b81892094bb2238de7cab5d6c
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: ab79840212e84ded961df5ef93736275, type: 3}
+  processors: []
+  splitMesh: 1
+  maxMeshSurfaceArea: 3000
+  smoothingAngle: 45
+  extraCommandLineArgs: 
