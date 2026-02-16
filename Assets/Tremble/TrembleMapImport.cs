@@ -579,6 +579,11 @@ namespace TinyGoose.Tremble
 
 					Vector3 modelCentre = (mapBsp.Models[modelIdx].Min + mapBsp.Models[modelIdx].Max) * 0.5f;
 
+					if (entity.TryGetVector(FgdConsts.PROPERTY_ORIGIN, out Vector3 origin))
+					{
+						modelCentre += origin;
+					}
+					
 					// Rotate back properly
 					Quaternion? rotation = null;
 					Quaternion? inverseRotation = null;
@@ -664,7 +669,14 @@ namespace TinyGoose.Tremble
 
 					GameObject pointEntity = new(pointClass);
 					pointEntity.transform.SetParent(parentTransform);
-					SetTransformValuesFromEntity(pointEntity, entity);
+
+					Vector3 offset = Vector3.zero;
+					if (TrembleAssetLoader.TryGetAssetDataFromMapName(pointClass, out AssetMetadata metadata))
+					{
+						offset = metadata.SpawnOffset;
+					}
+					
+					SetTransformValuesFromEntity(pointEntity, entity, offset);
 					SetObjectName(root, pointEntity, entity);
 
 					// Find type

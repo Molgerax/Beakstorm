@@ -400,7 +400,8 @@ namespace TinyGoose.Tremble.Editor
 				foreach (Type pointType in allPointTypes)
 				{
 					ReportProgress(ref step, numSteps, pointType.Name);
-					ProcessPointEntity(pointType, modelsFolder, fgdWriter, fieldConverter, typeLookup, allScriptableObjectTypes);
+					//ProcessPointEntity(pointType, modelsFolder, fgdWriter, fieldConverter, typeLookup, allScriptableObjectTypes);
+					ProcessPointEntityWithPrefabs(pointType, modelsFolder, prefabMaterialPaths, fgdWriter, fieldConverter, typeLookup, materialNameLookup, modTimeDB, allScriptableObjectTypes, assets);
 				}
 
 				// Brush MonoBehaviours
@@ -659,6 +660,132 @@ namespace TinyGoose.Tremble.Editor
 			AddExposedFieldsToEntity(pointType, entityClass, fieldConverter, scriptableObjectTypes);
 			fgdWriter.AddClass(entityClass);
 
+			return true;
+		}
+		
+		private static bool ProcessPointEntityWithPrefabs(Type pointType, string modelsFolder, List<string> materialsList, FgdWriter fgdWriter, TrembleFieldConverterCollection fieldConverter, MapTypeLookup typeLookup, MaterialNameLookup materialNameLookup, ModTimeDB modTimeDB, List<Type> scriptableObjectTypes, List<AssetMetadata> assets)
+		{
+			if (!pointType.IsSubclassOf(typeof(MonoBehaviour)))
+			{
+				Debug.LogError($"[PointEntity] {pointType.Name} is NOT a MonoBehaviour or derived from a type that is a MonoBehaviour. This won't work! Your class should appear as e.g. public class {pointType.Name} : MonoBehaviour");
+				return false;
+			}
+
+			typeLookup.TryGetMapNameFromClass(pointType, out string name);
+			pointType.TryGetCustomAttribute(out PointEntityAttribute pea);
+
+			float size = pea.Size;
+
+			// Write sprite, if any
+			if (!pea.Sprite.IsNullOrEmpty())
+			{
+				string spritePath = TrembleAssetLoader.FindAssetPath<Texture2D>(pea.Sprite);
+				if (spritePath.IsNullOrEmpty())
+				{
+					Debug.LogWarning($"Couldn't find sprite '{pea.Sprite}' for Point Entity '{pointType.Name}'!");
+				}
+				else
+				{
+					Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(spritePath);
+					if (texture)
+					{
+						size = (texture.width * SyncSettings.ImportScale) + 0.2f;
+					}
+
+					string spriteFilename = Path.GetFileName(spritePath);
+					string outputPath = Path.Combine(modelsFolder, spriteFilename);
+
+					ContinueInBackground(() => File.Copy(spritePath, outputPath, true));
+				}
+			}
+
+			Bounds modelBounds = new Bounds();
+			bool hasPrefab = false;
+			
+			if (!pea.Prefab.IsNullOrEmpty())
+			{
+				string prefabPath = TrembleAssetLoader.FindAssetPath<GameObject>(pea.Prefab);
+				if (prefabPath.IsNullOrEmpty())
+				{
+					Debug.LogWarning($"Couldn't find prefab '{pea.Prefab}' for Point Entity '{pointType.Name}'!");
+				}
+				else
+				{
+					GameObject prefab = PrefabUtility.LoadPrefabContents(prefabPath);
+					string prefabName = Path.GetFileNameWithoutExtension(prefabPath);
+					prefabName = name;
+					string modelPath = Path.Combine(modelsFolder, $"{prefabName}.md3");
+
+					// Check if we have an up-to-date MD3 for this prefab already
+					bool dontCreateMD3 = false;
+
+					ulong lastModified = modTimeDB.GetFileModifiedTime(prefab);
+					ulong nowModified = ModTimeDB.CalcModelModifiedTime(prefab);
+					modTimeDB.SetFileModifiedTime(prefab, nowModified);
+
+					if (nowModified <= lastModified && TryCopyLastVersion(modelPath))
+					{
+						dontCreateMD3 = true;
+					}
+					
+					// Sanity check position + rotation
+					if (prefab.transform.position.sqrMagnitude > 1f)
+					{
+						Debug.LogWarning(
+							$"WARNING: Prefab {prefab.name} has an position offset of {prefab.transform.position}. This is probably unintended and will affect how your prefab appears in TrenchBroom! Set the prefab's position to (0, 0, 0) for best results.",
+							prefab);
+					}
+
+					if (prefab.transform.rotation.eulerAngles.magnitude > 1f)
+					{
+						Debug.LogWarning(
+							$"WARNING: Prefab {prefab.name} has a rotation of {prefab.transform.rotation.eulerAngles}. This is probably unintended and will affect how your prefab appears in TrenchBroom! Set the prefab's rotation to (0, 0, 0) for best results.",
+							prefab);
+					}
+
+					// Write materials used by prefab into material list
+					FindAndAddMaterialsUsedByPrefab(prefab, materialsList);
+
+					// Write MD3 or use existing metadata
+					bool hasModel = dontCreateMD3
+						? MD3Util.HasModel(prefab, out modelBounds)
+						: MD3Util.SaveMD3(prefab, modelPath, materialNameLookup, SyncSettings.ImportScale,
+							out modelBounds);
+
+					// Store metadata about prefab
+					assets.Add(new()
+					{
+						MapName = prefabName,
+						Path = prefabPath,
+						FullTypeName = typeof(GameObject).FullName,
+
+#if ADDRESSABLES_INSTALLED
+					AddressableName = TrembleSyncAddressables.GetExistingEntryForPath(prefabPath)?.address ?? prefabName,
+#endif
+						SpawnOffset = MD3Util.GetPrefabUnitySpawnOffset(prefab, SyncSettings.ImportScale)
+					});
+
+
+					hasPrefab = true;
+					
+					PrefabUtility.UnloadPrefabContents(prefab);
+				}
+			}
+			
+			FgdClass entityClass = new(FgdClassType.Point, name, $"[PointEntity] class {pointType.Name} ('{name}')")
+			{
+				HasModel = hasPrefab,
+				Colour = GetColor(pointType, pea.Colour),
+				Box = hasPrefab ? modelBounds : new Bounds(Vector3.zero, Vector3.one * size),
+				Sprite = hasPrefab ? null : pea.Sprite,
+			};
+
+			entityClass.AddBaseClass(FgdConsts.CLASS_MAP_BASE);
+			entityClass.AddBaseClass(FgdConsts.CLASS_MAP_POINT_BASE);
+			entityClass.AddBaseClassInterfaces(pointType);
+			AddExposedFieldsToEntity(pointType, entityClass, fieldConverter, scriptableObjectTypes);
+			fgdWriter.AddClass(entityClass);
+			
 			return true;
 		}
 
