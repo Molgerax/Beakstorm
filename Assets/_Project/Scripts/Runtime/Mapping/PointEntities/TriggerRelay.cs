@@ -1,10 +1,9 @@
-using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("relay", "trigger", TrembleColors.TriggerRelay, size:16)]
+    [PointEntity("relay", "trigger", size:16)]
     public class TriggerRelay : TriggerSender, ITriggerTarget
     {
         [SerializeField] private float delay = 0f;

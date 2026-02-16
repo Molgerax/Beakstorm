@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("peace_music", "misc", TrembleColors.PeaceMusicSetter, size:16)]
+    [PointEntity("peace_music", "misc", size:16)]
     public class PeaceMusicSetter : MonoBehaviour, ITriggerTarget
     {
         [SerializeField, Range(1, 5), Tremble] private int intensity = 1;

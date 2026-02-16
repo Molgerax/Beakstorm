@@ -1,10 +1,9 @@
-using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("counter", "trigger", TrembleColors.TriggerCounter, size:16)]
+    [PointEntity("counter", "trigger", size:16)]
     public class TriggerCounter : TriggerSender, ITriggerTarget
     {
         [SerializeField] private int count = 1;
