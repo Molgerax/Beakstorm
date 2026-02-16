@@ -585,6 +585,11 @@ MonoBehaviour:
     FullTypeName: UnityEngine.GameObject
     AddressableName: TargetIndicator
     SpawnOffset: {x: -0, y: -0, z: -0}
+  - MapName: info_player_spawn
+    Path: Assets/_Project/Prefabs/Mapping/PointEntityPrefabs/info_player_prefab.prefab
+    FullTypeName: UnityEngine.GameObject
+    AddressableName: info_player_spawn
+    SpawnOffset: {x: -0, y: -0, z: -0}
   - MapName: Impact_PheromoneShot
     Path: Assets/_Project/Data/Player/PheromoneWeapons/Impact_PheromoneShot.asset
     FullTypeName: Beakstorm.Gameplay.Player.Weapons.PheromoneWeapon
@@ -804,6 +809,11 @@ MonoBehaviour:
     Path: Assets/_Project/Art/Materials/m_Default.mat
     FullTypeName: UnityEngine.Material
     AddressableName: m_Default
+    SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: m_glider
+    Path: Assets/_Project/Art/Meshes/Player/Glider/m_glider.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: m_glider
     SpawnOffset: {x: 0, y: 0, z: 0}
   - MapName: Clouds/Clouds_Dark_Tess
     Path: Assets/_Project/Materials/Mapping/Clouds/Clouds_Dark_Tess.mat

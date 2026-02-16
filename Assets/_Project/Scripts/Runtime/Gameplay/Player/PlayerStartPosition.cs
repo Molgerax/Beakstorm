@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Beakstorm.Gameplay.Player
 {
-    [PointEntity("player_spawn", "info")]
+    [PointEntity("player_spawn", "info", prefab: "info_player_prefab")]
     [DefaultExecutionOrder(-50)]
-    public class PlayerStartPosition : MonoBehaviour
+    public class PlayerStartPosition : MonoBehaviour, IOnImportFromMapEntity
     {
         private static Vector3 _startPosition;
         private static Quaternion _startRotation = Quaternion.identity;
@@ -19,6 +19,11 @@ namespace Beakstorm.Gameplay.Player
         {
             _startPosition = transform.position;
             _startRotation = transform.rotation;
+        }
+
+        public void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
+        {
+            transform.rotation = Quaternion.LookRotation(transform.right, transform.up);
         }
     }
 }
