@@ -170,7 +170,7 @@ namespace TinyGoose.Tremble
 			}
 
 			// Create Unity mesh
-			Mesh mesh = CreateUnityMesh(isBspRoot, ref modelName, m_MeshVerticesBuffer, m_MeshSubmeshesBuffer);
+			Mesh mesh = CreateUnityMesh(isBspRoot, ref modelName, m_MeshVerticesBuffer, m_MeshSubmeshesBuffer, origin);
 			m_ImportSettings.SaveObjectInMap(mesh.name, mesh);
 
 			// Create model GameObject and attach mesh
@@ -222,7 +222,7 @@ namespace TinyGoose.Tremble
 			return modelObject;
 		}
 
-		private Mesh CreateUnityMesh(bool isBspRoot, ref string modelName, List<BspMeshVertex> meshVertices, List<BspSubMesh> meshSubmeshes)
+		private Mesh CreateUnityMesh(bool isBspRoot, ref string modelName, List<BspMeshVertex> meshVertices, List<BspSubMesh> meshSubmeshes, Vector3 origin)
 		{
 			IndexFormat meshFormat = IndexFormat.UInt16;
 			foreach (BspSubMesh submesh in meshSubmeshes)
@@ -251,6 +251,8 @@ namespace TinyGoose.Tremble
 			}
 			mesh.RecalculateBounds();
 			mesh.RecalculateTangents();
+
+			//CalculateUVScale(mesh, origin);
 			
 			// Name the mesh
 			if (isBspRoot)
@@ -273,6 +275,122 @@ namespace TinyGoose.Tremble
 			return mesh;
 		}
 
+		private void CalculateUVScale(Mesh mesh, Vector3 origin)
+		{
+			List<Vector2> oldUVs = new();
+			List<Vector2> newUVs = new();
+			mesh.GetUVs(0, oldUVs);
+			mesh.GetUVs(0, newUVs);
+
+			Dictionary<int, Vector2> processedUVs = new();
+
+			for (int i = 0; i < mesh.subMeshCount; i++)
+			{
+				for (uint j = mesh.GetIndexStart(i); j < mesh.GetIndexCount(i); j += 3)
+				{
+					int i0 = mesh.triangles[j + 0];
+					int i1 = mesh.triangles[j + 1];
+					int i2 = mesh.triangles[j + 2];
+
+					Vector3 v0 = mesh.vertices[i0];
+					Vector3 v1 = mesh.vertices[i1];
+					Vector3 v2 = mesh.vertices[i2];
+
+					Vector2 uv0 = mesh.uv[i0];
+					Vector2 uv1 = mesh.uv[i1];
+					Vector2 uv2 = mesh.uv[i2];
+
+					Vector3 normal = Vector3.Cross(v1 - v0, v2 - v0).normalized;
+					Vector4 t = mesh.tangents[i0];
+					Vector3 tangent = ((Vector3) t).normalized;
+					Vector3 bitangent = Vector3.Cross(normal, tangent).normalized * t.w;
+
+					int uCount = 0;
+					float uDerivative = 0;
+
+					Vector3 diff10 = v1 - v0;
+					Vector3 diff20 = v2 - v0;
+					Vector3 diff21 = v2 - v1;
+					Vector2 uvDiff10 = uv1 - uv0;
+					Vector2 uvDiff20 = uv2 - uv0;
+					Vector2 uvDiff21 = uv2 - uv1;
+
+					if (uvDiff10.x != 0)
+					{
+						uDerivative += Mathf.Abs(Vector3.Dot(tangent, diff10) / uvDiff10.x);
+						uCount++;
+					}
+
+					if (uvDiff20.x != 0)
+					{
+						uDerivative += Mathf.Abs(Vector3.Dot(tangent, diff20) / uvDiff20.x);
+						uCount++;
+					}
+
+					if (uvDiff21.x != 0)
+					{
+						uDerivative += Mathf.Abs(Vector3.Dot(tangent, diff21) / uvDiff21.x);
+						uCount++;
+					}
+
+					int vCount = 0;
+					float vDerivative = 0;
+					if (uvDiff10.y != 0)
+					{
+						vDerivative += Mathf.Abs(Vector3.Dot(bitangent, diff10) / uvDiff10.y);
+						vCount++;
+					}
+
+					if (uvDiff20.y != 0)
+					{
+						vDerivative += Mathf.Abs(Vector3.Dot(bitangent, diff20) / uvDiff20.y);
+						vCount++;
+					}
+
+					if (uvDiff21.y != 0)
+					{
+						vDerivative += Mathf.Abs(Vector3.Dot(bitangent, diff21) / uvDiff21.y);
+						vCount++;
+					}
+
+
+					Vector2 scale = new Vector2(uDerivative / uCount, vDerivative / vCount);
+					
+					Vector3 center = Vector3.Min(Vector3.Min(v0, v1), v2);
+					Vector2 uvCenter = Vector2.Min(Vector2.Min(uv0, uv1), uv2);
+					
+					Vector3 projectedOnPlane = center + origin;
+					float u = Vector3.Dot(tangent, projectedOnPlane) * scale.x;
+					float v = Vector3.Dot(bitangent, projectedOnPlane) * scale.y;
+
+					u = Mathf.Floor(u);
+					v = Mathf.Floor(v);
+
+					uvCenter.x = Mathf.Floor(uvCenter.x);
+					uvCenter.y = Mathf.Floor(uvCenter.y);
+					
+					Vector2 uvOffset = -uvCenter + new Vector2(u, v);
+
+					for (int k = 0; k < 3; k++)
+					{
+						int index = mesh.triangles[j + k];
+						Vector2 uv = oldUVs[index];
+						
+						if (processedUVs.TryGetValue(index, out var offset))
+							uvOffset = offset;
+						
+						Vector2 newUv = uv;
+						newUv = uv + uvOffset;
+
+						newUVs[index] = newUv;
+
+						processedUVs.TryAdd(index, uvOffset);
+					}
+				}
+			}
+			mesh.SetUVs(0, newUVs);
+		}
+		
 		private int FindOrAddVertexForBaseIndex(int baseIdx, MapBsp mapBsp, Vector3 origin, Quaternion? rotation)
 		{
 			// Find existing value
