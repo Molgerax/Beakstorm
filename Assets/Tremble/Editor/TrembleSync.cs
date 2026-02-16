@@ -555,11 +555,16 @@ namespace TinyGoose.Tremble.Editor
 					? $"Tremble Spawnable Prefab '{unityPrefabName}'"
 					: $"[PrefabEntity] class {prefabType.Name}, from prefab '{Path.GetFileNameWithoutExtension(prefabPath)}'";
 
+				string baseName = pea.TrenchBroomName ?? prefabType.Name.ToNamingConvention(SyncSettings.TypeNamingConvention);
+				string pointPrefix = pea.Category ?? FgdConsts.POINT_PREFIX;
+				string fullPointName = (pointPrefix.Length == 0) ? baseName : $"{pointPrefix}_{baseName}";
+				
 				FgdClass entityClass = new(FgdClassType.Point, prefabName, prefabTypeDescription)
 				{
 					HasModel = hasModel,
 					Sprite = overrideSprite,
 					Box = hasModel ? modelBounds : null,
+					Colour = GetColor(fullPointName, null),
 				};
 
 				entityClass.AddBaseClass(FgdConsts.CLASS_MAP_BASE);

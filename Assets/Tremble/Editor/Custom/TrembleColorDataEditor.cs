@@ -67,6 +67,15 @@ namespace TinyGoose.Tremble.Editor
                         
                         entityTypes.Add(fullPointName);
                     }
+                    
+                    if (type.GetCustomAttributes(typeof(PrefabEntityAttribute)).FirstOrDefault() is PrefabEntityAttribute prefabEntityAttribute)
+                    {
+                        string baseName = prefabEntityAttribute.TrenchBroomName ?? type.Name.ToNamingConvention(typeNamingConvention);
+                        string pointPrefix = prefabEntityAttribute.Category ?? FgdConsts.POINT_PREFIX;
+                        string fullPointName = (pointPrefix.Length == 0) ? baseName : $"{pointPrefix}_{baseName}";
+                        
+                        entityTypes.Add(fullPointName);
+                    }
                 }
             }
 
