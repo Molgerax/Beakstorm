@@ -12,7 +12,7 @@
 }
 // entity 1
 {
-"classname" "ent_player_spawn"
+"classname" "info_player_spawn"
 "origin" "-2752 0 -928"
 "angles" "0 -90 0"
 }
@@ -135,7 +135,7 @@
 }
 // entity 17
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "1184 -224 -2016"
 "targetname" "wave0"
 "target" "msg8"

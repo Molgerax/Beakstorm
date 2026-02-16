@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using Beakstorm.Mapping;
 using Beakstorm.SceneManagement;
-using Beakstorm.Utility.Extensions;
 using Cysharp.Threading.Tasks;
 using TinyGoose.Tremble;
 using UltEvents;
@@ -11,7 +10,7 @@ using UnityEngine;
 
 namespace Beakstorm.Gameplay.Encounters.Procedural
 {
-    [PointEntity("wave", colour:"1.0 0.5 0", size:16)]
+    [PointEntity("wave", "func")]
     public class WaveData : TriggerSender, ITriggerTarget, IWaveData, IOnSceneLoad
     {
         [SerializeField] private List<EnemySpawnPoint> spawnPoints = new(4);

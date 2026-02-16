@@ -13,7 +13,7 @@
 }
 // entity 1
 {
-"classname" "ent_player_spawn"
+"classname" "info_player_spawn"
 "origin" "-3584 0 0"
 "angles" "0 -90 0"
 }
@@ -70,7 +70,7 @@
 }
 // entity 6
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "480 480 -128"
 "targetname" "wave_hangar"
 "intensity" "4"
@@ -79,7 +79,7 @@
 }
 // entity 7
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "480 480 640"
 "targetname" "wave_roof"
 "spawnflags" "1"
@@ -105,7 +105,7 @@
 }
 // entity 10
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "800 928 -416"
 "target" "turret_defeat"
 "targetname" "wave_dome"
@@ -131,7 +131,7 @@
 }
 // entity 13
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "800 864 1376"
 "targetname" "wave_balloon_roof"
 "target" "turret_defeat"
@@ -182,7 +182,7 @@
 // entity 17
 {
 "origin" "1659.78 510.224 172.451"
-"classname" "ent_wave"
+"classname" "func_wave"
 "spawnflags" "1"
 "target" "turret_defeat"
 "targetname" "wave_turret3"
@@ -225,7 +225,7 @@
 // entity 20
 {
 "origin" "608 512 416"
-"classname" "ent_wave"
+"classname" "func_wave"
 "spawnflags" "1"
 "target" "turret_defeat"
 "angles" "0 0 0"
@@ -268,7 +268,7 @@
 // entity 23
 {
 "origin" "592 -224 416"
-"classname" "ent_wave"
+"classname" "func_wave"
 "spawnflags" "1"
 "target" "turret_defeat"
 "angles" "0 0 0"
@@ -311,7 +311,7 @@
 // entity 26
 {
 "origin" "1400 -472.003 172.451"
-"classname" "ent_wave"
+"classname" "func_wave"
 "spawnflags" "1"
 "target" "turret_defeat"
 "angles" "0 45 45"
@@ -409,7 +409,7 @@
 }
 // entity 36
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "1152 320 896"
 "targetname" "wave_rotator"
 "angles" "0 90 0"
@@ -419,7 +419,7 @@
 }
 // entity 37
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "1200 160 896"
 "targetname" "activator"
 "target" "rotator"

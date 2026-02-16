@@ -204,7 +204,7 @@
 }
 // entity 2
 {
-"classname" "ent_player_spawn"
+"classname" "info_player_spawn"
 "origin" "-1540 -4 1172"
 "angles" "0 0 0"
 }
@@ -238,7 +238,7 @@
 }
 // entity 7
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "-1664 1728 224"
 "targetname" "wave_0"
 "target" "defeat_0"
@@ -270,7 +270,7 @@
 }
 // entity 11
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "-1664 1736 480"
 "targetname" "wave_1"
 "intensity" "2"
@@ -335,7 +335,7 @@
 }
 // entity 19
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "-1536 1224 480"
 "targetname" "wave_2"
 "intensity" "3"
@@ -523,7 +523,7 @@
 }
 // entity 30
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "2464 -1504 -800"
 "targetname" "enemy_a"
 "spawnflags" "1"
@@ -581,7 +581,7 @@
 }
 // entity 37
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "2464 -1680 -800"
 "targetname" "enemy_a_1"
 "spawnflags" "0"
@@ -591,7 +591,7 @@
 }
 // entity 38
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "1952 2336 -288"
 "targetname" "enemy_b"
 "spawnflags" "1"
@@ -667,7 +667,7 @@
 }
 // entity 47
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "1760 -32 -480"
 "targetname" "boss"
 "angles" "0 0 0"
@@ -683,7 +683,7 @@
 }
 // entity 49
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "-1632 -1824 -1280"
 "targetname" "enemy_c"
 "spawnflags" "1"
@@ -693,7 +693,7 @@
 }
 // entity 50
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "-1920 -1824 -1440"
 "targetname" "enemy_c_1"
 "target" "counter"

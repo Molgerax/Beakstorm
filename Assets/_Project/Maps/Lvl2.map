@@ -13,7 +13,7 @@
 }
 // entity 1
 {
-"classname" "ent_player_spawn"
+"classname" "info_player_spawn"
 "origin" "-11520 0 0"
 "angles" "0 -90 0"
 }
@@ -210,7 +210,7 @@
 }
 // entity 14
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "-128 544 1056"
 "targetname" "wave_door0"
 "target" "win"
@@ -400,7 +400,7 @@
 }
 // entity 34
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "2016 -480 32"
 "targetname" "wave_defense0"
 "target" "wave_defense1"
@@ -1095,7 +1095,7 @@
 }
 // entity 61
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "-544 -32 1056"
 "targetname" "wave_defense1"
 "target" "open_door0"
@@ -6135,7 +6135,7 @@
 }
 // entity 140
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "-4768 -992 -1888"
 "targetname" "wave_a0"
 "target" "wave_defense0"
@@ -6180,7 +6180,7 @@
 }
 // entity 145
 {
-"classname" "ent_wave"
+"classname" "func_wave"
 "origin" "-4384 -736 -1888"
 "targetname" "wave_a0_0"
 "target" "wave_a0"

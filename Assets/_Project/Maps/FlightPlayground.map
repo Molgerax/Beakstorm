@@ -1463,7 +1463,7 @@
 }
 // entity 2
 {
-"classname" "ent_player_spawn"
+"classname" "info_player_spawn"
 "origin" "0 32 0"
 "angles" "0 0 0"
 }
