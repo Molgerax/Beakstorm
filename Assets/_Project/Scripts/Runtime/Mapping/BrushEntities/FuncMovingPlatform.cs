@@ -7,8 +7,7 @@ using UnityEngine.Rendering;
 
 namespace Beakstorm.Mapping.BrushEntities
 {
-    //[PointEntity("platform", category:"func", colour:"0 0.5 1.0", size: 16)]
-    [BrushEntity("platform", category:"func", type: BrushType.Solid, colour:"0 0.5 1.0")]
+    [BrushEntity("platform", category:"func")]
     public class FuncMovingPlatform : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         [SerializeField, NoTremble] private float speed = 5f;
@@ -21,6 +20,7 @@ namespace Beakstorm.Mapping.BrushEntities
         [SerializeField] private bool autoStart;
 
         private bool _triggered;
+        private float _waitTime;
 
         private Vector3 _initPos;
         private Vector3 _targetPos;
@@ -43,6 +43,7 @@ namespace Beakstorm.Mapping.BrushEntities
             Triggered = 1,
             Finished = 2,
             Stopped = 3,
+            Waiting = 4,
         }
 
         public void Trigger(TriggerData data)
@@ -68,16 +69,21 @@ namespace Beakstorm.Mapping.BrushEntities
 
         private void Update()
         {
-            if (_state != DoorState.Triggered)
-                return;
-            
             if (!_nextWaypoint)
                 return;
+            
+            if (_state == DoorState.Triggered)
+                Move(Time.deltaTime);
+            else if (_state == DoorState.Waiting)
+                Wait(Time.deltaTime);
+        }
 
+        private void Move(float deltaTime)
+        {
             Vector3 posA = _offset + transform.position;
             Vector3 posB = _nextWaypoint.transform.position;
 
-            posA = Vector3.MoveTowards(posA, posB, Time.deltaTime * speed);
+            posA = Vector3.MoveTowards(posA, posB, deltaTime * speed);
             
             if (Vector3.Distance(posA, posB) < 0.1f)
             {
@@ -87,12 +93,27 @@ namespace Beakstorm.Mapping.BrushEntities
             transform.position = posA - _offset;
         }
 
+        private void Wait(float deltaTime)
+        {
+            _waitTime -= deltaTime;
+            if (_waitTime <= 0)
+            {
+                _state = DoorState.Triggered;
+            }
+        }
+        
+
         private void OnReachWaypoint(Waypoint wp)
         {
             Waypoint newWp = wp.GetNextWaypoint();
 
             if (_nextWaypoint && _nextWaypoint.IsStop)
                 _state = DoorState.Stopped;
+            else if (_nextWaypoint && _nextWaypoint.Wait > 0)
+            {
+                _state = DoorState.Waiting;
+                _waitTime = _nextWaypoint.Wait;
+            }
             
             _nextWaypoint = newWp;
             if (!_nextWaypoint)

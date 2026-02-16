@@ -12,10 +12,10 @@ namespace TinyGoose.Tremble
         [Serializable]
         public class DataPair
         {
-            public SerializableType Type;
+            public string Type;
             public Color Color;
 
-            public DataPair(Type type, Color color)
+            public DataPair(string type, Color color)
             {
                 Type = type;
                 Color = color;

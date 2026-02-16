@@ -23,12 +23,12 @@ namespace TinyGoose.Tremble
 		/// <param name="sprite">The sprite to show in TrenchBroom. Must be the name of a texture in your project. e.g. "T_MyTexture".</param>
 		/// <param name="size">The size of the cube for this entity in TrenchBroom. e.g. 5.</param>
 		/// <param name="prefab">The prefab to show in TrenchBroom. Must be the name of a prefab in your project. e.g. "T_MyPrefab".</param>
-		public PointEntityAttribute(string trenchBroomName = null, string category = null, string colour = null, string sprite = null, float size = 0.25f, string prefab = null)
+		public PointEntityAttribute(string trenchBroomName = null, string category = null, string colour = null, string sprite = null, float size = 0f, string prefab = null)
 			: base(trenchBroomName, category)
 		{
-			m_Size = size;
+			m_Size = size > 0f ? size : 4f;
 			m_Sprite = sprite;
-			m_Colour = colour.TryParseQ3Colour(out Color value) ? value : Color.white;
+			m_Colour = colour.TryParseQ3Colour(out Color value) ? value : null;
 			m_Prefab = prefab;
 		}
 

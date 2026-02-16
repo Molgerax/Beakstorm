@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("simulation_border", category:"info", size: 16f)]
+    [PointEntity("simulation_border", category:"info")]
     public class InfoParticleBorderPoint : MonoBehaviour
     {
         

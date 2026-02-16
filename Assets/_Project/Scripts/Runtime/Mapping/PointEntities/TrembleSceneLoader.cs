@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("scene_loader", "trigger", size:16)]
+    [PointEntity("scene_loader", "trigger")]
     public class TrembleSceneLoader : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         [SerializeField, Tremble("scene")] private SceneLoadCollection scene;

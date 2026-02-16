@@ -649,7 +649,7 @@ namespace TinyGoose.Tremble.Editor
 
 			FgdClass entityClass = new(FgdClassType.Point, name, $"[PointEntity] class {pointType.Name} ('{name}')")
 			{
-				Colour = GetColor(pointType, pea.Colour),
+				Colour = GetColor(name, pea.Colour),
 				Box = new Bounds(Vector3.zero, Vector3.one * size),
 				Sprite = pea.Sprite
 			};
@@ -775,7 +775,7 @@ namespace TinyGoose.Tremble.Editor
 			FgdClass entityClass = new(FgdClassType.Point, name, $"[PointEntity] class {pointType.Name} ('{name}')")
 			{
 				HasModel = hasPrefab,
-				Colour = GetColor(pointType, pea.Colour),
+				Colour = GetColor(name, pea.Colour),
 				Box = hasPrefab ? modelBounds : new Bounds(Vector3.zero, Vector3.one * size),
 				Sprite = hasPrefab ? null : pea.Sprite,
 			};
@@ -1196,7 +1196,7 @@ namespace TinyGoose.Tremble.Editor
 
 		private static TrembleColorData _cachedColorData;
 		
-		private static Color GetColor(Type type, Color? attColour)
+		private static Color GetColor(string fullName, Color? attColour)
 		{
 			if (attColour.HasValue)
 				return attColour.Value;
@@ -1211,7 +1211,7 @@ namespace TinyGoose.Tremble.Editor
 
 			foreach (TrembleColorData.DataPair pair in _cachedColorData.pairs)
 			{
-				if (pair.Type.Type == type)
+				if (pair.Type == fullName)
 					return pair.Color;
 			}
 			

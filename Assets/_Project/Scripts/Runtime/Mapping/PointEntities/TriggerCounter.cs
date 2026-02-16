@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("counter", "trigger", size:16)]
+    [PointEntity("counter", "trigger")]
     public class TriggerCounter : TriggerSender, ITriggerTarget
     {
         [SerializeField] private int count = 1;

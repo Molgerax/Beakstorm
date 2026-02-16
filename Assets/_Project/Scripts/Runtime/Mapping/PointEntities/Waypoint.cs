@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("waypoint", category:"path", size:16)]
+    [PointEntity("waypoint", category:"path")]
     public class Waypoint : MonoBehaviour, IOnImportFromMapEntity
     {
         [SerializeField, Tremble("target")] private Waypoint[] waypoints;
@@ -12,10 +12,12 @@ namespace Beakstorm.Mapping.PointEntities
         [SerializeField] private WaypointSmoothing smoothing = WaypointSmoothing.Linear;
 
         [SerializeField, Tremble("stop")] private bool stopPoint = false;
+        [SerializeField, Tremble("wait")] private float wait = 0;
 
         [SerializeField, NoTremble] private Waypoint previousWaypoint;
 
         public bool IsStop => stopPoint;
+        public float Wait => wait;
         
         public Vector3 GetTangent(Waypoint waypoint)
         {

@@ -3,7 +3,7 @@ using TinyGoose.Tremble;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("on_load", "trigger", size:16)]
+    [PointEntity("on_load", "trigger")]
     public class TriggerOnSceneLoaded : TriggerSender, IOnSceneLoad
     {
         public SceneLoadCallbackPoint SceneLoadCallbackPoint => SceneLoadCallbackPoint.AfterAll;

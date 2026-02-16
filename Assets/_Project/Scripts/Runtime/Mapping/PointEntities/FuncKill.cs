@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("kill", category:"func", size: 16f)]
+    [PointEntity("kill", category:"func")]
     public class FuncKill : MonoBehaviour, ITriggerTarget, IOnImportFromMapEntity
     {
         public void Trigger(TriggerData data)

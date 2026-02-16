@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Beakstorm.Mapping.PointEntities
 {
-    [PointEntity("rotator", category:"func", size: 16f)]
+    [PointEntity("rotator", category:"func")]
     public class FuncRotator : MonoBehaviour, ITriggerTarget
     {
         [SerializeField, Tremble] private float amount = 180;

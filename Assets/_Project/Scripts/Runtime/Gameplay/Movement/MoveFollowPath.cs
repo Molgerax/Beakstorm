@@ -111,6 +111,7 @@ namespace Beakstorm.Gameplay.Movement
 
         private void OnDrawGizmos()
         {
+            return;
             Gizmos.color = Color.red;
             
             if (_waypointA)
