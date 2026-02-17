@@ -117,6 +117,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Tremble
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ebc2e2b22a4174f9e9867d979b7008b8
+    m_Address: M_NullRender
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Tremble
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d8aeb4f9e09ee8343902018e14c13f32, type: 2}
   m_SchemaSet:

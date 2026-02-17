@@ -8,8 +8,6 @@ namespace Beakstorm.AssetManagement
         private void Awake()
         {
             Addressables.InitializeAsync().WaitForCompletion();
-            
-            Debug.LogError("Wake up!");
         }
     }
 }
