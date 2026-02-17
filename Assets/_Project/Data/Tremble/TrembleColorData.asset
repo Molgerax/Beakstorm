@@ -11,53 +11,41 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8f2b5e098544b83acfaa088081decf8, type: 3}
   m_Name: TrembleColorData
-  m_EditorClassIdentifier: Assembly-CSharp::Beakstorm.Mapping.TrembleColorData
+  m_EditorClassIdentifier: TinyGoose.Tremble::TinyGoose.Tremble.TrembleColorData
   pairs:
-  - Type:
-      assemblyQualifiedName: Beakstorm.Gameplay.Player.PlayerStartPosition, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Color: {r: 0, g: 1, b: 0, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Gameplay.Encounters.Procedural.WaveData, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Type: enemy_EnemySpawnPoint
     Color: {r: 1, g: 0, b: 0, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.MessageSender, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Color: {r: 0, g: 0.5, b: 0, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.PeaceMusicSetter, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Color: {r: 0.5, g: 0.5, b: 0, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.TrembleKill, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Color: {r: 1, g: 0, b: 0, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.TrembleParticleBorderPoint,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Color: {r: 0.1, g: 0.1, b: 0.1, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.TrembleRotator, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Type: ent_TrembleSpawnablePrefab
+    Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  - Type: ent_TrembleTriggerPrefab
+    Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  - Type: ent_weapon_pickup
+    Color: {r: 0, g: 0, b: 1, a: 1}
+  - Type: func_kill
+    Color: {r: 0.25, g: 0, b: 0, a: 1}
+  - Type: func_rotator
     Color: {r: 0, g: 0.5, b: 1, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.TrembleSceneLoader,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Color: {r: 1, g: 0, b: 0.5, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.TriggerCounter, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Color: {r: 1, g: 0.5, b: 0, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.TriggerOnSceneLoaded,
-        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Color: {r: 1, g: 1, b: 0.5, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.TriggerRelay, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Color: {r: 1, g: 0.5, b: 0, a: 1}
-  - Type:
-      assemblyQualifiedName: Beakstorm.Mapping.PointEntities.Waypoint, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Type: func_wave
+    Color: {r: 1, g: 0, b: 0, a: 1}
+  - Type: info_player_spawn
+    Color: {r: 0, g: 1, b: 0, a: 1}
+  - Type: info_simulation_border
+    Color: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+  - Type: light_vertex_color
+    Color: {r: 1, g: 1, b: 0.078431375, a: 1}
+  - Type: misc_message
+    Color: {r: 0, g: 0.75, b: 0, a: 1}
+  - Type: misc_peace_music
+    Color: {r: 0, g: 0.7490196, b: 0, a: 1}
+  - Type: path_waypoint
     Color: {r: 0, g: 1, b: 1, a: 1}
+  - Type: trigger_counter
+    Color: {r: 1, g: 0.75, b: 0, a: 1}
+  - Type: trigger_message
+    Color: {r: 0, g: 0.7490196, b: 0, a: 1}
+  - Type: trigger_on_load
+    Color: {r: 1, g: 0.5019608, b: 0, a: 1}
+  - Type: trigger_relay
+    Color: {r: 1, g: 0.75, b: 0, a: 1}
+  - Type: trigger_scene_loader
+    Color: {r: 1, g: 0.5019608, b: 1, a: 1}

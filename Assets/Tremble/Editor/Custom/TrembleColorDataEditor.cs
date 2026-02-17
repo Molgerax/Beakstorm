@@ -10,36 +10,49 @@ namespace TinyGoose.Tremble.Editor
     [CustomEditor(typeof(TrembleColorData))]
     public class TrembleColorDataEditor : UnityEditor.Editor
     {
+        private SerializedProperty _pairs;
+
+        private void OnEnable()
+        {
+            serializedObject.FindProperty("pairs");
+        }
+
         public override void OnInspectorGUI()
         {
             TrembleColorData colorData = (TrembleColorData) target;
-
-            EditorGUI.BeginChangeCheck();
-
-            foreach (var pair in colorData.pairs)
+            
+            for (var index = 0; index < colorData.pairs.Count; index++)
             {
+                //SerializedProperty prop = _pairs.GetArrayElementAtIndex(index);
+                //SerializedProperty colorProp = prop.FindPropertyRelative("Color");
+                
+                var pair = colorData.pairs[index];
                 if (pair == null)
                     continue;
-                
+
                 if (pair.Type.IsNullOrEmpty())
                     continue;
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(pair.Type);
+
+                EditorGUI.BeginChangeCheck();
                 
                 Color newCol = EditorGUILayout.ColorField(pair.Color);
                 pair.Color = newCol;
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    EditorUtility.SetDirty(target);
+                }
                 
                 EditorGUILayout.EndHorizontal();
             }
-            
-            if (EditorGUI.EndChangeCheck())
-                SaveChanges();
 
             if (GUILayout.Button("Generate"))
             {
                 Generate(colorData);
-                SaveChanges();
+                EditorUtility.SetDirty(target);
             }
         }
 
