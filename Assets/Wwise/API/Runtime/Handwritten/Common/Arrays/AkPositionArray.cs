@@ -44,38 +44,39 @@ public class AkPositionArray : System.IDisposable
 		m_Current = m_Buffer;
 		Count = 0;
 	}
+
+	private void WriteFloat(float value)
+	{
+		System.Runtime.InteropServices.Marshal.WriteInt32(m_Current,
+			System.BitConverter.SingleToInt32Bits(value));
+		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(float));
+	}
+	
+	private void WriteDouble(double value)
+	{
+		System.Runtime.InteropServices.Marshal.WriteInt64(m_Current,
+			System.BitConverter.DoubleToInt64Bits(value));
+		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(double));
+	}
+	
 	public void Add(AkVector64 in_Pos, UnityEngine.Vector3 in_Forward, UnityEngine.Vector3 in_Top)
 	{
 		if (Count >= m_MaxCount)
 			throw new System.IndexOutOfRangeException("Out of range access in AkPositionArray");
 		//Marshal doesn't do floats.  So copy the bytes themselves.  Grrr.
-		System.Runtime.InteropServices.Marshal.WriteInt32(m_Current,
-			System.BitConverter.ToInt32(System.BitConverter.GetBytes(in_Forward.x), 0));
-		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(float));
-		System.Runtime.InteropServices.Marshal.WriteInt32(m_Current,
-			System.BitConverter.ToInt32(System.BitConverter.GetBytes(in_Forward.y), 0));
-		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(float));
-		System.Runtime.InteropServices.Marshal.WriteInt32(m_Current,
-			System.BitConverter.ToInt32(System.BitConverter.GetBytes(in_Forward.z), 0));
-		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(float));
-		System.Runtime.InteropServices.Marshal.WriteInt32(m_Current,
-			System.BitConverter.ToInt32(System.BitConverter.GetBytes(in_Top.x), 0));
-		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(float));
-		System.Runtime.InteropServices.Marshal.WriteInt32(m_Current,
-			System.BitConverter.ToInt32(System.BitConverter.GetBytes(in_Top.y), 0));
-		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(float));
-		System.Runtime.InteropServices.Marshal.WriteInt32(m_Current,
-			System.BitConverter.ToInt32(System.BitConverter.GetBytes(in_Top.z), 0));
-		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(float));
-		System.Runtime.InteropServices.Marshal.WriteInt64(m_Current,
-			System.BitConverter.ToInt64(System.BitConverter.GetBytes(in_Pos.X), 0));
-		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(double));
-		System.Runtime.InteropServices.Marshal.WriteInt64(m_Current,
-			System.BitConverter.ToInt64(System.BitConverter.GetBytes(in_Pos.Y), 0));
-		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(double));
-		System.Runtime.InteropServices.Marshal.WriteInt64(m_Current,
-			System.BitConverter.ToInt64(System.BitConverter.GetBytes(in_Pos.Z), 0));
-		m_Current = (System.IntPtr) (m_Current.ToInt64() + sizeof(double));
+		
+		WriteFloat(in_Forward.x);
+		WriteFloat(in_Forward.y);
+		WriteFloat(in_Forward.z);
+		
+		WriteFloat(in_Top.x);
+		WriteFloat(in_Top.y);
+		WriteFloat(in_Top.z);
+
+		WriteDouble(in_Pos.X);
+		WriteDouble(in_Pos.Y);
+		WriteDouble(in_Pos.Z);
+		
 		Count++;
 	}
 }

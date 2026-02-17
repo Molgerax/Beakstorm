@@ -26,6 +26,8 @@ namespace Beakstorm.Simulation.Particles
         [SerializeField] private ushort _emitterCount = 64;
 
         private SoundCell[] _soundCells;
+
+        private AkVector64 _vector64;
         
         struct SoundCell
         {
@@ -209,8 +211,18 @@ namespace Beakstorm.Simulation.Particles
                 if (right.sqrMagnitude == 0)
                     right = Vector3.right;
                 Vector3 up = Vector3.Cross(fwd, right).normalized;
+
                 
-                _emitterArray.Add(customPosition, fwd, up);
+                if (_vector64 == null)
+                    _vector64 = customPosition;
+                else 
+                {
+                    _vector64.X = customPosition.x;
+                    _vector64.Y = customPosition.y;
+                    _vector64.Z = customPosition.z;
+                }
+                
+                _emitterArray.Add(_vector64, fwd, up);
                 count++;
 
             }
