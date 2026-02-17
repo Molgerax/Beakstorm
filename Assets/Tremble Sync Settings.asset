@@ -501,7 +501,7 @@ MonoBehaviour:
   m_PipelineSplitMesh: 0
   m_PipelineSmoothMeshNormals: 1
   m_PipelineSimplifyCollisionMeshes: 1
-  m_PipelineUnwrapUV2: 0
+  m_PipelineUnwrapUV2: 1
   m_PipelineRunMapProcessors: 1
   m_MapProcessors:
   - Class:
@@ -515,6 +515,9 @@ MonoBehaviour:
     Enabled: 1
   - Class:
       m_MapClassName: Beakstorm.Mapping.Tremble.MapProcessors.SdfTextureMapProcessor
+    Enabled: 1
+  - Class:
+      m_MapClassName: Beakstorm.Mapping.Tremble.MapProcessors.VertexColorMapProcessor
     Enabled: 1
   m_LogOnImportAndSync: 0
   m_UseLiveUpdate: 1
