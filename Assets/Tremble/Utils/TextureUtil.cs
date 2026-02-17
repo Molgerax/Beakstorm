@@ -5,6 +5,7 @@
 
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace TinyGoose.Tremble
 {
@@ -171,17 +172,20 @@ namespace TinyGoose.Tremble
 			Shader.PropertyToID("_Color"),
 			Shader.PropertyToID("_maintex"),
 			Shader.PropertyToID("_Maintex"),
+			Shader.PropertyToID("_Albedo"),
+			Shader.PropertyToID("_AlbedoMap"),
 		};
 		public static bool TryGetMainTex(this Material material, out Texture2D mainTexture)
 		{
+			mainTexture = null;
 			if (!material)
 			{
-				mainTexture = null;
 				return false;
 			}
 
 			// First check for _MainTex or [MainTexture]
-			mainTexture = material.mainTexture as Texture2D;
+			if (material.HasMainTextureProperty())
+				mainTexture = material.mainTexture as Texture2D;
 
 			if (!mainTexture)
 			{
@@ -196,6 +200,20 @@ namespace TinyGoose.Tremble
 			}
 
 			return mainTexture;
+		}
+
+		public static bool HasMainTextureProperty(this Material material)
+		{
+#if UNITY_EDITOR
+			UnityEditor.MaterialProperty[] properties = UnityEditor.MaterialEditor.GetMaterialProperties(new[] {material});
+
+			foreach (var property in properties)
+			{
+				if ((property.propertyFlags & ShaderPropertyFlags.MainTexture) > 0)
+					return true;
+			}
+#endif
+			return material.HasTexture("_MainTex");
 		}
 	}
 }

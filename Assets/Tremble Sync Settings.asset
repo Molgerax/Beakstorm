@@ -846,3 +846,8 @@ MonoBehaviour:
     FullTypeName: UnityEngine.Material
     AddressableName: Mapping/TriplanarClouds_Tesselated
     SpawnOffset: {x: 0, y: 0, z: 0}
+  - MapName: M_NullRender
+    Path: Assets/Tremble/Materials/M_NullRender.mat
+    FullTypeName: UnityEngine.Material
+    AddressableName: M_NullRender
+    SpawnOffset: {x: 0, y: 0, z: 0}

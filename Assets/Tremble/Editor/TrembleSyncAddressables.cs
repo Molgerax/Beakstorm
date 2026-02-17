@@ -51,7 +51,7 @@ namespace TinyGoose.Tremble.Editor
 
 			// Materials
 			AddressableAssetGroup materialsGroup = addressables.FindOrCreateGroup(GROUP_TREMBLE_MATERIALS);
-			addressables.AddEntryIfNotExist(materialsGroup, TrembleAssetLoader.LoadAssetByName<Material>("M_Clip"));
+			addressables.AddEntryIfNotExist(materialsGroup, TrembleAssetLoader.LoadAssetByName<Material>("M_NullRender"));
 			foreach (string materialPath in allMaterialPaths)
 			{
 				if (!materialNameLookup.TryGetMapNameFromMaterialPath(materialPath, out string mapName))
