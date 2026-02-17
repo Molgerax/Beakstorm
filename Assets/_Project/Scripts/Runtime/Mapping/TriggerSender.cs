@@ -1,4 +1,5 @@
-﻿using Beakstorm.Utility.Extensions;
+﻿using Beakstorm.Gameplay.Messages;
+using Beakstorm.Utility.Extensions;
 using TinyGoose.Tremble;
 using UnityEngine;
 
@@ -13,18 +14,56 @@ namespace Beakstorm.Mapping
         [SerializeField, NoTremble] protected bool invertSignal;
         [Tremble, SpawnFlags(8)] private bool _invertSignal;
 
+        [SerializeField, NoTremble] protected float delayTime;
+        [SerializeField, NoTremble] private string msg;
+
         public void SendTrigger(TriggerData data = default)
         {
             if (invertSignal)
                 data.Activate = !data.Activate;
-            
-            targets.TryTrigger(data);
+
+            if (delayTime > 0)
+            {
+                DelayedTriggerCall(data, delayTime);
+            }
+            else
+            {
+                RawTrigger(data);
+            }
         }
+
+        private async void DelayedTriggerCall(TriggerData data, float delay)
+        {
+            float timer = delay;
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                await Awaitable.NextFrameAsync(destroyCancellationToken);
+            }
+            RawTrigger(data);
+        }
+
+        
+        private void RawTrigger(TriggerData data)
+        {
+            targets.TryTrigger(data);
+            
+            if (!msg.IsNullOrEmpty())
+                MessageManager.AddMessage(new(msg, false, 5f));
+        }
+        
         
         public virtual void OnImportFromMapEntity(MapBsp mapBsp, BspEntity entity)
         {
             targets = _targets.TriggerToComponent();
             invertSignal = _invertSignal;
+
+            if (entity.TryGetFloat("delay", out float delay))
+                delayTime = delay;
+            else
+                delayTime = 0;
+
+            msg = entity.TryGetString("message", out string m) ? m : null;
         }
 
 

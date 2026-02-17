@@ -6,42 +6,18 @@ namespace Beakstorm.Mapping.PointEntities
     [PointEntity("relay", "trigger")]
     public class TriggerRelay : TriggerSender, ITriggerTarget
     {
-        [SerializeField] private float delay = 0f;
-
-        private float _timer;
-        private bool _isRunning;
+        [Tremble("delay")] private float _delay;
+        
         private bool _triggered;
 
-        private TriggerData _cachedData;
-        
         public void Trigger(TriggerData data)
         {
             if (_triggered)
                 return;
 
-            _cachedData = data;
-
             _triggered = true;
-            _isRunning = true;
-            _timer = 0f;
-        }
-
-        private void Update()
-        {
-            if (!_isRunning)
-                return;
-
-            _timer += Time.deltaTime;
             
-            if (_timer >= delay)
-                OnTimerOver();
-        }
-
-        public void OnTimerOver()
-        {
-            _isRunning = false;
-            
-            SendTrigger(_cachedData);
+            SendTrigger(data);
         }
     }
 }
